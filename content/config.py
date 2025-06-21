@@ -40,8 +40,8 @@ Config = {
     # Globally used brightness values for the LEDs. 
     # Note that not all action definitions in kemper.py or other client implementations have to regard this! See the
     # parameters of the action definitions in question.
-    #"ledBrightnessOn": 0.3,
-    #"ledBrightnessOff": 0.02,
+    "ledBrightnessOn": 0.10, # default: 0.3
+    "ledBrightnessOff": 0.005, # default: 0.02
 
     ## Development Options ###################################################################################################################
 
