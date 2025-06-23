@@ -11,8 +11,8 @@ from pyswitch.hardware.devices.pa_midicaptain import PA_MIDICAPTAIN_USB_MIDI
 
 # MIDI Devices in use (optionally you can specify the in/out channels here, too)
 _USB_MIDI = PA_MIDICAPTAIN_USB_MIDI(
-    in_channel = None,  # All
-    out_channel = 0
+    in_channel = 6,  # None,  # All
+    out_channel = 5
 )
 
 # Communication configuration
@@ -22,8 +22,8 @@ Communication = {
     # parameters in each update cycle. Use this to implement bidirectional communication.
     "protocol": KemperBidirectionalProtocol(
         time_lease_seconds = 30               # When the controller is removed, the Profiler will stay in bidirectional
-                                              # mode for this amount of seconds. The communication is re-initiated every  
-                                              # half of this value. 
+        # mode for this amount of seconds. The communication is re-initiated every
+        # half of this value.
     ),
 
     # MIDI setup. This defines all MIDI routings. You at least have to define routings from and to 
