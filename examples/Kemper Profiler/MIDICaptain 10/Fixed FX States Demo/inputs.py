@@ -1,15 +1,15 @@
-from pyswitch.clients.kemper.actions.fixed_fx import FIXED_EFFECT_STATE
-from pyswitch.clients.kemper.actions.fixed_fx import FIXED_SLOT_ID_TRANSPOSE
-from pyswitch.clients.kemper.actions.fixed_fx import FIXED_SLOT_ID_GATE
-from pyswitch.clients.kemper.actions.fixed_fx import FIXED_SLOT_ID_COMP
-from pyswitch.clients.kemper.actions.fixed_fx import FIXED_SLOT_ID_BOOST
-from pyswitch.clients.kemper.actions.fixed_fx import FIXED_SLOT_ID_WAH
-from pyswitch.clients.kemper.actions.fixed_fx import FIXED_SLOT_ID_CHORUS
-from pyswitch.clients.kemper.actions.fixed_fx import FIXED_SLOT_ID_AIR
-from pyswitch.clients.kemper.actions.fixed_fx import FIXED_SLOT_ID_DBL_TRACKER
+from lib.pyswitch.clients.kemper.actions.fixed_fx import FIXED_EFFECT_STATE
+from lib.pyswitch.clients.kemper.actions.fixed_fx import FIXED_SLOT_ID_TRANSPOSE
+from lib.pyswitch.clients.kemper.actions.fixed_fx import FIXED_SLOT_ID_GATE
+from lib.pyswitch.clients.kemper.actions.fixed_fx import FIXED_SLOT_ID_COMP
+from lib.pyswitch.clients.kemper.actions.fixed_fx import FIXED_SLOT_ID_BOOST
+from lib.pyswitch.clients.kemper.actions.fixed_fx import FIXED_SLOT_ID_WAH
+from lib.pyswitch.clients.kemper.actions.fixed_fx import FIXED_SLOT_ID_CHORUS
+from lib.pyswitch.clients.kemper.actions.fixed_fx import FIXED_SLOT_ID_AIR
+from lib.pyswitch.clients.kemper.actions.fixed_fx import FIXED_SLOT_ID_DBL_TRACKER
 
 from display import DISPLAY_HEADER_1, DISPLAY_HEADER_2, DISPLAY_FOOTER_1, DISPLAY_FOOTER_2
-from pyswitch.hardware.devices.pa_midicaptain_10 import *
+from lib.pyswitch.hardware.devices.pa_midicaptain_10 import *
 
 Inputs = [
     {

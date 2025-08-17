@@ -1,7 +1,0 @@
-#!/bin/bash
-
-docker compose up -d
-
-winpty docker exec -it pyswitch-test bash
-
-docker compose down

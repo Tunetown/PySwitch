@@ -1,5 +1,5 @@
-from pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
-from pyswitch.clients.kemper.actions.rig_up_down import RIG_UP
+from lib.pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
+from lib.pyswitch.clients.kemper.actions.rig_up_down import RIG_UP
 
 Inputs = [
 

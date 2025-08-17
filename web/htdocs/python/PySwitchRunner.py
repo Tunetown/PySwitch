@@ -14,7 +14,7 @@ from wrappers.wrap_adafruit_midi import *
 from wrappers.wrap_time import *
 from wrappers.wrap_hid import *
 
-from pyswitch.misc import get_option
+from lib.pyswitch.misc import get_option
 
 class PySwitchRunner:
     def __init__(self, container_id, dom_namespace, coverage, tickInterval = 10):
@@ -95,12 +95,12 @@ class PySwitchRunner:
             )
             self.display_driver.init()
 
-            from pyswitch.controller.controller import Controller
-            from pyswitch.controller.midi import MidiController, MidiRouting
-            from pyswitch.ui.UiController import UiController
-            from pyswitch.hardware.adafruit.AdafruitUsbMidiDevice import AdafruitUsbMidiDevice
+            from lib.pyswitch.controller.controller import Controller
+            from lib.pyswitch.controller.midi import MidiController, MidiRouting
+            from lib.pyswitch.ui.UiController import UiController
+            from lib.pyswitch.hardware.adafruit.AdafruitUsbMidiDevice import AdafruitUsbMidiDevice
 
-            # from pyswitch.clients.kemper import KemperBidirectionalProtocol
+            # from lib.pyswitch.clients.kemper import KemperBidirectionalProtocol
 
             from display import Splashes
             from inputs import Inputs
@@ -183,9 +183,9 @@ class PySwitchRunner:
             )
             self.display_driver.init()
 
-            from pyswitch.controller.explore import ExploreModeController
-            from pyswitch.ui.UiController import UiController
-            from pyswitch.hardware.adafruit.AdafruitSwitch import AdafruitSwitch
+            from lib.pyswitch.controller.explore import ExploreModeController
+            from lib.pyswitch.ui.UiController import UiController
+            from lib.pyswitch.hardware.adafruit.AdafruitSwitch import AdafruitSwitch
             
             import board as _board
 

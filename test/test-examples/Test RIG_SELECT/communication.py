@@ -4,10 +4,10 @@
 #
 ##############################################################################################################################################
 
-from pyswitch.clients.kemper import KemperBidirectionalProtocol
+from lib.pyswitch.clients.kemper import KemperBidirectionalProtocol
 
-from pyswitch.controller.MidiController import MidiController, MidiRouting
-from pyswitch.hardware.Hardware import Hardware
+from lib.pyswitch.controller.MidiController import MidiController, MidiRouting
+from lib.pyswitch.hardware.Hardware import Hardware
 
 # MIDI Devices in use (optionally you can specify the in/out channels here, too)
 #_DIN_MIDI = Hardware.PA_MIDICAPTAIN_DIN_MIDI(

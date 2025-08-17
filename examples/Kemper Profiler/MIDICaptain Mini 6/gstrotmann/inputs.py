@@ -1,9 +1,9 @@
-from pyswitch.hardware.devices.pa_midicaptain_mini_6 import *
-from pyswitch.clients.kemper import KemperEffectSlot
+from lib.pyswitch.hardware.devices.pa_midicaptain_mini_6 import *
+from lib.pyswitch.clients.kemper import KemperEffectSlot
 from display import DISPLAY_HEADER_1, DISPLAY_HEADER_2, DISPLAY_FOOTER_1, DISPLAY_FOOTER_2
-from pyswitch.clients.kemper.actions.rig_volume_boost import RIG_VOLUME_BOOST
-from pyswitch.clients.kemper.actions.tuner import TUNER_MODE
-from pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
+from lib.pyswitch.clients.kemper.actions.rig_volume_boost import RIG_VOLUME_BOOST
+from lib.pyswitch.clients.kemper.actions.tuner import TUNER_MODE
+from lib.pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
 
 
 Inputs = [

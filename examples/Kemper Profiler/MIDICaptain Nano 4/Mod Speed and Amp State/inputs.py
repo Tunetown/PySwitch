@@ -1,12 +1,12 @@
-from pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
-from pyswitch.colors import Colors
-from pyswitch.clients.kemper import KemperEffectSlot
+from lib.pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
+from lib.pyswitch.colors import Colors
+from lib.pyswitch.clients.kemper import KemperEffectSlot
 from display import DISPLAY_HEADER_1, DISPLAY_HEADER_2, DISPLAY_FOOTER_1, DISPLAY_FOOTER_2
-from pyswitch.clients.local.actions.binary_switch import BINARY_SWITCH
-from pyswitch.clients.kemper.actions.tuner import TUNER_MODE
-from pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
-from pyswitch.clients.kemper.mappings.rotary import MAPPING_ROTARY_SPEED
-from pyswitch.clients.kemper.mappings.amp import MAPPING_AMP_STATE
+from lib.pyswitch.clients.local.actions.binary_switch import BINARY_SWITCH
+from lib.pyswitch.clients.kemper.actions.tuner import TUNER_MODE
+from lib.pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
+from lib.pyswitch.clients.kemper.mappings.rotary import MAPPING_ROTARY_SPEED
+from lib.pyswitch.clients.kemper.mappings.amp import MAPPING_AMP_STATE
 
 Inputs = [
 

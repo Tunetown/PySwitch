@@ -1,11 +1,11 @@
-from pyswitch.hardware.devices.pa_midicaptain_mini_6 import *
-from pyswitch.colors import Colors
-from pyswitch.controller.callbacks import Callback
-from pyswitch.clients.kemper import KemperEffectSlot, KemperMappings
+from lib.pyswitch.hardware.devices.pa_midicaptain_mini_6 import *
+from lib.pyswitch.colors import Colors
+from lib.pyswitch.controller.callbacks import Callback
+from lib.pyswitch.clients.kemper import KemperEffectSlot, KemperMappings
 from display import DISPLAY_HEADER_1, DISPLAY_HEADER_2, DISPLAY_HEADER_3, DISPLAY_FOOTER_1, DISPLAY_FOOTER_2, DISPLAY_FOOTER_3
-from pyswitch.clients.kemper.actions.tempo import SHOW_TEMPO
-from pyswitch.clients.kemper.actions.rig_select import RIG_SELECT, RIG_SELECT_DISPLAY_TARGET_RIG
-from pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
+from lib.pyswitch.clients.kemper.actions.tempo import SHOW_TEMPO
+from lib.pyswitch.clients.kemper.actions.rig_select import RIG_SELECT, RIG_SELECT_DISPLAY_TARGET_RIG
+from lib.pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
 
 # Allow change of switch behaviour based on rig name
 class _EnableCallback(Callback):

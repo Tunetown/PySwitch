@@ -1,9 +1,9 @@
-from pyswitch.clients.local.callbacks.splashes import SplashesCallback
+from lib.pyswitch.clients.local.callbacks.splashes import SplashesCallback
 from micropython import const
-from pyswitch.colors import DEFAULT_LABEL_COLOR
-from pyswitch.ui.ui import DisplayElement
-from pyswitch.ui.ui import DisplayBounds
-from pyswitch.ui.elements import DisplayLabel
+from lib.pyswitch.colors import DEFAULT_LABEL_COLOR
+from lib.pyswitch.ui.ui import DisplayElement
+from lib.pyswitch.ui.ui import DisplayBounds
+from lib.pyswitch.ui.elements import DisplayLabel
 
 _ACTION_LABEL_LAYOUT = {
     "font": "/fonts/H20.pcf",

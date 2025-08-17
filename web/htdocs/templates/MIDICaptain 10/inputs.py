@@ -1,4 +1,4 @@
-from pyswitch.hardware.devices.pa_midicaptain_10 import *
+from lib.pyswitch.hardware.devices.pa_midicaptain_10 import *
 
 Inputs = [
 

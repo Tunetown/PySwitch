@@ -5,12 +5,12 @@
 ##############################################################################################################################################
 
 from micropython import const
-from pyswitch.misc import DEFAULT_LABEL_COLOR #, Colors
+from lib.pyswitch.misc import DEFAULT_LABEL_COLOR #, Colors
 
-from pyswitch.ui.ui import DisplayElement, DisplayBounds
-from pyswitch.ui.elements import DisplayLabel, BidirectionalProtocolState
+from lib.pyswitch.ui.ui import DisplayElement, DisplayBounds
+from lib.pyswitch.ui.elements import DisplayLabel, BidirectionalProtocolState
 
-from pyswitch.clients.kemper import KemperRigNameCallback, TunerDisplayCallback
+from lib.pyswitch.clients.kemper import KemperRigNameCallback, TunerDisplayCallback
 
 #############################################################################################################################################
 

@@ -17,7 +17,7 @@ class KemperClient extends Client {
     getProtocolCode() {
         // Indentation plays a role here, so this is a bit ugly ;)
         return `
-from pyswitch.clients.kemper import KemperBidirectionalProtocol
+from lib.pyswitch.clients.kemper import KemperBidirectionalProtocol
 self.protocol = KemperBidirectionalProtocol(time_lease_seconds = 30)
         `;
     }

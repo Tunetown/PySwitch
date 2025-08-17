@@ -4,13 +4,13 @@
 #
 ##############################################################################################################################################
  
-from pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
+from lib.pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
 
 from display import DISPLAY_HEADER_1, DISPLAY_HEADER_2
 
-from pyswitch.clients.kemper.actions.bank_up_down import BANK_UP
-from pyswitch.clients.kemper.actions.rig_up_down import RIG_UP, RIG_DOWN
-from pyswitch.clients.kemper.actions.tuner import TUNER_MODE
+from lib.pyswitch.clients.kemper.actions.bank_up_down import BANK_UP
+from lib.pyswitch.clients.kemper.actions.rig_up_down import RIG_UP, RIG_DOWN
+from lib.pyswitch.clients.kemper.actions.tuner import TUNER_MODE
 
 _deferred = RIG_DOWN(
     display = DISPLAY_FOO

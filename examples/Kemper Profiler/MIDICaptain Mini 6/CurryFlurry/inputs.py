@@ -1,7 +1,7 @@
-from pyswitch.hardware.devices.pa_midicaptain_mini_6 import *
-from pyswitch.clients.kemper.actions.rig_select_and_morph_state import RIG_SELECT_AND_MORPH_STATE, RIG_SELECT_DISPLAY_TARGET_RIG
-from pyswitch.clients.kemper.actions.bank_up_down import BANK_UP, BANK_DOWN
-from pyswitch.clients.kemper.actions.effect_button import EFFECT_BUTTON
+from lib.pyswitch.hardware.devices.pa_midicaptain_mini_6 import *
+from lib.pyswitch.clients.kemper.actions.rig_select_and_morph_state import RIG_SELECT_AND_MORPH_STATE, RIG_SELECT_DISPLAY_TARGET_RIG
+from lib.pyswitch.clients.kemper.actions.bank_up_down import BANK_UP, BANK_DOWN
+from lib.pyswitch.clients.kemper.actions.effect_button import EFFECT_BUTTON
 
 
 Inputs = [

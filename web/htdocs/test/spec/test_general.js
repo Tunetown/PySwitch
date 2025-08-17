@@ -11,7 +11,7 @@ class TestGeneral extends TestBase {
         await this.init();
 
         const pySwitchVersion = this.runner.pyswitch.pyodide.runPython(`
-            from pyswitch.misc import PYSWITCH_VERSION
+            from lib.pyswitch.misc import PYSWITCH_VERSION
             PYSWITCH_VERSION
         `);
         

@@ -1,12 +1,12 @@
-from pyswitch.clients.kemper.actions.bank_up_down import BANK_UP
-from pyswitch.clients.kemper.actions.bank_up_down import BANK_DOWN
-from pyswitch.clients.kemper.actions.effect_state_extended_names import EFFECT_STATE_EXT
-from pyswitch.clients.kemper import KemperEffectSlot
+from lib.pyswitch.clients.kemper.actions.bank_up_down import BANK_UP
+from lib.pyswitch.clients.kemper.actions.bank_up_down import BANK_DOWN
+from lib.pyswitch.clients.kemper.actions.effect_state_extended_names import EFFECT_STATE_EXT
+from lib.pyswitch.clients.kemper import KemperEffectSlot
 from display import DISPLAY_HEADER_1
 from display import DISPLAY_HEADER_2
 from display import DISPLAY_FOOTER_1
 from display import DISPLAY_FOOTER_2
-from pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
+from lib.pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
 
 
 Inputs = [

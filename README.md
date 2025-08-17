@@ -105,7 +105,7 @@ The file **inputs.py** must provide an "Inputs" list holding all switch assignme
 Example for assigning switch 1 of a MIDICaptain Nano 4 to switching the Kemper effect slot A on or off:
 
 ```python
-from pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
+from lib.pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
 
 Inputs = [
 	{
@@ -128,7 +128,7 @@ Inputs = [
 You can assign different actions to long pressing of switches. This is done by providing the "holdActions" parameter of the switch definitions:
 
 ```python
-from pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
+from lib.pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
 
 Inputs = [
     {
@@ -171,7 +171,7 @@ Each switch can be assigned to any number of actions, which are implementing the
 Most actions provide a color option: If set, this defines the color for switch LEDs and an eventual display label. For example, the following example creates a rig select action shown in purple:
 
 ```python
-from pyswitch.clients.kemper.actions.rig_select import RIG_SELECT
+from lib.pyswitch.clients.kemper.actions.rig_select import RIG_SELECT
 
 Inputs = [
 	{
@@ -196,8 +196,8 @@ Continuous controllers like expression pedals and rotary encoders can also be ad
 For anything using the analog inputs of the board (like expression pedals), you have to use a AnalogAction instance like in this example:
 
 ```python
-from pyswitch.controller.actions.AnalogAction import AnalogAction
-from pyswitch.clients.kemper.mappings.rig import MAPPING_RIG_VOLUME
+from lib.pyswitch.controller.actions.AnalogAction import AnalogAction
+from lib.pyswitch.clients.kemper.mappings.rig import MAPPING_RIG_VOLUME
 
 Inputs = [
     # Pedal 1
@@ -237,8 +237,8 @@ There are several options to AnalogAction:
 For rotary encoders like the wheel on the PaintAudio MIDI Captain (10 switch version), use EncoderAction:
 
 ```python
-from pyswitch.controller.actions.EncoderAction import EncoderAction
-from pyswitch.clients.kemper.mappings.amp import MAPPING_AMP_GAIN
+from lib.pyswitch.controller.actions.EncoderAction import EncoderAction
+from lib.pyswitch.clients.kemper.mappings.amp import MAPPING_AMP_GAIN
 
 Inputs = [
     # Wheel
@@ -272,8 +272,8 @@ There are some options to EncoderAction:
 All Actions (switch and continuous) can also be defined depending on a parameter or other stuff: For example the switch could be assigned to tapping tempo if the rig name contains the token "TAP", and control effect slot A if not. This is accomplished by defining a custom callback class to enable/disable actions:
 
 ```python
-from pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
-from pyswitch.clients.kemper.actions.tempo import TAP_TEMPO
+from lib.pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
+from lib.pyswitch.clients.kemper.actions.tempo import TAP_TEMPO
 
 # Custom callback function
 class _RigNameCallback(Callback):
@@ -331,7 +331,7 @@ Inputs = [
 The last example only uses the switch LEDs to indicate the effect status (brightness) and type (color). You can also connect a display area (defined in **display.py**) to the action, so the effect type (color and name) and state (brightness) are also visualized on screen. This works by importing labels defined in **display.py** and pass them to the display attribute of the action(s):
 
 ```python
-from pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
+from lib.pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
 from display import DISPLAY_LABEL_X
 
 Inputs = [
@@ -356,7 +356,7 @@ See below how the labels are defined.
 Besides the general pushbutton or hold mechanisms, all functionality of the actions is implemented in callbacks. This works similar to the Enable callbacks described above (the mapping definition is the same), but these callbacks have to provide different member functions. The basis of this is the PushButtonAction:
 
 ```python
-from pyswitch.controller.callbacks import Callback
+from lib.pyswitch.controller.callbacks import Callback
 
 class CustomCallback(Callback):
     def __init__(self):
@@ -437,9 +437,9 @@ Inputs = [
 If you want to send your own custom MIDI messages, you can also define your mappings. This example is similar to the "Rig Volume Boost" action:
 
 ```python
-from pyswitch.controller.callbacks import BinaryParameterCallback
-from pyswitch.controller.actions import PushButtonAction
-from pyswitch.controller.client import ClientParameterMapping
+from lib.pyswitch.controller.callbacks import BinaryParameterCallback
+from lib.pyswitch.controller.actions import PushButtonAction
+from lib.pyswitch.controller.client import ClientParameterMapping
 from adafruit_midi.system_exclusive import SystemExclusive
 
 Inputs = [
@@ -484,9 +484,9 @@ Inputs = [
 If you want only to send but not receive, you have to set the internal state enabled like in this example, which does not listen to the client at all but just sends messages:
 
 ```python
-from pyswitch.controller.callbacks import BinaryParameterCallback
-from pyswitch.controller.actions import PushButtonAction
-from pyswitch.controller.client import ClientParameterMapping
+from lib.pyswitch.controller.callbacks import BinaryParameterCallback
+from lib.pyswitch.controller.actions import PushButtonAction
+from lib.pyswitch.controller.client import ClientParameterMapping
 from adafruit_midi.system_exclusive import SystemExclusive
 
 Inputs = [
@@ -838,10 +838,10 @@ The sources are all contained in the lib/pyswitch module, which has the followin
 The Controller class in the **controller** folder represents the main application controller class which initiates the processing loop. It is used in the process.py file as follows (irrelevant things omitted for clarity):
 
 ```python
-from pyswitch.hardware.adafruit import AdafruitST7789DisplayDriver, AdafruitNeoPixelDriver, AdafruitFontLoader
-from pyswitch.controller import Controller
-from pyswitch.controller.midi import MidiController
-from pyswitch.ui.UiController import UiController
+from lib.pyswitch.hardware.adafruit import AdafruitST7789DisplayDriver, AdafruitNeoPixelDriver, AdafruitFontLoader
+from lib.pyswitch.controller import Controller
+from lib.pyswitch.controller.midi import MidiController
+from lib.pyswitch.ui.UiController import UiController
 
 # Initialize Display first to get console output on setup/config errors (for users who do not connect to the serial console)
 display_driver = AdafruitST7789DisplayDriver()
@@ -1069,7 +1069,7 @@ The program provides some rudimentary memory monitoring. Enable this by uncommen
 ```python
 ...
 
-from pyswitch.misc import Tools, Memory   # <-- Uncomment this line
+from lib.pyswitch.misc import Tools, Memory   # <-- Uncomment this line
 Memory.start()                            # <-- Uncomment this line
 
 ...

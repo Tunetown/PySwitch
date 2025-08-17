@@ -382,7 +382,7 @@ class PySwitchRunner {
         // Create runner proxy
         this.#runner = await this.pyodide.runPython(`
             import json
-            from PySwitchRunner import PySwitchRunner
+            from lib.pyswitchRunner import PySwitchRunner
             runner = PySwitchRunner(
                 container_id = "` + this.#containerId + `", 
                 dom_namespace = "` + this.#options.domNamespace + `", 
@@ -422,7 +422,7 @@ class PySwitchRunner {
         console.log("Get PySwitch version");
         
         return this.pyodide.runPython(`
-            from pyswitch.misc import PYSWITCH_VERSION
+            from lib.pyswitch.misc import PYSWITCH_VERSION
             PYSWITCH_VERSION
         `);
     }

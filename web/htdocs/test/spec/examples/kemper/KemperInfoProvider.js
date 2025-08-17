@@ -25,7 +25,7 @@ class KemperInfoProvider {
                 "adafruit_display_text": WrapAdafruitDisplayText("pyswitch"),
                 "adafruit_display_shapes.rect": WrapDisplayShapes().rect(),
             }):    
-                from pyswitch.clients.kemper import BANK_COLORS, NUM_BANKS, NUM_RIGS_PER_BANK
+                from lib.pyswitch.clients.kemper import BANK_COLORS, NUM_BANKS, NUM_RIGS_PER_BANK
             
             {
                 "bankColors": BANK_COLORS,

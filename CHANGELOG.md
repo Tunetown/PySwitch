@@ -122,7 +122,7 @@
     - Modularized the misc.py code out, only loaded when debugging is active. This gave us another ~5-10kB from the start!
     - Singletons for all Mappings: This led to huge RAM savings with larger constellations (up to 10kB, because of fewer MIDI message objects in memory). This especially helped when mappings are used multiple times (for example the morph state in RIG_SELECT_AND_MORPH_STATE). No changes to config files necessary.
 - Refactorings: 
-    - Changes import structure. For most users using the standard MIDI routing delivered with PySwitch, there is nothing to change. If you implemented custom routings: There is one change to the communication.py file: The line "from pyswitch.controller.MidiController import MidiRouting" must be changed to "from pyswitch.controller.midi import MidiRouting".
+    - Changes import structure. For most users using the standard MIDI routing delivered with PySwitch, there is nothing to change. If you implemented custom routings: There is one change to the communication.py file: The line "from lib.pyswitch.controller.MidiController import MidiRouting" must be changed to "from lib.pyswitch.controller.midi import MidiRouting".
 
 ### Emulator 2.4.1.8
 - Added MIDI traffic stats display to Virtual Kemper

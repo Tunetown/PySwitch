@@ -5,13 +5,13 @@
 ##############################################################################################################################################
 
 from micropython import const
-from pyswitch.misc import DEFAULT_LABEL_COLOR #, Colors
+from lib.pyswitch.misc import DEFAULT_LABEL_COLOR #, Colors
 
-from pyswitch.ui.elements import DisplaySplitContainer, DisplayBounds
-from pyswitch.ui.elements import DisplayLabel, BIDIRECTIONAL_PROTOCOL_STATE_DOT, PERFORMANCE_DOT
-from pyswitch.ui.ui import HierarchicalDisplayElement
+from lib.pyswitch.ui.elements import DisplaySplitContainer, DisplayBounds
+from lib.pyswitch.ui.elements import DisplayLabel, BIDIRECTIONAL_PROTOCOL_STATE_DOT, PERFORMANCE_DOT
+from lib.pyswitch.ui.ui import HierarchicalDisplayElement
 
-from pyswitch.clients.kemper import KemperRigNameCallback, TunerDisplayCallback
+from lib.pyswitch.clients.kemper import KemperRigNameCallback, TunerDisplayCallback
 
 #############################################################################################################################################
 

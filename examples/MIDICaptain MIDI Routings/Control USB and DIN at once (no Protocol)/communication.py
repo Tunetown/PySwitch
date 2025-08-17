@@ -4,9 +4,9 @@
 #
 ##############################################################################################################################################
 
-from pyswitch.controller.midi import MidiRouting
-from pyswitch.hardware.devices.pa_midicaptain import PA_MIDICAPTAIN_USB_MIDI
-from pyswitch.hardware.devices.pa_midicaptain import PA_MIDICAPTAIN_DIN_MIDI
+from lib.pyswitch.controller.midi import MidiRouting
+from lib.pyswitch.hardware.devices.pa_midicaptain import PA_MIDICAPTAIN_USB_MIDI
+from lib.pyswitch.hardware.devices.pa_midicaptain import PA_MIDICAPTAIN_DIN_MIDI
 
 # MIDI Devices in use (optionally you can specify the in/out channels here, too)
 _DIN_MIDI = PA_MIDICAPTAIN_DIN_MIDI(

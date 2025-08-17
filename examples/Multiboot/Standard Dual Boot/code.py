@@ -26,4 +26,4 @@ if _firmware_id == 2:
     import midicaptain
 else:
     # PySwitch (default)
-    import pyswitch.process
+    import  lib.pyswitch.process

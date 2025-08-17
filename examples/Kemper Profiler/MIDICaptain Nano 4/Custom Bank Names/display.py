@@ -1,9 +1,9 @@
 from micropython import const
-from pyswitch.colors import DEFAULT_LABEL_COLOR
-from pyswitch.ui.ui import DisplayElement, DisplayBounds
-from pyswitch.ui.elements import DisplayLabel, BidirectionalProtocolState
-from pyswitch.clients.kemper import KemperRigNameCallback, TunerDisplayCallback
-from pyswitch.misc import PYSWITCH_VERSION
+from lib.pyswitch.colors import DEFAULT_LABEL_COLOR
+from lib.pyswitch.ui.ui import DisplayElement, DisplayBounds
+from lib.pyswitch.ui.elements import DisplayLabel, BidirectionalProtocolState
+from lib.pyswitch.clients.kemper import KemperRigNameCallback, TunerDisplayCallback
+from lib.pyswitch.misc import PYSWITCH_VERSION
 
 _ACTION_LABEL_LAYOUT = {
     "font": "/fonts/H20.pcf",

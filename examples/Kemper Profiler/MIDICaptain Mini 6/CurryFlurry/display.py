@@ -1,8 +1,8 @@
 from micropython import const
-from pyswitch.ui.ui import DisplayElement, DisplayBounds
-from pyswitch.ui.elements import DisplayLabel, BidirectionalProtocolState
-from pyswitch.clients.kemper import KemperRigNameCallback, TunerDisplayCallback
-from pyswitch.misc import PYSWITCH_VERSION
+from lib.pyswitch.ui.ui import DisplayElement, DisplayBounds
+from lib.pyswitch.ui.elements import DisplayLabel, BidirectionalProtocolState
+from lib.pyswitch.clients.kemper import KemperRigNameCallback, TunerDisplayCallback
+from lib.pyswitch.misc import PYSWITCH_VERSION
 
 _DISPLAY_WIDTH = const(240)
 _DISPLAY_HEIGHT = const(240)

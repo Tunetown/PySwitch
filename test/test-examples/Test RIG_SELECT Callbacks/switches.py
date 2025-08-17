@@ -4,14 +4,14 @@
 #
 ##############################################################################################################################################
  
-from pyswitch.hardware.Hardware import Hardware
+from lib.pyswitch.hardware.Hardware import Hardware
 
-from pyswitch.misc import Colors
-from pyswitch.controller.callbacks import Callback
-from pyswitch.controller.actions.actions import PushButtonAction, HoldAction
+from lib.pyswitch.misc import Colors
+from lib.pyswitch.controller.callbacks import Callback
+from lib.pyswitch.controller.actions.actions import PushButtonAction, HoldAction
 
-from pyswitch.clients.kemper import KemperActionDefinitions, KemperEffectSlot, KemperMappings, RIG_SELECT_DISPLAY_TARGET_RIG
-from pyswitch.clients.kemper import RIG_SELECT_DISPLAY_CURRENT_RIG, NRPN_VALUE
+from lib.pyswitch.clients.kemper import KemperActionDefinitions, KemperEffectSlot, KemperMappings, RIG_SELECT_DISPLAY_TARGET_RIG
+from lib.pyswitch.clients.kemper import RIG_SELECT_DISPLAY_CURRENT_RIG, NRPN_VALUE
 from display import DISPLAY_HEADER_1, DISPLAY_HEADER_2, DISPLAY_FOOTER_1, DISPLAY_FOOTER_2
 
 

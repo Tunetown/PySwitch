@@ -1,14 +1,14 @@
-from pyswitch.clients.local.actions.param_change import PARAMETER_UP_DOWN
-from pyswitch.colors import Colors
-from pyswitch.clients.kemper import KemperEffectSlot
-from pyswitch.clients.kemper.mappings.effects import MAPPING_DLY_REV_MIX
-from pyswitch.clients.kemper.mappings.amp import MAPPING_AMP_GAIN
+from lib.pyswitch.clients.local.actions.param_change import PARAMETER_UP_DOWN
+from lib.pyswitch.colors import Colors
+from lib.pyswitch.clients.kemper import KemperEffectSlot
+from lib.pyswitch.clients.kemper.mappings.effects import MAPPING_DLY_REV_MIX
+from lib.pyswitch.clients.kemper.mappings.amp import MAPPING_AMP_GAIN
 from display import DISPLAY_HEADER_1
 from display import DISPLAY_HEADER_2
 from display import DISPLAY_FOOTER_1
 from display import DISPLAY_FOOTER_2
 from display import DISPLAY_RIG_NAME
-from pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
+from lib.pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
 
 Inputs = [
     {

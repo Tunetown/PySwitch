@@ -1,10 +1,10 @@
-from pyswitch.clients.kemper.actions.rig_select_and_morph_state import RIG_SELECT_AND_MORPH_STATE
-from pyswitch.clients.kemper.actions.bank_select import BANK_SELECT
-from pyswitch.clients.local.actions.encoder_button import ENCODER_BUTTON
-from pyswitch.controller.actions.AnalogAction import AnalogAction
-from pyswitch.colors import Colors
-from pyswitch.clients.kemper.actions.rig_select import RIG_SELECT_DISPLAY_TARGET_RIG
-from pyswitch.clients.kemper.mappings.pedals import MAPPING_WAH_PEDAL
+from lib.pyswitch.clients.kemper.actions.rig_select_and_morph_state import RIG_SELECT_AND_MORPH_STATE
+from lib.pyswitch.clients.kemper.actions.bank_select import BANK_SELECT
+from lib.pyswitch.clients.local.actions.encoder_button import ENCODER_BUTTON
+from lib.pyswitch.controller.actions.AnalogAction import AnalogAction
+from lib.pyswitch.colors import Colors
+from lib.pyswitch.clients.kemper.actions.rig_select import RIG_SELECT_DISPLAY_TARGET_RIG
+from lib.pyswitch.clients.kemper.mappings.pedals import MAPPING_WAH_PEDAL
 from display import DISPLAY_HEADER_1
 from display import DISPLAY_HEADER_2
 from display import DISPLAY_HEADER_3
@@ -15,7 +15,7 @@ from display import DISPLAY_FOOTER_2
 from display import DISPLAY_FOOTER_3
 from display import DISPLAY_FOOTER_4
 from display import DISPLAY_FOOTER_5
-from pyswitch.hardware.devices.pa_midicaptain_10 import *
+from lib.pyswitch.hardware.devices.pa_midicaptain_10 import *
 
 _encoder_apply = ENCODER_BUTTON()
 

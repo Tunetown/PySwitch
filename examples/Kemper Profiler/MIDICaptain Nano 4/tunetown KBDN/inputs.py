@@ -1,13 +1,13 @@
-from pyswitch.clients.kemper.actions.morph import MORPH_DISPLAY
-from pyswitch.clients.kemper.actions.rig_select import RIG_SELECT
-from pyswitch.clients.kemper.actions.tuner import TUNER_MODE
-from pyswitch.colors import Colors
-from pyswitch.clients.kemper.actions.rig_select import RIG_SELECT_DISPLAY_TARGET_RIG
+from lib.pyswitch.clients.kemper.actions.morph import MORPH_DISPLAY
+from lib.pyswitch.clients.kemper.actions.rig_select import RIG_SELECT
+from lib.pyswitch.clients.kemper.actions.tuner import TUNER_MODE
+from lib.pyswitch.colors import Colors
+from lib.pyswitch.clients.kemper.actions.rig_select import RIG_SELECT_DISPLAY_TARGET_RIG
 from display import DISPLAY_HEADER_1
 from display import DISPLAY_HEADER_2
 from display import DISPLAY_FOOTER_1
 from display import DISPLAY_FOOTER_2
-from pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
+from lib.pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
 
 
 Inputs = [

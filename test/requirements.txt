@@ -1,0 +1,4 @@
+# Requirements for running tests
+coverage
+pytest
+pytest-cov

@@ -1,17 +1,17 @@
-from pyswitch.clients.kemper.actions.tempo import TAP_TEMPO
-from pyswitch.clients.kemper.actions.tempo import SHOW_TEMPO
-from pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
-from pyswitch.colors import Colors
-from pyswitch.controller.callbacks import BinaryParameterCallback
-from pyswitch.controller.actions import PushButtonAction
-from pyswitch.clients.kemper import KemperEffectSlot
-from pyswitch.clients.kemper.mappings.freeze import MAPPING_FREEZE
+from lib.pyswitch.clients.kemper.actions.tempo import TAP_TEMPO
+from lib.pyswitch.clients.kemper.actions.tempo import SHOW_TEMPO
+from lib.pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
+from lib.pyswitch.colors import Colors
+from lib.pyswitch.controller.callbacks import BinaryParameterCallback
+from lib.pyswitch.controller.actions import PushButtonAction
+from lib.pyswitch.clients.kemper import KemperEffectSlot
+from lib.pyswitch.clients.kemper.mappings.freeze import MAPPING_FREEZE
 from display import DISPLAY_HEADER_1
 from display import DISPLAY_HEADER_2
 from display import DISPLAY_FOOTER_1
 from display import DISPLAY_FOOTER_2
 from display import DISPLAY_RIG_NAME
-from pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
+from lib.pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
 
 
 Inputs = [

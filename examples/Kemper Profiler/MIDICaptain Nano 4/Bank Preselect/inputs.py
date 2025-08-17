@@ -1,6 +1,6 @@
-from pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
-from pyswitch.clients.kemper.actions.rig_select import RIG_SELECT, RIG_SELECT_DISPLAY_TARGET_RIG
-from pyswitch.clients.kemper.actions.bank_select import BANK_SELECT
+from lib.pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
+from lib.pyswitch.clients.kemper.actions.rig_select import RIG_SELECT, RIG_SELECT_DISPLAY_TARGET_RIG
+from lib.pyswitch.clients.kemper.actions.bank_select import BANK_SELECT
 from display import DISPLAY_HEADER_1, DISPLAY_HEADER_2, DISPLAY_FOOTER_1, DISPLAY_FOOTER_2
 
 Inputs = [

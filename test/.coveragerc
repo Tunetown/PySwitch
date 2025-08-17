@@ -1,18 +1,17 @@
 [run]
 branch = True
-source = /project
-omit = 
-    /project/lib/pyswitch/hardware/*
-    /project/lib/pymidibridge/*
-    /project/lib/functools.py
-    /project/test/test-examples/*
-    
-    /project/test/*
-    
+source = ..
+omit =
+    ../lib/pyswitch/hardware/*
+    ../lib/pymidibridge/*
+    ../lib/functools.py
+    test/test-examples/*
+    test/*
+
 [report]
 show_missing = True
 include_namespace_packages = True
 
 [html]
-directory = /project/test/report 
+directory = report
 skip_empty = True

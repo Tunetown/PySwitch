@@ -1,13 +1,13 @@
-from pyswitch.hardware.devices.pa_midicaptain_mini_6 import *
-from pyswitch.colors import Colors
-from pyswitch.clients.kemper import KemperEffectSlot
+from lib.pyswitch.hardware.devices.pa_midicaptain_mini_6 import *
+from lib.pyswitch.colors import Colors
+from lib.pyswitch.clients.kemper import KemperEffectSlot
 from display import DISPLAY_HEADER_1, DISPLAY_HEADER_2, DISPLAY_HEADER_3, DISPLAY_FOOTER_1, DISPLAY_FOOTER_2, DISPLAY_FOOTER_3, DISPLAY_PAGE
-from pyswitch.clients.kemper.actions.rig_volume_boost import RIG_VOLUME_BOOST
-from pyswitch.clients.kemper.actions.bank_up_down import BANK_UP, BANK_DOWN
-from pyswitch.clients.kemper.actions.rig_up_down import RIG_UP, RIG_DOWN
-from pyswitch.clients.kemper.actions.looper import LOOPER_REC_PLAY_OVERDUB, LOOPER_STOP, LOOPER_ERASE, LOOPER_CANCEL, LOOPER_REVERSE, LOOPER_HALF_SPEED
-from pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
-from pyswitch.clients.local.actions.pager import PagerAction
+from lib.pyswitch.clients.kemper.actions.rig_volume_boost import RIG_VOLUME_BOOST
+from lib.pyswitch.clients.kemper.actions.bank_up_down import BANK_UP, BANK_DOWN
+from lib.pyswitch.clients.kemper.actions.rig_up_down import RIG_UP, RIG_DOWN
+from lib.pyswitch.clients.kemper.actions.looper import LOOPER_REC_PLAY_OVERDUB, LOOPER_STOP, LOOPER_ERASE, LOOPER_CANCEL, LOOPER_REVERSE, LOOPER_HALF_SPEED
+from lib.pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
+from lib.pyswitch.clients.local.actions.pager import PagerAction
 
 _pager = PagerAction(
     pages = [

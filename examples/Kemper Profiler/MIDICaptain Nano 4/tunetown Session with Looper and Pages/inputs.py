@@ -1,22 +1,22 @@
-from pyswitch.clients.kemper.actions.looper import LOOPER_REC_PLAY_OVERDUB
-from pyswitch.clients.kemper.actions.looper import LOOPER_STOP
-from pyswitch.clients.kemper.actions.looper import LOOPER_ERASE
-from pyswitch.clients.kemper.actions.looper import LOOPER_CANCEL
-from pyswitch.clients.kemper.actions.looper import LOOPER_REVERSE
-from pyswitch.clients.kemper.actions.tempo import TAP_TEMPO
-from pyswitch.clients.kemper.actions.tempo import SHOW_TEMPO
-from pyswitch.clients.kemper.actions.rig_select import RIG_SELECT
-from pyswitch.clients.kemper.actions.tuner import TUNER_MODE
-from pyswitch.clients.local.actions.pager import PagerAction
-from pyswitch.colors import Colors
-from pyswitch.clients.kemper.actions.rig_select import RIG_SELECT_DISPLAY_TARGET_RIG
+from lib.pyswitch.clients.kemper.actions.looper import LOOPER_REC_PLAY_OVERDUB
+from lib.pyswitch.clients.kemper.actions.looper import LOOPER_STOP
+from lib.pyswitch.clients.kemper.actions.looper import LOOPER_ERASE
+from lib.pyswitch.clients.kemper.actions.looper import LOOPER_CANCEL
+from lib.pyswitch.clients.kemper.actions.looper import LOOPER_REVERSE
+from lib.pyswitch.clients.kemper.actions.tempo import TAP_TEMPO
+from lib.pyswitch.clients.kemper.actions.tempo import SHOW_TEMPO
+from lib.pyswitch.clients.kemper.actions.rig_select import RIG_SELECT
+from lib.pyswitch.clients.kemper.actions.tuner import TUNER_MODE
+from lib.pyswitch.clients.local.actions.pager import PagerAction
+from lib.pyswitch.colors import Colors
+from lib.pyswitch.clients.kemper.actions.rig_select import RIG_SELECT_DISPLAY_TARGET_RIG
 from display import DISPLAY_HEADER_1
 from display import DISPLAY_HEADER_2
 from display import DISPLAY_FOOTER_1
 from display import DISPLAY_FOOTER_2
 from display import DISPLAY_PAGE
 from display import DISPLAY_RIG_NAME
-from pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
+from lib.pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
 
 
 _pager = PagerAction(

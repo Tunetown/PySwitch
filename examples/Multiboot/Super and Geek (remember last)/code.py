@@ -77,4 +77,4 @@ elif _firmware_id == 4:
 
 else:
     # PySwitch (default)
-    import pyswitch.process
+    import  lib.pyswitch.process

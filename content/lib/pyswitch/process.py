@@ -9,11 +9,11 @@
 
 
 # Uncomment these two lines to enable memory monitoring
-# from pyswitch.stats import Memory as _Memory
+# from lib.pyswitch.stats import Memory as _Memory
 # _Memory.start()
 
-from pyswitch.hardware.adafruit import AdafruitST7789DisplayDriver as _DisplayDriver, AdafruitNeoPixelDriver as _NeoPixelDriver, AdafruitFontLoader as _FontLoader
-from pyswitch.misc import get_option as _get_option
+from lib.pyswitch.hardware.adafruit import AdafruitST7789DisplayDriver as _DisplayDriver, AdafruitNeoPixelDriver as _NeoPixelDriver, AdafruitFontLoader as _FontLoader
+from lib.pyswitch.misc import get_option as _get_option
 
 # Initialize Display first to get console output on setup/config errors (for users who do not connect to the serial console)
 _display_driver = _DisplayDriver()
@@ -24,9 +24,9 @@ from config import Config as _Config
 
 if not _get_option(_Config, "exploreMode"):
     # Normal operation
-    from pyswitch.controller.controller import Controller as _Controller
-    from pyswitch.controller.midi import MidiController as _MidiController
-    from pyswitch.ui.UiController import UiController as _UiController
+    from lib.pyswitch.controller.controller import Controller as _Controller
+    from lib.pyswitch.controller.midi import MidiController as _MidiController
+    from lib.pyswitch.ui.UiController import UiController as _UiController
 
     # Load communication configuration
     from communication import Communication as _Communication  
@@ -82,9 +82,9 @@ if not _get_option(_Config, "exploreMode"):
 else:
     # Explore mode: Just shows the pressed GPIO port. This can be used to determine switch assignment 
     # on unknown devices, to create layouts for the configuration.
-    from pyswitch.controller.explore import ExploreModeController as _ExploreModeController
-    from pyswitch.ui.UiController import UiController as _UiController
-    from pyswitch.hardware.adafruit.AdafruitSwitch import AdafruitSwitch as _Switch
+    from lib.pyswitch.controller.explore import ExploreModeController as _ExploreModeController
+    from lib.pyswitch.ui.UiController import UiController as _UiController
+    from lib.pyswitch.hardware.adafruit.AdafruitSwitch import AdafruitSwitch as _Switch
     
     import board as _board
 

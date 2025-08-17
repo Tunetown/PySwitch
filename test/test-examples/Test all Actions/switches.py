@@ -4,11 +4,11 @@
 #
 ##############################################################################################################################################
  
-from pyswitch.hardware.Hardware import Hardware
+from lib.pyswitch.hardware.Hardware import Hardware
 
-from pyswitch.controller.callbacks import Callback
+from lib.pyswitch.controller.callbacks import Callback
 
-from pyswitch.clients.kemper import KemperActionDefinitions, KemperEffectSlot, KemperMappings, NRPN_VALUE
+from lib.pyswitch.clients.kemper import KemperActionDefinitions, KemperEffectSlot, KemperMappings, NRPN_VALUE
 from display import DISPLAY_HEADER_1, DISPLAY_HEADER_2, DISPLAY_FOOTER_1, DISPLAY_FOOTER_2
 
 
