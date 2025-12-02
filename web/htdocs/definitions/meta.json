@@ -363,6 +363,34 @@
                 ]
             },
 
+            {
+                "entityName": "KemperRigNameCallback",
+                "target": "DisplayLabel",
+                "parameters": [
+                    {
+                        "name": "show_rig_id",
+                        "type": "select",
+                        "values": [
+                            {
+                                "name": "Do not show",
+                                "value": "False"
+                            },
+                            {
+                                "name": "Show",
+                                "value": "True"
+                            },
+                            {
+                                "name": "Rig Number Only",
+                                "value": "rig"
+                            },
+                            {
+                                "name": "Bank Number Only",
+                                "value": "bank"
+                            }
+                        ]
+                    }
+                ]
+            },
 
             {
                 "entityName": "BANK_SELECT",

@@ -70,7 +70,7 @@ class KemperRigNameCallback(Callback):
 
     def __init__(self, 
                  show_name = True,     # Show the rig name in the label
-                 show_rig_id = False   # Show the rig ID (like 1-1) in the label
+                 show_rig_id = False   # Show the rig ID (like 1-1) in the label. Can be False, 'rig', 'bank' or True (to show both rig and bank)
     ):
         Callback.__init__(self)
 
@@ -118,10 +118,17 @@ class KemperRigNameCallback(Callback):
             bank = int(self.__mapping_id.value / NUM_RIGS_PER_BANK)
             rig = self.__mapping_id.value % NUM_RIGS_PER_BANK
 
-            if self.__show_name:
-                label.text = f"{ repr(bank + 1) }-{ repr(rig + 1) } { name }"
+            if self.__show_rig_id == 'rig':
+                rig_id_str = f"{ repr(rig + 1) }"
+            elif self.__show_rig_id == 'bank':
+                rig_id_str = f"{ repr(bank + 1) }"
             else:
-                label.text = f"{ repr(bank + 1) }-{ repr(rig + 1) }"
+                rig_id_str = f"{ repr(bank + 1) }-{ repr(rig + 1) }"
+
+            if self.__show_name:
+                label.text = f"{ rig_id_str } { name }"
+            else:
+                label.text = f"{ rig_id_str }"
                 
         elif self.__show_name:
             label.text = name

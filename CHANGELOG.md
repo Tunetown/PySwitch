@@ -1,3 +1,7 @@
+# PySwitch v2.4.9
+- Features
+    - Added Hardware definitions for using the EXP pedal inputs with switches instead.
+
 # PySwitch v2.4.8
 - Bug fixes:
     - Reset memory of actions after page change (this guarantees correct LED states). Came up with the @GlanzGuitar example, which contained a workaround for this issue.

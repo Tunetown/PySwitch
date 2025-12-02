@@ -56,6 +56,7 @@ class DisplayCallbackParameterList extends ParameterList {
         }
 
         // Add parameters
+        console.log(definition)
         for(const param of definition.parameters) {
             if (this.#hideParameterCallback) {
                 if (!(await this.#hideParameterCallback(param))) continue;
