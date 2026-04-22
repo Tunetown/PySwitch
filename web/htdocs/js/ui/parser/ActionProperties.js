@@ -482,7 +482,13 @@ class ActionProperties {
                 // Dedicated type for the pager actions's "pages" parameter
                 return this.#pagers.getPagesList(onChange);
             }
-        }        
+
+            case 'rig_map': {
+                // Dedicated type for EFFECT_STATE_PER_RIG's rig_overrides parameter.
+                // Renders a table where each row maps a Bank/Rig pair to an effect slot.
+                return ActionProperties.#createRigMapInput(onChange);
+            }
+        }
 
         return $('<input type="text" />')
             .on('change', onChange)
@@ -599,7 +605,8 @@ class ActionProperties {
         switch(type) {
             case "bool": return input.prop('checked') ? "True" : "False";
             case "pages": return this.#pagers.pages.get();
-        }        
+            case "rig_map": return ActionProperties.#getRigMapValue(input);
+        }
 
         let value = input.val();
         if (value == "") value = param.meta.getDefaultValue();
@@ -623,10 +630,138 @@ class ActionProperties {
                 await this.#pagers.pages.set(value)
                 break;
 
+            case "rig_map":
+                ActionProperties.#setRigMapValue(input, value, onChange);
+                break;
+
             default:
                 input.val(value.replaceAll('"', "'"));
                 input.trigger('change');
-        }      
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // rig_map type: per-rig slot override table for EFFECT_STATE_PER_RIG
+    // -------------------------------------------------------------------------
+
+    static #RIG_MAP_SLOTS = [
+        { name: "Slot A",              value: "KemperEffectSlot.EFFECT_SLOT_ID_A" },
+        { name: "Slot B",              value: "KemperEffectSlot.EFFECT_SLOT_ID_B" },
+        { name: "Slot C",              value: "KemperEffectSlot.EFFECT_SLOT_ID_C" },
+        { name: "Slot D",              value: "KemperEffectSlot.EFFECT_SLOT_ID_D" },
+        { name: "Slot X",              value: "KemperEffectSlot.EFFECT_SLOT_ID_X" },
+        { name: "Slot MOD",            value: "KemperEffectSlot.EFFECT_SLOT_ID_MOD" },
+        { name: "Slot DLY (spillover)",value: "KemperEffectSlot.EFFECT_SLOT_ID_DLY" },
+        { name: "Slot REV (spillover)",value: "KemperEffectSlot.EFFECT_SLOT_ID_REV" },
+        { name: "Slot DLY (no spill)", value: "KemperEffectSlot.EFFECT_SLOT_ID_DLY_NO_SPILL" },
+        { name: "Slot REV (no spill)", value: "KemperEffectSlot.EFFECT_SLOT_ID_REV_NO_SPILL" },
+    ];
+
+    /**
+     * Creates the rig_map table container element.
+     * onChange is called whenever the user modifies a row.
+     */
+    static #createRigMapInput(onChange) {
+        const container = $('<div class="rig-map-container" />');
+
+        const table = $('<table class="rig-map-table" />').append(
+            $('<thead />').append(
+                $('<tr />').append(
+                    $('<th />').text('Bank'),
+                    $('<th />').text('Rig'),
+                    $('<th />').text('Slot'),
+                    $('<th />')
+                )
+            )
+        );
+        const tbody = $('<tbody />');
+        table.append(tbody);
+        container.append(table);
+
+        const addBtn = $('<button type="button" class="rig-map-add" />').text('+ Add override');
+        addBtn.on('click', function() {
+            ActionProperties.#addRigMapRow(tbody, 1, 1, ActionProperties.#RIG_MAP_SLOTS[0].value, onChange);
+            onChange();
+        });
+        container.append(addBtn);
+
+        return container;
+    }
+
+    /**
+     * Appends one row to the rig_map tbody.
+     */
+    static #addRigMapRow(tbody, bank, rig, slotValue, onChange) {
+        const slotSelect = $('<select class="rig-slot" />').append(
+            ActionProperties.#RIG_MAP_SLOTS.map(s =>
+                $('<option />').val(s.value).text(s.name)
+            )
+        ).val(slotValue).on('change', onChange);
+
+        const rigSelect = $('<select class="rig-rig" />').append(
+            [1,2,3,4,5].map(n => $('<option />').val(n).text(n))
+        ).val(rig).on('change', onChange);
+
+        const bankInput = $('<input type="number" class="rig-bank" min="1" max="125" />')
+            .val(bank).on('change', onChange);
+
+        const removeBtn = $('<button type="button" class="rig-remove" />').text('X');
+        const row = $('<tr />').append(
+            $('<td />').append(bankInput),
+            $('<td />').append(rigSelect),
+            $('<td />').append(slotSelect),
+            $('<td />').append(removeBtn)
+        );
+        removeBtn.on('click', function() {
+            row.remove();
+            onChange();
+        });
+        tbody.append(row);
+    }
+
+    /**
+     * Reads the rig_map table and returns a Python dict string.
+     * e.g. {2: KemperEffectSlot.EFFECT_SLOT_ID_C, 5: KemperEffectSlot.EFFECT_SLOT_ID_DLY}
+     * Absolute rig ID = (bank - 1) * 5 + (rig - 1)
+     */
+    static #getRigMapValue(container) {
+        const entries = [];
+        container.find('tbody tr').each(function() {
+            const bank = parseInt($(this).find('.rig-bank').val()) || 1;
+            const rig  = parseInt($(this).find('.rig-rig').val())  || 1;
+            const slot = $(this).find('.rig-slot').val() || ActionProperties.#RIG_MAP_SLOTS[0].value;
+            const absRig = (bank - 1) * 5 + (rig - 1);
+            entries.push(absRig + ': ' + slot);
+        });
+        return '{' + entries.join(', ') + '}';
+    }
+
+    /**
+     * Parses a Python dict string and populates the rig_map table.
+     * e.g. "{2: KemperEffectSlot.EFFECT_SLOT_ID_C, 5: KemperEffectSlot.EFFECT_SLOT_ID_DLY}"
+     */
+    static #setRigMapValue(container, value, onChange) {
+        const tbody = container.find('tbody');
+        tbody.empty();
+
+        if (!value || value.trim() === '{}') return;
+
+        // Strip braces and split by comma, handling potential spaces
+        const inner = value.trim().replace(/^\{/, '').replace(/\}$/, '').trim();
+        if (!inner) return;
+
+        const pairs = inner.split(',').map(s => s.trim()).filter(s => s.length > 0);
+        for (const pair of pairs) {
+            const colonIdx = pair.indexOf(':');
+            if (colonIdx < 0) continue;
+            const absRigStr = pair.substring(0, colonIdx).trim();
+            const slotStr   = pair.substring(colonIdx + 1).trim();
+            const absRig = parseInt(absRigStr);
+            if (isNaN(absRig)) continue;
+            const bank = Math.floor(absRig / 5) + 1;
+            const rig  = (absRig % 5) + 1;
+            ActionProperties.#addRigMapRow(tbody, bank, rig, slotStr, onChange);
+        }
     }
 
     /**
