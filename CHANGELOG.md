@@ -1,3 +1,11 @@
+# PySwitch v2.4.9
+- Features:
+    - Added **EFFECT_STATE_PER_RIG** action: works like EFFECT_STATE but allows assigning a different Kemper effect slot per rig. When the active rig changes, the button automatically controls the slot defined in the rig_overrides mapping, falling back to the default slot_id. Supports None as a slot value to disable the button for a specific rig.
+
+### Emulator 2.4.9.16
+- Features:
+    - Added **EFFECT_STATE_PER_RIG** to the web editor: new rig_map parameter type renders a Bank/Rig/Slot table with add/remove rows and full round-trip serialization with inputs.py.
+
 # PySwitch v2.4.8
 - Bug fixes:
     - Reset memory of actions after page change (this guarantees correct LED states). Came up with the @GlanzGuitar example, which contained a workaround for this issue.

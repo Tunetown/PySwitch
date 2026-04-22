@@ -631,7 +631,7 @@ class ActionProperties {
                 break;
 
             case "rig_map":
-                ActionProperties.#setRigMapValue(input, value, onChange);
+                ActionProperties.#setRigMapValue(input, value);
                 break;
 
             default:
@@ -645,6 +645,7 @@ class ActionProperties {
     // -------------------------------------------------------------------------
 
     static #RIG_MAP_SLOTS = [
+        { name: "None (disabled)",     value: "None" },
         { name: "Slot A",              value: "KemperEffectSlot.EFFECT_SLOT_ID_A" },
         { name: "Slot B",              value: "KemperEffectSlot.EFFECT_SLOT_ID_B" },
         { name: "Slot C",              value: "KemperEffectSlot.EFFECT_SLOT_ID_C" },
@@ -663,6 +664,7 @@ class ActionProperties {
      */
     static #createRigMapInput(onChange) {
         const container = $('<div class="rig-map-container" />');
+        container.data('onChange', onChange);
 
         const table = $('<table class="rig-map-table" />').append(
             $('<thead />').append(
@@ -741,6 +743,7 @@ class ActionProperties {
      * e.g. "{2: KemperEffectSlot.EFFECT_SLOT_ID_C, 5: KemperEffectSlot.EFFECT_SLOT_ID_DLY}"
      */
     static #setRigMapValue(container, value, onChange) {
+        if (onChange === undefined) onChange = container.data('onChange') || function() {};
         const tbody = container.find('tbody');
         tbody.empty();
 
@@ -756,7 +759,7 @@ class ActionProperties {
             if (colonIdx < 0) continue;
             const absRigStr = pair.substring(0, colonIdx).trim();
             const slotStr   = pair.substring(colonIdx + 1).trim();
-            const absRig = parseInt(absRigStr);
+            const absRig = parseInt(absRigStr.replace(/['"]/g, '').trim());
             if (isNaN(absRig)) continue;
             const bank = Math.floor(absRig / 5) + 1;
             const rig  = (absRig % 5) + 1;

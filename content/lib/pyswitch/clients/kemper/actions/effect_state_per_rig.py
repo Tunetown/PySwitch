@@ -63,8 +63,9 @@ class KemperEffectEnablePerRigCallback(KemperEffectEnableCallback):
         self._rig_overrides = rig_overrides
 
         # Pre-create state and type mappings for all override slots that differ from the default.
+        # None values mean "button disabled for this rig" — no mapping needed for them.
         # These are registered so the client tracks their state via bidirectional MIDI.
-        override_slots = set(rig_overrides.values()) - {slot_id}
+        override_slots = set(rig_overrides.values()) - {slot_id, None}
         self._override_state_maps = {}
         self._override_type_maps = {}
         for slot in override_slots:
@@ -96,6 +97,8 @@ class KemperEffectEnablePerRigCallback(KemperEffectEnableCallback):
     def state_changed_by_user(self):
         """Send MIDI CC to toggle the effect on the currently active slot."""
         slot = self._current_slot()
+        if slot is None:
+            return  # Button disabled for this rig — do nothing
         if slot == self._default_slot:
             super().state_changed_by_user()
         else:
@@ -107,6 +110,14 @@ class KemperEffectEnablePerRigCallback(KemperEffectEnableCallback):
     def update_displays(self):
         """Update LED and display label for the currently active slot."""
         slot = self._current_slot()
+        if slot is None:
+            # Disabled for this rig: turn off LED and clear label.
+            # Reset cached display state so the next real slot switch forces a redraw.
+            self.reset()
+            self.action.switch_brightness = 0
+            if self.action.label:
+                self.action.label.text = ""
+            return
         if slot == self._default_slot:
             super().update_displays()
         else:

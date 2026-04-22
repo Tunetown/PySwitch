@@ -191,6 +191,7 @@ class PySwitchRunner {
             this.#loadModule("pyswitch/clients/kemper/actions/amp.py", circuitpyPath),
             this.#loadModule("pyswitch/clients/kemper/actions/bank_select_encoder.py", circuitpyPath),
             this.#loadModule("pyswitch/clients/kemper/actions/fixed_fx.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/kemper/actions/effect_state_per_rig.py", circuitpyPath),
 
             this.#loadModule("pyswitch/clients/kemper/mappings/__init__.py", circuitpyPath),
             this.#loadModule("pyswitch/clients/kemper/mappings/amp.py", circuitpyPath),

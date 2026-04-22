@@ -394,18 +394,20 @@
                 "target": "AdafruitSwitch",
                 "parameters": []
             },
-        {
-            "entityName": "EFFECT_STATE_PER_RIG",
-            "parameters": [
-                {
-                    "name": "rig_overrides",
-                    "type": "rig_map",
-                    "comment": "Per-rig slot override: for each listed rig, this button will control the chosen slot instead of the default one."
-                }
-            ],
-            "comment": "Switch an effect slot on / off, with per-rig slot override. Assign a different effect slot for specific rigs so the same button always controls the right effect regardless of how rigs are organized on the Kemper.",
-            "importPath": "pyswitch.clients.kemper.actions.effect_state_per_rig"
-        },
+            {
+                "entityName": "EFFECT_STATE_PER_RIG",
+                "category": "effects",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "rig_overrides",
+                        "type": "rig_map",
+                        "comment": "Per-rig slot override: for each listed rig, this button will control the chosen slot instead of the default one."
+                    }
+                ],
+                "comment": "Switch an effect slot on / off, with per-rig slot override. Assign a different effect slot for specific rigs so the same button always controls the right effect regardless of how rigs are organized on the Kemper.",
+                "importPath": "pyswitch.clients.kemper.actions.effect_state_per_rig"
+            },
             {
                 "entityName": "EFFECT_BUTTON",
                 "category": "effects",

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EFFECT_STATE_PER_RIG — Guida all'installazione e all'uso</title>
+    <title>EFFECT_STATE_PER_RIG — Installation and Usage Guide</title>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -301,28 +301,28 @@
 <div class="wrapper">
 
     <header>
-        <div class="badge">PySwitch — estensione custom</div>
+        <div class="badge">PySwitch — custom extension</div>
         <h1>EFFECT_STATE_PER_RIG</h1>
-        <p>Assegna slot effetto diversi per rig diversi. Lo stesso pulsante controlla sempre l'effetto giusto, indipendentemente da come sono organizzati gli slot sul Kemper.</p>
+        <p>Assign different effect slots per rig. The same button always controls the right effect, regardless of how slots are organized on the Kemper.</p>
     </header>
 
     <nav class="toc">
-        <h2>Indice</h2>
+        <h2>Contents</h2>
         <ol>
-            <li><a href="#problema">Il problema che risolve</a></li>
-            <li><a href="#installazione-device">Installazione sul device (MIDICaptain)</a></li>
-            <li><a href="#installazione-web">Installazione nel web editor</a></li>
-            <li><a href="#configurazione-py">Configurazione manuale in inputs.py</a></li>
-            <li><a href="#configurazione-ui">Configurazione tramite web editor</a></li>
-            <li><a href="#rig-id">Come calcolare l'ID assoluto del rig</a></li>
-            <li><a href="#esempi">Esempi pratici</a></li>
+            <li><a href="#problema">The problem it solves</a></li>
+            <li><a href="#installazione-device">Device installation (MIDICaptain)</a></li>
+            <li><a href="#installazione-web">Web editor installation</a></li>
+            <li><a href="#configurazione-py">Manual configuration in inputs.py</a></li>
+            <li><a href="#configurazione-ui">Configuration via web editor</a></li>
+            <li><a href="#rig-id">How to calculate the absolute rig ID</a></li>
+            <li><a href="#esempi">Practical examples</a></li>
         </ol>
     </nav>
 
-    <!-- ===== PROBLEMA ===== -->
+    <!-- ===== PROBLEM ===== -->
     <section id="problema">
-        <h2>1 · Il problema che risolve</h2>
-        <p>Nel Kemper ogni rig ha gli effetti distribuiti in slot (A, B, C, D, X, MOD, DLY, REV). Con PySwitch, ogni pulsante controlla uno slot specifico &mdash; per esempio il pulsante 1 controlla sempre lo slot A. Il problema nasce quando slot diversi contengono tipi di effetti diversi a seconda del rig:</p>
+        <h2>1 · The problem it solves</h2>
+        <p>In the Kemper, each rig distributes its effects across slots (A, B, C, D, X, MOD, DLY, REV). With PySwitch, each button controls a specific slot &mdash; for example button 1 always controls slot A. The problem arises when different slots hold different types of effects depending on the rig:</p>
 
         <div class="rig-diagram">
 <span class="bank-row">           Slot A      Slot B      Slot C      Slot X</span>
@@ -330,71 +330,71 @@
 <span class="bank-row">Rig 2 ──  </span><span class="override">Distortion</span><span class="bank-row">   Compressor  Chorus      Delay</span>
 <span class="bank-row">Rig 3 ──  </span><span class="override">Wah        </span><span class="bank-row">  Delay       </span><span class="override">Compressor</span><span class="bank-row">  Reverb</span>
 
-<span class="legend">  <span class="dot-active">■</span> Pulsante 1 (Slot A): attiva Compressor su Rig 1, ma Distortion su Rig 2 e Wah su Rig 3</span>
+<span class="legend">  <span class="dot-active">■</span> Button 1 (Slot A): activates Compressor on Rig 1, but Distortion on Rig 2 and Wah on Rig 3</span>
         </div>
 
-        <p>Con <code>EFFECT_STATE_PER_RIG</code> puoi specificare uno <strong>slot di default</strong> e poi <strong>override per rig specifici</strong>. Quando cambi rig, il pulsante punta automaticamente allo slot corretto, aggiornando LED e display in tempo reale.</p>
+        <p>With <code>EFFECT_STATE_PER_RIG</code> you can specify a <strong>default slot</strong> and then <strong>overrides for specific rigs</strong>. When you change rig, the button automatically points to the correct slot, updating the LED and display in real time.</p>
 
         <div class="rig-diagram">
-<span class="bank-row">           Pulsante 1  Pulsante 2  Pulsante 3  Pulsante 4</span>
+<span class="bank-row">           Button 1    Button 2    Button 3    Button 4</span>
 <span class="bank-row">Default ─  </span><span class="active">Slot A      Slot B      Slot C      Slot X</span>
 <span class="bank-row">Rig 2   ─  </span><span class="override">Slot B</span><span class="bank-row">      Slot A      Slot C      Slot X      </span><span class="cm">← override</span>
 <span class="bank-row">Rig 3   ─  </span><span class="override">Slot C</span><span class="bank-row">      Slot B      </span><span class="override">Slot A</span><span class="bank-row">      Slot X      </span><span class="cm">← override</span>
         </div>
     </section>
 
-    <!-- ===== INSTALLAZIONE DEVICE ===== -->
+    <!-- ===== DEVICE INSTALLATION ===== -->
     <section id="installazione-device">
-        <h2>2 · Installazione sul device (MIDICaptain)</h2>
-        <p>Occorre copiare un unico file Python nella cartella degli effetti Kemper sul device.</p>
+        <h2>2 · Device installation (MIDICaptain)</h2>
+        <p>You need to copy a single Python file to the Kemper effects folder on the device.</p>
 
         <div class="steps">
             <div class="step">
                 <div class="step-num"></div>
                 <div class="step-body">
-                    <p><strong>Monta il device come USB</strong></p>
-                    <p>Tieni premuto il pulsante 1 mentre accendi il MIDICaptain. Sul computer apparirà il drive <code>MIDICAPTAIN</code>.</p>
+                    <p><strong>Mount the device as USB</strong></p>
+                    <p>Hold button 1 while powering on the MIDICaptain. The <code>MIDICAPTAIN</code> drive will appear on your computer.</p>
                 </div>
             </div>
             <div class="step">
                 <div class="step-num"></div>
                 <div class="step-body">
-                    <p><strong>Copia il file</strong></p>
-                    <p>Copia il file dalla cartella del progetto:</p>
+                    <p><strong>Copy the file</strong></p>
+                    <p>Copy the file from the project folder:</p>
                     <div class="file-path"><span class="icon">📁</span> <span>pyswitch/</span><span class="path-part">content/lib/pyswitch/clients/kemper/actions/<strong>effect_state_per_rig.py</strong></span></div>
-                    <p>nella stessa posizione sul drive del device:</p>
+                    <p>to the same location on the device drive:</p>
                     <div class="file-path"><span class="icon">💾</span> <span>MIDICAPTAIN/</span><span class="path-part">lib/pyswitch/clients/kemper/actions/<strong>effect_state_per_rig.py</strong></span></div>
                 </div>
             </div>
             <div class="step">
                 <div class="step-num"></div>
                 <div class="step-body">
-                    <p><strong>Smonta e riavvia</strong></p>
-                    <p>Smonta il drive correttamente, poi riavvia il controller.</p>
+                    <p><strong>Eject and restart</strong></p>
+                    <p>Eject the drive safely, then restart the controller.</p>
                 </div>
             </div>
         </div>
 
         <div class="callout warning">
-            <strong>Attenzione</strong>
-            Il file deve trovarsi nella stessa cartella degli altri file di azione Kemper (<code>effect_state.py</code>, <code>rig_select.py</code>, ecc.), altrimenti le importazioni relative falliranno.
+            <strong>Warning</strong>
+            The file must be in the same folder as the other Kemper action files (<code>effect_state.py</code>, <code>rig_select.py</code>, etc.), otherwise relative imports will fail.
         </div>
     </section>
 
-    <!-- ===== INSTALLAZIONE WEB EDITOR ===== -->
+    <!-- ===== WEB EDITOR INSTALLATION ===== -->
     <section id="installazione-web">
-        <h2>3 · Installazione nel web editor</h2>
-        <p>Se usi il <a href="https://pyswitch.tunetown.de" style="color:var(--accent)">PySwitch Emulator</a> (versione online) non puoi modificarlo direttamente. Devi usare una versione locale. Se hai già clonato il progetto in <code>C:\Users\…\Desktop\pyswitch\</code>, i file sono già stati patchati. Per altre installazioni, usa lo script incluso.</p>
+        <h2>3 · Web editor installation</h2>
+        <p>If you use the <a href="https://pyswitch.tunetown.de" style="color:var(--accent)">PySwitch Emulator</a> (online version) you cannot modify it directly. You need to use a local version. If you have already cloned the project to <code>C:\Users\…\Desktop\pyswitch\</code>, the files are already patched. For other installations, use the included script.</p>
 
-        <h3>Patch automatica via script</h3>
-        <p>Esegui lo script Python dalla cartella <code>web_patch/</code> (disponibile nel branch <code>feature/effect-state-per-rig</code>):</p>
+        <h3>Automatic patch via script</h3>
+        <p>Run the Python script from the <code>web_patch/</code> folder (available in the <code>feature/effect-state-per-rig</code> branch):</p>
 
         <pre><code>python web_patch/apply_patches.py web/htdocs/definitions/</code></pre>
 
-        <p>Lo script aggiunge automaticamente le definizioni di <code>EFFECT_STATE_PER_RIG</code> a <code>meta.json</code> e <code>actions.json</code> senza riformattare il resto del file.</p>
+        <p>The script automatically adds the <code>EFFECT_STATE_PER_RIG</code> definitions to <code>meta.json</code> and <code>actions.json</code> without reformatting the rest of the file.</p>
 
-        <h3>Sostituzione di ActionProperties.js</h3>
-        <p>Copia il file patchato nella posizione corretta:</p>
+        <h3>Replacing ActionProperties.js</h3>
+        <p>Copy the patched file to the correct location:</p>
 
         <div class="file-path"><span class="icon">📁</span> <span>pyswitch/</span><span class="path-part">web_patch/<strong>ActionProperties.js</strong></span></div>
         <p>→</p>
@@ -403,33 +403,33 @@
         <pre><code>copy web_patch\ActionProperties.js web\htdocs\js\ui\parser\ActionProperties.js</code></pre>
 
         <div class="callout tip">
-            <strong>Nel branch feature/effect-state-per-rig</strong>
-            Se hai usato il branch già preparato, tutte e tre le modifiche al web editor (<code>actions.json</code>, <code>meta.json</code>, <code>ActionProperties.js</code>) sono già incluse nel repository. Non serve eseguire nulla &mdash; basta aprire il web editor dalla cartella locale.
+            <strong>In the feature/effect-state-per-rig branch</strong>
+            If you used the prepared branch, all three web editor changes (<code>actions.json</code>, <code>meta.json</code>, <code>ActionProperties.js</code>) are already included in the repository. No need to run anything &mdash; just open the web editor from the local folder.
         </div>
 
-        <h3>Apertura del web editor locale</h3>
-        <p>Apri il file <code>web/htdocs/index.html</code> con un server locale (necessario per il funzionamento del WASM). Con Python:</p>
+        <h3>Opening the local web editor</h3>
+        <p>Open <code>web/htdocs/index.html</code> with a local server (required for WASM). With Python:</p>
 
         <pre><code>cd web/htdocs
 python -m http.server 8080</code></pre>
 
-        <p>Poi apri <code>http://localhost:8080</code> nel browser.</p>
+        <p>Then open <code>http://localhost:8080</code> in your browser.</p>
     </section>
 
-    <!-- ===== CONFIGURAZIONE MANUALE ===== -->
+    <!-- ===== MANUAL CONFIGURATION ===== -->
     <section id="configurazione-py">
-        <h2>4 · Configurazione manuale in inputs.py</h2>
-        <p>Aggiungi l'import in cima al file e sostituisci <code>EFFECT_STATE</code> con <code>EFFECT_STATE_PER_RIG</code> per i pulsanti che richiedono override.</p>
+        <h2>4 · Manual configuration in inputs.py</h2>
+        <p>Add the import at the top of the file and replace <code>EFFECT_STATE</code> with <code>EFFECT_STATE_PER_RIG</code> for buttons that require overrides.</p>
 
         <pre><code><span class="kw">from</span> pyswitch.clients.kemper.actions.effect_state_per_rig <span class="kw">import</span> <span class="fn">EFFECT_STATE_PER_RIG</span>
 <span class="kw">from</span> pyswitch.clients.kemper <span class="kw">import</span> KemperEffectSlot
 
-<span class="cm"># ID assoluto del rig = (bank - 1) * 5 + (rig - 1)</span>
+<span class="cm"># Absolute rig ID = (bank - 1) * 5 + (rig - 1)</span>
 <span class="cm"># Bank 1, Rig 1 → 0   Bank 1, Rig 2 → 1   Bank 1, Rig 3 → 2</span>
-<span class="cm"># Bank 2, Rig 1 → 5   Bank 2, Rig 2 → 6   ecc.</span>
+<span class="cm"># Bank 2, Rig 1 → 5   Bank 2, Rig 2 → 6   etc.</span>
 
 Inputs = [
-    <span class="cm"># Pulsante 1: default Slot A, ma per certi rig usa slot diverso</span>
+    <span class="cm"># Button 1: default Slot A, but uses a different slot for certain rigs</span>
     {
         <span class="str">"assignment"</span>: PA_MIDICAPTAIN_10_SWITCH_1,
         <span class="str">"actions"</span>: [
@@ -443,7 +443,7 @@ Inputs = [
             ),
         ],
     },
-    <span class="cm"># Pulsanti senza override: rimangono con EFFECT_STATE normale</span>
+    <span class="cm"># Buttons without overrides: keep using normal EFFECT_STATE</span>
     {
         <span class="str">"assignment"</span>: PA_MIDICAPTAIN_10_SWITCH_2,
         <span class="str">"actions"</span>: [
@@ -454,39 +454,39 @@ Inputs = [
 ]</code></pre>
 
         <div class="callout info">
-            <strong>Parametri disponibili</strong>
-            <code>EFFECT_STATE_PER_RIG</code> accetta tutti i parametri di <code>EFFECT_STATE</code> (<code>display</code>, <code>mode</code>, <code>text</code>, <code>color</code>, <code>show_slot_names</code>, <code>use_leds</code>, <code>enable_callback</code>) più il parametro obbligatorio <code>rig_overrides</code>.
+            <strong>Available parameters</strong>
+            <code>EFFECT_STATE_PER_RIG</code> accepts all parameters of <code>EFFECT_STATE</code> (<code>display</code>, <code>mode</code>, <code>text</code>, <code>color</code>, <code>show_slot_names</code>, <code>use_leds</code>, <code>enable_callback</code>) plus the mandatory <code>rig_overrides</code> parameter.
         </div>
     </section>
 
-    <!-- ===== CONFIGURAZIONE UI ===== -->
+    <!-- ===== UI CONFIGURATION ===== -->
     <section id="configurazione-ui">
-        <h2>5 · Configurazione tramite web editor</h2>
-        <p>Dopo aver applicato le patch, la nuova azione compare nella lista degli effetti Kemper con il nome <strong>EFFECT_STATE_PER_RIG</strong>.</p>
+        <h2>5 · Configuration via web editor</h2>
+        <p>After applying the patches, the new action appears in the Kemper effects list under the name <strong>EFFECT_STATE_PER_RIG</strong>.</p>
 
-        <h3>Come aggiungere l'azione a un pulsante</h3>
+        <h3>How to add the action to a button</h3>
         <div class="steps">
             <div class="step">
                 <div class="step-num"></div>
                 <div class="step-body">
-                    <p>Nel pannello di configurazione del pulsante, clicca su <strong>+ Add action</strong> e cerca <code>EFFECT_STATE_PER_RIG</code> nella categoria <em>Effects</em>.</p>
+                    <p>In the button configuration panel, click <strong>+ Add action</strong> and search for <code>EFFECT_STATE_PER_RIG</code> in the <em>Effects</em> category.</p>
                 </div>
             </div>
             <div class="step">
                 <div class="step-num"></div>
                 <div class="step-body">
-                    <p>Seleziona il <strong>Slot di default</strong> dal menu a tendina (Slot A, B, C, D, X, MOD, DLY, REV, ecc.). Questo slot verrà usato per tutti i rig senza override.</p>
+                    <p>Select the <strong>default Slot</strong> from the dropdown (Slot A, B, C, D, X, MOD, DLY, REV, etc.). This slot will be used for all rigs without an override.</p>
                 </div>
             </div>
             <div class="step">
                 <div class="step-num"></div>
                 <div class="step-body">
-                    <p>Nella sezione <strong>Rig Overrides</strong> aggiungi le eccezioni rig per rig.</p>
+                    <p>In the <strong>Rig Overrides</strong> section, add exceptions rig by rig.</p>
                 </div>
             </div>
         </div>
 
-        <h3>Interfaccia Rig Overrides</h3>
+        <h3>Rig Overrides interface</h3>
         <div class="ui-mockup">
             <div class="prop-row">
                 <span class="prop-label">Slot</span>
@@ -499,7 +499,7 @@ Inputs = [
             <div class="prop-row" style="align-items:flex-start">
                 <span class="prop-label" style="margin-top:8px">Rig Overrides</span>
                 <div style="flex:1">
-                    <div class="label">Override per-rig: slot alternativo per specifici bank/rig</div>
+                    <div class="label">Per-rig overrides: alternate slot for specific bank/rig combinations</div>
                     <table>
                         <thead>
                             <tr>
@@ -529,34 +529,34 @@ Inputs = [
             </div>
         </div>
 
-        <h3>Funzionamento della tabella</h3>
+        <h3>Table usage</h3>
         <ul>
-            <li><strong>Bank</strong>: numero del banco (1 – 125)</li>
-            <li><strong>Rig</strong>: posizione del rig nel banco (1 – 5)</li>
-            <li><strong>Slot</strong>: lo slot effetto da usare quando questo rig è attivo</li>
-            <li><strong>+ Add override</strong>: aggiunge una nuova riga alla tabella</li>
-            <li><strong>✕</strong>: rimuove la riga corrispondente</li>
+            <li><strong>Bank</strong>: bank number (1 – 125)</li>
+            <li><strong>Rig</strong>: rig position within the bank (1 – 5)</li>
+            <li><strong>Slot</strong>: the effect slot to use when this rig is active</li>
+            <li><strong>+ Add override</strong>: adds a new row to the table</li>
+            <li><strong>✕</strong>: removes the corresponding row</li>
         </ul>
 
         <div class="callout tip">
-            <strong>Round-trip codice ↔ UI</strong>
-            La tabella si popola automaticamente anche quando carichi la configurazione da codice Python esistente. Puoi passare liberamente tra editor grafico e editor di testo senza perdere i dati.
+            <strong>Code ↔ UI round-trip</strong>
+            The table is populated automatically even when loading a configuration from existing Python code. You can freely switch between the graphical editor and the code editor without losing data.
         </div>
 
-        <h3>Salvataggio</h3>
-        <p>Usa il pulsante <strong>Save → Connected Controllers</strong> (via MIDI) oppure <strong>Save → Download (ZIP)</strong> e copia i file sul device via USB come descritto nella sezione <a href="#installazione-device" style="color:var(--accent)">Installazione</a>.</p>
+        <h3>Saving</h3>
+        <p>Use the <strong>Save → Connected Controllers</strong> button (via MIDI) or <strong>Save → Download (ZIP)</strong> and copy the files to the device via USB as described in the <a href="#installazione-device" style="color:var(--accent)">Installation</a> section.</p>
     </section>
 
     <!-- ===== RIG ID ===== -->
     <section id="rig-id">
-        <h2>6 · Come calcolare l'ID assoluto del rig</h2>
-        <p>Il web editor chiede Bank e Rig separatamente, quindi non devi fare calcoli. Se invece configuri <code>inputs.py</code> manualmente, il dizionario <code>rig_overrides</code> usa <strong>ID assoluti</strong> calcolati con questa formula:</p>
+        <h2>6 · How to calculate the absolute rig ID</h2>
+        <p>The web editor asks for Bank and Rig separately, so no calculation is needed. If you configure <code>inputs.py</code> manually, the <code>rig_overrides</code> dictionary uses <strong>absolute IDs</strong> calculated with this formula:</p>
 
         <pre><code>abs_rig_id = (bank - 1) * 5 + (rig - 1)</code></pre>
 
-        <p>Dove <code>bank</code> e <code>rig</code> sono entrambi <strong>1-based</strong> (il primo banco è 1, il primo rig è 1).</p>
+        <p>Where <code>bank</code> and <code>rig</code> are both <strong>1-based</strong> (first bank is 1, first rig is 1).</p>
 
-        <h3>Tabella di riferimento rapido</h3>
+        <h3>Quick reference table</h3>
         <div class="rig-diagram" style="font-size:12px; line-height:2">
 <span class="bank-row">            Rig 1   Rig 2   Rig 3   Rig 4   Rig 5</span>
 <span class="bank-row">Bank  1  →    </span><span class="active">0</span><span class="bank-row">       </span><span class="active">1</span><span class="bank-row">       </span><span class="active">2</span><span class="bank-row">       </span><span class="active">3</span><span class="bank-row">       </span><span class="active">4</span>
@@ -568,18 +568,18 @@ Inputs = [
         </div>
 
         <div class="callout info">
-            <strong>Inversione</strong>
-            Dato un ID assoluto <code>n</code>, puoi ricavare bank e rig con:<br>
+            <strong>Reverse lookup</strong>
+            Given an absolute ID <code>n</code>, you can derive bank and rig with:<br>
             <code>bank = floor(n / 5) + 1</code> &nbsp;&nbsp; <code>rig = (n % 5) + 1</code>
         </div>
     </section>
 
-    <!-- ===== ESEMPI ===== -->
+    <!-- ===== EXAMPLES ===== -->
     <section id="esempi">
-        <h2>7 · Esempi pratici</h2>
+        <h2>7 · Practical examples</h2>
 
-        <h3>Scenario A — Compressore sempre sul pulsante 1</h3>
-        <p>Nella maggior parte dei rig il compressore è nello Slot A. Solo nel Bank 1 Rig 4 e Bank 2 Rig 2 è nello Slot C.</p>
+        <h3>Scenario A — Compressor always on button 1</h3>
+        <p>In most rigs the compressor is in Slot A. Only in Bank 1 Rig 4 and Bank 2 Rig 2 is it in Slot C.</p>
 
         <pre><code><span class="fn">EFFECT_STATE_PER_RIG</span>(
     slot_id = KemperEffectSlot.EFFECT_SLOT_ID_A,  <span class="cm"># default: Slot A</span>
@@ -590,10 +590,10 @@ Inputs = [
     display = DISPLAY_HEADER_1
 )</code></pre>
 
-        <h3>Scenario B — Delay sempre sul pulsante UP (con Reverb)</h3>
-        <p>In alcuni rig il delay è nello Slot DLY standard, in altri è nello Slot X.</p>
+        <h3>Scenario B — Delay always on the UP button (with Reverb)</h3>
+        <p>In some rigs the delay is in the standard Slot DLY, in others it is in Slot X.</p>
 
-        <pre><code><span class="cm"># Pulsante UP: Delay + Reverb con override sul delay per certi rig</span>
+        <pre><code><span class="cm"># UP button: Delay + Reverb with delay override for certain rigs</span>
 {
     <span class="str">"assignment"</span>: PA_MIDICAPTAIN_10_SWITCH_UP,
     <span class="str">"actions"</span>: [
@@ -607,8 +607,8 @@ Inputs = [
     ],
 }</code></pre>
 
-        <h3>Scenario C — Override su tutti i pulsanti stomp</h3>
-        <p>Configurazione completa dove ogni pulsante ha il proprio set di override:</p>
+        <h3>Scenario C — Overrides on all stomp buttons</h3>
+        <p>Full configuration where each button has its own set of overrides:</p>
 
         <pre><code><span class="kw">from</span> pyswitch.clients.kemper.actions.effect_state_per_rig <span class="kw">import</span> EFFECT_STATE_PER_RIG
 <span class="kw">from</span> pyswitch.clients.kemper.actions.effect_state <span class="kw">import</span> EFFECT_STATE
@@ -634,19 +634,19 @@ Inputs = [
     },
     {
         <span class="str">"assignment"</span>: PA_MIDICAPTAIN_10_SWITCH_4,
-        <span class="str">"actions"</span>: [<span class="fn">EFFECT_STATE</span>(slot_id=X)],  <span class="cm"># nessun override necessario</span>
+        <span class="str">"actions"</span>: [<span class="fn">EFFECT_STATE</span>(slot_id=X)],  <span class="cm"># no override needed</span>
     },
 ]</code></pre>
 
         <div class="callout tip">
-            <strong>Suggerimento</strong>
-            Puoi usare <code>EFFECT_STATE</code> normale per i pulsanti che non hanno bisogno di override. I due tipi di azione sono compatibili e possono coesistere nello stesso <code>inputs.py</code>.
+            <strong>Tip</strong>
+            You can use normal <code>EFFECT_STATE</code> for buttons that do not need overrides. Both action types are compatible and can coexist in the same <code>inputs.py</code>.
         </div>
     </section>
 
     <hr>
     <footer>
-        <p>Estensione sviluppata per PySwitch — branch <code>feature/effect-state-per-rig</code></p>
+        <p>Extension developed for PySwitch — branch <code>feature/effect-state-per-rig</code></p>
     </footer>
 
 </div>
