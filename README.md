@@ -153,7 +153,7 @@ Inputs = [
 
 When the rig changes, the button automatically controls the slot defined for that rig (or falls back to `slot_id` if no override is defined). The LED color and display label update in real time to reflect the new slot's effect type. Setting a slot to `None` in `rig_overrides` disables the button for that rig (LED off, label cleared).
 
-`EFFECT_STATE_PER_RIG` accepts all parameters of `EFFECT_STATE` plus the mandatory `rig_overrides` dict. The web editor exposes a Bank/Rig/Slot table for visual configuration. To install on the device, copy `content/lib/pyswitch/clients/kemper/actions/effect_state_per_rig.py` to the same path on the MIDICAPTAIN drive. For full details see [docs/effect_state_per_rig.html](docs/effect_state_per_rig.html).
+`EFFECT_STATE_PER_RIG` accepts all parameters of `EFFECT_STATE` plus the mandatory `rig_overrides` dict. The web editor exposes a Bank/Rig/Slot table for visual configuration. For full details see [docs/effect_state_per_rig.html](docs/effect_state_per_rig.html).
 
 ##### Actions on Long Press (Hold)
 
