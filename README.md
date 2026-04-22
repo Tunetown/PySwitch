@@ -123,6 +123,38 @@ Inputs = [
 ]
 ```
 
+##### Per-Rig Effect Slot Override (EFFECT_STATE_PER_RIG)
+
+By default, `EFFECT_STATE` always controls the same slot regardless of which rig is active. This means all rigs must place the same effect type in the same slot — for example, the compressor must always be in Slot A. `EFFECT_STATE_PER_RIG` solves this by routing each button to a different slot depending on the active rig:
+
+```python
+from pyswitch.clients.kemper.actions.effect_state_per_rig import EFFECT_STATE_PER_RIG
+from pyswitch.clients.kemper import KemperEffectSlot
+
+# Absolute rig ID = (bank - 1) * 5 + (rig - 1)
+# Bank 1 Rig 1 = 0,  Bank 1 Rig 3 = 2,  Bank 2 Rig 1 = 5
+
+Inputs = [
+    {
+        "assignment": Hardware.PA_MIDICAPTAIN_10_SWITCH_1,
+        "actions": [
+            EFFECT_STATE_PER_RIG(
+                slot_id = KemperEffectSlot.EFFECT_SLOT_ID_A,  # default slot
+                rig_overrides = {
+                    2: KemperEffectSlot.EFFECT_SLOT_ID_C,    # Bank 1 Rig 3 → Slot C
+                    5: KemperEffectSlot.EFFECT_SLOT_ID_DLY,  # Bank 2 Rig 1 → Slot DLY
+                },
+                display = DISPLAY_HEADER_1
+            )
+        ]
+    }
+]
+```
+
+When the rig changes, the button automatically controls the slot defined for that rig (or falls back to `slot_id` if no override is defined). The LED color and display label update in real time to reflect the new slot's effect type. Setting a slot to `None` in `rig_overrides` disables the button for that rig (LED off, label cleared).
+
+`EFFECT_STATE_PER_RIG` accepts all parameters of `EFFECT_STATE` plus the mandatory `rig_overrides` dict. The web editor exposes a Bank/Rig/Slot table for visual configuration. To install on the device, copy `content/lib/pyswitch/clients/kemper/actions/effect_state_per_rig.py` to the same path on the MIDICAPTAIN drive. For full details see [docs/effect_state_per_rig.html](docs/effect_state_per_rig.html).
+
 ##### Actions on Long Press (Hold)
 
 You can assign different actions to long pressing of switches. This is done by providing the "holdActions" parameter of the switch definitions:
