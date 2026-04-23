@@ -518,6 +518,7 @@ class ParserFrontendInput {
         
         const browser = this.#controller.ui.getPopup({
             onReturnKey: commit,
+            additionalClasses: "medium",
             buttons: [
                 {
                     text: "Done",

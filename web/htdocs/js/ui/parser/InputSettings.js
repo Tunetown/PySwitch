@@ -83,6 +83,12 @@ class InputSettings extends ParameterList {
                     max: 1,
                     step: 0.01
                 },
+                validate: function(value) {
+                    if (value === "") return null;
+                    const n = parseFloat(value);
+                    if (isNaN(n) || n < 0 || n > 1) return "Must be between 0 and 1";
+                    return null;
+                },
                 onChange: async function(value) {
                     const parsed = value !== "" ? parseFloat(value) : null;
                     that.#input.setBrightness(parsed);

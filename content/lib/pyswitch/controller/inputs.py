@@ -51,8 +51,15 @@ class SwitchController:
         # Init actions
         for action in self.__actions + self.__actions_hold:
             action.init(self.__appl, self)
-            self.__appl.add_updateable(action)            
+            self.__appl.add_updateable(action)
             action.update_displays()
+
+        # Re-apply the configured brightness for switches where no action controls the
+        # LEDs. update_displays() above may set a non-zero brightness (ledBrightnessOff)
+        # even when none of the actions are supposed to drive the LED segments, leaving
+        # the switch lit at startup contrary to the configured idle state.
+        if not any(a.uses_switch_leds for a in self.__actions + self.__actions_hold):
+            self.brightness = get_option(config, "brightness", 0)
 
         # Hold period counter
         self.__period_hold = period_counter_hold
