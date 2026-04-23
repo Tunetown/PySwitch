@@ -201,15 +201,18 @@ class DisplayLabel(DisplayElement):
     def __wrap_text(self, text):
         if not text:
             return ""
-        
+
         if self.__layout.max_text_width:
-            return DisplayLabel.LINE_FEED.join(
-                wrap_text_to_pixels(
-                    text, 
-                    self.__layout.max_text_width,
-                    self.__font
+            try:
+                return DisplayLabel.LINE_FEED.join(
+                    wrap_text_to_pixels(
+                        text,
+                        self.__layout.max_text_width,
+                        self.__font
+                    )
                 )
-            )
+            except Exception:
+                return text
         else:
             return text
 
