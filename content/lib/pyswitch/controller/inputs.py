@@ -38,8 +38,8 @@ class SwitchController:
         self.__colors = [(0, 0, 0) for i in range(len(self.pixels))]
         self.__brightnesses = array('f', (0 for i in range(len(self.pixels))))
 
-        self.color = Colors.WHITE
-        self.brightness = 0.5
+        self.color = get_option(config, "color", Colors.WHITE)
+        self.brightness = get_option(config, "brightness", 0)
 
         self.__hold_repeat = get_option(config, "holdRepeat", False)
         self.__hold_active = False
