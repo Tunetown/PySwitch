@@ -7,6 +7,10 @@ from .effect_state import KemperEffectEnableCallback
 # When the active rig changes, the button automatically controls a different slot
 # according to the rig_overrides mapping.
 #
+# slot_id:       Default effect slot used when the current rig has no entry in
+#                rig_overrides.  Pass None to disable the button by default (it
+#                will only be active for rigs explicitly listed in rig_overrides).
+#
 # rig_overrides: dict mapping absolute rig IDs to slot ID(s).
 #   Values can be:
 #     - A single slot_id     → button controls that slot for this rig
@@ -16,12 +20,22 @@ from .effect_state import KemperEffectEnableCallback
 #     - None                 → button is disabled for this rig
 #   Absolute rig ID = (bank - 1) * 5 + (rig - 1), bank 1-based, rig 1–5.
 #
-# Example:
-#   rig_overrides = {
-#       0: [KemperEffectSlot.EFFECT_SLOT_ID_MOD,
-#           KemperEffectSlot.EFFECT_SLOT_ID_C],   # Rig 1 → controls MOD + C together
-#       4: None,                                    # Rig 5 → button disabled
-#   }
+# Examples:
+#   # Button active only for rig 1, disabled for all others:
+#   EFFECT_STATE_PER_RIG(
+#       slot_id = None,
+#       rig_overrides = { 0: KemperEffectSlot.EFFECT_SLOT_ID_MOD }
+#   )
+#
+#   # Button controls MOD+C together on rig 1, disabled on rig 5:
+#   EFFECT_STATE_PER_RIG(
+#       slot_id = KemperEffectSlot.EFFECT_SLOT_ID_A,
+#       rig_overrides = {
+#           0: [KemperEffectSlot.EFFECT_SLOT_ID_MOD,
+#               KemperEffectSlot.EFFECT_SLOT_ID_C],
+#           4: None,
+#       }
+#   )
 def EFFECT_STATE_PER_RIG(
         slot_id,
         rig_overrides,
@@ -55,16 +69,15 @@ class KemperEffectEnablePerRigCallback(KemperEffectEnableCallback):
     Like KemperEffectEnableCallback but with per-rig slot override support.
 
     slot_id:       Default effect slot (used when no override exists for the current rig).
+                   Pass None to disable the button by default (active only for rigs
+                   explicitly listed in rig_overrides with a non-None slot).
     rig_overrides: Dict mapping absolute rig IDs to slot ID(s) or None.
                    See EFFECT_STATE_PER_RIG docstring for details.
     """
 
     def __init__(self, slot_id, rig_overrides, **kwargs):
-        super().__init__(slot_id, **kwargs)
-
-        self._default_slot = slot_id
-
-        # Normalize rig_overrides: store None as-is, scalars as [slot], lists as-is.
+        # Normalize rig_overrides first: None as-is, scalars as [slot], lists as-is.
+        # Must happen before super().__init__ so we can resolve the parent slot below.
         self._rig_overrides = {}
         for rig, slots in rig_overrides.items():
             if slots is None:
@@ -73,6 +86,20 @@ class KemperEffectEnablePerRigCallback(KemperEffectEnableCallback):
                 self._rig_overrides[rig] = slots
             else:
                 self._rig_overrides[rig] = [slots]
+
+        # The parent class requires a valid slot_id to set up its MIDI mappings.
+        # When slot_id is None ("disabled by default") we pick the first non-None
+        # override slot as a stand-in for parent initialization only.
+        _parent_slot = slot_id
+        if _parent_slot is None:
+            for slots in self._rig_overrides.values():
+                if slots is not None:
+                    _parent_slot = slots[0]
+                    break
+
+        super().__init__(_parent_slot, **kwargs)
+
+        self._default_slot = slot_id  # None → disabled when no override matches
 
         # Register state/type mappings for all override slots that differ from the default.
         override_slots = set()
@@ -86,12 +113,18 @@ class KemperEffectEnablePerRigCallback(KemperEffectEnableCallback):
         self._override_state_maps = {}
         self._override_type_maps = {}
         for slot in override_slots:
-            sm = KemperMappings.EFFECT_STATE(slot)
-            tm = KemperMappings.EFFECT_TYPE(slot)
-            self._override_state_maps[slot] = sm
-            self._override_type_maps[slot] = tm
-            self.register_mapping(sm)
-            self.register_mapping(tm)
+            if slot_id is None and slot == _parent_slot:
+                # The parent already registered mappings for this slot; reuse them
+                # instead of creating duplicate registrations for the same parameter.
+                self._override_state_maps[slot] = self.mapping
+                self._override_type_maps[slot] = self.mapping_fxtype
+            else:
+                sm = KemperMappings.EFFECT_STATE(slot)
+                tm = KemperMappings.EFFECT_TYPE(slot)
+                self._override_state_maps[slot] = sm
+                self._override_type_maps[slot] = tm
+                self.register_mapping(sm)
+                self.register_mapping(tm)
 
         # Track the current rig via the Kemper RIG_ID mapping.
         self._rig_id_mapping = KemperMappings.RIG_ID()
@@ -112,6 +145,8 @@ class KemperEffectEnablePerRigCallback(KemperEffectEnableCallback):
         """
         rig = self._rig_id_mapping.value
         if rig is None or rig not in self._rig_overrides:
+            if self._default_slot is None:
+                return None  # Disabled by default
             return [self._default_slot]
         return self._rig_overrides[rig]  # None or list
 
