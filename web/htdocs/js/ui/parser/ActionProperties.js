@@ -671,8 +671,7 @@ class ActionProperties {
                 $('<tr />').append(
                     $('<th />').text('Bank'),
                     $('<th />').text('Rig'),
-                    $('<th />').text('Slot(s)'),
-                    $('<th />')
+                    $('<th />').text('Slot(s)')
                 )
             )
         );
@@ -745,7 +744,13 @@ class ActionProperties {
                 slotRow.append(removeSlotBtn);
             }
 
-            slotsContainer.append(slotRow);
+            // Insert before addSlotBtn if it is already in the container,
+            // so + and ✕ always stay at the bottom.
+            if (addSlotBtn.parent().length) {
+                addSlotBtn.before(slotRow);
+            } else {
+                slotsContainer.append(slotRow);
+            }
         }
 
         const isNoneValue = slotValues.length === 1 && slotValues[0] === 'None';
@@ -760,14 +765,13 @@ class ActionProperties {
             updateAddBtnState();
             onChange();
         });
-        slotsContainer.append(addSlotBtn);
+        const removeBtn = $('<button type="button" class="rig-remove" title="Remove this override" />').text('✕');
+        slotsContainer.append(addSlotBtn, removeBtn);
 
-        const removeBtn = $('<button type="button" class="rig-remove" />').text('X');
         const row = $('<tr />').append(
             $('<td />').append(bankInput),
             $('<td />').append(rigSelect),
-            $('<td class="rig-slots-td" />').append(slotsContainer),
-            $('<td />').append(removeBtn)
+            $('<td class="rig-slots-td" />').append(slotsContainer)
         );
         removeBtn.on('click', function() {
             row.remove();
