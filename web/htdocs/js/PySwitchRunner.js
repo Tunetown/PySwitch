@@ -126,6 +126,7 @@ class PySwitchRunner {
             this.#loadModule("parser/misc/ImportExtractor.py", localPythonPath),
             this.#loadModule("parser/misc/ReplaceAssignmentTransformer.py", localPythonPath),
             this.#loadModule("parser/misc/AddAssignmentTransformer.py", localPythonPath),
+            this.#loadModule("parser/misc/RemoveAssignmentTransformer.py", localPythonPath),
             this.#loadModule("parser/misc/CodeExtractor.py", localPythonPath),
             this.#loadModule("parser/misc/CodeGenerator.py", localPythonPath),        
 
@@ -191,6 +192,7 @@ class PySwitchRunner {
             this.#loadModule("pyswitch/clients/kemper/actions/amp.py", circuitpyPath),
             this.#loadModule("pyswitch/clients/kemper/actions/bank_select_encoder.py", circuitpyPath),
             this.#loadModule("pyswitch/clients/kemper/actions/fixed_fx.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/kemper/actions/effect_state_per_rig.py", circuitpyPath),
 
             this.#loadModule("pyswitch/clients/kemper/mappings/__init__.py", circuitpyPath),
             this.#loadModule("pyswitch/clients/kemper/mappings/amp.py", circuitpyPath),

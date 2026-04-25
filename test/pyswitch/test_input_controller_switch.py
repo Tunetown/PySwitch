@@ -249,13 +249,13 @@ class TestControllerSwitch(unittest.TestCase):
         })
 
         self.assertEqual(fs.color, Colors.WHITE)
-        self.assertEqual(fs.brightness, 0.5)
+        self.assertEqual(fs.brightness, 0)
 
         for c in fs.colors:
             self.assertEqual(c, Colors.WHITE)
 
         self.assertEqual(len(fs.colors), 2)
-        self.assertEqual(fs.brightnesses, [0.5, 0.5])
+        self.assertEqual(fs.brightnesses, [0, 0])
 
     ##############################################################################
 

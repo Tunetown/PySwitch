@@ -133,3 +133,86 @@
 .container .action-properties select.parameter-option {
     max-width: 8em;
 }
+
+/**********************************************************************************/
+/* rig_map: per-rig slot override table */
+
+.container .action-properties .rig-map-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.container .action-properties .rig-map-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.container .action-properties .rig-map-table th,
+.container .action-properties .rig-map-table td {
+    border: none;
+    padding: 0.25em 0.4em;
+    vertical-align: middle;
+}
+
+.container .action-properties .rig-map-table th {
+    font-weight: bold;
+    font-size: 0.85em;
+    color: gray;
+    text-align: left;
+}
+
+.container .action-properties .rig-slots-td {
+    min-width: 12em;
+}
+
+.container .action-properties .rig-slots-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+    align-items: flex-start;
+    position: relative;
+}
+
+.container .action-properties .rig-slot-row {
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+}
+
+.container .action-properties .rig-slot-add,
+.container .action-properties .rig-slot-remove {
+    font-size: 0.85em;
+    padding: 0.1em 0.4em;
+    cursor: pointer;
+    border-radius: 0.3em;
+}
+
+.container .action-properties .rig-slot-add:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.container .action-properties .rig-map-add {
+    align-self: flex-start;
+    font-size: 0.85em;
+}
+
+.container .action-properties .rig-remove {
+    display: inline-block;
+    font-size: 0.8em;
+    padding: 0.1em 0.45em;
+    cursor: pointer;
+    border-radius: 0.3em;
+    color: #555;
+    border: 1px solid #999;
+    background: transparent;
+    line-height: 1.4;
+    margin-top: 0.15em;
+    align-self: flex-start;
+}
+
+.container .action-properties .rig-remove:hover {
+    background: #ddd;
+    color: #222;
+}

@@ -395,6 +395,70 @@
                 "parameters": []
             },
             {
+                "entityName": "EFFECT_STATE_PER_RIG",
+                "category": "effects",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "slot_id",
+                        "type": "select",
+                        "values": [
+                            {
+                                "name": "None (disabled by default)",
+                                "value": "None"
+                            },
+                            {
+                                "name": "Slot A",
+                                "value": "KemperEffectSlot.EFFECT_SLOT_ID_A"
+                            },
+                            {
+                                "name": "Slot B",
+                                "value": "KemperEffectSlot.EFFECT_SLOT_ID_B"
+                            },
+                            {
+                                "name": "Slot C",
+                                "value": "KemperEffectSlot.EFFECT_SLOT_ID_C"
+                            },
+                            {
+                                "name": "Slot D",
+                                "value": "KemperEffectSlot.EFFECT_SLOT_ID_D"
+                            },
+                            {
+                                "name": "Slot X",
+                                "value": "KemperEffectSlot.EFFECT_SLOT_ID_X"
+                            },
+                            {
+                                "name": "Slot MOD",
+                                "value": "KemperEffectSlot.EFFECT_SLOT_ID_MOD"
+                            },
+                            {
+                                "name": "Slot DLY (with spillover)",
+                                "value": "KemperEffectSlot.EFFECT_SLOT_ID_DLY"
+                            },
+                            {
+                                "name": "Slot REV (with spillover)",
+                                "value": "KemperEffectSlot.EFFECT_SLOT_ID_REV"
+                            },
+                            {
+                                "name": "Slot DLY (no spillover)",
+                                "value": "KemperEffectSlot.EFFECT_SLOT_ID_DLY_NO_SPILL"
+                            },
+                            {
+                                "name": "Slot REV (no spillover)",
+                                "value": "KemperEffectSlot.EFFECT_SLOT_ID_REV_NO_SPILL"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "rig_overrides",
+                        "type": "rig_map",
+                        "comment": "Per-rig slot override: for each listed rig, this button will control the chosen slot instead of the default one."
+                    }
+                ],
+                "comment": "Switch an effect slot on / off, with per-rig slot override. Assign a different effect slot for specific rigs so the same button always controls the right effect regardless of how rigs are organized on the Kemper.",
+                "importPath": "pyswitch.clients.kemper.actions.effect_state_per_rig"
+            },
+            {
                 "entityName": "EFFECT_BUTTON",
                 "category": "effects",
                 "target": "AdafruitSwitch",

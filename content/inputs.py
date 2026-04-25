@@ -1,189 +1,140 @@
-from pyswitch.clients.kemper.actions.amp import AMP_GAIN
-from pyswitch.clients.kemper.actions.tempo import TAP_TEMPO
-from pyswitch.clients.kemper.actions.tempo import SHOW_TEMPO
-from pyswitch.clients.kemper.actions.effect_state import EFFECT_STATE
-from pyswitch.clients.kemper.actions.bank_up_down import BANK_UP
-from pyswitch.clients.kemper.actions.bank_up_down import BANK_DOWN
-from pyswitch.clients.kemper.actions.rig_select import RIG_SELECT
-from pyswitch.clients.kemper.actions.tuner import TUNER_MODE
-from pyswitch.clients.local.actions.encoder_button import ENCODER_BUTTON
-from pyswitch.clients.kemper.actions.rig_select import RIG_SELECT_DISPLAY_TARGET_RIG
-from pyswitch.clients.kemper import KemperEffectSlot
-from display import DISPLAY_HEADER_1
-from display import DISPLAY_HEADER_2
-from display import DISPLAY_FOOTER_1
-from display import DISPLAY_FOOTER_2
-from display import DISPLAY_RIG_NAME
 from pyswitch.hardware.devices.pa_midicaptain_10 import *
+from pyswitch.clients.kemper import KemperEffectSlot
+from pyswitch.clients.kemper.actions.effect_state_per_rig import EFFECT_STATE_PER_RIG
+from pyswitch.clients.kemper.actions.rig_select import RIG_SELECT, RIG_SELECT_DISPLAY_TARGET_RIG
+from pyswitch.clients.kemper.actions.bank_up_down import BANK_UP, BANK_DOWN
+from display import DISPLAY_SWITCH_3, DISPLAY_SWITCH_4
 
-_accept = ENCODER_BUTTON()
-
-_cancel = ENCODER_BUTTON()
+# Absolute rig IDs: (bank - 1) * 5 + (rig - 1)
+# Bank 1: 0=acou  1=clen  2=crnc  3=heavy  4=lead
 
 Inputs = [
-    {
-        "assignment": PA_MIDICAPTAIN_10_WHEEL_ENCODER,
-        "actions": [
-            AMP_GAIN(
-                accept_action = _accept, 
-                cancel_action = _cancel, 
-                preview_display = DISPLAY_RIG_NAME, 
-                step_width = 40
-            ),
-            
-        ],
-        
-    },
+
+    # Switch 1 — always disabled
     {
         "assignment": PA_MIDICAPTAIN_10_SWITCH_1,
-        "actions": [
-            EFFECT_STATE(
-                slot_id = KemperEffectSlot.EFFECT_SLOT_ID_A, 
-                display = DISPLAY_HEADER_1
-            ),
-            
-        ],
-        
+        "actions": []
     },
+
+    # Switch 2 — always disabled
     {
         "assignment": PA_MIDICAPTAIN_10_SWITCH_2,
-        "actions": [
-            EFFECT_STATE(
-                slot_id = KemperEffectSlot.EFFECT_SLOT_ID_B, 
-                display = DISPLAY_HEADER_2
-            ),
-            
-        ],
-        
+        "actions": []
     },
+
+    # Switch 3 — flanger (X slot) for rigs clen(1), crnc(2), lead(4)
     {
         "assignment": PA_MIDICAPTAIN_10_SWITCH_3,
         "actions": [
-            EFFECT_STATE(
-                slot_id = KemperEffectSlot.EFFECT_SLOT_ID_C, 
-                display = DISPLAY_FOOTER_1
-            ),
-            
-        ],
-        
+            EFFECT_STATE_PER_RIG(
+                slot_id = None,
+                rig_overrides = {
+                    1: KemperEffectSlot.EFFECT_SLOT_ID_X,   # clen
+                    2: KemperEffectSlot.EFFECT_SLOT_ID_X,   # crnc
+                    4: KemperEffectSlot.EFFECT_SLOT_ID_X,   # lead
+                },
+                display = DISPLAY_SWITCH_3
+            )
+        ]
     },
+
+    # Switch 4 — [MOD+C] for acou(0); X for heavy(3)
     {
         "assignment": PA_MIDICAPTAIN_10_SWITCH_4,
         "actions": [
-            EFFECT_STATE(
-                slot_id = KemperEffectSlot.EFFECT_SLOT_ID_D, 
-                display = DISPLAY_FOOTER_2
-            ),
-            
-        ],
-        
+            EFFECT_STATE_PER_RIG(
+                slot_id = None,
+                rig_overrides = {
+                    0: [KemperEffectSlot.EFFECT_SLOT_ID_MOD, KemperEffectSlot.EFFECT_SLOT_ID_C],  # acou
+                    3: KemperEffectSlot.EFFECT_SLOT_ID_X,                                          # heavy
+                },
+                display = DISPLAY_SWITCH_4
+            )
+        ]
     },
+
+    # Switch 5 (UP) — DLY for acou(0); [DLY+REV] for clen(1), crnc(2), heavy(3)
     {
         "assignment": PA_MIDICAPTAIN_10_SWITCH_UP,
         "actions": [
-            TAP_TEMPO(
-                use_leds = False
-            ),
-            SHOW_TEMPO(
-                change_display = DISPLAY_RIG_NAME, 
-                text = '{bpm} bpm'
-            ),
-            
-        ],
-        "actionsHold": [
-            TUNER_MODE(
-                use_leds = False, 
-                text = 'Tuner'
-            ),
-            
-        ],
-        
+            EFFECT_STATE_PER_RIG(
+                slot_id = None,
+                rig_overrides = {
+                    0: KemperEffectSlot.EFFECT_SLOT_ID_DLY,                                          # acou
+                    1: [KemperEffectSlot.EFFECT_SLOT_ID_DLY, KemperEffectSlot.EFFECT_SLOT_ID_REV],  # clen
+                    2: [KemperEffectSlot.EFFECT_SLOT_ID_DLY, KemperEffectSlot.EFFECT_SLOT_ID_REV],  # crnc
+                    3: [KemperEffectSlot.EFFECT_SLOT_ID_DLY, KemperEffectSlot.EFFECT_SLOT_ID_REV],  # heavy
+                },
+                display = None
+            )
+        ]
     },
+
+    # Switch A — Rig 1, hold: Bank Down
     {
         "assignment": PA_MIDICAPTAIN_10_SWITCH_A,
-        "actionsHold": [
-            BANK_DOWN(
-                display_mode = RIG_SELECT_DISPLAY_TARGET_RIG, 
-                text = 'Bank dn'
-            ),
-            
-        ],
         "actions": [
             RIG_SELECT(
-                rig = 1, 
+                rig = 1,
                 display_mode = RIG_SELECT_DISPLAY_TARGET_RIG
-            ),
-            
+            )
         ],
-        
+        "actionsHold": [
+            BANK_DOWN(
+                display_mode = RIG_SELECT_DISPLAY_TARGET_RIG,
+                text = "Bank dn"
+            )
+        ]
     },
+
+    # Switch B — Rig 2
     {
         "assignment": PA_MIDICAPTAIN_10_SWITCH_B,
         "actions": [
             RIG_SELECT(
-                rig = 2, 
+                rig = 2,
                 display_mode = RIG_SELECT_DISPLAY_TARGET_RIG
-            ),
-            
-        ],
-        
+            )
+        ]
     },
+
+    # Switch C — Rig 3
     {
         "assignment": PA_MIDICAPTAIN_10_SWITCH_C,
         "actions": [
             RIG_SELECT(
-                rig = 3, 
+                rig = 3,
                 display_mode = RIG_SELECT_DISPLAY_TARGET_RIG
-            ),
-            
-        ],
-        
+            )
+        ]
     },
+
+    # Switch D — Rig 4
     {
         "assignment": PA_MIDICAPTAIN_10_SWITCH_D,
         "actions": [
             RIG_SELECT(
-                rig = 4, 
+                rig = 4,
                 display_mode = RIG_SELECT_DISPLAY_TARGET_RIG
-            ),
-            
-        ],
-        
+            )
+        ]
     },
+
+    # Switch E (DOWN) — Rig 5, hold: Bank Up
     {
         "assignment": PA_MIDICAPTAIN_10_SWITCH_DOWN,
-        "actionsHold": [
-            BANK_UP(
-                display_mode = RIG_SELECT_DISPLAY_TARGET_RIG, 
-                text = 'Bank up'
-            ),
-            
-        ],
         "actions": [
             RIG_SELECT(
-                rig = 5, 
+                rig = 5,
                 display_mode = RIG_SELECT_DISPLAY_TARGET_RIG
-            ),
-            
-        ],
-        
-    },
-    {
-        "assignment": PA_MIDICAPTAIN_10_WHEEL_BUTTON,
-        "actions": [
-            _accept,
-            
+            )
         ],
         "actionsHold": [
-            _cancel,
-            
-        ],
-        
+            BANK_UP(
+                display_mode = RIG_SELECT_DISPLAY_TARGET_RIG,
+                text = "Bank up"
+            )
+        ]
     },
-    {
-        "assignment": PA_MIDICAPTAIN_10_EXP_PEDAL_1,
-        "actions": [],
-        
-    },
-    
+
 ]

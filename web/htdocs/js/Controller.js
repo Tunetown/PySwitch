@@ -3,8 +3,8 @@
  */
 class Controller {
 
-    static PYSWITCH_VERSION = "2.4.8";                           // Version of PySwitch this emulator is designed to run with
-    static VERSION = Controller.PYSWITCH_VERSION + ".15";        // PySwitch Emulator Version
+    static PYSWITCH_VERSION = "2.4.9";                           // Version of PySwitch this emulator is designed to run with
+    static VERSION = Controller.PYSWITCH_VERSION + ".16";        // PySwitch Emulator Version
 
     ui = null;                  // User Interface implementation
     routing = null;             // sammy.js router
@@ -89,7 +89,7 @@ class Controller {
                 this.handle(e);
             }
 
-            // Initialize UI (settings panel etc.)        
+            // Initialize UI (settings panel etc.)
             await this.ui.build();
 
             // Routing handler: Runs routing. see Routing.js for the callbacks which in turn call this controller again.

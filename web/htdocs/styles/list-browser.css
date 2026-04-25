@@ -32,6 +32,10 @@
     border-radius: 1.5em;
 }
 
+.container .list-browser.medium {
+    max-width: 750px;
+}
+
 .container .list-browser.wide {
     max-width: 1400px;
     max-height: 1200px;

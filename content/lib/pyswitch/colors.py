@@ -14,6 +14,7 @@ class Colors:
     GREEN = (0, 255, 0)
     DARK_GREEN = (73, 110, 41)
     TURQUOISE = (64, 242, 208)
+    CYAN = (0, 255, 255)
     BLUE = (0, 0, 255)
     LIGHT_BLUE = (100, 100, 255)
     DARK_BLUE = (0, 0, 120)
@@ -22,7 +23,7 @@ class Colors:
     BLACK = (0, 0, 0)
 
 # Default background color for display slots
-DEFAULT_LABEL_COLOR = (50, 50, 50)   
+DEFAULT_LABEL_COLOR = (50, 50, 50)
 
 # Default color for switches
 DEFAULT_SWITCH_COLOR = (255, 255, 255)

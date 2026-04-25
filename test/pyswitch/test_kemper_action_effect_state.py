@@ -59,91 +59,116 @@ class TestKemperActionEffectState(unittest.TestCase):
         self.assertEqual(action._Action__enable_callback, ecb)
         self.assertEqual(action._PushButtonAction__mode, PushButtonAction.LATCH)
 
-
     def test_effect_categories(self):
         cb = KemperEffectEnableCallback(KemperEffectSlot.EFFECT_SLOT_ID_DLY)
 
         # None
         self.assertEqual(cb.get_effect_category(0), KemperEffectEnableCallback.CATEGORY_NONE)
 
-        # Wah (and some pitch)
-        for i in range(1, 10):
+        # Wah family: 1-10, 12, 13
+        for i in range(1, 11):
             self.assertEqual(cb.get_effect_category(i), KemperEffectEnableCallback.CATEGORY_WAH)
-
-        self.assertEqual(cb.get_effect_category(11), KemperEffectEnableCallback.CATEGORY_PITCH)
         self.assertEqual(cb.get_effect_category(12), KemperEffectEnableCallback.CATEGORY_WAH)
-        self.assertEqual(cb.get_effect_category(13), KemperEffectEnableCallback.CATEGORY_PITCH)
+        self.assertEqual(cb.get_effect_category(13), KemperEffectEnableCallback.CATEGORY_WAH)
 
-        # Dist
-        for i in range(17, 42):
+        # Pitch Pedal: 11
+        self.assertEqual(cb.get_effect_category(11), KemperEffectEnableCallback.CATEGORY_PITCH)
+
+        # Distortion / Shaper: 17-42 (Includes Kemper Drive, Fuzz, etc.)
+        for i in range(17, 43):
             self.assertEqual(cb.get_effect_category(i), KemperEffectEnableCallback.CATEGORY_DISTORTION)
 
-        # Comp
-        for i in range(49, 56):
+        # Dynamics / Compressor: 49-50
+        for i in range(49, 51):
             self.assertEqual(cb.get_effect_category(i), KemperEffectEnableCallback.CATEGORY_COMPRESSOR)
 
-        # Noise Gate
-        for i in range(57, 58):
+        # Noise Gate: 57-58
+        for i in range(57, 59):
             self.assertEqual(cb.get_effect_category(i), KemperEffectEnableCallback.CATEGORY_NOISE_GATE)
 
-        # Space
+        # Space: 64
         self.assertEqual(cb.get_effect_category(64), KemperEffectEnableCallback.CATEGORY_SPACE)
 
-        # Chorus
-        for i in range(65, 71):
+        # Chorus: 65-67, 71
+        for i in (65, 66, 67, 71):
             self.assertEqual(cb.get_effect_category(i), KemperEffectEnableCallback.CATEGORY_CHORUS)
 
-        # Phaser / Flanger
-        for i in range(81, 91):
+        # Vibrato: 68
+        self.assertEqual(cb.get_effect_category(68), KemperEffectEnableCallback.CATEGORY_VIBRATO)
+
+        # Rotary: 69
+        self.assertEqual(cb.get_effect_category(69), KemperEffectEnableCallback.CATEGORY_ROTARY)
+
+        # Tremolo: 70, 75, 76
+        for i in (70, 75, 76):
+            self.assertEqual(cb.get_effect_category(i), KemperEffectEnableCallback.CATEGORY_TREMOLO)
+
+        # Slicer / Autopanner: 77-80
+        for i in range(77, 81):
+            self.assertEqual(cb.get_effect_category(i), KemperEffectEnableCallback.CATEGORY_SLICER)
+
+        # Phaser / Flanger: 81-91
+        for i in range(81, 92):
             self.assertEqual(cb.get_effect_category(i), KemperEffectEnableCallback.CATEGORY_PHASER_FLANGER)
 
-        # EQ
-        for i in range(97, 104):
+        # EQ / Widener: 97-104
+        for i in range(97, 105):
             self.assertEqual(cb.get_effect_category(i), KemperEffectEnableCallback.CATEGORY_EQUALIZER)
 
-        # Boost
-        for i in range(113, 116):
+        # Booster: 113-116
+        for i in range(113, 117):
             self.assertEqual(cb.get_effect_category(i), KemperEffectEnableCallback.CATEGORY_BOOSTER)
 
-        # Looper
-        for i in range(121, 123):
+        # Looper: 121-123
+        for i in range(121, 124):
             self.assertEqual(cb.get_effect_category(i), KemperEffectEnableCallback.CATEGORY_LOOPER)
 
-        # Pitch
-        for i in range(129, 132):
+        # Pitch / Harmony: 129-132
+        for i in range(129, 133):
             self.assertEqual(cb.get_effect_category(i), KemperEffectEnableCallback.CATEGORY_PITCH)
 
-        # Dual
-        for i in range(137, 140):
+        # Dual / Pitch+Delay: 138-140
+        for i in range(138, 141):
             self.assertEqual(cb.get_effect_category(i), KemperEffectEnableCallback.CATEGORY_DUAL)
 
-        # Delay
-        for i in range(145, 166):
+        # Delay: 145-166
+        for i in range(145, 167):
             self.assertEqual(cb.get_effect_category(i), KemperEffectEnableCallback.CATEGORY_DELAY)
 
-        # Rev
-        for i in range(177, 193):
+        # Reverb: 177-193
+        for i in range(177, 194):
             self.assertEqual(cb.get_effect_category(i), KemperEffectEnableCallback.CATEGORY_REVERB)
 
-
     def test_type_colors(self):
-        # All types have to be mapped
+        # All categories must have a valid color mapped in CATEGORY_COLORS
         cb = KemperEffectEnableCallback(KemperEffectSlot.EFFECT_SLOT_ID_DLY)
 
-        cb.get_effect_category_color(KemperEffectEnableCallback.CATEGORY_WAH, 0)
-        cb.get_effect_category_color(KemperEffectEnableCallback.CATEGORY_DISTORTION, 0)
-        cb.get_effect_category_color(KemperEffectEnableCallback.CATEGORY_COMPRESSOR, 0)
-        cb.get_effect_category_color(KemperEffectEnableCallback.CATEGORY_NOISE_GATE, 0)
-        cb.get_effect_category_color(KemperEffectEnableCallback.CATEGORY_SPACE, 0)
-        cb.get_effect_category_color(KemperEffectEnableCallback.CATEGORY_CHORUS, 0)
-        cb.get_effect_category_color(KemperEffectEnableCallback.CATEGORY_PHASER_FLANGER, 0)
-        cb.get_effect_category_color(KemperEffectEnableCallback.CATEGORY_EQUALIZER, 0)
-        cb.get_effect_category_color(KemperEffectEnableCallback.CATEGORY_BOOSTER, 0)
-        cb.get_effect_category_color(KemperEffectEnableCallback.CATEGORY_LOOPER, 0)
-        cb.get_effect_category_color(KemperEffectEnableCallback.CATEGORY_PITCH, 0)
-        cb.get_effect_category_color(KemperEffectEnableCallback.CATEGORY_DUAL, 0)
-        cb.get_effect_category_color(KemperEffectEnableCallback.CATEGORY_DELAY, 0)
-        cb.get_effect_category_color(KemperEffectEnableCallback.CATEGORY_REVERB, 0)
+        categories = [
+            KemperEffectEnableCallback.CATEGORY_WAH,
+            KemperEffectEnableCallback.CATEGORY_DISTORTION,
+            KemperEffectEnableCallback.CATEGORY_COMPRESSOR,
+            KemperEffectEnableCallback.CATEGORY_NOISE_GATE,
+            KemperEffectEnableCallback.CATEGORY_SPACE,
+            KemperEffectEnableCallback.CATEGORY_CHORUS,
+            KemperEffectEnableCallback.CATEGORY_PHASER_FLANGER,
+            KemperEffectEnableCallback.CATEGORY_EQUALIZER,
+            KemperEffectEnableCallback.CATEGORY_BOOSTER,
+            KemperEffectEnableCallback.CATEGORY_LOOPER,
+            KemperEffectEnableCallback.CATEGORY_PITCH,
+            KemperEffectEnableCallback.CATEGORY_DUAL,
+            KemperEffectEnableCallback.CATEGORY_DELAY,
+            KemperEffectEnableCallback.CATEGORY_REVERB,
+            # New categories from your latest effect_state.py
+            KemperEffectEnableCallback.CATEGORY_TREMOLO,
+            KemperEffectEnableCallback.CATEGORY_ROTARY,
+            KemperEffectEnableCallback.CATEGORY_VIBRATO,
+            KemperEffectEnableCallback.CATEGORY_SLICER
+        ]
+
+        for cat in categories:
+            color = cb.get_effect_category_color(cat, 0)
+            # Ensure the color returned is not None
+            self.assertIsNotNone(color)
 
     def test_color_override(self):
         cb = KemperEffectEnableCallback(
@@ -190,19 +215,32 @@ class TestKemperActionEffectState(unittest.TestCase):
         # All types have to be mapped
         cb = KemperEffectEnableCallback(KemperEffectSlot.EFFECT_SLOT_ID_DLY)
 
-        cb.get_effect_category_text(KemperEffectEnableCallback.CATEGORY_WAH, 0)
-        cb.get_effect_category_text(KemperEffectEnableCallback.CATEGORY_DISTORTION, 0)
-        cb.get_effect_category_text(KemperEffectEnableCallback.CATEGORY_COMPRESSOR, 0)
-        cb.get_effect_category_text(KemperEffectEnableCallback.CATEGORY_NOISE_GATE, 0)
-        cb.get_effect_category_text(KemperEffectEnableCallback.CATEGORY_SPACE, 0)
-        cb.get_effect_category_text(KemperEffectEnableCallback.CATEGORY_CHORUS, 0)
-        cb.get_effect_category_text(KemperEffectEnableCallback.CATEGORY_PHASER_FLANGER, 0)
-        cb.get_effect_category_text(KemperEffectEnableCallback.CATEGORY_EQUALIZER, 0)
-        cb.get_effect_category_text(KemperEffectEnableCallback.CATEGORY_BOOSTER, 0)
-        cb.get_effect_category_text(KemperEffectEnableCallback.CATEGORY_LOOPER, 0)
-        cb.get_effect_category_text(KemperEffectEnableCallback.CATEGORY_PITCH, 0)
-        cb.get_effect_category_text(KemperEffectEnableCallback.CATEGORY_DUAL, 0)
-        cb.get_effect_category_text(KemperEffectEnableCallback.CATEGORY_DELAY, 0)
-        cb.get_effect_category_text(KemperEffectEnableCallback.CATEGORY_REVERB, 0)
+        # List of all categories defined in KemperEffectEnableCallback
+        categories = [
+            KemperEffectEnableCallback.CATEGORY_WAH,
+            KemperEffectEnableCallback.CATEGORY_DISTORTION,
+            KemperEffectEnableCallback.CATEGORY_COMPRESSOR,
+            KemperEffectEnableCallback.CATEGORY_NOISE_GATE,
+            KemperEffectEnableCallback.CATEGORY_SPACE,
+            KemperEffectEnableCallback.CATEGORY_CHORUS,
+            KemperEffectEnableCallback.CATEGORY_PHASER_FLANGER,
+            KemperEffectEnableCallback.CATEGORY_EQUALIZER,
+            KemperEffectEnableCallback.CATEGORY_BOOSTER,
+            KemperEffectEnableCallback.CATEGORY_LOOPER,
+            KemperEffectEnableCallback.CATEGORY_PITCH,
+            KemperEffectEnableCallback.CATEGORY_DUAL,
+            KemperEffectEnableCallback.CATEGORY_DELAY,
+            KemperEffectEnableCallback.CATEGORY_REVERB,
+            # New categories added in PR
+            KemperEffectEnableCallback.CATEGORY_TREMOLO,
+            KemperEffectEnableCallback.CATEGORY_ROTARY,
+            KemperEffectEnableCallback.CATEGORY_VIBRATO,
+            KemperEffectEnableCallback.CATEGORY_SLICER
+        ]
 
+        for category in categories:
+            name = cb.get_effect_category_text(category, 0)
+            # Ensure the name is not the default "-" unless it's CATEGORY_NONE
+            self.assertIsNotNone(name)
+            self.assertNotEqual(name, "")
 

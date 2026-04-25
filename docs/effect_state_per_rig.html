@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFFECT_STATE_PER_RIG — Installation and Usage Guide</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:         #0f1117;
+            --surface:    #1a1d27;
+            --surface2:   #23273a;
+            --border:     #2e3347;
+            --accent:     #4f8ef7;
+            --accent2:    #7c5cfc;
+            --green:      #2ecc71;
+            --orange:     #e67e22;
+            --red:        #e74c3c;
+            --text:       #d4d8f0;
+            --text-dim:   #7880a0;
+            --code-bg:    #12151f;
+            --code-str:   #a8d8a8;
+            --code-kw:    #79aaff;
+            --code-cm:    #5a6080;
+            --code-num:   #f5a623;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        /* Layout */
+        .wrapper { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+        /* Header */
+        header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 32px;
+            margin-bottom: 48px;
+        }
+        .badge {
+            display: inline-block;
+            background: var(--accent2);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 4px;
+            margin-bottom: 14px;
+        }
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        header p { color: var(--text-dim); max-width: 600px; }
+
+        /* Table of contents */
+        .toc {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin-bottom: 48px;
+        }
+        .toc h2 { font-size: .85rem; text-transform: uppercase; letter-spacing: .08em; color: var(--text-dim); margin-bottom: 12px; }
+        .toc ol { padding-left: 18px; }
+        .toc li { margin-bottom: 4px; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+
+        /* Sections */
+        section { margin-bottom: 56px; }
+        h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #fff;
+            border-left: 3px solid var(--accent);
+            padding-left: 14px;
+            margin-bottom: 20px;
+        }
+        h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 24px 0 10px;
+        }
+        p { margin-bottom: 12px; color: var(--text); }
+
+        /* Code blocks */
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 18px 20px;
+            overflow-x: auto;
+            margin: 12px 0 20px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        code { font-family: 'Cascadia Code', 'Fira Mono', 'Consolas', monospace; }
+        pre code { color: var(--text); }
+        .kw  { color: var(--code-kw); }
+        .str { color: var(--code-str); }
+        .cm  { color: var(--code-cm); font-style: italic; }
+        .num { color: var(--code-num); }
+        .fn  { color: #e5b567; }
+        .cl  { color: #d7ba7d; }
+        p code, li code {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1px 6px;
+            font-size: 12.5px;
+            color: #c9d0e8;
+        }
+
+        /* Steps */
+        .steps { counter-reset: step; }
+        .step {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .step-num {
+            counter-increment: step;
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 2px;
+        }
+        .step-num::before { content: counter(step); }
+        .step-body { flex: 1; }
+        .step-body p { margin-bottom: 6px; }
+
+        /* Callout boxes */
+        .callout {
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin: 16px 0;
+            border-left: 4px solid;
+            font-size: 14px;
+        }
+        .callout.info    { background: #1a2540; border-color: var(--accent); }
+        .callout.warning { background: #2a1f10; border-color: var(--orange); }
+        .callout.tip     { background: #0f2a1a; border-color: var(--green); }
+        .callout strong  { display: block; margin-bottom: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-dim); }
+
+        /* Rig diagram */
+        .rig-diagram {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 24px;
+            margin: 16px 0 24px;
+            font-family: 'Cascadia Code', 'Fira Mono', monospace;
+            font-size: 12.5px;
+            line-height: 1.9;
+        }
+        .rig-diagram .bank-row { color: var(--text-dim); }
+        .rig-diagram .active   { color: var(--accent); font-weight: 700; }
+        .rig-diagram .override { color: var(--orange); font-weight: 700; }
+        .rig-diagram .legend   { margin-top: 12px; font-size: 11px; }
+        .rig-diagram .dot-active   { color: var(--accent); }
+        .rig-diagram .dot-override { color: var(--orange); }
+
+        /* UI mockup */
+        .ui-mockup {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 16px 0 24px;
+        }
+        .ui-mockup .label {
+            font-size: 11px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: .07em;
+            margin-bottom: 8px;
+        }
+        .ui-mockup table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .ui-mockup th {
+            background: var(--surface2);
+            color: var(--text-dim);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            padding: 7px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .ui-mockup td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .ui-mockup tr:last-child td { border-bottom: none; }
+        .ui-mockup .mock-input {
+            display: inline-block;
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-family: 'Cascadia Code', monospace;
+            font-size: 12px;
+            min-width: 50px;
+            text-align: center;
+        }
+        .ui-mockup .mock-select {
+            display: inline-block;
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-size: 12px;
+        }
+        .ui-mockup .mock-select::after { content: " ▾"; color: var(--text-dim); }
+        .ui-mockup .mock-btn {
+            display: inline-block;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 11px;
+            cursor: pointer;
+            color: var(--text-dim);
+        }
+        .ui-mockup .mock-btn.remove { color: var(--red); border-color: var(--red); }
+        .ui-mockup .add-btn {
+            display: inline-block;
+            margin-top: 10px;
+            background: transparent;
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-size: 12px;
+            color: var(--accent);
+        }
+        .ui-mockup .prop-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+        .ui-mockup .prop-label { width: 110px; color: var(--text-dim); flex-shrink: 0; }
+
+        /* File path */
+        .file-path {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 4px 12px;
+            font-family: 'Cascadia Code', monospace;
+            font-size: 12px;
+            color: var(--text-dim);
+            margin: 4px 0;
+        }
+        .file-path .icon { opacity: .5; }
+        .file-path .path-part { color: var(--text); }
+
+        ul, ol { padding-left: 22px; margin-bottom: 12px; }
+        li { margin-bottom: 5px; }
+
+        hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+        footer {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 13px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+
+    <header>
+        <div class="badge">PySwitch — custom extension</div>
+        <h1>EFFECT_STATE_PER_RIG</h1>
+        <p>Assign different effect slots per rig. The same button always controls the right effect, regardless of how slots are organized on the Kemper.</p>
+    </header>
+
+    <nav class="toc">
+        <h2>Contents</h2>
+        <ol>
+            <li><a href="#problema">The problem it solves</a></li>
+            <li><a href="#installazione-device">Device installation (MIDICaptain)</a></li>
+            <li><a href="#installazione-web">Web editor installation</a></li>
+            <li><a href="#configurazione-py">Manual configuration in inputs.py</a></li>
+            <li><a href="#configurazione-ui">Configuration via web editor</a></li>
+            <li><a href="#rig-id">How to calculate the absolute rig ID</a></li>
+            <li><a href="#esempi">Practical examples</a></li>
+        </ol>
+    </nav>
+
+    <!-- ===== PROBLEM ===== -->
+    <section id="problema">
+        <h2>1 · The problem it solves</h2>
+        <p>In the Kemper, each rig distributes its effects across slots (A, B, C, D, X, MOD, DLY, REV). With PySwitch, each button controls a specific slot &mdash; for example button 1 always controls slot A. The problem arises when different slots hold different types of effects depending on the rig:</p>
+
+        <div class="rig-diagram">
+<span class="bank-row">           Slot A      Slot B      Slot C      Slot X</span>
+<span class="bank-row">Rig 1 ──  </span><span class="active">Compressor</span><span class="bank-row">   Chorus      Delay       Reverb</span>
+<span class="bank-row">Rig 2 ──  </span><span class="override">Distortion</span><span class="bank-row">   Compressor  Chorus      Delay</span>
+<span class="bank-row">Rig 3 ──  </span><span class="override">Wah        </span><span class="bank-row">  Delay       </span><span class="override">Compressor</span><span class="bank-row">  Reverb</span>
+
+<span class="legend">  <span class="dot-active">■</span> Button 1 (Slot A): activates Compressor on Rig 1, but Distortion on Rig 2 and Wah on Rig 3</span>
+        </div>
+
+        <p>With <code>EFFECT_STATE_PER_RIG</code> you can specify a <strong>default slot</strong> and then <strong>overrides for specific rigs</strong>. When you change rig, the button automatically points to the correct slot, updating the LED and display in real time.</p>
+
+        <div class="rig-diagram">
+<span class="bank-row">           Button 1    Button 2    Button 3    Button 4</span>
+<span class="bank-row">Default ─  </span><span class="active">Slot A      Slot B      Slot C      Slot X</span>
+<span class="bank-row">Rig 2   ─  </span><span class="override">Slot B</span><span class="bank-row">      Slot A      Slot C      Slot X      </span><span class="cm">← override</span>
+<span class="bank-row">Rig 3   ─  </span><span class="override">Slot C</span><span class="bank-row">      Slot B      </span><span class="override">Slot A</span><span class="bank-row">      Slot X      </span><span class="cm">← override</span>
+        </div>
+    </section>
+
+    <!-- ===== DEVICE INSTALLATION ===== -->
+    <section id="installazione-device">
+        <h2>2 · Device installation (MIDICaptain)</h2>
+        <p>You need to copy a single Python file to the Kemper effects folder on the device.</p>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-num"></div>
+                <div class="step-body">
+                    <p><strong>Mount the device as USB</strong></p>
+                    <p>Hold button 1 while powering on the MIDICaptain. The <code>MIDICAPTAIN</code> drive will appear on your computer.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num"></div>
+                <div class="step-body">
+                    <p><strong>Copy the file</strong></p>
+                    <p>Copy the file from the project folder:</p>
+                    <div class="file-path"><span class="icon">📁</span> <span>pyswitch/</span><span class="path-part">content/lib/pyswitch/clients/kemper/actions/<strong>effect_state_per_rig.py</strong></span></div>
+                    <p>to the same location on the device drive:</p>
+                    <div class="file-path"><span class="icon">💾</span> <span>MIDICAPTAIN/</span><span class="path-part">lib/pyswitch/clients/kemper/actions/<strong>effect_state_per_rig.py</strong></span></div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num"></div>
+                <div class="step-body">
+                    <p><strong>Eject and restart</strong></p>
+                    <p>Eject the drive safely, then restart the controller.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="callout warning">
+            <strong>Warning</strong>
+            The file must be in the same folder as the other Kemper action files (<code>effect_state.py</code>, <code>rig_select.py</code>, etc.), otherwise relative imports will fail.
+        </div>
+    </section>
+
+    <!-- ===== WEB EDITOR INSTALLATION ===== -->
+    <section id="installazione-web">
+        <h2>3 · Web editor installation</h2>
+        <p>If you use the <a href="https://pyswitch.tunetown.de" style="color:var(--accent)">PySwitch Emulator</a> (online version) you cannot modify it directly. You need to use a local version. If you have already cloned the project to <code>C:\Users\…\Desktop\pyswitch\</code>, the files are already patched. For other installations, use the included script.</p>
+
+        <h3>Automatic patch via script</h3>
+        <p>Run the Python script from the <code>web_patch/</code> folder (available in the <code>feature/effect-state-per-rig</code> branch):</p>
+
+        <pre><code>python web_patch/apply_patches.py web/htdocs/definitions/</code></pre>
+
+        <p>The script automatically adds the <code>EFFECT_STATE_PER_RIG</code> definitions to <code>meta.json</code> and <code>actions.json</code> without reformatting the rest of the file.</p>
+
+        <h3>Replacing ActionProperties.js</h3>
+        <p>Copy the patched file to the correct location:</p>
+
+        <div class="file-path"><span class="icon">📁</span> <span>pyswitch/</span><span class="path-part">web_patch/<strong>ActionProperties.js</strong></span></div>
+        <p>→</p>
+        <div class="file-path"><span class="icon">💾</span> <span>pyswitch/</span><span class="path-part">web/htdocs/js/ui/parser/<strong>ActionProperties.js</strong></span></div>
+
+        <pre><code>copy web_patch\ActionProperties.js web\htdocs\js\ui\parser\ActionProperties.js</code></pre>
+
+        <div class="callout tip">
+            <strong>In the feature/effect-state-per-rig branch</strong>
+            If you used the prepared branch, all three web editor changes (<code>actions.json</code>, <code>meta.json</code>, <code>ActionProperties.js</code>) are already included in the repository. No need to run anything &mdash; just open the web editor from the local folder.
+        </div>
+
+        <h3>Opening the local web editor</h3>
+        <p>Open <code>web/htdocs/index.html</code> with a local server (required for WASM). With Python:</p>
+
+        <pre><code>cd web/htdocs
+python -m http.server 8080</code></pre>
+
+        <p>Then open <code>http://localhost:8080</code> in your browser.</p>
+    </section>
+
+    <!-- ===== MANUAL CONFIGURATION ===== -->
+    <section id="configurazione-py">
+        <h2>4 · Manual configuration in inputs.py</h2>
+        <p>Add the import at the top of the file and replace <code>EFFECT_STATE</code> with <code>EFFECT_STATE_PER_RIG</code> for buttons that require overrides.</p>
+
+        <pre><code><span class="kw">from</span> pyswitch.clients.kemper.actions.effect_state_per_rig <span class="kw">import</span> <span class="fn">EFFECT_STATE_PER_RIG</span>
+<span class="kw">from</span> pyswitch.clients.kemper <span class="kw">import</span> KemperEffectSlot
+
+<span class="cm"># Absolute rig ID = (bank - 1) * 5 + (rig - 1)</span>
+<span class="cm"># Bank 1, Rig 1 → 0   Bank 1, Rig 2 → 1   Bank 1, Rig 3 → 2</span>
+<span class="cm"># Bank 2, Rig 1 → 5   Bank 2, Rig 2 → 6   etc.</span>
+
+Inputs = [
+    <span class="cm"># Button 1: default Slot A, but uses a different slot for certain rigs</span>
+    {
+        <span class="str">"assignment"</span>: PA_MIDICAPTAIN_10_SWITCH_1,
+        <span class="str">"actions"</span>: [
+            <span class="fn">EFFECT_STATE_PER_RIG</span>(
+                slot_id = KemperEffectSlot.EFFECT_SLOT_ID_A,  <span class="cm"># default</span>
+                rig_overrides = {
+                    <span class="num">2</span>: KemperEffectSlot.EFFECT_SLOT_ID_C,   <span class="cm"># Bank 1 Rig 3 → Slot C</span>
+                    <span class="num">5</span>: KemperEffectSlot.EFFECT_SLOT_ID_DLY, <span class="cm"># Bank 2 Rig 1 → Slot DLY</span>
+                },
+                display = DISPLAY_HEADER_1
+            ),
+        ],
+    },
+    <span class="cm"># Buttons without overrides: keep using normal EFFECT_STATE</span>
+    {
+        <span class="str">"assignment"</span>: PA_MIDICAPTAIN_10_SWITCH_2,
+        <span class="str">"actions"</span>: [
+            <span class="fn">EFFECT_STATE</span>(slot_id = KemperEffectSlot.EFFECT_SLOT_ID_B, display = DISPLAY_HEADER_2),
+        ],
+    },
+    <span class="cm"># ...</span>
+]</code></pre>
+
+        <div class="callout info">
+            <strong>Available parameters</strong>
+            <code>EFFECT_STATE_PER_RIG</code> accepts all parameters of <code>EFFECT_STATE</code> (<code>display</code>, <code>mode</code>, <code>text</code>, <code>color</code>, <code>show_slot_names</code>, <code>use_leds</code>, <code>enable_callback</code>) plus the mandatory <code>rig_overrides</code> parameter.
+        </div>
+    </section>
+
+    <!-- ===== UI CONFIGURATION ===== -->
+    <section id="configurazione-ui">
+        <h2>5 · Configuration via web editor</h2>
+        <p>After applying the patches, the new action appears in the Kemper effects list under the name <strong>EFFECT_STATE_PER_RIG</strong>.</p>
+
+        <h3>How to add the action to a button</h3>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num"></div>
+                <div class="step-body">
+                    <p>In the button configuration panel, click <strong>+ Add action</strong> and search for <code>EFFECT_STATE_PER_RIG</code> in the <em>Effects</em> category.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num"></div>
+                <div class="step-body">
+                    <p>Select the <strong>default Slot</strong> from the dropdown (Slot A, B, C, D, X, MOD, DLY, REV, etc.). This slot will be used for all rigs without an override.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num"></div>
+                <div class="step-body">
+                    <p>In the <strong>Rig Overrides</strong> section, add exceptions rig by rig.</p>
+                </div>
+            </div>
+        </div>
+
+        <h3>Rig Overrides interface</h3>
+        <div class="ui-mockup">
+            <div class="prop-row">
+                <span class="prop-label">Slot</span>
+                <span class="mock-select">Slot A</span>
+            </div>
+            <div class="prop-row">
+                <span class="prop-label">Display</span>
+                <span class="mock-select">DISPLAY_HEADER_1</span>
+            </div>
+            <div class="prop-row" style="align-items:flex-start">
+                <span class="prop-label" style="margin-top:8px">Rig Overrides</span>
+                <div style="flex:1">
+                    <div class="label">Per-rig overrides: alternate slot for specific bank/rig combinations</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Bank</th>
+                                <th>Rig</th>
+                                <th>Slot</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="mock-input">1</span></td>
+                                <td><span class="mock-select">3</span></td>
+                                <td><span class="mock-select">Slot C</span></td>
+                                <td><span class="mock-btn remove">✕</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="mock-input">2</span></td>
+                                <td><span class="mock-select">1</span></td>
+                                <td><span class="mock-select">Slot DLY (spillover)</span></td>
+                                <td><span class="mock-btn remove">✕</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <span class="add-btn">+ Add override</span>
+                </div>
+            </div>
+        </div>
+
+        <h3>Table usage</h3>
+        <ul>
+            <li><strong>Bank</strong>: bank number (1 – 125)</li>
+            <li><strong>Rig</strong>: rig position within the bank (1 – 5)</li>
+            <li><strong>Slot</strong>: the effect slot to use when this rig is active</li>
+            <li><strong>+ Add override</strong>: adds a new row to the table</li>
+            <li><strong>✕</strong>: removes the corresponding row</li>
+        </ul>
+
+        <div class="callout tip">
+            <strong>Code ↔ UI round-trip</strong>
+            The table is populated automatically even when loading a configuration from existing Python code. You can freely switch between the graphical editor and the code editor without losing data.
+        </div>
+
+        <h3>Saving</h3>
+        <p>Use the <strong>Save → Connected Controllers</strong> button (via MIDI) or <strong>Save → Download (ZIP)</strong> and copy the files to the device via USB as described in the <a href="#installazione-device" style="color:var(--accent)">Installation</a> section.</p>
+    </section>
+
+    <!-- ===== RIG ID ===== -->
+    <section id="rig-id">
+        <h2>6 · How to calculate the absolute rig ID</h2>
+        <p>The web editor asks for Bank and Rig separately, so no calculation is needed. If you configure <code>inputs.py</code> manually, the <code>rig_overrides</code> dictionary uses <strong>absolute IDs</strong> calculated with this formula:</p>
+
+        <pre><code>abs_rig_id = (bank - 1) * 5 + (rig - 1)</code></pre>
+
+        <p>Where <code>bank</code> and <code>rig</code> are both <strong>1-based</strong> (first bank is 1, first rig is 1).</p>
+
+        <h3>Quick reference table</h3>
+        <div class="rig-diagram" style="font-size:12px; line-height:2">
+<span class="bank-row">            Rig 1   Rig 2   Rig 3   Rig 4   Rig 5</span>
+<span class="bank-row">Bank  1  →    </span><span class="active">0</span><span class="bank-row">       </span><span class="active">1</span><span class="bank-row">       </span><span class="active">2</span><span class="bank-row">       </span><span class="active">3</span><span class="bank-row">       </span><span class="active">4</span>
+<span class="bank-row">Bank  2  →    </span><span class="num">5</span><span class="bank-row">       </span><span class="num">6</span><span class="bank-row">       </span><span class="num">7</span><span class="bank-row">       </span><span class="num">8</span><span class="bank-row">       </span><span class="num">9</span>
+<span class="bank-row">Bank  3  →   </span><span class="num">10</span><span class="bank-row">      </span><span class="num">11</span><span class="bank-row">      </span><span class="num">12</span><span class="bank-row">      </span><span class="num">13</span><span class="bank-row">      </span><span class="num">14</span>
+<span class="bank-row">Bank  4  →   </span><span class="num">15</span><span class="bank-row">      </span><span class="num">16</span><span class="bank-row">      </span><span class="num">17</span><span class="bank-row">      </span><span class="num">18</span><span class="bank-row">      </span><span class="num">19</span>
+<span class="bank-row">  …</span>
+<span class="bank-row">Bank 10  →   </span><span class="num">45</span><span class="bank-row">      </span><span class="num">46</span><span class="bank-row">      </span><span class="num">47</span><span class="bank-row">      </span><span class="num">48</span><span class="bank-row">      </span><span class="num">49</span>
+        </div>
+
+        <div class="callout info">
+            <strong>Reverse lookup</strong>
+            Given an absolute ID <code>n</code>, you can derive bank and rig with:<br>
+            <code>bank = floor(n / 5) + 1</code> &nbsp;&nbsp; <code>rig = (n % 5) + 1</code>
+        </div>
+    </section>
+
+    <!-- ===== EXAMPLES ===== -->
+    <section id="esempi">
+        <h2>7 · Practical examples</h2>
+
+        <h3>Scenario A — Compressor always on button 1</h3>
+        <p>In most rigs the compressor is in Slot A. Only in Bank 1 Rig 4 and Bank 2 Rig 2 is it in Slot C.</p>
+
+        <pre><code><span class="fn">EFFECT_STATE_PER_RIG</span>(
+    slot_id = KemperEffectSlot.EFFECT_SLOT_ID_A,  <span class="cm"># default: Slot A</span>
+    rig_overrides = {
+        <span class="num">3</span>: KemperEffectSlot.EFFECT_SLOT_ID_C,  <span class="cm"># Bank 1 Rig 4 → Slot C</span>
+        <span class="num">6</span>: KemperEffectSlot.EFFECT_SLOT_ID_C,  <span class="cm"># Bank 2 Rig 2 → Slot C</span>
+    },
+    display = DISPLAY_HEADER_1
+)</code></pre>
+
+        <h3>Scenario B — Delay always on the UP button (with Reverb)</h3>
+        <p>In some rigs the delay is in the standard Slot DLY, in others it is in Slot X.</p>
+
+        <pre><code><span class="cm"># UP button: Delay + Reverb with delay override for certain rigs</span>
+{
+    <span class="str">"assignment"</span>: PA_MIDICAPTAIN_10_SWITCH_UP,
+    <span class="str">"actions"</span>: [
+        <span class="fn">EFFECT_STATE_PER_RIG</span>(
+            slot_id = KemperEffectSlot.EFFECT_SLOT_ID_DLY,  <span class="cm"># default</span>
+            rig_overrides = {
+                <span class="num">7</span>: KemperEffectSlot.EFFECT_SLOT_ID_X,  <span class="cm"># Bank 2 Rig 3 → Slot X</span>
+            }
+        ),
+        <span class="fn">EFFECT_STATE</span>(slot_id = KemperEffectSlot.EFFECT_SLOT_ID_REV),
+    ],
+}</code></pre>
+
+        <h3>Scenario C — Overrides on all stomp buttons</h3>
+        <p>Full configuration where each button has its own set of overrides:</p>
+
+        <pre><code><span class="kw">from</span> pyswitch.clients.kemper.actions.effect_state_per_rig <span class="kw">import</span> EFFECT_STATE_PER_RIG
+<span class="kw">from</span> pyswitch.clients.kemper.actions.effect_state <span class="kw">import</span> EFFECT_STATE
+<span class="kw">from</span> pyswitch.clients.kemper <span class="kw">import</span> KemperEffectSlot
+
+A = KemperEffectSlot.EFFECT_SLOT_ID_A
+B = KemperEffectSlot.EFFECT_SLOT_ID_B
+C = KemperEffectSlot.EFFECT_SLOT_ID_C
+X = KemperEffectSlot.EFFECT_SLOT_ID_X
+
+Inputs = [
+    {
+        <span class="str">"assignment"</span>: PA_MIDICAPTAIN_10_SWITCH_1,
+        <span class="str">"actions"</span>: [<span class="fn">EFFECT_STATE_PER_RIG</span>(A, {<span class="num">2</span>: C, <span class="num">7</span>: B}, display=DISPLAY_HEADER_1)],
+    },
+    {
+        <span class="str">"assignment"</span>: PA_MIDICAPTAIN_10_SWITCH_2,
+        <span class="str">"actions"</span>: [<span class="fn">EFFECT_STATE_PER_RIG</span>(B, {<span class="num">2</span>: A, <span class="num">4</span>: C}, display=DISPLAY_HEADER_2)],
+    },
+    {
+        <span class="str">"assignment"</span>: PA_MIDICAPTAIN_10_SWITCH_3,
+        <span class="str">"actions"</span>: [<span class="fn">EFFECT_STATE_PER_RIG</span>(C, {<span class="num">3</span>: X},         display=DISPLAY_FOOTER_1)],
+    },
+    {
+        <span class="str">"assignment"</span>: PA_MIDICAPTAIN_10_SWITCH_4,
+        <span class="str">"actions"</span>: [<span class="fn">EFFECT_STATE</span>(slot_id=X)],  <span class="cm"># no override needed</span>
+    },
+]</code></pre>
+
+        <div class="callout tip">
+            <strong>Tip</strong>
+            You can use normal <code>EFFECT_STATE</code> for buttons that do not need overrides. Both action types are compatible and can coexist in the same <code>inputs.py</code>.
+        </div>
+    </section>
+
+    <hr>
+    <footer>
+        <p>Extension developed for PySwitch — branch <code>feature/effect-state-per-rig</code></p>
+    </footer>
+
+</div>
+</body>
+</html>

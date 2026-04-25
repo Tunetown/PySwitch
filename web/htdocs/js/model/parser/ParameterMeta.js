@@ -245,6 +245,7 @@ class ParameterMeta {
                 case "select-page": return getSelectDefault();
                 case "bool": return "False";
                 case "color": return "(0, 0, 0)";
+                case "rig_map": return "{}";
                 default: throw new Error("Unknown parameter type: " + this.data.type);
             }
         }

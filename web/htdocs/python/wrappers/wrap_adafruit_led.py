@@ -23,13 +23,15 @@ class WrapNeoPixelDriver:
             # Store original value for testing
             led.dataset.color = [v for v in value]
 
-            # When black, make transparent
+            # When black, show as off (dark)
             if value == (0, 0, 0):
-                led.style.backgroundColor = f"rgba(0, 0, 0, 0)"
+                led.style.backgroundColor = f"rgb(0, 0, 0)"
                 return
 
             # Apply gamma correction
             def trans(x, gamma = 0.28):
+                if x <= 0:
+                    return 0
                 return pow((x/255), gamma) * 255
             
             def clip(x):
