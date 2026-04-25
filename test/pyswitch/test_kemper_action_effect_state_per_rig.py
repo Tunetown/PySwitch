@@ -324,3 +324,66 @@ class TestMultiSlotToggle(unittest.TestCase):
         cb.state_changed_by_user()
 
         self.assertEqual(appl.client.set_calls, [])
+
+
+##############################################################################
+# Regression: string keys in rig_overrides must be normalized to int
+##############################################################################
+
+class TestRigOverrideKeyNormalization(unittest.TestCase):
+    """Verify that rig_overrides accepts both int and string keys.
+
+    The RIG_ID mapping always returns an int.  String keys like "0", "1"
+    must be normalized to int in __init__ so _current_slots() can look them
+    up correctly.  See issue #1 (Git commit: fix-string-keys-in-rig-overrides).
+    """
+
+    def test_int_key_matches(self):
+        cb = KemperEffectEnablePerRigCallback(
+            slot_id=None,
+            rig_overrides={0: X}
+        )
+        cb._rig_id_mapping.value = 0
+        self.assertEqual(cb._current_slots(), [X])
+
+    def test_string_key_matches_after_normalization(self):
+        cb = KemperEffectEnablePerRigCallback(
+            slot_id=None,
+            rig_overrides={"0": X}
+        )
+        cb._rig_id_mapping.value = 0
+        self.assertEqual(cb._current_slots(), [X])
+
+    def test_mixed_string_and_int_keys(self):
+        cb = KemperEffectEnablePerRigCallback(
+            slot_id=None,
+            rig_overrides={
+                0:    DLY,
+                "1":  [DLY, REV],
+                "2":  [DLY, REV],
+            }
+        )
+        cb._rig_id_mapping.value = 0
+        self.assertEqual(cb._current_slots(), [DLY])
+
+        cb._rig_id_mapping.value = 1
+        self.assertEqual(cb._current_slots(), [DLY, REV])
+
+        cb._rig_id_mapping.value = 2
+        self.assertEqual(cb._current_slots(), [DLY, REV])
+
+    def test_rig_not_in_overrides_is_still_disabled(self):
+        cb = KemperEffectEnablePerRigCallback(
+            slot_id=None,
+            rig_overrides={"0": X}
+        )
+        cb._rig_id_mapping.value = 99
+        self.assertIsNone(cb._current_slots())
+
+    def test_none_rig_id_is_still_disabled(self):
+        cb = KemperEffectEnablePerRigCallback(
+            slot_id=None,
+            rig_overrides={"0": X}
+        )
+        cb._rig_id_mapping.value = None
+        self.assertIsNone(cb._current_slots())

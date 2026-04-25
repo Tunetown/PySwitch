@@ -126,6 +126,7 @@ class PySwitchRunner {
             this.#loadModule("parser/misc/ImportExtractor.py", localPythonPath),
             this.#loadModule("parser/misc/ReplaceAssignmentTransformer.py", localPythonPath),
             this.#loadModule("parser/misc/AddAssignmentTransformer.py", localPythonPath),
+            this.#loadModule("parser/misc/RemoveAssignmentTransformer.py", localPythonPath),
             this.#loadModule("parser/misc/CodeExtractor.py", localPythonPath),
             this.#loadModule("parser/misc/CodeGenerator.py", localPythonPath),        
 

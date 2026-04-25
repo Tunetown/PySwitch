@@ -76,16 +76,18 @@ class KemperEffectEnablePerRigCallback(KemperEffectEnableCallback):
     """
 
     def __init__(self, slot_id, rig_overrides, **kwargs):
-        # Normalize rig_overrides first: None as-is, scalars as [slot], lists as-is.
+        # Normalize rig_overrides first: convert string keys to int, None as-is,
+        # scalars to [slot], lists as-is.
         # Must happen before super().__init__ so we can resolve the parent slot below.
         self._rig_overrides = {}
         for rig, slots in rig_overrides.items():
+            rig_key = int(rig) if isinstance(rig, str) else rig
             if slots is None:
-                self._rig_overrides[rig] = None
+                self._rig_overrides[rig_key] = None
             elif isinstance(slots, list):
-                self._rig_overrides[rig] = slots
+                self._rig_overrides[rig_key] = slots
             else:
-                self._rig_overrides[rig] = [slots]
+                self._rig_overrides[rig_key] = [slots]
 
         # The parent class requires a valid slot_id to set up its MIDI mappings.
         # When slot_id is None ("disabled by default") we pick the first non-None
