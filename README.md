@@ -184,6 +184,34 @@ Inputs = [
 *NOTE: Do not assign the same display label to the actions, this does not make sense and will result in erratic output.*
 
 
+##### Bank Up / Down (BANK_UP, BANK_DOWN)
+
+`BANK_UP` and `BANK_DOWN` switch to the next/previous bank. By default they send the Kemper's native bank increment/decrement message.
+
+The optional `keep_rig` parameter changes this: when set to `True`, the action preselects the target bank and re-selects the **same rig slot** in it, so the corresponding rig is loaded immediately. For example, when on bank 1 / rig 4, a Bank Up with `keep_rig` lands on bank 1's successor at rig 4 (e.g. bank 2 / rig 4):
+
+```python
+from pyswitch.clients.kemper.actions.bank_up_down import BANK_UP, BANK_DOWN
+
+Inputs = [
+    {
+        "assignment": Hardware.PA_MIDICAPTAIN_10_SWITCH_DOWN,
+        "actions": [
+            RIG_SELECT(rig = 5, display_mode = RIG_SELECT_DISPLAY_TARGET_RIG)
+        ],
+        "actionsHold": [
+            BANK_UP(
+                text = "Bank up",
+                keep_rig = True    # Keep the current rig slot in the new bank
+            )
+        ]
+    }
+]
+```
+
+`keep_rig` defaults to `False` (native bank increment/decrement behaviour) and is ignored when `preselect` is enabled. Bank wraparound (and the optional `max_bank`) is respected.
+
+
 ##### Pushbutton Modes
 
 Most actions feature a "mode" parameter. This parameter controls the behaviour of the switch as defined here:
