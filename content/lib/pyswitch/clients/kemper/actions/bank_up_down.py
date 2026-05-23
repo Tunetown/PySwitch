@@ -23,8 +23,7 @@ def BANK_UP(display = None,
             display_mode = RIG_SELECT_DISPLAY_CURRENT_RIG,    # Display mode (same as for RIG_SELECT, see definitions above)
             preselect = False,                                # Preselect mode. If enabled, the bank is only pre-selected, the change will only take effect when you select a rig next time.
             max_bank = None,                                  # Highest bank available. Only relevant if preselct is enabled.
-            keep_rig = False                                  # If enabled, the rig index is kept when changing bank: the same rig slot is selected in the target bank
-                                                              # (e.g. bank 1 rig 4 -> bank 2 rig 4). Ignored when preselect is enabled.
+            keep_rig = False                                  # If enabled, the same rig slot is selected in the target bank (e.g. bank 1 rig 4 -> bank 2 rig 4). Ignored when preselect is enabled.
     ):
     return Action({
         "callback": KemperBankChangeCallback(
@@ -61,8 +60,7 @@ def BANK_DOWN(display = None,                                   # Reference to a
               display_mode = RIG_SELECT_DISPLAY_CURRENT_RIG,    # Display mode (same as for RIG_SELECT, see definitions above)
               preselect = False,                                # Preselect mode
               max_bank = None,                                  # Highest bank available. Only relevant if preselct is enabled.
-              keep_rig = False                                  # If enabled, the rig index is kept when changing bank: the same rig slot is selected in the target bank
-                                                                # (e.g. bank 2 rig 4 -> bank 1 rig 4). Ignored when preselect is enabled.
+              keep_rig = False                                  # If enabled, the same rig slot is selected in the target bank (e.g. bank 2 rig 4 -> bank 1 rig 4). Ignored when preselect is enabled.
     ):
     return Action({
         "callback": KemperBankChangeCallback(
