@@ -25,6 +25,31 @@ with patch.dict(sys.modules, {
     from .mocks_appl import MockClient
 
 
+class _MockLedAction:
+    """Mock PushButtonAction exposing LED writes for debounce tests."""
+    def __init__(self):
+        self.label = None
+        self.state = False
+        self._c = None
+        self._b = None
+        self.color_writes = []
+    @property
+    def switch_color(self):
+        return self._c
+    @switch_color.setter
+    def switch_color(self, v):
+        self._c = v
+        self.color_writes.append(v)
+    @property
+    def switch_brightness(self):
+        return self._b
+    @switch_brightness.setter
+    def switch_brightness(self, v):
+        self._b = v
+    def feedback_state(self, s):
+        self.state = s
+
+
 # Absolute rig IDs (bank 1, rigs 1-5)
 _RIG_ACOU  = 0   # rig 1 "acou"
 _RIG_CLEN  = 1   # rig 2 "clen"
@@ -387,3 +412,51 @@ class TestRigOverrideKeyNormalization(unittest.TestCase):
         )
         cb._rig_id_mapping.value = None
         self.assertIsNone(cb._current_slots())
+
+
+##############################################################################
+# Multi-slot must render the LED in a single write (NeoPixels auto-show, so a
+# bright->dim double write flashes the LED).
+##############################################################################
+
+class TestMultiSlotSingleLedWrite(unittest.TestCase):
+
+    def _build_acou(self, mod_state, c_state):
+        cb = _sw4_cb()                       # rig acou -> [MOD, C]
+        appl = _MockAppl()
+        cb.init(appl)
+        cb.action = _MockLedAction()
+        cb._rig_id_mapping.value = _RIG_ACOU
+        cb._state_map(MOD).value = mod_state
+        cb._state_map(C).value = c_state
+        cb._type_map(MOD).value = 65         # Chorus
+        cb._type_map(C).value = 65
+        return cb
+
+    def test_not_all_on_writes_led_once(self):
+        # MOD on, C off → AND result off. Must be a single write, not bright then dim.
+        cb = self._build_acou(1, 0)
+        cb.update_displays()
+        self.assertEqual(len(cb.action.color_writes), 1)
+        # Final state must be OFF (AND of on+off).
+        self.assertFalse(cb.action.state)
+
+    def test_all_on_writes_led_once(self):
+        cb = self._build_acou(1, 1)
+        cb.update_displays()
+        self.assertEqual(len(cb.action.color_writes), 1)
+        self.assertTrue(cb.action.state)
+
+    def test_all_off_writes_led_once(self):
+        cb = self._build_acou(0, 0)
+        cb.update_displays()
+        self.assertEqual(len(cb.action.color_writes), 1)
+        self.assertFalse(cb.action.state)
+
+    def test_first_slot_value_is_restored(self):
+        # The single-write trick temporarily forces the first slot's value; it must be
+        # restored so toggling logic still reads the real effect state.
+        cb = self._build_acou(1, 0)
+        cb.update_displays()
+        self.assertEqual(cb._state_map(MOD).value, 1)
+        self.assertEqual(cb._state_map(C).value, 0)

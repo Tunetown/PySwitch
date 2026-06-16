@@ -133,6 +133,10 @@ class KemperEffectEnablePerRigCallback(KemperEffectEnableCallback):
         self.register_mapping(self._rig_id_mapping)
         self._appl_ref = None
 
+        # Last slot set actually rendered. Used to bust the parent display cache only
+        # when the active slot set really changes (rig switch), not on every update.
+        self._last_rendered_slots = None
+
     def init(self, appl, listener = None):
         super().init(appl, listener)
         # Store appl reference separately for use in state_changed_by_user().
@@ -192,24 +196,35 @@ class KemperEffectEnablePerRigCallback(KemperEffectEnableCallback):
             self.action.switch_brightness = 0
             if self.action.label:
                 self.action.label.text = ""
+            self._last_rendered_slots = None
             return
 
         if slots == [self._default_slot]:
             super().update_displays()
+            self._last_rendered_slots = slots
             return
 
         # Override slot(s): derive color/label from the first slot, AND logic for state.
         first_slot = slots[0]
+        multi = len(slots) > 1
+        slots_changed = (slots != self._last_rendered_slots)
 
-        # Reset all display caches so the parent re-evaluates state, color and label
-        # for the override slot. This is necessary because:
-        #   1. The AND correction below may set action.state to False after the parent
-        #      has already recorded state=True in its _current_display_state cache.
-        #      Without a reset, subsequent calls where the first-slot value/color is
-        #      unchanged will skip the display update entirely and the LED will be stuck.
-        #   2. When switching between override slots the color/value caches from the
-        #      previous slot must not suppress the redraw for the new slot.
-        self.reset()
+        # The reset() calls below bust the parent BinaryParameterCallback value cache.
+        # They are only needed when:
+        #   1. Multiple slots are controlled: the AND correction may set action.state
+        #      to False after the parent recorded state=True, and a change in a
+        #      secondary slot (not the "first slot" used for color/label) would
+        #      otherwise be suppressed by the first-slot value cache, leaving the LED
+        #      stuck.
+        #   2. The active slot set just changed (rig switch): the color/value caches
+        #      from the previous slot must not suppress the redraw for the new slot.
+        # For a single, unchanged slot neither applies, so we keep the parent cache to
+        # avoid re-blanking the LED on every bidirectional update — that re-blanking is
+        # what makes the LED flicker several times during a rig change.
+        need_reset = multi or slots_changed
+
+        if need_reset:
+            self.reset()
 
         # Temporarily redirect self.mapping and self.mapping_fxtype to the first override slot
         # so the parent update_displays() reads from the right slot.
@@ -218,27 +233,31 @@ class KemperEffectEnablePerRigCallback(KemperEffectEnableCallback):
         self.mapping = self._state_map(first_slot)
         self.mapping_fxtype = self._type_map(first_slot)
 
-        super().update_displays()  # Sets color/label from first slot; state from first slot.
-
-        # AND correction: if controlling multiple slots, override state with AND of all.
-        if len(slots) > 1 and self.action.state:
+        if multi:
+            # AND logic, rendered in a SINGLE LED write. The NeoPixels auto-show on every
+            # brightness assignment, so letting the parent render the first slot (possibly
+            # ON) and then correcting to OFF would write the LED twice — a visible
+            # bright->dim flash on every update. Instead pre-compute the AND result and
+            # force the first-slot state value so the parent's single render produces the
+            # correct brightness directly.
             all_on = all(self._state_map(s).value == 1 for s in slots)
-            if not all_on:
-                self.action.feedback_state(False)
-                type_val = self.mapping_fxtype.value
-                cat = self.get_effect_category(type_val) if type_val is not None else self.CATEGORY_NONE
-                color = self.get_effect_category_color(cat, type_val)
-                self.set_switch_color(color)
-                self.set_label_color(color)
+            saved_val = self.mapping.value
+            self.mapping.value = 1 if all_on else 0
+            super().update_displays()
+            self.mapping.value = saved_val
+        else:
+            super().update_displays()  # Single slot: parent renders state from the slot.
 
         self.mapping = orig_mapping
         self.mapping_fxtype = orig_fxtype
 
-        # Reset caches again so the next call always re-evaluates from scratch.
-        # This ensures that a change in any secondary slot (which is not the "first
-        # slot" used for color/label) triggers a correct AND re-check instead of
-        # being silently skipped by the BinaryParameterCallback value cache.
-        self.reset()
+        # Reset caches again (only when we reset above) so the next call re-evaluates
+        # from scratch — required for multi-slot AND re-checks and right after a slot
+        # switch. For a stable single slot we deliberately keep the cache.
+        if need_reset:
+            self.reset()
+
+        self._last_rendered_slots = slots
 
     def parameter_changed(self, mapping):
         """
@@ -246,7 +265,7 @@ class KemperEffectEnablePerRigCallback(KemperEffectEnableCallback):
         Trigger a display refresh on rig change, or when the active slot(s) change state.
         """
         if mapping is self._rig_id_mapping:
-            # Rig changed: update display to reflect the new slot(s).
+            # Rig changed: refresh the display to reflect the new slot(s).
             self.update_displays()
             return
 
