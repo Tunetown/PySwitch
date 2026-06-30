@@ -56,7 +56,6 @@ class DisplayCallbackParameterList extends ParameterList {
         }
 
         // Add parameters
-        console.log(definition)
         for(const param of definition.parameters) {
             if (this.#hideParameterCallback) {
                 if (!(await this.#hideParameterCallback(param))) continue;
@@ -70,6 +69,12 @@ class DisplayCallbackParameterList extends ParameterList {
 
             await this.createInput({
                 type: listType,
+                options: (listType != 'select') ? null : (await param.meta.getValues()).map(function(option) { 
+                    return {
+                        text: option.name,
+                        value: option.value
+                    }; 
+                }),
                 name: param.name,
                 displayName: param.meta.getDisplayName(),
                 comment: param.comment,

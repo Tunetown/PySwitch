@@ -1,18 +1,20 @@
+from pyswitch.clients.kemper.actions.rig_select import RIG_SELECT
 from pyswitch.clients.kemper.actions.tuner import TUNER_MODE
 from pyswitch.clients.local.actions.param_change import PARAMETER_UP_DOWN
-from pyswitch.clients.local.actions.binary_switch import BINARY_SWITCH
 from pyswitch.clients.local.actions.pager import PagerAction
 from pyswitch.colors import Colors
+from pyswitch.clients.kemper.actions.rig_select import RIG_SELECT_DISPLAY_TARGET_RIG
 from pyswitch.clients.kemper import KemperEffectSlot
 from pyswitch.clients.kemper.mappings.effects import MAPPING_DLY_REV_MIX
 from pyswitch.clients.kemper.mappings.amp import MAPPING_AMP_GAIN
 from pyswitch.clients.kemper.mappings.rig import MAPPING_RIG_VOLUME
-from pyswitch.clients.kemper.mappings.cabinet import MAPPING_CABINET_STATE
 from display import DISPLAY_HEADER_1
 from display import DISPLAY_HEADER_2
 from display import DISPLAY_FOOTER_1
 from display import DISPLAY_FOOTER_2
 from display import DISPLAY_RIG_NAME
+from display import DISPLAY_FOOTER_1B
+from display import DISPLAY_FOOTER_2B
 from pyswitch.clients.kemper.callbacks.convert_volume import convert_volume
 from pyswitch.hardware.devices.pa_midicaptain_nano_4 import *
 
@@ -56,21 +58,13 @@ Inputs = [
         "assignment": PA_MIDICAPTAIN_NANO_SWITCH_1,
         "actions": [
             TUNER_MODE(
+                display = DISPLAY_HEADER_1, 
                 color = Colors.WHITE, 
                 text = 'Tuner'
             ),
             
         ],
-        "actionsHold": [
-            BINARY_SWITCH(
-                mapping = MAPPING_CABINET_STATE(), 
-                display = DISPLAY_HEADER_1, 
-                led_brightness_on = 0.02, 
-                led_brightness_off = 0, 
-                text = 'Cab|Tuner'
-            ),
-            
-        ],
+        "actionsHold": [],
         
     },
     {
@@ -137,7 +131,17 @@ Inputs = [
             ),
             
         ],
-        "actionsHold": [],
+        "actionsHold": [
+            RIG_SELECT(
+                rig = 3, 
+                display_mode = RIG_SELECT_DISPLAY_TARGET_RIG, 
+                display = DISPLAY_FOOTER_1B, 
+                rig_off = 'auto', 
+                color = Colors.RED, 
+                text = 'Fried'
+            ),
+            
+        ],
         
     },
     {
@@ -192,6 +196,17 @@ Inputs = [
                 color = Colors.RED, 
                 id = 4, 
                 enable_callback = _pager.enable_callback
+            ),
+            
+        ],
+        "actionsHold": [
+            RIG_SELECT(
+                rig = 2, 
+                display_mode = RIG_SELECT_DISPLAY_TARGET_RIG, 
+                display = DISPLAY_FOOTER_2B, 
+                rig_off = 1, 
+                color = Colors.ORANGE, 
+                text = 'Plexi'
             ),
             
         ],

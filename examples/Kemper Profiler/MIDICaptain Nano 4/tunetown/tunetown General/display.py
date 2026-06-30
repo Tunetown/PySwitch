@@ -84,14 +84,14 @@ DISPLAY_FOOTER_2 = DisplayLabel(
 DISPLAY_RIG_NAME = DisplayLabel(
     bounds = DisplayBounds(
         x = 0, 
-        y = _SLOT_HEIGHT, 
-        w = _DISPLAY_WIDTH, 
-        h = _RIG_NAME_HEIGHT
+        y = 40, 
+        w = 240, 
+        h = 120
     ), 
     layout = {
         "font": "/fonts/PTSans-NarrowBold-40.pcf",
-        "lineSpacing": 0.8,
-        "maxTextWidth": 220,
+        "lineSpacing": 0.7,
+        "maxTextWidth": 235,
         "text": f"PySwitch { PYSWITCH_VERSION }",
         
     }, 
@@ -99,6 +99,36 @@ DISPLAY_RIG_NAME = DisplayLabel(
         show_name = True, 
         show_rig_id = False
     )
+)
+
+DISPLAY_FOOTER_1B = DisplayLabel(
+    bounds = DisplayBounds(
+        x = 0, 
+        y = 160, 
+        w = 80, 
+        h = 40
+    ), 
+    layout = {
+        "font": "/fonts/H20.pcf",
+        "backColor": DEFAULT_LABEL_COLOR,
+        "stroke": 1,
+        
+    }
+)
+
+DISPLAY_FOOTER_2B = DisplayLabel(
+    bounds = DisplayBounds(
+        x = 160, 
+        y = 160, 
+        w = 80, 
+        h = 40
+    ), 
+    layout = {
+        "font": "/fonts/H20.pcf",
+        "backColor": DEFAULT_LABEL_COLOR,
+        "stroke": 1,
+        
+    }
 )
 
 
@@ -115,13 +145,20 @@ Splashes = TunerDisplayCallback(
             DISPLAY_HEADER_2,
             DISPLAY_FOOTER_1,
             DISPLAY_FOOTER_2,
-            DISPLAY_RIG_NAME,
+            BidirectionalProtocolState(
+                DisplayBounds(
+                    x = 232, 
+                    y = 40, 
+                    w = 8, 
+                    h = 8
+                )
+            ),
             DisplayLabel(
                 bounds = DisplayBounds(
-                    x = 0, 
-                    y = _RIG_ID_Y, 
-                    w = _DISPLAY_WIDTH, 
-                    h = _RIG_ID_HEIGHT
+                    x = 80, 
+                    y = 160, 
+                    w = 80, 
+                    h = 40
                 ), 
                 layout = {
                     "font": "/fonts/H20.pcf",
@@ -132,14 +169,9 @@ Splashes = TunerDisplayCallback(
                     show_rig_id = True
                 )
             ),
-            BidirectionalProtocolState(
-                DisplayBounds(
-                    x = 0, 
-                    y = _SLOT_HEIGHT, 
-                    w = _DISPLAY_WIDTH, 
-                    h = _RIG_NAME_HEIGHT
-                )
-            ),
+            DISPLAY_FOOTER_1B,
+            DISPLAY_FOOTER_2B,
+            DISPLAY_RIG_NAME,
             
         ]
     )

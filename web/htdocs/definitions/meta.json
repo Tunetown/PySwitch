@@ -376,16 +376,16 @@
                                 "value": "False"
                             },
                             {
-                                "name": "Show",
+                                "name": "Show both (1-1)",
                                 "value": "True"
                             },
                             {
                                 "name": "Rig Number Only",
-                                "value": "rig"
+                                "value": "'rig'"
                             },
                             {
                                 "name": "Bank Number Only",
-                                "value": "bank"
+                                "value": "'bank'"
                             }
                         ]
                     }

@@ -1,6 +1,7 @@
 # PySwitch v2.4.9
 - Features
     - Added Hardware definitions for using the EXP pedal inputs with switches instead.
+    - **KemperRigNameCallback** now provides multiple modes for showing the rig ID
 
 # PySwitch v2.4.8
 - Bug fixes:
