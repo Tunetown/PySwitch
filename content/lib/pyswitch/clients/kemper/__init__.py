@@ -588,9 +588,13 @@ class KemperBidirectionalProtocol: #(BidirectionalProtocol):
     _STATE_OFFLINE = 10   # No commmunication initiated
     _STATE_RUNNING = 20   # Bidirectional communication established
 
-    def __init__(self, time_lease_seconds):
+    def __init__(self, 
+                 time_lease_seconds,
+                 tuner_mode = True
+        ):
         self.state = self._STATE_OFFLINE
         self.__time_lease_encoded = self.__encode_time_lease(time_lease_seconds)
+        self.__tuner_mode = tuner_mode
 
         # This is the reponse template for the status sensing message the Profiler sends every
         # about 500ms.
@@ -704,7 +708,7 @@ class KemperBidirectionalProtocol: #(BidirectionalProtocol):
                     _SELECTED_PARAMETER_SET_ID,
                     self.__get_flags(
                         init = init,
-                        tunemode = True
+                        tunemode = self.__tuner_mode
                     ),
                     self.__time_lease_encoded
                 ]

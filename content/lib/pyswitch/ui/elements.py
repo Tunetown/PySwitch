@@ -266,7 +266,7 @@ class TunerDisplay(DisplayElement):
             collect()
 
             self.__marker_intune = Rect(
-                x = int((self.bounds.width - self.width) * 0.5),
+                x = int(self.bounds.x + (self.bounds.width - self.width) * 0.5),
                 y = self.bounds.y,
                 width = self.width,
                 height = self.bounds.height,
@@ -276,7 +276,7 @@ class TunerDisplay(DisplayElement):
             ui.splash.append(self.__marker_intune)
 
             self.__marker = Rect(
-                x = int((self.bounds.width - self.width) * 0.5),
+                x = int(self.bounds.x + (self.bounds.width - self.width) * 0.5),
                 y = self.bounds.y,
                 width = self.width,
                 height = self.bounds.height,
@@ -292,7 +292,7 @@ class TunerDisplay(DisplayElement):
             if self.__zoom != 1:
                 value_scaled = max(-8192, min(int((value - 8192) * self.__zoom), 8192)) + 8191
 
-            self.__marker.x = int((self.bounds.width - self.width) * value_scaled / 16384)
+            self.__marker.x = int(self.bounds.x + (self.bounds.width - self.width) * value_scaled / 16384)
 
             if value >= self.__calibration_low and value <= self.__calibration_high:
                 self.in_tune = True
@@ -314,12 +314,12 @@ class TunerDisplay(DisplayElement):
 
 
     def __init__(self, 
-                 mapping_note, 
+                 mapping_note = None, 
                  mapping_deviance = None, 
-                 bounds = DisplayBounds(), 
-                 layout = {}, 
+                 bounds = DisplayBounds(),                 # Bounds of the overall display
+                 layout = {},                              # Layout for the Note label
                  scale = 1,                                # Scaling of the note display label
-                 deviance_height = 40,                     # Height of the deviance display
+                 deviance_height = 40,                     # Height of the deviance display (taken from the bottom of overall space)
                  deviance_width = 5,                       # Width of the deviance display pointer line and "in tune" marker
                  deviance_zoom = 2.4,                      # Scaling of values. Set to > 1 to make the tuner display more sensitive.
                  color_in_tune = Colors.LIGHT_GREEN,
@@ -339,12 +339,15 @@ class TunerDisplay(DisplayElement):
         self.__color_neutral = color_neutral
         self.__note_names = note_names if note_names else ('C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B')
 
-        self.label_note = DisplayLabel(
-            bounds = bounds,
-            layout = layout,
-            scale = scale
-        )
-        self.add(self.label_note)
+        if self.__mapping_note:
+            self.label_note = DisplayLabel(
+                bounds = bounds,
+                layout = layout,
+                scale = scale
+            )
+            self.add(self.label_note)
+        else:
+            self.label_note = None
 
         if self.__mapping_deviance:
             self.deviance = self._TunerDevianceDisplay(
@@ -374,7 +377,9 @@ class TunerDisplay(DisplayElement):
         self.__appl = appl
         
         # Register mappings
-        self.__appl.client.register(self.__mapping_note, self)
+        if self.__mapping_note:
+            self.__appl.client.register(self.__mapping_note, self)
+
         if self.__mapping_deviance:
             self.__appl.client.register(self.__mapping_deviance, self)
 
@@ -383,8 +388,9 @@ class TunerDisplay(DisplayElement):
         self.__last_note = None
         self.__last_deviance = 8192
         
-        self.label_note.text = "-"
-        self.label_note.text_color = self.__color_neutral
+        if self.label_note:
+            self.label_note.text = "-"
+            self.label_note.text_color = self.__color_neutral
 
     # Listen to client value returns
     def parameter_changed(self, mapping):
@@ -403,10 +409,11 @@ class TunerDisplay(DisplayElement):
             # Uncomment this for calibration.
             #self._debug_calibration(mapping.value)            
 
-            if self.deviance.in_tune:
-                self.label_note.text_color = self.__color_in_tune
-            else:
-                self.label_note.text_color = self.__color_out_of_tune
+            if self.label_note:
+                if self.deviance.in_tune:
+                    self.label_note.text_color = self.__color_in_tune
+                else:
+                    self.label_note.text_color = self.__color_out_of_tune
         
     # Called when the client is offline (requests took too long)
     def request_terminated(self, mapping):

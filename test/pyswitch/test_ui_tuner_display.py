@@ -49,6 +49,14 @@ class TestTunerDisplay(unittest.TestCase):
         self._do_test(16383, 1, Colors.ORANGE)
 
 
+    def test_deviance_only(self):
+        self._test_scenario(None, None, 0,     -1,   1, Colors.ORANGE)
+        self._test_scenario(None, None, 4096,  -0.5, 1, Colors.ORANGE)
+        self._test_scenario(None, None, 8193,  0,    1, Colors.LIGHT_GREEN)
+        self._test_scenario(None, None, 12288, 0.5,  1, Colors.ORANGE)
+        self._test_scenario(None, None, 16383, 1,    1, Colors.ORANGE)
+
+
     ##################################################################################################################
 
 
@@ -74,15 +82,17 @@ class TestTunerDisplay(unittest.TestCase):
         self._test_scenario(offset + 11, TUNER_NOTE_NAMES[11], deviance_value, deviance_pos, 1000, exp_color, deviance_tolerance)
 
 
-    def _test_scenario(self, note_value, note_text, deviance_value, deviance_pos, deviance_zoom, exp_color, deviance_tolerance):
+    def _test_scenario(self, note_value, note_text, deviance_value, deviance_pos, deviance_zoom, exp_color, deviance_tolerance = 0.15):
         period = MockPeriodCounter()
 
-        mapping_1 = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
+        mapping_1 = None
+        if note_value != None and note_text != None:
+            mapping_1 = MockParameterMapping(
+                response = SystemExclusive(
+                    manufacturer_id = [0x00, 0x10, 0x20],
+                    data = [0x00, 0x00, 0x09]
+                )
             )
-        )
 
         mapping_2 = None
         if deviance_value != None:
@@ -108,13 +118,16 @@ class TestTunerDisplay(unittest.TestCase):
             scale = 2.33
         )
 
-        self.assertIsInstance(display.label_note, DisplayLabel)
-        self.assertEqual(len(display.children), 1 if deviance_value == None else 2)
-        self.assertEqual(display.children[0], display.label_note)
-        self.assertEqual(display.label_note.bounds, DisplayBounds(20, 33, 444, 555))
+        if note_value != None and note_text != None:
+            self.assertIsInstance(display.label_note, DisplayLabel)
+            self.assertEqual(len(display.children), 1 if deviance_value == None else 2)
+            self.assertEqual(display.children[0], display.label_note)
+            self.assertEqual(display.label_note.bounds, DisplayBounds(20, 33, 444, 555))
+        else:
+            self.assertEqual(len(display.children), 1 if deviance_value != None else 0)
 
         if deviance_value != None:
-            self.assertEqual(display.children[1], display.deviance)
+            self.assertEqual(display.children[1 if note_value != None and note_text != None else 0], display.deviance)
             self.assertEqual(display.deviance.bounds, DisplayBounds(20, 33 + 555 - 44, 444, 44))
 
         ui = UiController(
@@ -167,7 +180,8 @@ class TestTunerDisplay(unittest.TestCase):
 
         # Build scene:
         # Step 1: Not exceeded
-        self.assertEqual(display.label_note._DisplayLabel__label.scale, 2.33)
+        if note_value != None and note_text != None:
+            self.assertEqual(display.label_note._DisplayLabel__label.scale, 2.33)
         period.exceed_next_time = True
         
         appl.tick()
@@ -182,12 +196,13 @@ class TestTunerDisplay(unittest.TestCase):
             answer_msg_1,
             answer_msg_2
         ]
-        mapping_1.outputs_parse = [
-            {
-                "message": answer_msg_1,
-                "value": note_value
-            }
-        ]
+        if mapping_1:
+            mapping_1.outputs_parse = [
+                {
+                    "message": answer_msg_1,
+                    "value": note_value
+                }
+            ]
         if mapping_2:
             mapping_2.outputs_parse = [
                 {
@@ -200,19 +215,24 @@ class TestTunerDisplay(unittest.TestCase):
         appl.tick()
         
         self.assertEqual(len(appl._Controller__midi.messages_sent), 0)
-        self.assertEqual(display.label_note.text, note_text)
+
+        if note_value != None and note_text != None:
+            self.assertEqual(display.label_note.text, note_text)
 
         if deviance_value != None:
-            act_pos = display.deviance._TunerDevianceDisplay__marker.x / ((444 - deviance_width) / 2) - 1
+            act_pos = (display.deviance._TunerDevianceDisplay__marker.x - display.deviance.bounds.x) / ((444 - deviance_width) / 2) - 1
             self.assertAlmostEqual(act_pos, max(-1, min(deviance_pos * deviance_zoom, 1)), delta = deviance_tolerance)
 
-            self.assertEqual(display.label_note.text_color, exp_color)
+            if note_value != None and note_text != None:
+                self.assertEqual(display.label_note.text_color, exp_color)
+
             self.assertEqual(display.deviance._TunerDevianceDisplay__marker.fill, exp_color)
             self.assertEqual(display.deviance._TunerDevianceDisplay__marker.width, deviance_width)
 
         display.reset()
 
         if deviance_value != None:
-            self.assertEqual(display.label_note.text_color, Colors.WHITE)
+            if note_value != None and note_text != None:
+                self.assertEqual(display.label_note.text_color, Colors.WHITE)
 
         

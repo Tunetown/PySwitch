@@ -107,7 +107,7 @@ class ParameterMeta {
 
         // Mapping lists
         if (this.parameter.name == "mapping" || this.parameter.name == "preview_reset_mapping") {
-            return this.#generateMappingOptions(this.parameter.name == "preview_reset_mapping");
+            return (new MappingOptions()).generate(this.parser, this.parameter.name == "preview_reset_mapping");
         }
 
         // HID Key codes
@@ -133,65 +133,65 @@ class ParameterMeta {
             .join(" ");
     }
 
-    /**
-     * Generates the mapping list for input
-     */
-    async #generateMappingOptions(addNone = false) {
-        async function getMappingVariants(mapping) {
-            if (mapping.parameters.length == 0) {
-                return [
-                    {
-                        name: mapping.name + "()",
-                        value: mapping.name + "()"
-                    }
-                ]
-            }
+    // /**
+    //  * Generates the mapping list for input
+    //  */
+    // async #generateMappingOptions(addNone = false) {
+    //     async function getMappingVariants(mapping) {
+    //         if (mapping.parameters.length == 0) {
+    //             return [
+    //                 {
+    //                     name: mapping.name + "()",
+    //                     value: mapping.name + "()"
+    //                 }
+    //             ]
+    //         }
 
-            // We only resolve the first parameter here (mappings never have more)
-            const param = mapping.parameters[0];
+    //         // We only resolve the first parameter here (mappings never have more)
+    //         const param = mapping.parameters[0];
 
-            function addValues(values) {
-                for(const value of values) {
-                    const argStr = (mapping.parameters.length > 1) ? (param.name + " = ") : "";
+    //         function addValues(values) {
+    //             for(const value of values) {
+    //                 const argStr = (mapping.parameters.length > 1) ? (param.name + " = ") : "";
 
-                    ret.push({
-                        name: mapping.name + "(" + argStr + value.value + ")",
-                        value: mapping.name + "(" + argStr + value.value + ")"
-                    });
-                }
-            }
+    //                 ret.push({
+    //                     name: mapping.name + "(" + argStr + value.value + ")",
+    //                     value: mapping.name + "(" + argStr + value.value + ")"
+    //                 });
+    //             }
+    //         }
 
-            const ret = [];
-            if (param.meta && param.meta.range()) {
-                const values = await param.meta.range().getValues();
-                addValues(values);
+    //         const ret = [];
+    //         if (param.meta && param.meta.range()) {
+    //             const values = await param.meta.range().getValues();
+    //             addValues(values);
 
-            } else if (param.meta && param.meta.data.values) {
-                addValues(param.meta.data.values);
+    //         } else if (param.meta && param.meta.data.values) {
+    //             addValues(param.meta.data.values);
                 
-            } else {
-                throw new Error("No parameter values for parameter " + param.name + " of mapping " + mapping.name + " found in meta.json")
-            }
-            return ret;
-        }
+    //         } else {
+    //             throw new Error("No parameter values for parameter " + param.name + " of mapping " + mapping.name + " found in meta.json")
+    //         }
+    //         return ret;
+    //     }
 
-        const clients = await this.parser.getAvailableMappings();
+    //     const clients = await this.parser.getAvailableMappings();
 
-        let ret = addNone ? [
-             {
-                name: "None",
-                value: "None"
-            }
-        ] : [];
+    //     let ret = addNone ? [
+    //          {
+    //             name: "None",
+    //             value: "None"
+    //         }
+    //     ] : [];
 
-        for (const client of clients) {
-            for(const mapping of client.mappings) {
-                ret = ret.concat(await getMappingVariants(mapping))
-            }
-        }
+    //     for (const client of clients) {
+    //         for(const mapping of client.mappings) {
+    //             ret = ret.concat(await getMappingVariants(mapping))
+    //         }
+    //     }
 
-        return ret.sort((a, b) => (a.name > b.name) ? 1 : -1);
-    }
+    //     return ret.sort((a, b) => (a.name > b.name) ? 1 : -1);
+    // }
 
     /**
      * Returns values for the HID keycodes

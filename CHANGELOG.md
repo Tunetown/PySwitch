@@ -4,10 +4,18 @@
     - **KemperRigNameCallback** now provides multiple modes for showing the rig ID.
     - (jcthalys via Pull Request) Fixed Kemper Effect type names and colors
     - (nicola-lunghi via Pull Request) Added "Display Fixed Text" action to simply show a fixed text on a label
+    - Added support for the Tuner Display as a normal element on the screen in the display editor. You can now add a tuner showing deviance and/or note name anywhere in your layouts, using the display editor.
+        - Also added tuner mode parameter to the Kemper Bidirectional protocol, so you can make the Kemper send tuner info all the time, not only when in tuner mode (which is a prerequisite for permanent tuner display)
 
 - Examples: 
     - (Daniel Richer via Pull Request) Added Line 6 HX Stomp example
     - Updated @tunetown examples
+    - Added an example with the tuner alsways visible
+
+### Emulator 2.4.9.16
+- Integrated TunerDisplay support in the display editor
+- Small bug fixes
+
 
 # PySwitch v2.4.8
 - Bug fixes:
@@ -20,6 +28,7 @@
 ### Emulator 2.4.8.15
 - Bug Fixes:
     - Fixed the "current is not defined" bug in the display editor for display callbacks
+
 
 # PySwitch v2.4.7
 - Features
@@ -39,6 +48,7 @@
 - Some optimizations
 - Some minor bug fixes
 
+
 # PySwitch v2.4.6
 - Features:
     - Added **Mapping for Space Intensity** to clients/kemper/mappings/system.py (@quemper)
@@ -54,6 +64,7 @@
     - The Emulator can now be installed as **PWA** (<a href="https://developer.mozilla.org/en/docs/Web/Progressive_web_apps">Progressive Web App</a>). In Chrome, select "Install PySwitch Emulator" at the right of your address bar, and you will get a standalone App separated from Chrome.
     
 - Cosmetical improvements
+
 
 # PySwitch v2.4.5
 - Features:
@@ -87,6 +98,7 @@
 - Bug Fixes:
     - Input Settings could not be changed due to an error.
 
+
 # PySwitch v2.4.3
 - Features:
     - Added mappings for some system parameters (can be used with the wheel encoder, pedals or the "Other Parameter" Actions):
@@ -110,6 +122,7 @@
 
 - Cosmetic improvements:
     - Added a note to check versions when a python error is displayed (incl. link to older versions of the emulator)
+
 
 # PySwitch v2.4.2
 - Features:
@@ -139,6 +152,7 @@
 ### Emulator 2.4.2.9
     - Added a MIDI Traffic Monitor, showing all MIDI messages sent and received by the PySwitch emulator.
     - Other cosmetic optimizations
+
 
 # PySwitch v2.4.1
 - Optimizations for performance/RAM:

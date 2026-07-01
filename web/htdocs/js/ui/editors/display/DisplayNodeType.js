@@ -14,6 +14,8 @@ class DisplayNodeType {
                 return new DisplayLabelType(handler);
             case "BidirectionalProtocolState": 
                 return new BidirectionalProtocolStateType(handler);
+            case "TunerDisplay":
+                return new TunerDisplayType(handler);
             default:
                 return new DisplayNodeType(handler);
         }
