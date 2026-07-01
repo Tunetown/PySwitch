@@ -223,6 +223,7 @@ class PySwitchRunner {
             this.#loadModule("pyswitch/clients/local/actions/param_change.py", circuitpyPath),
             this.#loadModule("pyswitch/clients/local/actions/custom.py", circuitpyPath),
             this.#loadModule("pyswitch/clients/local/actions/rotate.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/local/actions/fixed_text.py", circuitpyPath),
 
             this.#loadModule("pyswitch/clients/local/callbacks/splashes.py", circuitpyPath),
 

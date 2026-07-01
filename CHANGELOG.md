@@ -2,9 +2,11 @@
 - Features
     - Added Hardware definitions for using the EXP pedal inputs to connect switches instead.
     - **KemperRigNameCallback** now provides multiple modes for showing the rig ID.
+    - (jcthalys via Pull Request) Fixed Kemper Effect type names and colors
+    - (nicola-lunghi via Pull Request) Added "Display Fixed Text" action to simply show a fixed text on a label
 
 - Examples: 
-    - (Daniel Richer) Added Line 6 HX Stomp example
+    - (Daniel Richer via Pull Request) Added Line 6 HX Stomp example
     - Updated @tunetown examples
 
 # PySwitch v2.4.8

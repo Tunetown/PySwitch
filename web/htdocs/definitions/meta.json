@@ -1101,6 +1101,19 @@
             },
             
             {
+                "entityName": "DISPLAY_FIXED_TEXT",
+                "category": "other",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "text",
+                        "type": "text",
+                        "default": "''"
+                    }
+                ]
+            },
+
+            {
                 "entityName": "SplashesCallback",
                 "splashRootParameter": "splashes",
                 "parameters": [
