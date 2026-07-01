@@ -2472,7 +2472,7 @@
                     },
                     {
                         "name": "auto_calibrate",
-                        "default": "True",
+                        "default": "False",
                         "comment": "Auto-calibrate (similar to Kemper devices)"
                     },
                     {
@@ -2499,6 +2499,11 @@
                         "name": "convert_value",
                         "default": "None",
                         "comment": "Optional conversion routine for displaying values: (value) => string"
+                    },
+                    {
+                        "name": "min_raw_value",
+                        "default": "1024",
+                        "comment": "Optional minimum raw value threshold for stable zero"
                     }
                 ],
                 "comment": "Use this action for all analog inputs like expression pedals.",
