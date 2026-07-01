@@ -69,6 +69,8 @@ class ExampleTestRunner extends TestBase {
             return;
         };
 
+        // console.log("Testing example " + entry.data.callPath)
+
         const config = new WebConfiguration(new MockController(), this.#examplesPath + entry.data.callPath);
         
         const that = this;        

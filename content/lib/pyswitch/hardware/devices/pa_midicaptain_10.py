@@ -21,6 +21,7 @@ from ..adafruit.AdafruitEncoder import AdafruitEncoder as _AdafruitEncoder
 # GP2  - Wheel Rotary Encoder
 # GP3  - Wheel Rotary Encoder
 # GP4  bat_chg_led
+# GP5
 # GP6  charging
 # GP7  NeoPixel
 # GP8  asyncio PWMOut frequency
@@ -36,6 +37,8 @@ from ..adafruit.AdafruitEncoder import AdafruitEncoder as _AdafruitEncoder
 # GP18 - Footswitch D
 # GP19 - Footswitch down
 # GP20 - FootSwitch up
+# GP21
+# GP22
 # GP23 - FootSwitch 4
 # GP24 - FootSwitch 3
 # GP25 - FootSwitch 2
@@ -57,11 +60,11 @@ PA_MIDICAPTAIN_10_SWITCH_DOWN   = { "model": _AdafruitSwitch(_board.GP19), "pixe
 PA_MIDICAPTAIN_10_EXP_PEDAL_1   = { "model": _AdafruitPotentiometer(_board.GP27), "name": "Exp1" }
 PA_MIDICAPTAIN_10_EXP_PEDAL_2   = { "model": _AdafruitPotentiometer(_board.GP28), "name": "Exp2" }
 
-# These are for using the EXP inputs with switches:
+# These are for using the EXP inputs with switches instead of pedals
 PA_MIDICAPTAIN_10_EXP_SWITCH_1   = { "model": _AdafruitSwitch(_board.GP27), "name": "ExpSw1" }
 PA_MIDICAPTAIN_10_EXP_SWITCH_2   = { "model": _AdafruitSwitch(_board.GP28), "name": "ExpSw2" }
 
 # Wheel encoder
 PA_MIDICAPTAIN_10_WHEEL_ENCODER = { "model": _AdafruitEncoder(_board.GP2, _board.GP3, divisor = 2), "name": "Wheel" }
-PA_MIDICAPTAIN_10_WHEEL_BUTTON  = { "model": _AdafruitSwitch(_board.GP0), "name": "Wheel" }
+PA_MIDICAPTAIN_10_WHEEL_BUTTON  = { "model": _AdafruitSwitch(_board.GP0), "name": "WhlButton" }
 

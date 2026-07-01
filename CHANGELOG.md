@@ -4,8 +4,8 @@
     - **KemperRigNameCallback** now provides multiple modes for showing the rig ID.
     - (jcthalys via Pull Request) Fixed Kemper Effect type names and colors
     - (nicola-lunghi via Pull Request) Added "Display Fixed Text" action to simply show a fixed text on a label
-    - Added support for the Tuner Display as a normal element on the screen in the display editor. You can now add a tuner showing deviance and/or note name anywhere in your layouts, using the display editor.
-        - Also added tuner mode parameter to the Kemper Bidirectional protocol, so you can make the Kemper send tuner info all the time, not only when in tuner mode (which is a prerequisite for permanent tuner display)
+    - Added support for the Tuner Display as a normal element on the screen (also in the display editor). You can now add a tuner showing deviance and/or note name anywhere in your layouts.
+        -> Also added tuner mode parameter to the Kemper Bidirectional protocol, so you can make the Kemper send tuner info all the time, not only when in tuner mode (which is a prerequisite for permanent tuner display)
 
 - Examples: 
     - (Daniel Richer via Pull Request) Added Line 6 HX Stomp example
@@ -14,6 +14,7 @@
 
 ### Emulator 2.4.9.16
 - Integrated TunerDisplay support in the display editor
+- Support for Exp Pedal inputs used for switches: Changed input indexing to hardware definition name instead of port. This way we can define multiple ways to allocate the ports.
 - Small bug fixes
 
 

@@ -7,10 +7,8 @@ class ConfigParserTests extends TestBase {
         await config.init(this.pyswitch, "../");
         const parser = config.parser;
 
-        expect(await parser.input(1)).toBe(null);
-        expect(await parser.input(25)).toBe(null);
-        // await expectAsync(parser.input(1)).toBeRejected();
-        // await expectAsync(parser.input(25)).toBeRejected();
+        expect(await parser.input("1")).toBe(null);
+        expect(await parser.input("2")).toBe(null);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -23,7 +21,7 @@ class ConfigParserTests extends TestBase {
         const parser = config.parser;
         
         await this.#testAction(parser, {
-            port: 1,
+            modelName: "1",
             client: "kemper",
             actions: [{
                 name: "RIG_UP",
@@ -53,7 +51,7 @@ class ConfigParserTests extends TestBase {
         const parser = config.parser;
 
         await this.#testAction(parser, {
-            port: 1,
+            modelName: "1",
             client: "kemper",
             actions: [{
                 name: "RIG_UP",
@@ -71,7 +69,7 @@ class ConfigParserTests extends TestBase {
         });
 
         await this.#testAction(parser, {
-            port: 25,
+            modelName: "2",
             client: "kemper",
             actions: [
                 { 
@@ -112,7 +110,7 @@ class ConfigParserTests extends TestBase {
         });
 
         await this.#testAction(parser, {
-            port: 9,
+            modelName: "A",
             client: "kemper",
             actions: [{ 
                 name: "RIG_DOWN",
@@ -130,7 +128,7 @@ class ConfigParserTests extends TestBase {
         });
 
         await this.#testAction(parser, {
-            port: 10,
+            modelName: "B",
             client: "kemper",
             actions: [{ 
                 name: "BANK_DOWN",
@@ -152,7 +150,7 @@ class ConfigParserTests extends TestBase {
         const parser = config.parser;
         
         await this.#testAction(parser, {
-            port: 1,
+            modelName: "1",
             client: "kemper",
             actions: [{ 
                 name: "RIG_UP",
@@ -174,7 +172,7 @@ class ConfigParserTests extends TestBase {
         });
 
         await this.#testAction(parser, {
-            port: 25,
+            modelName: "2",
             client: "kemper",
             actionsHold: [{ 
                 name: "TUNER_MODE",
@@ -194,7 +192,7 @@ class ConfigParserTests extends TestBase {
         });
 
         await this.#testAction(parser, {
-            port: 9,
+            modelName: "A",
             client: "kemper",
             actions: [{ 
                 name: "RIG_DOWN",
@@ -212,7 +210,7 @@ class ConfigParserTests extends TestBase {
         });
 
         await this.#testAction(parser, {
-            port: 10,
+            modelName: "B",
             client: "kemper",
             actions: [{ 
                 name: "BANK_DOWN",
@@ -236,7 +234,7 @@ class ConfigParserTests extends TestBase {
         const parser = config.parser;
         
         await this.#testAction(parser, {
-            port: 1,
+            modelName: "1",
             client: "kemper",
             actions: [{ 
                 name: "RIG_UP",
@@ -259,7 +257,7 @@ class ConfigParserTests extends TestBase {
         });
 
         await this.#testAction(parser, {
-            port: 25,
+            modelName: "2",
             client: "kemper",
             actions: [
                 { 
@@ -295,7 +293,7 @@ class ConfigParserTests extends TestBase {
 
     async replaceActions() {
         await this.#replaceActions(
-            1, 
+            "1", 
             [
                 { 
                     name: "SOME_ACTION",
@@ -320,7 +318,7 @@ class ConfigParserTests extends TestBase {
         );
 
         await this.#replaceActions(
-            9, 
+            "A", 
             [
                 { 
                     name: "SOME_ACTION",
@@ -331,7 +329,7 @@ class ConfigParserTests extends TestBase {
         );
 
         await this.#replaceActions(
-            9, 
+            "A", 
             [],
             "local"
         );
@@ -339,7 +337,7 @@ class ConfigParserTests extends TestBase {
 
     async replaceActionsDeferred() {
         await this.#replaceActions(
-            1, 
+            "1", 
             [
                 { 
                     name: "SOME_ACTION",
@@ -366,7 +364,7 @@ class ConfigParserTests extends TestBase {
         );
 
         await this.#replaceActions(
-            9, 
+            "A", 
             [
                 { 
                     name: "SOME_ACTION",
@@ -378,7 +376,7 @@ class ConfigParserTests extends TestBase {
         );
 
         await this.#replaceActions(
-            9, 
+            "A", 
             [],
             "local"
         );
@@ -386,7 +384,7 @@ class ConfigParserTests extends TestBase {
 
     async replaceActionsPaging() {
         await this.#replaceActions(
-            1, 
+            "1", 
             [
                 { 
                     name: "PagerAction",
@@ -418,7 +416,7 @@ class ConfigParserTests extends TestBase {
         );
     }
 
-    async #replaceActions(port, actions, clientId, debug = false) {
+    async #replaceActions(modelName, actions, clientId, debug = false) {
         await this.init();
 
         const config = new WebConfiguration(new MockController(), "data/test-presets/get-inputs-default");
@@ -432,7 +430,7 @@ class ConfigParserTests extends TestBase {
             console.log("current: ", parser.inputs())
         }
 
-        const input = await parser.input(port);
+        const input = await parser.input(modelName);
     
         // Replace actions
         input.setActions(actions);
@@ -443,7 +441,7 @@ class ConfigParserTests extends TestBase {
         }
 
         await this.#testAction(parser, {
-            port: port,
+            modelName: modelName,
             client: clientId,
             actions: actions
         });
@@ -457,7 +455,7 @@ class ConfigParserTests extends TestBase {
         }
 
         await this.#testAction(parser, {
-            port: port,
+            modelName: modelName,
             client: clientId,
             actions: actions,
             actionsHold: actions
@@ -473,10 +471,10 @@ class ConfigParserTests extends TestBase {
         await config.init(this.pyswitch, "../");
         const parser = config.parser;
 
-        const input1 = await parser.input(1);
+        const input1 = await parser.input("1");
         expect(input1).toEqual(null);
 
-        const input2 = await parser.input(1, true);
+        const input2 = await parser.input("1", true);
         
         input2.setActions(
             [
@@ -499,7 +497,7 @@ class ConfigParserTests extends TestBase {
         // console.log((await parser.config.get()).inputs_py);
 
         await this.#testAction(parser, {
-            port: 1,
+            modelName: "1",
             client: "kemper",
             actions: [{
                 name: "RIG_SELECT",
@@ -524,7 +522,7 @@ class ConfigParserTests extends TestBase {
         await config.init(this.pyswitch, "../");
         const parser = config.parser;
 
-        const input = await parser.input(1, true);
+        const input = await parser.input("1", true);
 
         input.setActions(
             [
@@ -544,7 +542,7 @@ class ConfigParserTests extends TestBase {
         // console.log((await parser.config.get()).inputs_py);
 
         await this.#testAction(parser, {
-            port: 1,
+            modelName: "1",
             client: "kemper",
             actions: [{
                 name: "RIG_SELECT",
@@ -563,7 +561,7 @@ class ConfigParserTests extends TestBase {
         await config.init(this.pyswitch, "../");
         const parser = config.parser;
 
-        const input1 = await parser.input(1);
+        const input1 = await parser.input("1");
         
         // Add first actions available
         const clients = await parser.getAvailableActions();
@@ -591,7 +589,7 @@ class ConfigParserTests extends TestBase {
         await config.init(this.pyswitch, "../");
         const parser = config.parser;
 
-        const input1 = await parser.input(1);
+        const input1 = await parser.input("1");
         
         // Add all actions available
         const clients = await parser.getAvailableActions();
@@ -632,7 +630,7 @@ class ConfigParserTests extends TestBase {
         await config.init(this.pyswitch, "../");
         const parser = config.parser;
 
-        const input1 = await parser.input(1);
+        const input1 = await parser.input("1");
         
         input1.setActions(
             [
@@ -858,7 +856,7 @@ class ConfigParserTests extends TestBase {
         await config.init(this.pyswitch, "../");
         const parser = config.parser;
 
-        const input1 = await parser.input(1);
+        const input1 = await parser.input("1");
         
         input1.setActions(
             [
@@ -892,7 +890,7 @@ class ConfigParserTests extends TestBase {
 
     /**
      * {
-     *      port,
+     *      modelName,
      *      client,             // Client ID
      *      actions: [
      *          {
@@ -911,7 +909,7 @@ class ConfigParserTests extends TestBase {
      * }
      */
     async #testAction(parser, config) {
-        const input = await parser.input(config.port);
+        const input = await parser.input(config.modelName);
 
         function precheck(item, expItem) {
             if (Array.isArray(item)) {

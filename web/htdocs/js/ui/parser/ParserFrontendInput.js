@@ -560,7 +560,7 @@ class ParserFrontendInput {
         
         // Add new action
         newActions.push(actionDefinition);
-        
+
         // Update config
         const that = this;
         setTimeout(
@@ -666,7 +666,7 @@ class ParserFrontendInput {
     async #setActions(actions, hold, noUpdate) {
         if (!this.input) {
             // Create input
-            this.input = await this.#parserFrontend.parser.input(this.definition.data.model.port, true);
+            this.input = await this.#parserFrontend.parser.input(this.definition.data.name, true);
         }
 
         this.input.setActions(actions, hold, noUpdate);

@@ -140,23 +140,23 @@ class Parser {
 
     /**
      * Returns a (proxy) instance of Input.py, which handles all operations on the input.
-     * port must be an integer ID of the port (as defined in the board wrapper in python)
+     * modelName must be the model name as defined in the hardware definitions.
      */
-    async input(port, createIfNotExistent = false) {
-        if (this.#inputs.has(port)) return this.#inputs.get(port);
+    async input(modelName, createIfNotExistent = false) {
+        if (this.#inputs.has(modelName)) return this.#inputs.get(modelName);
         
         await this.init();
 
         const hw = await this.getHardwareInfo();
 
-        function getAssignmentForPort() {
-            const filteredHw = hw.filter((item) => item.data.model.port == port);
+        function getAssignmentForModel() {
+            const filteredHw = hw.filter((item) => item.data.name == modelName);
             if (!filteredHw.length) return null;
          
             return filteredHw[0];
         }
         
-        const assignment = getAssignmentForPort();
+        const assignment = getAssignmentForModel();
         const inputData = this.inputData(assignment.name);
 
         if (!inputData) {
@@ -176,11 +176,11 @@ class Parser {
 
             this.updateConfig();
             
-            return this.input(port);
+            return this.input(modelName);
         }
         
         const ret = new ParserInput(this, inputData, assignment);
-        this.#inputs.set(port, ret);
+        this.#inputs.set(modelName, ret);
 
         return ret;
     }
@@ -314,7 +314,7 @@ class Parser {
         
         const ret = [];
         for (const inputDefinition of hw) {
-            const input = await this.input(inputDefinition.data.model.port);
+            const input = await this.input(inputDefinition.data.name);
             if (!input) continue;
 
             const actions = input.actions(false).concat(input.actions(true));

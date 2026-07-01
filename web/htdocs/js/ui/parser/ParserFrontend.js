@@ -29,7 +29,7 @@ class ParserFrontend {
     async addInput(inputDefinition, inputElement) {
         if (!inputElement) return;
 
-        const input = await this.parser.input(inputDefinition.data.model.port);
+        const input = await this.parser.input(inputDefinition.data.name);
         
         this.inputs.push(
             new ParserFrontendInput(this.#controller, this, inputDefinition, input, inputElement)
