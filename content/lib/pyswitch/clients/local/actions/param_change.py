@@ -104,6 +104,9 @@ class _ParameterChangeCallback(Callback):
             self.push()
 
     def push(self):
+        if self._mapping.value is None:
+            return
+        
         v = self._mapping.value + self._offset
 
         if v < 0:
@@ -134,7 +137,7 @@ class _ParameterChangeCallback(Callback):
             return
         
         self.__last_value = self._mapping.value
-
+        
         dim_factor = (self._mapping.value / self._max_value) if self._mapping.value != None else 0
         if self._offset < 0:
             dim_factor = 1 - dim_factor
