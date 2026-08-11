@@ -1,3 +1,7 @@
+# PySwitch v2.4.10
+
+
+
 # PySwitch v2.4.9
 - Features
     - Added Hardware definitions for using the EXP pedal inputs to connect switches instead.
