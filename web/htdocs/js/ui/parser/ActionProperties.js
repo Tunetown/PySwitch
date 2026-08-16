@@ -486,7 +486,7 @@ class ActionProperties {
             case 'rig_map': {
                 // Dedicated type for EFFECT_STATE_PER_RIG's rig_overrides parameter.
                 // Renders a table where each row maps a Bank/Rig pair to an effect slot.
-                return ActionProperties.#createRigMapInput(onChange);
+                return await this.#createRigMapInput(param, onChange);
             }
         }
 
@@ -644,27 +644,28 @@ class ActionProperties {
     // rig_map type: per-rig slot override table for EFFECT_STATE_PER_RIG
     // -------------------------------------------------------------------------
 
-    static #RIG_MAP_SLOTS = [
-        { name: "None (disabled)",     value: "None" },
-        { name: "Slot A",              value: "KemperEffectSlot.EFFECT_SLOT_ID_A" },
-        { name: "Slot B",              value: "KemperEffectSlot.EFFECT_SLOT_ID_B" },
-        { name: "Slot C",              value: "KemperEffectSlot.EFFECT_SLOT_ID_C" },
-        { name: "Slot D",              value: "KemperEffectSlot.EFFECT_SLOT_ID_D" },
-        { name: "Slot X",              value: "KemperEffectSlot.EFFECT_SLOT_ID_X" },
-        { name: "Slot MOD",            value: "KemperEffectSlot.EFFECT_SLOT_ID_MOD" },
-        { name: "Slot DLY (spillover)",value: "KemperEffectSlot.EFFECT_SLOT_ID_DLY" },
-        { name: "Slot REV (spillover)",value: "KemperEffectSlot.EFFECT_SLOT_ID_REV" },
-        { name: "Slot DLY (no spill)", value: "KemperEffectSlot.EFFECT_SLOT_ID_DLY_NO_SPILL" },
-        { name: "Slot REV (no spill)", value: "KemperEffectSlot.EFFECT_SLOT_ID_REV_NO_SPILL" },
-    ];
-
     /**
      * Creates the rig_map table container element.
      * onChange is called whenever the user modifies a row.
+     *
+     * Slot choices and the bank/rig numbering scheme are not hardcoded here: slot choices come
+     * from the sibling "slot_id" parameter definition (already client-agnostic, declared in
+     * meta.json), and the rigs-per-bank / bank count come from the client instance via
+     * resolveValueToken(), the same generic mechanism used elsewhere (see ParameterRange.js).
      */
-    static #createRigMapInput(onChange) {
+    async #createRigMapInput(param, onChange) {
+        const client = param.meta.client;
+        const numRigsPerBank = await client.resolveValueToken("NUM_RIGS_PER_BANK");
+        const numBanks = await client.resolveValueToken("NUM_BANKS");
+
+        const slotDef = this.getParameterDefinition('slot_id');
+        const slots = slotDef ? (await slotDef.meta.getValues()) || [] : [];
+
         const container = $('<div class="rig-map-container" />');
         container.data('onChange', onChange);
+        container.data('slots', slots);
+        container.data('numRigsPerBank', numRigsPerBank);
+        container.data('numBanks', numBanks);
 
         const table = $('<table class="rig-map-table" />').append(
             $('<thead />').append(
@@ -679,9 +680,11 @@ class ActionProperties {
         table.append(tbody);
         container.append(table);
 
+        const firstSlot = slots.find(s => s.value !== 'None') || slots[0];
+
         const addBtn = $('<button type="button" class="rig-map-add" />').text('+ Add override');
         addBtn.on('click', function() {
-            ActionProperties.#addRigMapRow(tbody, 1, 1, [ActionProperties.#RIG_MAP_SLOTS[1].value], onChange);
+            ActionProperties.#addRigMapRow(tbody, 1, 1, [firstSlot ? firstSlot.value : undefined], onChange, slots, numRigsPerBank, numBanks);
             onChange();
         });
         container.append(addBtn);
@@ -694,15 +697,19 @@ class ActionProperties {
      * slotValues: array of slot value strings, or a single string (e.g. 'None').
      * Multiple slots produce AND logic in the firmware: LED is ON only when ALL are ON.
      */
-    static #addRigMapRow(tbody, bank, rig, slotValues, onChange) {
+    static #addRigMapRow(tbody, bank, rig, slotValues, onChange, slots, numRigsPerBank, numBanks) {
+        const noneSlot = slots.find(s => s.value === 'None');
+        const firstSlot = slots.find(s => s.value !== 'None') || slots[0];
+
         if (!Array.isArray(slotValues)) slotValues = [slotValues];
-        if (slotValues.length === 0) slotValues = [ActionProperties.#RIG_MAP_SLOTS[1].value];
+        if (slotValues.length === 0) slotValues = [firstSlot ? firstSlot.value : undefined];
 
         const rigSelect = $('<select class="rig-rig" />').append(
-            [1,2,3,4,5].map(n => $('<option />').val(n).text(n))
+            Array.from({ length: numRigsPerBank }, (_, i) => i + 1).map(n => $('<option />').val(n).text(n))
         ).val(rig).on('change', onChange);
 
-        const bankInput = $('<input type="number" class="rig-bank" min="1" max="125" />')
+        const bankInput = $('<input type="number" class="rig-bank" min="1" />')
+            .attr('max', numBanks)
             .val(bank).on('change', onChange);
 
         const slotsContainer = $('<div class="rig-slots-container" />');
@@ -712,19 +719,19 @@ class ActionProperties {
 
         function updateAddBtnState() {
             const firstSelect = slotsContainer.find('.rig-slot').first();
-            addSlotBtn.prop('disabled', firstSelect.length > 0 && firstSelect.val() === 'None');
+            addSlotBtn.prop('disabled', firstSelect.length > 0 && noneSlot && firstSelect.val() === noneSlot.value);
         }
 
         function appendSlotRow(slotValue, isFirst) {
-            // First slot includes "None (disabled)"; subsequent slots exclude it
+            // First slot includes the "disabled" option (if any); subsequent slots exclude it
             const options = isFirst
-                ? ActionProperties.#RIG_MAP_SLOTS
-                : ActionProperties.#RIG_MAP_SLOTS.filter(s => s.value !== 'None');
+                ? slots
+                : slots.filter(s => !noneSlot || s.value !== noneSlot.value);
 
             const select = $('<select class="rig-slot" />').append(
                 options.map(s => $('<option />').val(s.value).text(s.name))
             ).val(slotValue).on('change', function() {
-                if (isFirst && $(this).val() === 'None') {
+                if (isFirst && noneSlot && $(this).val() === noneSlot.value) {
                     // Disabled: remove extra slot rows
                     slotsContainer.find('.rig-slot-row').not(':first').remove();
                 }
@@ -753,15 +760,14 @@ class ActionProperties {
             }
         }
 
-        const isNoneValue = slotValues.length === 1 && slotValues[0] === 'None';
+        const isNoneValue = slotValues.length === 1 && noneSlot && slotValues[0] === noneSlot.value;
         for (let i = 0; i < slotValues.length; i++) {
             appendSlotRow(slotValues[i], i === 0);
         }
 
         addSlotBtn.prop('disabled', isNoneValue);
         addSlotBtn.on('click', function() {
-            const firstNonNone = ActionProperties.#RIG_MAP_SLOTS.find(s => s.value !== 'None');
-            appendSlotRow(firstNonNone ? firstNonNone.value : ActionProperties.#RIG_MAP_SLOTS[1].value, false);
+            appendSlotRow(firstSlot ? firstSlot.value : undefined, false);
             updateAddBtnState();
             onChange();
         });
@@ -785,22 +791,27 @@ class ActionProperties {
      * Single slot  → absRig: KemperEffectSlot.EFFECT_SLOT_ID_C
      * Disabled     → absRig: None
      * Multi-slot   → absRig: [KemperEffectSlot.EFFECT_SLOT_ID_C, KemperEffectSlot.EFFECT_SLOT_ID_MOD]
-     * Absolute rig ID = (bank - 1) * 5 + (rig - 1)
+     * Absolute rig ID = (bank - 1) * rigs-per-bank + (rig - 1)
      */
     static #getRigMapValue(container) {
+        const slots = container.data('slots') || [];
+        const numRigsPerBank = container.data('numRigsPerBank') || 1;
+        const noneSlot = slots.find(s => s.value === 'None');
+        const firstSlot = slots.find(s => s.value !== 'None') || slots[0];
+
         const entries = [];
         container.find('tbody tr').each(function() {
             const bank = parseInt($(this).find('.rig-bank').val()) || 1;
             const rig  = parseInt($(this).find('.rig-rig').val())  || 1;
-            const absRig = (bank - 1) * 5 + (rig - 1);
+            const absRig = (bank - 1) * numRigsPerBank + (rig - 1);
             const slotSelects = $(this).find('.rig-slot');
             if (slotSelects.length === 1) {
-                entries.push(absRig + ': ' + (slotSelects.val() || ActionProperties.#RIG_MAP_SLOTS[0].value));
+                entries.push(absRig + ': ' + (slotSelects.val() || (noneSlot ? noneSlot.value : '')));
             } else {
-                const slots = slotSelects.map(function() {
-                    return $(this).val() || ActionProperties.#RIG_MAP_SLOTS[1].value;
+                const values = slotSelects.map(function() {
+                    return $(this).val() || (firstSlot ? firstSlot.value : '');
                 }).get();
-                entries.push(absRig + ': [' + slots.join(', ') + ']');
+                entries.push(absRig + ': [' + values.join(', ') + ']');
             }
         });
         return '{' + entries.join(', ') + '}';
@@ -811,8 +822,12 @@ class ActionProperties {
      * Supports single slots, None, and list values:
      *   {0: [KemperEffectSlot.EFFECT_SLOT_ID_C, KemperEffectSlot.EFFECT_SLOT_ID_MOD], 4: None}
      */
-    static #setRigMapValue(container, value, onChange) {
-        if (onChange === undefined) onChange = container.data('onChange') || function() {};
+    static #setRigMapValue(container, value) {
+        const onChange = container.data('onChange') || function() {};
+        const slots = container.data('slots') || [];
+        const numRigsPerBank = container.data('numRigsPerBank') || 1;
+        const numBanks = container.data('numBanks');
+
         const tbody = container.find('tbody');
         tbody.empty();
 
@@ -843,8 +858,8 @@ class ActionProperties {
             const slotStr   = pair.substring(colonIdx + 1).trim();
             const absRig = parseInt(absRigStr.replace(/['"]/g, '').trim());
             if (isNaN(absRig)) continue;
-            const bank = Math.floor(absRig / 5) + 1;
-            const rig  = (absRig % 5) + 1;
+            const bank = Math.floor(absRig / numRigsPerBank) + 1;
+            const rig  = (absRig % numRigsPerBank) + 1;
 
             let slotValues;
             if (slotStr.startsWith('[') && slotStr.endsWith(']')) {
@@ -854,7 +869,7 @@ class ActionProperties {
                 slotValues = [slotStr];
             }
 
-            ActionProperties.#addRigMapRow(tbody, bank, rig, slotValues, onChange);
+            ActionProperties.#addRigMapRow(tbody, bank, rig, slotValues, onChange, slots, numRigsPerBank, numBanks);
         }
     }
 
