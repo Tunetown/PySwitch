@@ -1,10 +1,20 @@
 # PySwitch v2.4.9
 - Features:
-    - Added **EFFECT_STATE_PER_RIG** action: works like EFFECT_STATE but allows assigning a different Kemper effect slot per rig. When the active rig changes, the button automatically controls the slot defined in the rig_overrides mapping, falling back to the default slot_id. Supports None as a slot value to disable the button for a specific rig.
+    - Added **EFFECT_STATE_PER_RIG** action: works like EFFECT_STATE, but lets you assign a different Kemper effect slot per rig via a `rig_overrides` mapping (keyed by absolute rig ID). When the active rig changes, the button automatically switches to the overridden slot, falling back to `slot_id` if the current rig has no override. Set a rig's override to `None` to disable the button on that rig (LED off, display cleared). An override can also target multiple slots at once (list of slot IDs); the LED then reflects AND logic (on only if all listed slots are engaged).
+    - Added **keep_rig** parameter to BANK_UP/BANK_DOWN actions: when set, changing banks keeps the currently selected rig slot instead of resetting to rig 1.
+
+- Bug fixes:
+    - Fixed switches with no active action for the current page remaining lit.
+    - Fixed a crash when a rig name contains characters missing from the display font.
+    - Fixed switch LED flicker on EFFECT_STATE_PER_RIG multi-slot overrides: all slot states for a switch are now collected and rendered in a single write instead of one write per slot.
+
+- Other:
+    - Added configurable LED color and brightness for switches with no assigned action.
 
 ### Emulator 2.4.9.16
 - Features:
-    - Added **EFFECT_STATE_PER_RIG** to the web editor: new rig_map parameter type renders a Bank/Rig/Slot table with add/remove rows and full round-trip serialization with inputs.py.
+    - Added **EFFECT_STATE_PER_RIG** to the web editor: new `rig_map` parameter type renders a Bank/Rig/Slot(s) table with add/remove rows, multi-slot rows, and full round-trip serialization with inputs.py.
+    - Added **keep_rig** to the web editor for BANK_UP/BANK_DOWN.
 
 # PySwitch v2.4.8
 - Bug fixes:
