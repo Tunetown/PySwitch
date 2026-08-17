@@ -5,7 +5,7 @@ from ....misc import get_option, PeriodCounter
 from ....colors import Colors, dim_color
 
 from ..mappings.bank import MAPPING_NEXT_BANK, MAPPING_PREVIOUS_BANK
-from ..mappings.select import MAPPING_BANK_SELECT, MAPPING_RIG_SELECT
+from ..mappings.select import MAPPING_BANK_SELECT
 
 from .rig_select import RIG_SELECT_DISPLAY_CURRENT_RIG, RIG_SELECT_DISPLAY_TARGET_RIG
 
@@ -22,8 +22,7 @@ def BANK_UP(display = None,
             color_callback = None,                            # Optional callback for setting the color. Footprint: def callback(action, bank, rig) -> (r, g, b) where bank and rig are int starting from 0.
             display_mode = RIG_SELECT_DISPLAY_CURRENT_RIG,    # Display mode (same as for RIG_SELECT, see definitions above)
             preselect = False,                                # Preselect mode. If enabled, the bank is only pre-selected, the change will only take effect when you select a rig next time.
-            max_bank = None,                                  # Highest bank available. Only relevant if preselct is enabled.
-            keep_rig = False                                  # If enabled, the same rig slot is selected in the target bank (e.g. bank 1 rig 4 -> bank 2 rig 4). Ignored when preselect is enabled.
+            max_bank = None                                   # Highest bank available. Only relevant if preselct is enabled.
     ):
     return Action({
         "callback": KemperBankChangeCallback(
@@ -37,8 +36,7 @@ def BANK_UP(display = None,
             text = text,
             text_callback = text_callback,
             preselect = preselect,
-            max_bank = max_bank,
-            keep_rig = keep_rig
+            max_bank = max_bank
         ),
         "display": display,
         "id": id,
@@ -59,8 +57,7 @@ def BANK_DOWN(display = None,                                   # Reference to a
               color_callback = None,                            # Optional callback for setting the color. Footprint: def callback(action, bank, rig) -> (r, g, b) where bank and rig are int starting from 0.
               display_mode = RIG_SELECT_DISPLAY_CURRENT_RIG,    # Display mode (same as for RIG_SELECT, see definitions above)
               preselect = False,                                # Preselect mode
-              max_bank = None,                                  # Highest bank available. Only relevant if preselct is enabled.
-              keep_rig = False                                  # If enabled, the same rig slot is selected in the target bank (e.g. bank 2 rig 4 -> bank 1 rig 4). Ignored when preselect is enabled.
+              max_bank = None                                   # Highest bank available. Only relevant if preselct is enabled.
     ):
     return Action({
         "callback": KemperBankChangeCallback(
@@ -74,8 +71,7 @@ def BANK_DOWN(display = None,                                   # Reference to a
             text = text,
             text_callback = text_callback,
             preselect = preselect,
-            max_bank = max_bank,
-            keep_rig = keep_rig
+            max_bank = max_bank
         ),
         "display": display,
         "id": id,
@@ -98,7 +94,6 @@ class KemperBankChangeCallback(Callback):
                  text_callback,
                  preselect,
                  max_bank,
-                 keep_rig = False,
                  preselect_blink_interval = 400
         ):
         super().__init__(mappings = [mapping])
@@ -116,8 +111,6 @@ class KemperBankChangeCallback(Callback):
         self.__text_callback = text_callback
         self.__preselect = preselect
         self.__max_bank = max_bank
-        self.__keep_rig = keep_rig
-        self.__sent_rig_mapping = None
 
         if preselect:
             self.__preselect_blink_period = PeriodCounter(preselect_blink_interval)
@@ -148,24 +141,6 @@ class KemperBankChangeCallback(Callback):
             self.__appl.shared["preselectCallback"] = None
 
     def push(self):
-        # Keep rig mode: preselect the target bank and re-select the same rig slot in it,
-        # so e.g. bank 1 rig 4 -> bank 2 rig 4 (and the rig is actually loaded).
-        if self.__keep_rig and not self.__preselect:
-            if self.__mapping.value == None:
-                return
-
-            curr_bank = int(self.__mapping.value / NUM_RIGS_PER_BANK)
-            curr_rig = self.__mapping.value % NUM_RIGS_PER_BANK
-            target_bank = self.__wrap_bank(curr_bank + self.__offset)
-
-            self.__appl.client.set(MAPPING_BANK_SELECT(), target_bank)
-
-            self.__sent_rig_mapping = MAPPING_RIG_SELECT(curr_rig)
-            self.__appl.client.set(self.__sent_rig_mapping, 1)
-
-            self.__appl.shared["morphStateOverride"] = 0
-            return
-
         if self.__preselect:
             if self.__mapping.value == None:
                 return
@@ -182,10 +157,7 @@ class KemperBankChangeCallback(Callback):
         self.__appl.shared["morphStateOverride"] = 0
 
     def release(self):
-        # Send the rig select release (0) value if necessary (keep_rig mode)
-        if self.__sent_rig_mapping:
-            self.__appl.client.set(self.__sent_rig_mapping, 0)
-            self.__sent_rig_mapping = None
+        pass
 
     def update(self):
         Callback.update(self)

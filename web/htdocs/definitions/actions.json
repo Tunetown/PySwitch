@@ -1444,11 +1444,6 @@
                         "name": "max_bank",
                         "default": "None",
                         "comment": "Highest bank available. Only relevant if preselct is enabled."
-                    },
-                    {
-                        "name": "keep_rig",
-                        "default": "False",
-                        "comment": "If enabled, the same rig slot is selected in the target bank (e.g. bank 1 rig 4 -> bank 2 rig 4). Ignored when preselect is enabled."
                     }
                 ],
                 "comment": "Next bank (keeps rig index)",
@@ -1521,11 +1516,6 @@
                         "name": "max_bank",
                         "default": "None",
                         "comment": "Highest bank available. Only relevant if preselct is enabled."
-                    },
-                    {
-                        "name": "keep_rig",
-                        "default": "False",
-                        "comment": "If enabled, the same rig slot is selected in the target bank (e.g. bank 2 rig 4 -> bank 1 rig 4). Ignored when preselect is enabled."
                     }
                 ],
                 "comment": "Previous bank (keeps rig index)",
