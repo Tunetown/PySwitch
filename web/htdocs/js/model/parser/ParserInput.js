@@ -79,6 +79,50 @@ class ParserInput extends ParserTreeElement {
     }
 
     /**
+     * Returns the LED color of the switch (string like "Colors.RED" or "(255,0,0)"), or null if not set.
+     */
+    color() {
+        this.checkValid()
+        const arg = this.getArgument("color");
+        return (arg && arg.value) ? arg.value : null;
+    }
+
+    /**
+     * Sets the LED color of the switch. Pass null to remove (use firmware default).
+     */
+    setColor(color) {
+        this.checkValid()
+        if (color) {
+            this.setArgument("color", color);
+        } else {
+            this.removeArgument("color");
+        }
+        this.parser.updateConfig();
+    }
+
+    /**
+     * Returns the LED brightness of the switch [0..1], or null if not set.
+     */
+    brightness() {
+        this.checkValid()
+        const arg = this.getArgument("brightness");
+        return (arg && arg.value != null && arg.value !== "") ? parseFloat(arg.value) : null;
+    }
+
+    /**
+     * Sets the LED brightness of the switch [0..1]. Pass null to remove (use firmware default).
+     */
+    setBrightness(brightness) {
+        this.checkValid()
+        if (brightness !== null && brightness !== undefined && brightness !== "") {
+            this.setArgument("brightness", "" + parseFloat(brightness));
+        } else {
+            this.removeArgument("brightness");
+        }
+        this.parser.updateConfig();
+    }
+
+    /**
      * Returns the actions of the input as arrays of ParserInputActions
      */
     actions(hold = false) {

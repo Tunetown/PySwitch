@@ -89,7 +89,7 @@ class Controller {
                 this.handle(e);
             }
 
-            // Initialize UI (settings panel etc.)        
+            // Initialize UI (settings panel etc.)
             await this.ui.build();
 
             // Routing handler: Runs routing. see Routing.js for the callbacks which in turn call this controller again.

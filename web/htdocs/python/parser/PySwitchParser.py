@@ -12,6 +12,7 @@ from .misc.AssignmentExtractor import AssignmentExtractor
 from .misc.ImportExtractor import ImportExtractor
 from .misc.ReplaceAssignmentTransformer import ReplaceAssignmentTransformer
 from .misc.AddAssignmentTransformer import AddAssignmentTransformer
+from .misc.RemoveAssignmentTransformer import RemoveAssignmentTransformer
 from .misc.ClassNameExtractor import ClassNameExtractor
 
 class PySwitchParser:
@@ -116,17 +117,31 @@ class PySwitchParser:
 
         # Remove first assign as this can lead to endless recursion and is not relevant anyway
         splashes_py = splashes.to_py()
-        if "assign" in splashes_py: 
+        if "assign" in splashes_py:
             splashes_py["assign"] = None
 
+        # Collect all assign names referenced in the new tree BEFORE code generation,
+        # so we can remove stale DisplayLabel constants that are no longer referenced.
+        referenced_assigns = self._collect_assign_names(splashes_py)
+
         splashes_node = CodeGenerator(
-            parser = self, 
-            file_id = "display_py", 
+            parser = self,
+            file_id = "display_py",
             insert_before_assign = "Splashes",
             format = True
         ).generate(splashes_py)
-        
+
         self.set_assignment("Splashes", splashes_node, "display_py")
+
+        # Remove orphaned DisplayLabel assignments that are no longer used in Splashes
+        # and not referenced in inputs.py (the JS frontend already prevents removal
+        # of referenced labels, but we double-check here for safety).
+        current_names = AssignmentNameExtractor().get(self.__csts["display_py"])
+        for name in current_names:
+            if name.startswith("_") or name == "Splashes":
+                continue
+            if name not in referenced_assigns:
+                self.remove_assignment(name, "display_py")
 
     ########################################################################################
         
@@ -138,13 +153,32 @@ class PySwitchParser:
             return
 
         adder = AddAssignmentTransformer(
-            name, 
-            call_node, 
-            insert_before_assign = insert_before_assign, 
+            name,
+            call_node,
+            insert_before_assign = insert_before_assign,
             cst = self.__csts[file_id] if not insert_before_assign else None
         )
 
         self.__csts[file_id] = self.__csts[file_id].visit(adder)
+
+    # Remove the given assignment by name.
+    def remove_assignment(self, name, file_id):
+        remover = RemoveAssignmentTransformer(name)
+        self.__csts[file_id] = self.__csts[file_id].visit(remover)
+
+    # Recursively collect all "assign" names from a parsed tree dict.
+    def _collect_assign_names(self, data, names = None):
+        if names is None:
+            names = set()
+        if isinstance(data, dict):
+            if "assign" in data and data["assign"]:
+                names.add(data["assign"])
+            for value in data.values():
+                self._collect_assign_names(value, names)
+        elif isinstance(data, list):
+            for item in data:
+                self._collect_assign_names(item, names)
+        return names
 
     ########################################################################################
 

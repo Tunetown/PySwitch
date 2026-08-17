@@ -125,19 +125,30 @@ class ParameterList {
 
         async function onChange() {
             try {
+                log.clear();
+
+                const value = options.getValue ? options.getValue(input) : input.val();
+
+                if (options.validate) {
+                    const error = options.validate(value);
+                    if (error) {
+                        log.error(error);
+                        return;
+                    }
+                }
+
                 if (options.onChange) {
-                    const value = options.getValue ? options.getValue(input) : input.val();
                     await options.onChange(value, function(newValue) {
                         if (value == newValue) return;
-                        
+
                         if (options.setValue) {
                             options.setValue(input, newValue);
                             return;
                         }
                         input.val(newValue);
-                    });                        
+                    });
                 }
-            
+
             } catch (e) {
                 that.controller.handle(e);
             }

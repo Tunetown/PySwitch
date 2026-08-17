@@ -95,7 +95,7 @@ class KemperBankChangeCallback(Callback):
                  preselect,
                  max_bank,
                  preselect_blink_interval = 400
-        ):            
+        ):
         super().__init__(mappings = [mapping])
 
         self.__mapping = mapping
@@ -144,16 +144,16 @@ class KemperBankChangeCallback(Callback):
         if self.__preselect:
             if self.__mapping.value == None:
                 return
-            
+
             value = self.__get_next_bank()
-            
+
             self.__appl.shared["preselectedBank"] = value
             self.__appl.shared["preselectCallback"] = self
         else:
             value = 0
 
         self.__appl.client.set(self.__mapping, value)
-        
+
         self.__appl.shared["morphStateOverride"] = 0
 
     def release(self):
@@ -224,11 +224,14 @@ class KemperBankChangeCallback(Callback):
             bank = self.__appl.shared["preselectedBank"]
 
         if bank == None:
-            bank = int(self.__mapping.value / NUM_RIGS_PER_BANK)        
+            bank = int(self.__mapping.value / NUM_RIGS_PER_BANK)
 
-        value = bank + self.__offset
+        return self.__wrap_bank(bank + self.__offset)
+
+    # Wrap a bank index into the valid range [0..num_banks-1]
+    def __wrap_bank(self, value):
         _num_banks = NUM_BANKS if self.__max_bank == None else self.__max_bank
-        
+
         while (value < 0):
             value += _num_banks
         while (value >= _num_banks):

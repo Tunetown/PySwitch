@@ -60,4 +60,12 @@ class ParserTreeElement {
             }
         )
     }
+
+    /**
+     * Removes a specific argument by name. Does nothing if not found.
+     */
+    removeArgument(name) {
+        this.checkValid()
+        this.data.arguments = this.data.arguments.filter((arg) => arg.name != name);
+    }
 }

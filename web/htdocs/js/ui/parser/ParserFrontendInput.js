@@ -187,7 +187,7 @@ class ParserFrontendInput {
                             }),
 
                             // Input settings button
-                            !(await (new InputSettings(this.#controller, this.definition, this.input).get())) ? null :
+                            !(await (new InputSettings(this.#controller, this.definition, this.input, this.#parserFrontend.parser).get())) ? null :
                             $('<div class="button actions input-settings fas fa-wrench" data-toggle="tooltip" title="Settings for ' + this.definition.displayName + '" />')
                             .on('click', async function() {
                                 try {
@@ -518,6 +518,7 @@ class ParserFrontendInput {
         
         const browser = this.#controller.ui.getPopup({
             onReturnKey: commit,
+            additionalClasses: "medium",
             buttons: [
                 {
                     text: "Done",
@@ -529,7 +530,8 @@ class ParserFrontendInput {
         const props = new InputSettings(
             this.#controller,
             this.definition,
-            this.input
+            this.input,
+            this.#parserFrontend.parser
         );
 
         const propsContent = await props.get();

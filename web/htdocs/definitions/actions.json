@@ -1573,6 +1573,63 @@
                 "comment": "Switch an effect slot on / off. This variant has distinct names for each effect type. \n\n<b>Use with care:</b> This takes quite some RAM memory, so if you run a large configuration you might run into memory allocation failures. In this case, just use the normal Effect State action instead.",
                 "importPath": "pyswitch.clients.kemper.actions.effect_state_extended_names"
             },
+        {
+            "name": "EFFECT_STATE_PER_RIG",
+            "parameters": [
+                {
+                    "name": "slot_id",
+                    "default": null,
+                    "comment": null
+                },
+                {
+                    "name": "rig_overrides",
+                    "default": "{}",
+                    "comment": null
+                },
+                {
+                    "name": "display",
+                    "default": "None",
+                    "comment": null
+                },
+                {
+                    "name": "mode",
+                    "default": "PushButtonAction.HOLD_MOMENTARY",
+                    "comment": null
+                },
+                {
+                    "name": "show_slot_names",
+                    "default": "False",
+                    "comment": null
+                },
+                {
+                    "name": "id",
+                    "default": "False",
+                    "comment": null
+                },
+                {
+                    "name": "text",
+                    "default": "None",
+                    "comment": null
+                },
+                {
+                    "name": "color",
+                    "default": "None",
+                    "comment": null
+                },
+                {
+                    "name": "use_leds",
+                    "default": "True",
+                    "comment": null
+                },
+                {
+                    "name": "enable_callback",
+                    "default": "None",
+                    "comment": null
+                }
+            ],
+            "comment": "Switch an effect slot on / off, with per-rig slot override",
+            "importPath": "pyswitch.clients.kemper.actions.effect_state_per_rig"
+        },
             {
                 "name": "RIG_SELECT_AND_MORPH_STATE",
                 "parameters": [
