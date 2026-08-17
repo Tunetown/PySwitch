@@ -70,7 +70,7 @@ class KemperRigNameCallback(Callback):
 
     def __init__(self, 
                  show_name = True,     # Show the rig name in the label
-                 show_rig_id = False   # Show the rig ID (like 1-1) in the label
+                 show_rig_id = False   # Show the rig ID (like 1-1) in the label. Can be False, 'rig', 'bank' or True (to show both rig and bank)
     ):
         Callback.__init__(self)
 
@@ -118,10 +118,17 @@ class KemperRigNameCallback(Callback):
             bank = int(self.__mapping_id.value / NUM_RIGS_PER_BANK)
             rig = self.__mapping_id.value % NUM_RIGS_PER_BANK
 
-            if self.__show_name:
-                label.text = f"{ repr(bank + 1) }-{ repr(rig + 1) } { name }"
+            if self.__show_rig_id == 'rig':
+                rig_id_str = f"{ repr(rig + 1) }"
+            elif self.__show_rig_id == 'bank':
+                rig_id_str = f"{ repr(bank + 1) }"
             else:
-                label.text = f"{ repr(bank + 1) }-{ repr(rig + 1) }"
+                rig_id_str = f"{ repr(bank + 1) }-{ repr(rig + 1) }"
+
+            if self.__show_name:
+                label.text = f"{ rig_id_str } { name }"
+            else:
+                label.text = f"{ rig_id_str }"
                 
         elif self.__show_name:
             label.text = name
@@ -581,9 +588,13 @@ class KemperBidirectionalProtocol: #(BidirectionalProtocol):
     _STATE_OFFLINE = 10   # No commmunication initiated
     _STATE_RUNNING = 20   # Bidirectional communication established
 
-    def __init__(self, time_lease_seconds):
+    def __init__(self, 
+                 time_lease_seconds,
+                 tuner_mode = True
+        ):
         self.state = self._STATE_OFFLINE
         self.__time_lease_encoded = self.__encode_time_lease(time_lease_seconds)
+        self.__tuner_mode = tuner_mode
 
         # This is the reponse template for the status sensing message the Profiler sends every
         # about 500ms.
@@ -697,7 +708,7 @@ class KemperBidirectionalProtocol: #(BidirectionalProtocol):
                     _SELECTED_PARAMETER_SET_ID,
                     self.__get_flags(
                         init = init,
-                        tunemode = True
+                        tunemode = self.__tuner_mode
                     ),
                     self.__time_lease_encoded
                 ]

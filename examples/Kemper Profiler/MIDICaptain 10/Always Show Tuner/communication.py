@@ -24,7 +24,7 @@ Communication = {
         time_lease_seconds = 30,              # When the controller is removed, the Profiler will stay in bidirectional
                                               # mode for this amount of seconds. The communication is re-initiated every  
                                               # half of this value. 
-        tuner_mode = True                     # If set to True, Tuner information is only sent by the Kemper when in tuner 
+        tuner_mode = False                     # If set to True, Tuner information is only sent by the Kemper when in tuner 
                                               # mode. Set to False to make it send the info all the time.
     ),
 

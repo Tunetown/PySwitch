@@ -12,7 +12,7 @@ class AnalogAction(Updateable):
                  num_steps = 128,                   # Number of steps to be regarded as different (saves MIDI traffic at the cost of precision).
                  enable_callback = None,            # Callback to set enabled state (optional). Must contain an enabled(action) function.
                  id = None,
-                 auto_calibrate = True,             # Auto-calibrate (similar to Kemper devices)
+                 auto_calibrate = False,            # Auto-calibrate (similar to Kemper devices)
                  cal_min_window = 0.25,             # Minimum calibration range in percent [0..1]. A value of 0.25 means that the pedal has to cover at least 25% of the full range to be regarded.
                  transfer_function = None,          # Transfer function. Input is the raw encoder value in range [0..65535]. Must return the value to be sent for 
                                                     # the mapping, in its range. If used, this disables the num_steps and max_value parameters.
@@ -22,6 +22,7 @@ class AnalogAction(Updateable):
                  change_display = None,             # If assigned, the adjusted value will be displayed in the passed DisplayLabel when the pedal is adjusted. 
                  change_timeout_millis = 1500,      # This is the amount of time (milliseconds) after which the preview display will return to its normal state.
                  convert_value = None,              # Optional conversion routine for displaying values: (value) => string
+                 min_raw_value = 1024               # Optional minimum raw value threshold for stable zero
         ):
         if isinstance(mapping.set, SystemExclusive):
             if max_value == None:
@@ -49,6 +50,8 @@ class AnalogAction(Updateable):
         self.__cal_min = None
         self.__cal_max = None
         self.__cal_min_window = int(65536 * cal_min_window)
+
+        self.__min_raw_value = min_raw_value   # store the custom min raw value
 
         if change_display:
             from ..preview import ValuePreview
@@ -97,21 +100,25 @@ class AnalogAction(Updateable):
                 
                 # Scale the input value up
                 value = int((value - self.__cal_min) * self.__cal_factor)
-                
+
             # Determine the output value to be sent from the (possibly calibrated) input
             # value in range [0..65535]
             if self.__transfer_function:
                 # Use an external transfer function
                 v = self.__transfer_function(value)
             else:
-                # Scale and quantize
-                v = round(value / self.__step_width) * self.__step_width 
-                v = int(v / self.__factor)
+                # Apply custom minimum raw value threshold for stable zero
+                if self.__min_raw_value is not None and value < self.__min_raw_value:
+                    v = 0  # force zero MIDI when under threshold
+                else:
+                    # Scale and quantize
+                    v = round(value / self.__step_width) * self.__step_width 
+                    v = int(v / self.__factor)
 
-                if v < 0:
-                    v = 0
-                if v > self.__max_value:
-                    v = self.__max_value
+                    if v < 0:
+                        v = 0
+                    if v > self.__max_value:
+                        v = self.__max_value
 
             # Send MIDI message for new value if the output value has changed
             if self.__last_value != v:

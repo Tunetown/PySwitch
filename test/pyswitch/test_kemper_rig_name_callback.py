@@ -9,7 +9,6 @@ with patch.dict(sys.modules, {
     "micropython": MockMicropython,
     "displayio": MockDisplayIO(),
     "adafruit_display_text": MockAdafruitDisplayText(),
-    #"adafruit_midi": MockAdafruitMIDI(),
     "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
     "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
     "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
@@ -29,8 +28,13 @@ class TestKemperRigNameCallback(unittest.TestCase):
     def test(self):
         self._test(False, False)
         self._test(False, True)
+        self._test(False, 'rig')
+        self._test(False, 'bank')
         self._test(True, False)
         self._test(True, True)
+        self._test(True, 'rig')
+        self._test(True, 'bank')
+        
 
     def _test(self, show_name, show_rig_id):
         self._do_test(
@@ -76,7 +80,7 @@ class TestKemperRigNameCallback(unittest.TestCase):
 
         if show_rig_id:
             mapping_id = [m for m in cb._Callback__mappings if m == KemperMappings.RIG_ID()][0]
-            mapping_id.value = 12
+            mapping_id.value = 13
 
         if preselect:
             appl.shared["preselectedBank"] = 2
@@ -91,12 +95,20 @@ class TestKemperRigNameCallback(unittest.TestCase):
         cb.update_label(label)
 
         if show_name:
-            if show_rig_id:
-                self.assertEqual(label.text, "3-3 foo")
+            if show_rig_id == 'rig':
+                self.assertEqual(label.text, "4 foo")
+            elif show_rig_id == 'bank':
+                self.assertEqual(label.text, "3 foo")
+            elif show_rig_id:
+                self.assertEqual(label.text, "3-4 foo")
             else:
                 self.assertEqual(label.text, "foo")
         else:
-            if show_rig_id:
-                self.assertEqual(label.text, "3-3")
+            if show_rig_id == 'rig':
+                self.assertEqual(label.text, "4")
+            elif show_rig_id == 'bank':
+                self.assertEqual(label.text, "3")
+            elif show_rig_id:
+                self.assertEqual(label.text, "3-4")
 
 

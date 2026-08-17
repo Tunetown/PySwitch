@@ -1,4 +1,4 @@
-# PySwitch v2.4.9
+# PySwitch v2.4.10
 - Features:
     - Added **EFFECT_STATE_PER_RIG** action: works like EFFECT_STATE, but lets you assign a different Kemper effect slot per rig via a `rig_overrides` mapping (keyed by absolute rig ID). When the active rig changes, the button automatically switches to the overridden slot, falling back to `slot_id` if the current rig has no override. Set a rig's override to `None` to disable the button on that rig (LED off, display cleared). An override can also target multiple slots at once (list of slot IDs); the LED then reflects AND logic (on only if all listed slots are engaged).
     - Added **keep_rig** parameter to BANK_UP/BANK_DOWN actions: when set, changing banks keeps the currently selected rig slot instead of resetting to rig 1.
@@ -11,10 +11,33 @@
 - Other:
     - Added configurable LED color and brightness for switches with no assigned action.
 
-### Emulator 2.4.9.16
+### Emulator 2.4.10.17
 - Features:
     - Added **EFFECT_STATE_PER_RIG** to the web editor: new `rig_map` parameter type renders a Bank/Rig/Slot(s) table with add/remove rows, multi-slot rows, and full round-trip serialization with inputs.py.
     - Added **keep_rig** to the web editor for BANK_UP/BANK_DOWN.
+
+# PySwitch v2.4.9
+- Features
+    - Added Hardware definitions for using the EXP pedal inputs to connect switches instead.
+    - **KemperRigNameCallback** now provides multiple modes for showing the rig ID.
+    - (jcthalys via Pull Request) Fixed Kemper Effect type names and colors
+    - (nicola-lunghi via Pull Request) Added "Display Fixed Text" action to simply show a fixed text on a label
+    - Added support for the Tuner Display as a normal element on the screen (also in the display editor). You can now add a tuner showing deviance and/or note name anywhere in your layouts.
+        -> Also added tuner mode parameter to the Kemper Bidirectional protocol, so you can make the Kemper send tuner info all the time, not only when in tuner mode (which is a prerequisite for permanent tuner display)
+    - Merged new implementation of **AnalogAction** with a stable minimum threshold
+
+
+- Examples: 
+    - (Daniel Richer via Pull Request) Added Line 6 HX Stomp example
+    - Updated @tunetown examples
+    - Updated @Erikcb example
+    - Added an example with the tuner alsways visible
+    - Added chrjohns example
+
+### Emulator 2.4.9.16
+- Integrated TunerDisplay support in the display editor
+- Support for Exp Pedal inputs used for switches: Changed input indexing to hardware definition name instead of port. This way we can define multiple ways to allocate the ports.
+- Small bug fixes
 
 # PySwitch v2.4.8
 - Bug fixes:
@@ -27,6 +50,7 @@
 ### Emulator 2.4.8.15
 - Bug Fixes:
     - Fixed the "current is not defined" bug in the display editor for display callbacks
+
 
 # PySwitch v2.4.7
 - Features
@@ -46,6 +70,7 @@
 - Some optimizations
 - Some minor bug fixes
 
+
 # PySwitch v2.4.6
 - Features:
     - Added **Mapping for Space Intensity** to clients/kemper/mappings/system.py (@quemper)
@@ -61,6 +86,7 @@
     - The Emulator can now be installed as **PWA** (<a href="https://developer.mozilla.org/en/docs/Web/Progressive_web_apps">Progressive Web App</a>). In Chrome, select "Install PySwitch Emulator" at the right of your address bar, and you will get a standalone App separated from Chrome.
     
 - Cosmetical improvements
+
 
 # PySwitch v2.4.5
 - Features:
@@ -94,6 +120,7 @@
 - Bug Fixes:
     - Input Settings could not be changed due to an error.
 
+
 # PySwitch v2.4.3
 - Features:
     - Added mappings for some system parameters (can be used with the wheel encoder, pedals or the "Other Parameter" Actions):
@@ -117,6 +144,7 @@
 
 - Cosmetic improvements:
     - Added a note to check versions when a python error is displayed (incl. link to older versions of the emulator)
+
 
 # PySwitch v2.4.2
 - Features:
@@ -146,6 +174,7 @@
 ### Emulator 2.4.2.9
     - Added a MIDI Traffic Monitor, showing all MIDI messages sent and received by the PySwitch emulator.
     - Other cosmetic optimizations
+
 
 # PySwitch v2.4.1
 - Optimizations for performance/RAM:

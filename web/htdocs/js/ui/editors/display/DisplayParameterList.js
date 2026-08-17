@@ -101,6 +101,10 @@ class DisplayParameterList extends ParameterList {
                             .text('DisplayLabel'),
 
                         $('<option />')
+                            .prop('value', "TunerDisplay")
+                            .text('TunerDisplay'),
+
+                        $('<option />')
                             .prop('value', "BidirectionalProtocolState")
                             .text('BidirectionalProtocolState'),
 

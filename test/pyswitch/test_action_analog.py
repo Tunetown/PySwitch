@@ -199,7 +199,8 @@ class TestAnalogAction(unittest.TestCase):
             max_frame_rate = 10,
             num_steps = num_steps,
             transfer_function = transfer_function,
-            auto_calibrate = False
+            auto_calibrate = False,
+            min_raw_value = 0
         )
 
         action.reset()

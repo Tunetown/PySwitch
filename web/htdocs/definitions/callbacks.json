@@ -30,7 +30,7 @@
                     {
                         "name": "show_rig_id",
                         "default": "False",
-                        "comment": "Show the rig ID (like 1-1) in the label"
+                        "comment": "Show the rig ID (like 1-1) in the label. Can be False, 'rig', 'bank' or True (to show both rig and bank)"
                     }
                 ],
                 "target": "DisplayLabel"

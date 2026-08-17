@@ -63,7 +63,7 @@ class Tabs {
         // Make tabs resizable (using jquery UI)
         const that = this;
         this.#container.resizable({ 
-            handles: "e",
+            handles: "s",
             stop: function() {
                 that.#state.set('width', that.#container.width());
             }

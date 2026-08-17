@@ -224,9 +224,11 @@ If PySwitch code is updated (new/changed actions or mappings, or just changed co
 
 LibCST visitors are used to gain info about the actions and their parameters. This is implemented in the python/PySwitchParser class, which is proxied by the Parser.js class for usage in the JS frontend.
 
-The basic method for accessing the parser tree is parser.input(port). This method returns a proxy object representing the input assigned to the given port (port numbers as defined in the hardware mapping, for example GP9 > port 9). The proxies are instances of Python class Input.py, which in turn provides methods to get/set all actions of the input.
+The basic method for accessing the parser tree is parser.input(modelName). This method returns a proxy object representing the input with the passed name (names are defined in the hardware mapping, for example "A" for switch A on a MidiCaptain Nano 4). 
 
-After you changed the actions, you have to update the configuration source code usinf parser.updateConfig. See the usages of input() for examples of usage.
+The proxies are instances of Python class Input.py, which in turn provides methods to get/set all actions of the input.
+
+After you changed the actions, you have to update the configuration source code using parser.updateConfig. See the usages of input() for examples of usage.
 
 #### Import Handling
 

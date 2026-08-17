@@ -63,6 +63,12 @@
     border: 1px solid rgb(110, 110, 110);
 }
 
+.container .display-editor .display-preview .display-tuner {
+    background-color: rgb(196, 215, 194);
+    opacity: 0.92;
+    border: 1px solid rgb(110, 110, 110);
+}
+
 .container .display-editor .display-preview .display-dot {
     background-color: rgb(128, 213, 121);
     opacity: 0.92;

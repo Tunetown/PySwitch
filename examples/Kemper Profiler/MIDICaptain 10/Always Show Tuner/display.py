@@ -1,12 +1,14 @@
 from pyswitch.clients.kemper import KemperRigNameCallback
 from pyswitch.clients.kemper import TunerDisplayCallback
+from pyswitch.clients.kemper import KemperMappings
 from micropython import const
+from pyswitch.colors import Colors
 from pyswitch.colors import DEFAULT_LABEL_COLOR
 from pyswitch.ui.ui import DisplayElement
 from pyswitch.ui.ui import DisplayBounds
 from pyswitch.ui.elements import DisplayLabel
 from pyswitch.ui.elements import BidirectionalProtocolState
-from pyswitch.misc import PYSWITCH_VERSION
+from pyswitch.ui.elements import TunerDisplay
 
 _ACTION_LABEL_LAYOUT = {
     "font": "/fonts/H20.pcf",
@@ -14,7 +16,6 @@ _ACTION_LABEL_LAYOUT = {
     "stroke": 1,
     
 }
-
 
 _DISPLAY_WIDTH = const(
     240
@@ -31,13 +32,7 @@ _SLOT_HEIGHT = const(
 _FOOTER_Y = const(
     200
 )
-_RIG_ID_HEIGHT = const(
-    40
-)
 _RIG_NAME_HEIGHT = const(
-    160
-)
-_RIG_ID_Y = const(
     160
 )
 
@@ -71,14 +66,20 @@ DISPLAY_FOOTER_1 = DisplayLabel(
         h = _SLOT_HEIGHT
     )
 )
-DISPLAY_FOOTER_2 = DisplayLabel(
-    layout = _ACTION_LABEL_LAYOUT, 
+
+DISPLAY_TUNER = TunerDisplay(
+    mapping_deviance = KemperMappings.TUNER_DEVIANCE(), 
     bounds = DisplayBounds(
         x = _SLOT_WIDTH, 
         y = _FOOTER_Y, 
         w = _SLOT_WIDTH, 
         h = _SLOT_HEIGHT
-    )
+    ), 
+    color_in_tune = Colors.LIGHT_GREEN, 
+    color_out_of_tune = Colors.ORANGE, 
+    color_neutral = Colors.WHITE, 
+    calibration_high = 8192 + 350, 
+    calibration_low = 8192 - 350
 )
 
 DISPLAY_RIG_NAME = DisplayLabel(
@@ -92,12 +93,11 @@ DISPLAY_RIG_NAME = DisplayLabel(
         "font": "/fonts/PTSans-NarrowBold-40.pcf",
         "lineSpacing": 0.8,
         "maxTextWidth": 220,
-        "text": f"PySwitch { PYSWITCH_VERSION }",
+        "text": KemperRigNameCallback.DEFAULT_TEXT,
         
     }, 
     callback = KemperRigNameCallback(
-        show_name = True, 
-        show_rig_id = False
+        show_rig_id = True
     )
 )
 
@@ -114,24 +114,8 @@ Splashes = TunerDisplayCallback(
             DISPLAY_HEADER_1,
             DISPLAY_HEADER_2,
             DISPLAY_FOOTER_1,
-            DISPLAY_FOOTER_2,
+            DISPLAY_TUNER,
             DISPLAY_RIG_NAME,
-            DisplayLabel(
-                bounds = DisplayBounds(
-                    x = 0, 
-                    y = _RIG_ID_Y, 
-                    w = _DISPLAY_WIDTH, 
-                    h = _RIG_ID_HEIGHT
-                ), 
-                layout = {
-                    "font": "/fonts/H20.pcf",
-                    
-                }, 
-                callback = KemperRigNameCallback(
-                    show_name = False, 
-                    show_rig_id = True
-                )
-            ),
             BidirectionalProtocolState(
                 DisplayBounds(
                     x = 0, 

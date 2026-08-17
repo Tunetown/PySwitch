@@ -173,7 +173,7 @@ class ParserChecks {
         
         let usages = [];
         for (const inputDescr of hw) {
-            const input = await this.#parser.input(inputDescr.data.model.port);
+            const input = await this.#parser.input(inputDescr.data.name);
 
             const contained = await getActionsWithDisplay(input, false);
             const containedHold = await getActionsWithDisplay(input, true);

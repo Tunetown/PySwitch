@@ -19,12 +19,13 @@ with patch.dict(sys.modules, {
     from adafruit_midi.system_exclusive import SystemExclusive
     
     from lib.pyswitch.ui.elements import DisplayLabel
-    from lib.pyswitch.controller.callbacks import BinaryParameterCallback
+    from lib.pyswitch.controller.callbacks import BinaryParameterCallback, Callback
     
     from .mocks_appl import *
     from .mocks_callback import *
 
     from lib.pyswitch.clients.local.actions.binary_switch import *
+    from lib.pyswitch.clients.local.actions.fixed_text import *
     
 
 class TestLocalActionDefinitions(unittest.TestCase):
@@ -74,6 +75,82 @@ class TestLocalActionDefinitions(unittest.TestCase):
         self.assertEqual(action.id, 45)
         self.assertEqual(action.uses_switch_leds, True)
         self.assertEqual(action._Action__enable_callback, ecb)
+
+    def test_display_fixed_test(self):
+        mapping_1 = MockParameterMapping(
+            response = SystemExclusive(
+                manufacturer_id = [0x00, 0x10, 0x20],
+                data = [0x00, 0x00, 0x09]
+            )
+        )
+
+        display = DisplayLabel(layout = {
+            "font": "foo",
+            "backColor": (0, 0, 0)
+        })
+
+        ecb = MockEnabledCallback(output = True)
+
+        action = DISPLAY_FIXED_TEXT(
+            text = "foo",
+            display = display,
+            back_color = (88, 99, 100),
+            text_color = (88, 99, 101),
+            id = 45, 
+            enable_callback = ecb
+        )
+
+        cb = action.callback
+        self.assertIsInstance(cb, Callback)
+        self.assertIsInstance(action, Action)
+        
+        self.assertEqual(cb._DisplayMessageCallback__text, "foo")
+        self.assertEqual(cb._DisplayMessageCallback__back_color, (88, 99, 100))
+        self.assertEqual(cb._DisplayMessageCallback__text_color, (88, 99, 101))
+
+        self.assertEqual(action.label, display)
+        self.assertEqual(action.id, 45)
+        self.assertEqual(action.uses_switch_leds, False)
+        self.assertEqual(action._Action__enable_callback, ecb)
+
+        action.update_displays()
+
+        self.assertEqual(display.text, "foo")
+        self.assertEqual(display.back_color, (88, 99, 100))
+        self.assertEqual(display.color, (88, 99, 101))
+
+        action.push()
+        action.release()
+
+
+    def test_display_fixed_test_no_colors(self):
+        mapping_1 = MockParameterMapping(
+            response = SystemExclusive(
+                manufacturer_id = [0x00, 0x10, 0x20],
+                data = [0x00, 0x00, 0x09]
+            )
+        )
+
+        display = DisplayLabel(layout = {
+            "font": "foo",
+            "backColor": (1, 1, 1)
+        })
+
+        action = DISPLAY_FIXED_TEXT(
+            text = "foo",
+            display = display
+        )
+
+        cb = action.callback
+
+        self.assertEqual(cb._DisplayMessageCallback__back_color, None)
+        self.assertEqual(cb._DisplayMessageCallback__text_color, None)
+
+        action.update_displays()
+
+        self.assertEqual(display.text, "foo")
+        self.assertEqual(display.back_color, (1, 1, 1))
+
 
 
     

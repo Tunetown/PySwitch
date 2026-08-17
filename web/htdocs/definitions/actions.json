@@ -2261,6 +2261,43 @@
                 "importPath": "pyswitch.clients.local.actions.param_change"
             },
             {
+                "name": "DISPLAY_FIXED_TEXT",
+                "parameters": [
+                    {
+                        "name": "text",
+                        "default": null,
+                        "comment": "Text to be shown on the label"
+                    },
+                    {
+                        "name": "display",
+                        "default": "None",
+                        "comment": "Display label to show the fixed text on "
+                    },
+                    {
+                        "name": "back_color",
+                        "default": "None",
+                        "comment": "Background color of the label"
+                    },
+                    {
+                        "name": "text_color",
+                        "default": "None",
+                        "comment": "Text color (optional, if empty this will be chosen automatically based on the background color)"
+                    },
+                    {
+                        "name": "id",
+                        "default": "None",
+                        "comment": null
+                    },
+                    {
+                        "name": "enable_callback",
+                        "default": "None",
+                        "comment": null
+                    }
+                ],
+                "comment": "Simple action to display a fixed text in a display field. Ignores any switch pushes.",
+                "importPath": "pyswitch.clients.local.actions.fixed_text"
+            },
+            {
                 "name": "HID_KEYBOARD",
                 "parameters": [
                     {
@@ -2502,7 +2539,7 @@
                     },
                     {
                         "name": "auto_calibrate",
-                        "default": "True",
+                        "default": "False",
                         "comment": "Auto-calibrate (similar to Kemper devices)"
                     },
                     {
@@ -2529,6 +2566,11 @@
                         "name": "convert_value",
                         "default": "None",
                         "comment": "Optional conversion routine for displaying values: (value) => string"
+                    },
+                    {
+                        "name": "min_raw_value",
+                        "default": "1024",
+                        "comment": "Optional minimum raw value threshold for stable zero"
                     }
                 ],
                 "comment": "Use this action for all analog inputs like expression pedals.",
