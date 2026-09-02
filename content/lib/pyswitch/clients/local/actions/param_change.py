@@ -3,9 +3,6 @@ from ....controller.callbacks import Callback
 from ....colors import Colors
 from ....misc import PeriodCounter
 
-from adafruit_midi.system_exclusive import SystemExclusive
-
-
 # Can be used for all parameter mappings: Increases or decreases the parameter value by a given offset. 
 # 
 # Optionally, the current value can be shown in a display label, and/or be previewed in another display label (the rig name for example).
@@ -76,7 +73,7 @@ class _ParameterChangeCallback(Callback):
             self.__preview = None
 
         if self._max_value == None:
-            if isinstance(mapping.set, SystemExclusive):
+            if mapping.set[0] == 0xf0:
                 self._max_value = 16383
             else:
                 self._max_value = 127

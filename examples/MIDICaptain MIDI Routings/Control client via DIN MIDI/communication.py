@@ -10,10 +10,7 @@ from pyswitch.controller.midi import MidiRouting
 from pyswitch.hardware.devices.pa_midicaptain import PA_MIDICAPTAIN_DIN_MIDI
 
 # MIDI Devices in use (optionally you can specify the in/out channels here, too)
-_DIN_MIDI = PA_MIDICAPTAIN_DIN_MIDI(
-    in_channel = None,  # All
-    out_channel = 0
-)
+_DIN_MIDI = PA_MIDICAPTAIN_DIN_MIDI()
 
 # Communication configuration
 Communication = {

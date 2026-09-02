@@ -9,10 +9,6 @@ with patch.dict(sys.modules, {
     "micropython": MockMicropython,
     "displayio": MockDisplayIO(),
     "adafruit_display_text": MockAdafruitDisplayText(),
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
     "adafruit_display_shapes.rect": MockDisplayShapes().rect(),
     "gc": MockGC()
 }):
@@ -66,12 +62,12 @@ class TestLocalCustomMessage(unittest.TestCase):
         action.push()
 
         self.assertEqual(len(appl.client.midi.messages_sent), 1)
-        self.assertEqual(list(appl.client.midi.messages_sent[0].__bytes__()), [1, 3, 5])
+        self.assertEqual(list(appl.client.midi.messages_sent[0]), [1, 3, 5])
 
         action.release()
 
         self.assertEqual(len(appl.client.midi.messages_sent), 2)
-        self.assertEqual(list(appl.client.midi.messages_sent[1].__bytes__()), [23, 5])
+        self.assertEqual(list(appl.client.midi.messages_sent[1]), [23, 5])
 
     def test_minimal(self):
         action = CUSTOM_MESSAGE(
@@ -100,7 +96,7 @@ class TestLocalCustomMessage(unittest.TestCase):
         action.push()
 
         self.assertEqual(len(appl.client.midi.messages_sent), 1)
-        self.assertEqual(list(appl.client.midi.messages_sent[0].__bytes__()), [1, 3, 5])
+        self.assertEqual(list(appl.client.midi.messages_sent[0]), [1, 3, 5])
 
         action.release()
 

@@ -9,15 +9,13 @@ with patch.dict(sys.modules, {
     "micropython": MockMicropython,
     "displayio": MockDisplayIO(),
     "adafruit_display_text": MockAdafruitDisplayText(),
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
+    # "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
+    # "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
+    # "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
+    # "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
     "adafruit_display_shapes.rect": MockDisplayShapes().rect(),
     "gc": MockGC()
 }):
-    from adafruit_midi.system_exclusive import SystemExclusive
-
     from .mocks_appl import *
     from .mocks_callback import *
     from lib.pyswitch.misc import Updater
@@ -70,17 +68,19 @@ class TestCallback(unittest.TestCase):
 
     def test(self):
         mapping_1 = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         mapping_2 = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x11, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x11, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         cb = MockCallback(mappings = [
@@ -134,10 +134,11 @@ class TestCallback(unittest.TestCase):
         
     def test_no_listener(self):
         mapping_1 = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         cb = MockCallback(mappings = [

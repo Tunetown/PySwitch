@@ -9,18 +9,11 @@ with patch.dict(sys.modules, {
     "micropython": MockMicropython,
     "displayio": MockDisplayIO(),
     "adafruit_display_text": MockAdafruitDisplayText(),
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
     "adafruit_display_shapes.rect": MockDisplayShapes().rect(),
     "gc": MockGC()
 }):
-    from adafruit_midi.system_exclusive import SystemExclusive
-    from adafruit_midi.control_change import ControlChange
-    
     from lib.pyswitch.ui.elements import DisplayLabel
-    from lib.pyswitch.misc import Updater
+    # from lib.pyswitch.misc import Updater
     
     from .mocks_appl import *
     from .mocks_callback import *
@@ -51,10 +44,11 @@ class TestLocalActionParameterUpDown(unittest.TestCase):
     def _test_offset(self, offset, start_value, max_value, data):
         mapping = MockParameterMapping(
             name = "PB",
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         display = DisplayLabel(
@@ -120,10 +114,11 @@ class TestLocalActionParameterUpDown(unittest.TestCase):
 
     def test_text_override(self):
         mapping = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         display = DisplayLabel(
@@ -184,10 +179,11 @@ class TestLocalActionParameterUpDown(unittest.TestCase):
     def test_change_display(self):
         mapping = MockParameterMapping(
             name = "PP",
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         display = DisplayLabel(
@@ -229,10 +225,11 @@ class TestLocalActionParameterUpDown(unittest.TestCase):
 
     def test_auto_range_sysex(self):
         mapping = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         display = DisplayLabel(
@@ -252,10 +249,11 @@ class TestLocalActionParameterUpDown(unittest.TestCase):
 
     def test_auto_range_cc(self):
         mapping = MockParameterMapping(
-            set = ControlChange(
-                control = 8,
-                value = 0
-            )
+            set = (176, 8, 0)
+            # ControlChange(
+            #     control = 8,
+            #     value = 0
+            # )
         )
 
         display = DisplayLabel(
@@ -279,10 +277,11 @@ class TestLocalActionParameterUpDown(unittest.TestCase):
     def test_repeat(self):
         mapping = MockParameterMapping(
             name = "PP",
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         action = PARAMETER_UP_DOWN(

@@ -8,15 +8,8 @@ from .mocks_lib import *
 with patch.dict(sys.modules, {
     "micropython": MockMicropython,
     "usb_midi": MockUsbMidi(),
-    "adafruit_midi": MockAdafruitMIDI(),
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
     "gc": MockGC()
 }):
-    from adafruit_midi.system_exclusive import SystemExclusive
-    from adafruit_midi.midi_message import MIDIUnknownEvent
     from lib.pyswitch.controller.midi import MidiController, MidiRouting
 
     from.mocks_appl import *
@@ -44,15 +37,17 @@ class TestMidiController(unittest.TestCase):
         )
 
         # Receive
-        midi_message_1 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )
+        midi_message_1 = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )
 
-        midi_message_2 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x22],
-            data = [0x00, 0x00, 0x07, 0x47]
-        )
+        midi_message_2 = (0xf0, 0x00, 0x10, 0x22, 0x00, 0x00, 0x07, 0x47, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x22],
+        #     data = [0x00, 0x00, 0x07, 0x47]
+        # )
 
         sub_midi_1.next_receive_messages = [
             midi_message_1,
@@ -67,10 +62,11 @@ class TestMidiController(unittest.TestCase):
         self.assertEqual(sub_midi_2.messages_sent, [])
 
         # Send
-        midi_message_3 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x22],
-            data = [0x00, 0x00, 0xa8, 0x47]
-        )
+        midi_message_3 = (0xf0, 0x00, 0x10, 0x22, 0x00, 0x00, 0xa8, 0x47, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x22],
+        #     data = [0x00, 0x00, 0xa8, 0x47]
+        # )
 
         midi.send(midi_message_3)
         self.assertEqual(sub_midi_2.messages_sent, [midi_message_3])
@@ -95,15 +91,17 @@ class TestMidiController(unittest.TestCase):
         )
 
         # Receive
-        midi_message_1 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )
+        midi_message_1 = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )
 
-        midi_message_2 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x22],
-            data = [0x00, 0x00, 0x07, 0x47]
-        )
+        midi_message_2 = (0xf0, 0x00, 0x10, 0x22, 0x00, 0x00, 0x07, 0x47, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x22],
+        #     data = [0x00, 0x00, 0x07, 0x47]
+        # )
 
         midi.send(midi_message_1)
         self.assertEqual(sub_midi_1.messages_sent, [midi_message_1])
@@ -133,20 +131,23 @@ class TestMidiController(unittest.TestCase):
         )
 
         # Receive
-        midi_message_1 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )
+        midi_message_1 = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )
 
-        midi_message_2 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x22],
-            data = [0x00, 0x00, 0x07, 0x47]
-        )
+        midi_message_2 = (0xf0, 0x00, 0x10, 0x22, 0x00, 0x00, 0x07, 0x47, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x22],
+        #     data = [0x00, 0x00, 0x07, 0x47]
+        # )
 
-        midi_message_3 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x22],
-            data = [0x00, 0x00, 0x07, 0x88]
-        )
+        midi_message_3 = (0xf0, 0x00, 0x10, 0x22, 0x00, 0x00, 0x07, 0x88, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x22],
+        #     data = [0x00, 0x00, 0x07, 0x88]
+        # )
 
         sub_midi_1.next_receive_messages = [
             midi_message_1,
@@ -189,19 +190,19 @@ class TestMidiController(unittest.TestCase):
             ]
         )
 
-        midi_message_1 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )
+        midi_message_1 = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )
 
-        midi_message_2 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x22],
-            data = [0x00, 0x00, 0x07, 0x47]
-        )
+        midi_message_2 = (0xf0, 0x00, 0x10, 0x22, 0x00, 0x00, 0x07, 0x47, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x22],
+        #     data = [0x00, 0x00, 0x07, 0x47]
+        # )
 
-        midi_message_unknown = MIDIUnknownEvent(
-            status = 248
-        )
+        midi_message_unknown = [248]
 
         sub_midi_1.next_receive_messages = [
             midi_message_1,            
@@ -219,8 +220,8 @@ class TestMidiController(unittest.TestCase):
         self.assertEqual(sub_midi_3.messages_sent, [midi_message_1, midi_message_2])
 
         midi.receive()
-        self.assertEqual(sub_midi_2.messages_sent, [midi_message_1, midi_message_2])
-        self.assertEqual(sub_midi_3.messages_sent, [midi_message_1, midi_message_2])
+        self.assertEqual(sub_midi_2.messages_sent, [midi_message_1, midi_message_2, [248]])
+        self.assertEqual(sub_midi_3.messages_sent, [midi_message_1, midi_message_2, [248]])
 
         self.assertEqual(sub_midi_1.messages_sent, [])
 
@@ -245,25 +246,29 @@ class TestMidiController(unittest.TestCase):
             ]
         )
 
-        midi_message_1 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )
+        midi_message_1 = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )
 
-        midi_message_2 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x22],
-            data = [0x00, 0x00, 0x07, 0x47]
-        )
+        midi_message_2 = (0xf0, 0x00, 0x10, 0x22, 0x00, 0x00, 0x07, 0x47, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x22],
+        #     data = [0x00, 0x00, 0x07, 0x47]
+        # )
 
-        midi_message_3 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )
+        midi_message_3 = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )
 
-        midi_message_4 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x22],
-            data = [0x00, 0x00, 0x07, 0x47]
-        )
+        midi_message_4 = (0xf0, 0x00, 0x10, 0x22, 0x00, 0x00, 0x07, 0x47, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x22],
+        #     data = [0x00, 0x00, 0x07, 0x47]
+        # )
 
         sub_midi_1.next_receive_messages = [
             midi_message_1,

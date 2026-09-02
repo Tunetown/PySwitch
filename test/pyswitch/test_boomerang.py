@@ -9,10 +9,6 @@ with patch.dict(sys.modules, {
     "micropython": MockMicropython,
     "displayio": MockDisplayIO(),
     "adafruit_display_text": MockAdafruitDisplayText(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
     "adafruit_display_shapes.rect": MockDisplayShapes().rect(),
     "gc": MockGC()
 }):
@@ -118,7 +114,7 @@ class TestBoomerang(unittest.TestCase):
         self.assertEqual(switch.brightness, 1)
 
         self.assertEqual(len(appl.client.midi.messages_sent), 1)
-        self.assertEqual(appl.client.midi.messages_sent[0].__bytes__(), bytes([207, pc_1]))
+        self.assertEqual(appl.client.midi.messages_sent[0], tuple([207, pc_1]))
 
         # Send second time
         action.push()
@@ -131,7 +127,7 @@ class TestBoomerang(unittest.TestCase):
         self.assertEqual(switch.brightness, 1)
 
         self.assertEqual(len(appl.client.midi.messages_sent), 2)
-        self.assertEqual(appl.client.midi.messages_sent[1].__bytes__(), bytes([207, pc_2]))
+        self.assertEqual(appl.client.midi.messages_sent[1], tuple([207, pc_2]))
 
         # Send third time
         action.push()
@@ -144,7 +140,7 @@ class TestBoomerang(unittest.TestCase):
         self.assertEqual(switch.brightness, 1)
 
         self.assertEqual(len(appl.client.midi.messages_sent), 3)
-        self.assertEqual(appl.client.midi.messages_sent[2].__bytes__(), bytes([207, pc_1]))
+        self.assertEqual(appl.client.midi.messages_sent[2], tuple([207, pc_1]))
 
         # Send fourth time
         action.push()
@@ -157,7 +153,7 @@ class TestBoomerang(unittest.TestCase):
         self.assertEqual(switch.brightness, 1)
 
         self.assertEqual(len(appl.client.midi.messages_sent), 4)
-        self.assertEqual(appl.client.midi.messages_sent[3].__bytes__(), bytes([207, pc_2]))
+        self.assertEqual(appl.client.midi.messages_sent[3], tuple([207, pc_2]))
 
 
     def _test_action_multi_leds(self, func, pc_1, pc_2, expText, expColor):
@@ -206,7 +202,7 @@ class TestBoomerang(unittest.TestCase):
         self.assertEqual(switch.brightnesses, [1, 1, 1])
 
         self.assertEqual(len(appl.client.midi.messages_sent), 1)
-        self.assertEqual(appl.client.midi.messages_sent[0].__bytes__(), bytes([207, pc_1]))
+        self.assertEqual(appl.client.midi.messages_sent[0], tuple([207, pc_1]))
 
         # Send second time
         for action in actions:
@@ -224,7 +220,7 @@ class TestBoomerang(unittest.TestCase):
         self.assertEqual(switch.brightnesses, [1, 1, 1])
 
         self.assertEqual(len(appl.client.midi.messages_sent), 2)
-        self.assertEqual(appl.client.midi.messages_sent[1].__bytes__(), bytes([207, pc_2]))
+        self.assertEqual(appl.client.midi.messages_sent[1], tuple([207, pc_2]))
 
         # Send third time
         for action in actions:
@@ -242,7 +238,7 @@ class TestBoomerang(unittest.TestCase):
         self.assertEqual(switch.brightnesses, [1, 1, 1])
 
         self.assertEqual(len(appl.client.midi.messages_sent), 3)
-        self.assertEqual(appl.client.midi.messages_sent[2].__bytes__(), bytes([207, pc_1]))
+        self.assertEqual(appl.client.midi.messages_sent[2], tuple([207, pc_1]))
 
         # Send fourth time
         for action in actions:
@@ -260,6 +256,6 @@ class TestBoomerang(unittest.TestCase):
         self.assertEqual(switch.brightnesses, [1, 1, 1])
 
         self.assertEqual(len(appl.client.midi.messages_sent), 4)
-        self.assertEqual(appl.client.midi.messages_sent[3].__bytes__(), bytes([207, pc_2]))
+        self.assertEqual(appl.client.midi.messages_sent[3], tuple([207, pc_2]))
 
 

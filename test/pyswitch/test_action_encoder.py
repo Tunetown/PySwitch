@@ -8,19 +8,11 @@ from .mocks_lib import *
 with patch.dict(sys.modules, {
     "micropython": MockMicropython,
     "usb_midi": MockUsbMidi(),
-    "adafruit_midi": MockAdafruitMIDI(),
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
     "displayio": MockDisplayIO(),
     "adafruit_display_text": MockAdafruitDisplayText(),
     "adafruit_display_shapes.rect": MockDisplayShapes().rect(),
     "gc": MockGC()
-}):
-    from adafruit_midi.system_exclusive import SystemExclusive
-    from adafruit_midi.control_change import ControlChange
-    
+}):   
     from .mocks_misc import MockMisc
     from .mocks_callback import *
 
@@ -222,19 +214,21 @@ class TestEncoderAction(unittest.TestCase):
     def _do_test(self, max_value, step_width, start_pos, start_value, data, cc_mapping, mapping_with_response):
         if not cc_mapping:
             mapping = MockParameterMapping(
-                set = SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x20],
-                    data = [0x05, 0x07, 0x09]
-                ),
-                response = None if not mapping_with_response else SystemExclusive(
-                    manufacturer_id = [0x00, 0x11, 0x20],
-                    data = [0x05, 0x07, 0x03]
-                )
+                set = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x20],
+                #     data = [0x05, 0x07, 0x09]
+                # ),
+                response = None if not mapping_with_response else (0xf0, 0x00, 0x11, 0x20, 0x05, 0x07, 0x03, 0xf7)
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x11, 0x20],
+                #     data = [0x05, 0x07, 0x03]
+                # )
             )
         else:
             mapping = MockParameterMapping(
-                set = ControlChange(20, 1),
-                response = None if not mapping_with_response else ControlChange(20, 1)
+                set = (176, 20, 1), #ControlChange(20, 1),
+                response = None if not mapping_with_response else (176, 20, 1) #ControlChange(20, 1)
             )
 
         action = EncoderAction(
@@ -272,10 +266,11 @@ class TestEncoderAction(unittest.TestCase):
 
     def test_none_value(self):
         mapping = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # )
         )
 
         action = EncoderAction(
@@ -300,18 +295,21 @@ class TestEncoderAction(unittest.TestCase):
 
     def test_update(self):
         mapping = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            ),
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x17, 0x09]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x21],
-                data = [0x05, 0x07, 0x10]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # ),
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x17, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x17, 0x09]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x21, 0x05, 0x07, 0x10, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x21],
+            #     data = [0x05, 0x07, 0x10]
+            # )
         )
 
         action = EncoderAction(
@@ -333,10 +331,11 @@ class TestEncoderAction(unittest.TestCase):
         
     def test_enable_callback(self):
         mapping = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # )
         )
 
         ecb = MockEnabledCallback(output = True)
@@ -369,10 +368,11 @@ class TestEncoderAction(unittest.TestCase):
 
         mapping = MockParameterMapping(
             name = "Some",
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # )
         )
 
         action = EncoderAction(
@@ -454,10 +454,11 @@ class TestEncoderAction(unittest.TestCase):
 
         mapping = MockParameterMapping(
             name = "Some",
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # )
         )
 
         action = EncoderAction(
@@ -528,10 +529,11 @@ class TestEncoderAction(unittest.TestCase):
 
     def test_preselect(self):
         mapping = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # )
         )
 
         accept = ENCODER_BUTTON()
@@ -580,10 +582,11 @@ class TestEncoderAction(unittest.TestCase):
 
         mapping = MockParameterMapping(
             name = "Some",
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # )
         )
 
         accept = ENCODER_BUTTON()
@@ -714,17 +717,19 @@ class TestEncoderAction(unittest.TestCase):
 
         mapping = MockParameterMapping(
             name = "Some",
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # )
         )
 
         mapping_reset = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # )
         )
 
         accept = ENCODER_BUTTON()

@@ -11,26 +11,16 @@ with patch.dict(sys.modules, {
     "adafruit_display_text": MockAdafruitDisplayText(),
     "adafruit_display_shapes.rect": MockDisplayShapes().rect(),
     "usb_midi": MockUsbMidi(),
-    "adafruit_midi": MockAdafruitMIDI(),
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
     "gc": MockGC()
 }):
-    #from lib.pyswitch.controller.Controller import Controller
     from .mocks_appl import *
     from .mocks_ui import *
     from .mocks_callback import *
-
-    from adafruit_midi.system_exclusive import SystemExclusive
 
     from lib.pyswitch.controller.actions import PushButtonAction
     from lib.pyswitch.controller.callbacks import BinaryParameterCallback
     
     from lib.pyswitch.controller.controller import Controller
-
-    from .tools import *
 
 
 class TestBinaryParameterCallback(unittest.TestCase):
@@ -39,14 +29,16 @@ class TestBinaryParameterCallback(unittest.TestCase):
         switch_1 = MockSwitch()
         
         mapping_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x05]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x05, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x05]
+            # )
         )
 
         cb = BinaryParameterCallback(
@@ -97,7 +89,7 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_1.set_value_calls[0], 10)
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 1)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[0], mapping_1.set))
+        self.assertEqual(appl._Controller__midi.messages_sent[0], mapping_1.set)
 
         self.assertEqual(appl.inputs[0].color, (200, 100, 0))
         self.assertAlmostEqual(appl.inputs[0].brightness, 0.5)
@@ -113,7 +105,7 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_1.set_value_calls[1], 3)
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 2)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[1], mapping_1.set))
+        self.assertEqual(appl._Controller__midi.messages_sent[1], mapping_1.set)
 
         self.assertEqual(appl.inputs[0].color, (200, 100, 0))
         self.assertAlmostEqual(appl.inputs[0].brightness, 0.1)
@@ -127,14 +119,16 @@ class TestBinaryParameterCallback(unittest.TestCase):
         switch_1 = MockSwitch()
         
         mapping_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x05]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x05, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x05]
+            # )
         )
 
         mock_data = {
@@ -221,10 +215,11 @@ class TestBinaryParameterCallback(unittest.TestCase):
         switch_1 = MockSwitch()
         
         mapping_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # )
         )
 
         cb = BinaryParameterCallback(
@@ -275,7 +270,7 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_1.set_value_calls[0], 10)
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 1)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[0], mapping_1.set))
+        self.assertEqual(appl._Controller__midi.messages_sent[0], mapping_1.set)
 
         self.assertEqual(appl.inputs[0].color, (200, 100, 0))
         self.assertAlmostEqual(appl.inputs[0].brightness, 0.1)
@@ -291,7 +286,7 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_1.set_value_calls[1], 3)
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 2)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[1], mapping_1.set))
+        self.assertEqual(appl._Controller__midi.messages_sent[1], mapping_1.set)
 
         self.assertEqual(appl.inputs[0].color, (200, 100, 0))
         self.assertAlmostEqual(appl.inputs[0].brightness, 0.1)
@@ -306,14 +301,16 @@ class TestBinaryParameterCallback(unittest.TestCase):
         period = MockPeriodCounter()
         
         mapping_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x21],
-                data = [0x01, 0x02, 0x03, 0x05]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x05, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x21],
+            #     data = [0x01, 0x02, 0x03, 0x05]
+            # )
         )
 
         cb = BinaryParameterCallback(
@@ -351,15 +348,17 @@ class TestBinaryParameterCallback(unittest.TestCase):
 
         appl.init()
 
-        answer_msg_1 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x09, 0x44]
-        )
+        answer_msg_1 = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0x44, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x09, 0x44]
+        # )
 
-        answer_msg_2 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )
+        answer_msg_2 = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )
 
         # Build scene:
         # Check if nothing crashes if set is called before a value came in
@@ -372,7 +371,7 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_1.set_value_calls[0], 11)
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 1)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[0], mapping_1.set))
+        self.assertEqual(appl._Controller__midi.messages_sent[0], mapping_1.set)
         
         self.assertEqual(action_1.state, True)
 
@@ -418,7 +417,7 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_1.set_value_calls[1], 11)
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 2)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[1], mapping_1.set))
+        self.assertEqual(appl._Controller__midi.messages_sent[1], mapping_1.set)
         
         self.assertEqual(action_1.state, True)
 
@@ -450,7 +449,7 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_1.set_value_calls[2], 6)
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 3)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[2], mapping_1.set))
+        self.assertEqual(appl._Controller__midi.messages_sent[2], mapping_1.set)
                     
         self.assertEqual(action_1.state, False)
 
@@ -464,19 +463,22 @@ class TestBinaryParameterCallback(unittest.TestCase):
         
         mapping_1 = MockParameterMapping(
             set = [
-                SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x20],
-                    data = [0x01, 0x02, 0x03, 0x04]
-                ),
-                SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x20],
-                    data = [0x01, 0x02, 0x03, 0x05]
-                )
+                (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),                
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x20],
+                #     data = [0x01, 0x02, 0x03, 0x04]
+                # ),
+                (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x05, 0xf7)
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x20],
+                #     data = [0x01, 0x02, 0x03, 0x05]
+                # )
             ],
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x11, 0x21],
-                data = [0x01, 0x02, 0x03, 0x05]
-            )
+            response = (0xf0, 0x00, 0x11, 0x21, 0x01, 0x02, 0x03, 0x05, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x11, 0x21],
+            #     data = [0x01, 0x02, 0x03, 0x05]
+            # )
         )
 
         cb = BinaryParameterCallback(
@@ -514,10 +516,11 @@ class TestBinaryParameterCallback(unittest.TestCase):
 
         appl.init()
 
-        answer_msg_1 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x09, 0x44]
-        )
+        answer_msg_1 = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0x44, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x09, 0x44]
+        # )
 
         # Build scene:
         # Check if nothing crashes if set is called before a value came in
@@ -575,8 +578,8 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_1.set_value_calls[0], [11, 12])
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 2)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[0], mapping_1.set[0]))
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[1], mapping_1.set[1]))
+        self.assertEqual(appl._Controller__midi.messages_sent[0], mapping_1.set[0])
+        self.assertEqual(appl._Controller__midi.messages_sent[1], mapping_1.set[1])
         
         self.assertEqual(action_1.state, True)
         
@@ -608,8 +611,8 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_1.set_value_calls[1], [4, 7])
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 4)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[2], mapping_1.set[0]))
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[3], mapping_1.set[1]))
+        self.assertEqual(appl._Controller__midi.messages_sent[2], mapping_1.set[0])
+        self.assertEqual(appl._Controller__midi.messages_sent[3], mapping_1.set[1])
                     
         self.assertEqual(action_1.state, False)
 
@@ -621,21 +624,24 @@ class TestBinaryParameterCallback(unittest.TestCase):
         switch_1 = MockSwitch()
         
         mapping_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # )
         )
 
         mapping_disable_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x33, 0x04]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x33, 0x04, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x33, 0x04]
+            # )
         )
 
         cb = BinaryParameterCallback(
@@ -688,7 +694,7 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_1.set_value_calls[0], 10)
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 1)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[0], mapping_1.set))
+        self.assertEqual(appl._Controller__midi.messages_sent[0], mapping_1.set)
 
         self.assertEqual(appl.inputs[0].color, (200, 100, 0))
         self.assertAlmostEqual(appl.inputs[0].brightness, 0.5)
@@ -704,7 +710,7 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_disable_1.set_value_calls[0], 3)
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 2)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[1], mapping_disable_1.set))
+        self.assertEqual(appl._Controller__midi.messages_sent[1], mapping_disable_1.set)
 
         self.assertEqual(appl.inputs[0].color, (200, 100, 0))
         self.assertAlmostEqual(appl.inputs[0].brightness, 0.1)
@@ -719,31 +725,36 @@ class TestBinaryParameterCallback(unittest.TestCase):
         
         mapping_1 = MockParameterMapping(
             set = [
-                SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x20],
-                    data = [0x01, 0x02, 0x03, 0x04]
-                ),
-                SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x22],
-                    data = [0x01, 0x02, 0x03, 0x05]
-                ),
-                SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x22],
-                    data = [0x01, 0x02, 0x03, 0x88]
-                )
+                (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x20],
+                #     data = [0x01, 0x02, 0x03, 0x04]
+                # ),
+                (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x05, 0xf7),
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x22],
+                #     data = [0x01, 0x02, 0x03, 0x05]
+                # ),
+                (0xf0, 0x00, 0x10, 0x22, 0x01, 0x02, 0x03, 0x88, 0xf7)
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x22],
+                #     data = [0x01, 0x02, 0x03, 0x88]
+                # )
             ]
         )
 
         mapping_disable_1 = MockParameterMapping(
             set = [
-                SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x20],
-                    data = [0x01, 0x02, 0x39, 0x04]
-                ),
-                SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x30],
-                    data = [0x01, 0x02, 0x39, 0x07]
-                )
+                (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x39, 0x04, 0xf7),
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x20],
+                #     data = [0x01, 0x02, 0x39, 0x04]
+                # ),
+                (0xf0, 0x00, 0x10, 0x30, 0x01, 0x02, 0x39, 0x07, 0xf7)
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x30],
+                #     data = [0x01, 0x02, 0x39, 0x07]
+                # )
             ]
         )
 
@@ -793,9 +804,9 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_1.set_value_calls[0], [1, 2, 3])
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 3)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[0], mapping_1.set[0]))
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[1], mapping_1.set[1]))
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[2], mapping_1.set[2]))
+        self.assertEqual(appl._Controller__midi.messages_sent[0], mapping_1.set[0])
+        self.assertEqual(appl._Controller__midi.messages_sent[1], mapping_1.set[1])
+        self.assertEqual(appl._Controller__midi.messages_sent[2], mapping_1.set[2])
 
         # Step 2: Disable
         switch_1.shall_be_pushed = False
@@ -807,8 +818,8 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_disable_1.set_value_calls[0], [0, -1])
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 5)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[3], mapping_disable_1.set[0]))
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[4], mapping_disable_1.set[1]))
+        self.assertEqual(appl._Controller__midi.messages_sent[3], mapping_disable_1.set[0])
+        self.assertEqual(appl._Controller__midi.messages_sent[4], mapping_disable_1.set[1])
 
 
 ###############################################################################################
@@ -818,14 +829,16 @@ class TestBinaryParameterCallback(unittest.TestCase):
         switch_1 = MockSwitch()
         
         mapping_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # )
         )
 
         cb = BinaryParameterCallback(
@@ -881,7 +894,7 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_1.set_value_calls[0], 10)
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 1)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[0], mapping_1.set))
+        self.assertEqual(appl._Controller__midi.messages_sent[0], mapping_1.set)
 
         self.assertEqual(appl.inputs[0].color, (200, 100, 0))
         self.assertAlmostEqual(appl.inputs[0].brightness, 0.5)
@@ -900,7 +913,7 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_1.set_value_calls[1], 3)
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 2)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[1], mapping_1.set))
+        self.assertEqual(appl._Controller__midi.messages_sent[1], mapping_1.set)
 
         self.assertEqual(appl.inputs[0].color, (200, 100, 0))
         self.assertAlmostEqual(appl.inputs[0].brightness, 0.1)
@@ -917,14 +930,16 @@ class TestBinaryParameterCallback(unittest.TestCase):
         switch_1 = MockSwitch()
         
         mapping_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # )
         )
 
         cb = BinaryParameterCallback(
@@ -980,7 +995,7 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_1.set_value_calls[0], 10)
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 1)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[0], mapping_1.set))
+        self.assertEqual(appl._Controller__midi.messages_sent[0], mapping_1.set)
 
         self.assertEqual(appl.inputs[0].color, (200, 100, 0))
         self.assertAlmostEqual(appl.inputs[0].brightness, 0.5)
@@ -999,7 +1014,7 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_1.set_value_calls[1], 3)
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 2)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[1], mapping_1.set))
+        self.assertEqual(appl._Controller__midi.messages_sent[1], mapping_1.set)
 
         self.assertEqual(appl.inputs[0].color, (200, 100, 0))
         self.assertAlmostEqual(appl.inputs[0].brightness, 0.1)
@@ -1016,15 +1031,16 @@ class TestBinaryParameterCallback(unittest.TestCase):
         switch_1 = MockSwitch()
         
         mapping_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            ),
-
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x21],
-                data = [0x01, 0x02, 0x03, 0x04]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x21, 0x01, 0x02, 0x03, 0x04, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x21],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # )
         )
 
         cb = BinaryParameterCallback(
@@ -1077,7 +1093,7 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_1.set_value_calls[0], 10)
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 1)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[0], mapping_1.set))
+        self.assertEqual(appl._Controller__midi.messages_sent[0], mapping_1.set)
 
         self.assertEqual(appl.inputs[0].colors, [(200, 100, 0), (10, 20, 30)])
         self.assertEqual(appl.inputs[0].brightnesses, [0.5, 0.5])
@@ -1097,7 +1113,7 @@ class TestBinaryParameterCallback(unittest.TestCase):
         self.assertEqual(mapping_1.set_value_calls[1], 3)
 
         self.assertEqual(len(appl._Controller__midi.messages_sent), 2)
-        self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[1], mapping_1.set))
+        self.assertEqual(appl._Controller__midi.messages_sent[1], mapping_1.set)
 
         self.assertEqual(appl.inputs[0].colors, [(200, 100, 0), (10, 20, 30)])
         self.assertAlmostEqual(appl.inputs[0].brightnesses[0], 0.1)
@@ -1150,14 +1166,16 @@ class TestBinaryParameterCallback(unittest.TestCase):
         switch_1 = MockSwitch()
         
         mapping_1 = MockParameterMapping(
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         cb = BinaryParameterCallback(
@@ -1195,15 +1213,17 @@ class TestBinaryParameterCallback(unittest.TestCase):
 
         appl.init()
 
-        answer_msg_1 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x09, 0x44]
-        )
+        answer_msg_1 = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0x44, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x09, 0x44]
+        # )
 
-        answer_msg_2 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )
+        answer_msg_2 = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )
 
         # Build scene:
         # Send update request
@@ -1267,24 +1287,28 @@ class TestBinaryParameterCallback(unittest.TestCase):
         
         mapping_1 = MockParameterMapping(
             request = [
-                SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x20],
-                    data = [0x05, 0x27, 0x09]
-                ),
-                SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x21],
-                    data = [0x05, 0x27, 0x0a]
-                )
+                (0xf0, 0x00, 0x10, 0x20, 0x05, 0x27, 0x09, 0xf7),
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x20],
+                #     data = [0x05, 0x27, 0x09]
+                # ),
+                (0xf0, 0x00, 0x10, 0x21, 0x05, 0x27, 0x0a, 0xf7)
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x21],
+                #     data = [0x05, 0x27, 0x0a]
+                # )
             ],
             response = [
-                SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x20],
-                    data = [0x00, 0x30, 0x19]
-                ),
-                SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x21],
-                    data = [0x00, 0x30, 0x1d]
-                )
+                (0xf0, 0x00, 0x10, 0x20, 0x00, 0x30, 0x19, 0xf7),
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x20],
+                #     data = [0x00, 0x30, 0x19]
+                # ),
+                (0xf0, 0x00, 0x10, 0x21, 0x00, 0x30, 0x1d, 0xf7)
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x21],
+                #     data = [0x00, 0x30, 0x1d]
+                # )
             ]
         )
 
@@ -1321,15 +1345,17 @@ class TestBinaryParameterCallback(unittest.TestCase):
 
         appl.init()
 
-        answer_msg_1 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x09, 0x44]
-        )
+        answer_msg_1 = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0x44, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x09, 0x44]
+        # )
 
-        answer_msg_2 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )
+        answer_msg_2 = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )
 
         # Build scene:
         # Send update request
@@ -1391,14 +1417,16 @@ class TestBinaryParameterCallback(unittest.TestCase):
         switch_1 = MockSwitch()
         
         mapping_1 = MockParameterMapping(
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         cb_enable = MockEnabledCallback(output = True)
@@ -1433,10 +1461,11 @@ class TestBinaryParameterCallback(unittest.TestCase):
 
         appl.init()
 
-        answer_msg_1 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x09, 0x44]
-        )
+        answer_msg_1 = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0x44, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x09, 0x44]
+        # )
 
         # Build scene:
         # Send update request

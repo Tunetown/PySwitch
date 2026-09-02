@@ -169,7 +169,6 @@ Splashes = TunerDisplayCallback(
                     show_rig_id = True
                 )
             ),
-            DISPLAY_FOOTER_1B,
             DISPLAY_FOOTER_2B,
             DISPLAY_RIG_NAME,
             

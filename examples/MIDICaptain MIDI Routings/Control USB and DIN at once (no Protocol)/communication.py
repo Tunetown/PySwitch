@@ -9,15 +9,8 @@ from pyswitch.hardware.devices.pa_midicaptain import PA_MIDICAPTAIN_USB_MIDI
 from pyswitch.hardware.devices.pa_midicaptain import PA_MIDICAPTAIN_DIN_MIDI
 
 # MIDI Devices in use (optionally you can specify the in/out channels here, too)
-_DIN_MIDI = PA_MIDICAPTAIN_DIN_MIDI(
-    in_channel = None,  # All
-    out_channel = 0
-)
-# MIDI Devices in use (optionally you can specify the in/out channels here, too)
-_USB_MIDI = PA_MIDICAPTAIN_USB_MIDI(
-    in_channel = None,  # All
-    out_channel = 0
-)
+_DIN_MIDI = PA_MIDICAPTAIN_DIN_MIDI()
+_USB_MIDI = PA_MIDICAPTAIN_USB_MIDI()
 
 # Communication configuration
 Communication = {

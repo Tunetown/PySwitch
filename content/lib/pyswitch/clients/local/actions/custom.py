@@ -1,7 +1,6 @@
 from ....controller.callbacks import Callback
 from ....controller.actions import Action
 from ....colors import Colors
-from adafruit_midi.midi_message import MIDIMessage
 
 # Sends a single raw, arbitrary MIDI message.
 # 
@@ -32,13 +31,6 @@ def CUSTOM_MESSAGE(message,                 # Raw MIDI message bytes (as list, f
 
 
 class _CustomMessageCallback(Callback):
-    class _RawMessage(MIDIMessage):
-        def __init__(self, data):
-            self.__data = bytearray(data)
-
-        def __bytes__(self):
-            return self.__data
-
     def __init__(self, 
                  message,
                  message_release,
@@ -58,11 +50,11 @@ class _CustomMessageCallback(Callback):
         self.__appl = appl
 
     def push(self):
-        self.__appl.client.midi.send(self._RawMessage(self.__message))
+        self.__appl.client.midi.send(self.__message)
 
     def release(self):
         if self.__message_release:
-            self.__appl.client.midi.send(self._RawMessage(self.__message_release))
+            self.__appl.client.midi.send(self.__message_release)
     
     def update_displays(self):
         self.action.switch_color = self.__color

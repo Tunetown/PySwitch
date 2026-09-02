@@ -1,15 +1,10 @@
-from math import floor
 from micropython import const
+from math import floor
 from ..misc import EventEmitter, PeriodCounter, Updateable, get_option, do_print
-
-from adafruit_midi.control_change import ControlChange
-from adafruit_midi.system_exclusive import SystemExclusive
-from adafruit_midi.program_change import ProgramChange
-
 
 # Midi mapping for a client command. Contains commands to set or request a parameter
 class ClientParameterMapping:
-    
+   
     _mappings = []
 
     # Singleton factory
@@ -35,27 +30,29 @@ class ClientParameterMapping:
 
         ClientParameterMapping._mappings.append(m)
         return m
-            
+
     ##########################################################################################################################
 
     # Parameter types (used internally in mappings)
     PARAMETER_TYPE_NUMERIC = const(0)   # Default, also used for on/off
-    PARAMETER_TYPE_STRING = const(1)
+    PARAMETER_TYPE_STRING = const(1)    # String parameter
 
     # Takes MIDI messages as argument (ControlChange or SystemExclusive)
     def __init__(self, name, create_key, set = None, request = None, response = None, value = None, type = 0, depends = None):
         if create_key != ClientParameterMapping:
-            raise Exception() # Use the get method exclusively to create mappings!
+            # Use the get method exclusively to create mappings!
+            raise Exception()   
         
         self.name = name          # Mapping name (used for debug output only)
-        self.set = set            # MIDI Message to set the parameter
-        self.request = request    # MIDI Message to request the value
-        self.response = response  # Response template MIDI message for parsing the received answer        
         self.value = value        # Value of the parameter (buffer). After receiving an answer, the value 
                                   # is buffered here.
         self.type = type          # Numeric or string
         self.depends = depends    # If another mapping is set here, this mapping will only be requested when the dependency has changed value
                                   # NOTE: In 2.4.1, this is prepared but not realized already
+
+        self.set = list(set) if set else None                    # MIDI Message to set the parameter
+        self.request = tuple(request) if request else None       # MIDI Message to request the value
+        self.response = tuple(response) if response else None    # Response template MIDI message for parsing the received answer        
 
     # Parse the incoming MIDI message and set its value on the mapping.
     # If the response template does not match, returns False, and
@@ -69,77 +66,47 @@ class ClientParameterMapping:
         return False
 
     # Parse a message against a response message
-    def parse_against(self, midi_message, response):     
+    def parse_against(self, midi_message, response):
+        if not isinstance(midi_message, (tuple, list)):
+            return
+        
+        if midi_message[0] != response[0]:
+            return
+        
         # SysEx (NRPN) Messages
-        if isinstance(midi_message, SystemExclusive):
-            if not isinstance(response, SystemExclusive):
-                return None
-                     
-            # Compare manufacturer IDs
-            if midi_message.manufacturer_id != response.manufacturer_id:
-                return None
+        if midi_message[0] == 0xf0: 
+            # NOTE: We ignore the manufacturer ID for performance reasons (there are two places which
+            # have to be ignored, so we would need two comparisons instead of one)
             
-            # Check if the message belongs to the mapping. The following have to match:
-            #   2: function code, 
-            #   3: instance ID, 
-            #   4: address page, 
-            #   5: address nunber
-            #
-            # The first two values are ignored (the Kemper MIDI specification implies this would contain the product type
-            # and device ID as for the request, however the device just sends two zeroes)
-            if midi_message.data[2:6] != response.data[2:6]:
+            # if tuple(midi_message[1:4]) != tuple(response[1:4]):
+            #     return None
+            
+            if tuple(midi_message[6:10]) != tuple(response[6:10]):
                 return None
             
             # The values starting from index 6 are the value of the response.
             if self.type == self.PARAMETER_TYPE_STRING:
                 # Take as string
-                return ''.join(chr(int(c)) for c in list(midi_message.data[6:-1]))
+                return ''.join(chr(int(c)) for c in list(midi_message[10:-2]))
             else:
                 # Decode 14-bit value to int
-                return midi_message.data[-2] * 128 + midi_message.data[-1]
+                return midi_message[-3] * 128 + midi_message[-2]
 
         # CC Messages
-        elif isinstance(midi_message, ControlChange):
-            if not isinstance(response, ControlChange):
-                return None
-            
-            if midi_message.control == response.control:
-                return midi_message.value
+        elif midi_message[0] & 0xf0 == 0xb0:
+            if midi_message[1] == response[1]:
+                return midi_message[2]
 
         # PC Messages
-        elif isinstance(midi_message, ProgramChange):
-            if not isinstance(response, ProgramChange):
-                return None
-            
-            return midi_message.patch
-
-        # MIDI Clock
-        #elif isinstance(midi_message, MidiClockMessage):
-        #    self._count_clock += 1
-
-        #    if self._count_clock >= 24:
-        #        self._count_clock = 0
-
-        #    if self._count_clock >= 12:
-        #        mapping.value = 1
-        #    else:
-        #        mapping.value = 0    
-
-        #    return True
-        
-        # MIDI Clock start
-        #elif isinstance(midi_message, Start):
-        #    self._count_clock = 0
-
-        #    mapping.value = 1
-
-        #    return True
+        elif midi_message[0] & 0xf0 == 0xc0:
+            return midi_message[1]
 
         return None
     
     # Set the passed value(s) on the SET message(s) of the mapping.
     def set_value(self, value):
-        if isinstance(self.set, list):
+        # if isinstance(self.set, list):
+        if ClientTwoPartParameterMapping.is_list(self.set):
             for i in range(len(self.set)):
                 self.__set_value(self.set[i], value[i])
         else:
@@ -149,34 +116,24 @@ class ClientParameterMapping:
         if self.type == self.PARAMETER_TYPE_STRING:
             raise Exception() # Setting strings is not implemented yet
 
-        if isinstance(midi_message, ControlChange):
-            # Set value directly (CC takes int values)            
-            midi_message.value = value
+        if midi_message[0] & 0xf0 == 0xb0:
+            # CC: Set value directly
+            midi_message[2] = value
 
-        elif isinstance(midi_message, SystemExclusive):            
-            # Fill up message to appropriate length for the specification
-            data = list(midi_message.data)
-            while len(data) < 8:
-                data.append(0)
-            
-            # Set value as 14 bit
-            data[6] = int(floor(value / 128))
-            data[7] = int(value % 128)
+        elif midi_message[0] == 0xf0: 
+            # Sysex 14 bit number
+            midi_message[10] = int(floor(value / 128))
+            midi_message[11] = int(value % 128)
 
-            midi_message.data = bytes(data)
-
-        elif isinstance(midi_message, ProgramChange):
-            # Set patch
-            midi_message.patch = value
+        elif midi_message[0] & 0xf0 == 0xc0:
+            # PC: Set patch
+            midi_message[1] = value
 
     # Returns if the mapping has finished receiving a result. Per default,
     # this returns True which is valid for mappings with one response.
     def result_finished(self):
         return True
-    
-    # def __repr__(self):
-    #     return self.name
-    
+
 
 # Parser for two-part messages: The result value will be 128 * value1 + value2, 
 # notified when the second message arrives.
@@ -203,10 +160,28 @@ class ClientTwoPartParameterMapping(ClientParameterMapping):
         ClientParameterMapping._mappings.append(m)
         return m
 
+    # Returns if the passed value is a list of messages instead of a single message
+    @staticmethod
+    def is_list(value):
+        if not value:
+            return False
+        
+        return not isinstance(value[0], int)
+
+
     ##########################################################################################################################
 
     def __init__(self, name, create_key, set = None, request = None, response = None, value = None, type = 0, depends = None):
-        super().__init__(name = name, create_key = create_key, set = set, request = request, response = response, value = value, type = type, depends = depends)
+        super().__init__(
+            name = name, 
+            create_key = create_key,
+            set = [(x if isinstance(x, int) else list(x)) for x in set] if set else None,
+            request = ((x if isinstance(x, int) else tuple(x)) for x in request) if request else None, 
+            response = ((x if isinstance(x, int) else tuple(x)) for x in response) if response else None,
+            value = value, 
+            type = type, 
+            depends = depends
+        )
 
         self.__value_1 = None
     
@@ -294,7 +269,8 @@ class Client: #(ClientRequestListener):
         
         mapping.set_value(value)
                 
-        if isinstance(mapping.set, list):
+        # if isinstance(mapping.set, list):
+        if ClientTwoPartParameterMapping.is_list(mapping.set):
             for m in mapping.set:
                 if not m:
                     continue
@@ -416,11 +392,7 @@ class Client: #(ClientRequestListener):
 
     # Print info about the passed message
     def print_message(self, midi_message):  # pragma: no cover
-        if self.debug_exclude_types and midi_message.__class__.__name__ in self.debug_exclude_types:
-            return
-        
-        from ..debug_tools import stringify_midi_message
-        do_print(stringify_midi_message(midi_message))
+        print(list(midi_message))
 
 
 #######################################################################################################################
@@ -452,7 +424,8 @@ class ClientRequest(EventEmitter):
         if not self.mapping.request:
             return
 
-        if isinstance(self.mapping.request, list):
+        # if isinstance(self.mapping.request, list):
+        if ClientTwoPartParameterMapping.is_list(self.mapping.request):
             for m in self.mapping.request:
                 if not m:
                     continue
@@ -495,8 +468,7 @@ class ClientRequest(EventEmitter):
             return
 
         if self.client.debug_mapping == mapping:    # pragma: no cover
-            from ..debug_tools import stringify_midi_message
-            do_print(f"{ mapping.name }: Received value '{ repr(mapping.value) }' from { stringify_midi_message(midi_message) }")
+            print(f"{ mapping.name }: Received value '{ repr(mapping.value) }' from { list(midi_message) }")
 
         # Call the listeners (the mapping has the values set already). Do not use notify_listeners() to keep the stack short.
         for listener in self.listeners:

@@ -1,11 +1,11 @@
 from ....controller.client import ClientParameterMapping
-from adafruit_midi.program_change import ProgramChange
 
 # Send a simple PC message
-def MAPPING_SEND_PROGRAM_CHANGE(): 
+def MAPPING_SEND_PROGRAM_CHANGE(channel = 0): 
     return ClientParameterMapping.get(
         name = "ProgChg",
-        set = ProgramChange(
-            0    # Dummy value, will be overridden
-        )
+        set = (192 + channel, 0)
+        # ProgramChange(
+        #     0    # Dummy value, will be overridden
+        # )
     )

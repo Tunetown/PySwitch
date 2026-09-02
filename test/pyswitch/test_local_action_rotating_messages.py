@@ -9,10 +9,6 @@ with patch.dict(sys.modules, {
     "micropython": MockMicropython,
     "displayio": MockDisplayIO(),
     "adafruit_display_text": MockAdafruitDisplayText(),
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
     "adafruit_display_shapes.rect": MockDisplayShapes().rect(),
     "gc": MockGC()
 }):
@@ -55,7 +51,7 @@ class TestLocalRotatingMessages(unittest.TestCase):
         action.push()
 
         self.assertEqual(len(appl.client.midi.messages_sent), 1)
-        self.assertEqual(list(appl.client.midi.messages_sent[0].__bytes__()), [1, 3, 5])
+        self.assertEqual(list(appl.client.midi.messages_sent[0]), [1, 3, 5])
 
         action.release()
 
@@ -66,7 +62,7 @@ class TestLocalRotatingMessages(unittest.TestCase):
         action.push()
 
         self.assertEqual(len(appl.client.midi.messages_sent), 2)
-        self.assertEqual(list(appl.client.midi.messages_sent[1].__bytes__()), [1, 3, 5])
+        self.assertEqual(list(appl.client.midi.messages_sent[1]), [1, 3, 5])
 
         action.release()
 
@@ -77,7 +73,7 @@ class TestLocalRotatingMessages(unittest.TestCase):
         action.push()
 
         self.assertEqual(len(appl.client.midi.messages_sent), 3)
-        self.assertEqual(list(appl.client.midi.messages_sent[2].__bytes__()), [1, 3, 5])
+        self.assertEqual(list(appl.client.midi.messages_sent[2]), [1, 3, 5])
 
         action.release()
 
@@ -145,12 +141,12 @@ class TestLocalRotatingMessages(unittest.TestCase):
         action.push()
 
         self.assertEqual(len(appl.client.midi.messages_sent), 1)
-        self.assertEqual(list(appl.client.midi.messages_sent[0].__bytes__()), [1, 3, 5])
+        self.assertEqual(list(appl.client.midi.messages_sent[0]), [1, 3, 5])
 
         action.release()
 
         self.assertEqual(len(appl.client.midi.messages_sent), 2)
-        self.assertEqual(list(appl.client.midi.messages_sent[1].__bytes__()), [23, 5])
+        self.assertEqual(list(appl.client.midi.messages_sent[1]), [23, 5])
 
         self.assertEqual(switch.color, (4, 6, 9))
         self.assertEqual(switch.brightness, 0.5)
@@ -162,12 +158,12 @@ class TestLocalRotatingMessages(unittest.TestCase):
         action.push()
 
         self.assertEqual(len(appl.client.midi.messages_sent), 3)
-        self.assertEqual(list(appl.client.midi.messages_sent[2].__bytes__()), [2, 4, 6])
+        self.assertEqual(list(appl.client.midi.messages_sent[2]), [2, 4, 6])
 
         action.release()
 
         self.assertEqual(len(appl.client.midi.messages_sent), 4)
-        self.assertEqual(list(appl.client.midi.messages_sent[3].__bytes__()), [233])
+        self.assertEqual(list(appl.client.midi.messages_sent[3]), [233])
 
         self.assertEqual(switch.color, (8, 9, 2))
         self.assertEqual(switch.brightness, 0.5)
@@ -179,12 +175,12 @@ class TestLocalRotatingMessages(unittest.TestCase):
         action.push()
 
         self.assertEqual(len(appl.client.midi.messages_sent), 5)
-        self.assertEqual(list(appl.client.midi.messages_sent[4].__bytes__()), [2, 4, 8])
+        self.assertEqual(list(appl.client.midi.messages_sent[4]), [2, 4, 8])
 
         action.release()
 
         self.assertEqual(len(appl.client.midi.messages_sent), 6)
-        self.assertEqual(list(appl.client.midi.messages_sent[5].__bytes__()), [3, 4, 6, 7])
+        self.assertEqual(list(appl.client.midi.messages_sent[5]), [3, 4, 6, 7])
 
         self.assertEqual(switch.color, (4, 6, 9))
         self.assertEqual(switch.brightness, 0.5)
@@ -196,12 +192,12 @@ class TestLocalRotatingMessages(unittest.TestCase):
         action.push()
 
         self.assertEqual(len(appl.client.midi.messages_sent), 7)
-        self.assertEqual(list(appl.client.midi.messages_sent[6].__bytes__()), [1, 3, 5])
+        self.assertEqual(list(appl.client.midi.messages_sent[6]), [1, 3, 5])
 
         action.release()
 
         self.assertEqual(len(appl.client.midi.messages_sent), 8)
-        self.assertEqual(list(appl.client.midi.messages_sent[7].__bytes__()), [23, 5])
+        self.assertEqual(list(appl.client.midi.messages_sent[7]), [23, 5])
 
         self.assertEqual(switch.color, (8, 9, 2))
         self.assertEqual(switch.brightness, 0.5)
@@ -270,7 +266,7 @@ class TestLocalRotatingMessages(unittest.TestCase):
             action.push()
 
         self.assertEqual(len(appl.client.midi.messages_sent), 1)
-        self.assertEqual(list(appl.client.midi.messages_sent[0].__bytes__()), [1, 3, 5])
+        self.assertEqual(list(appl.client.midi.messages_sent[0]), [1, 3, 5])
 
         for action in actions:
             action.release()
@@ -286,7 +282,7 @@ class TestLocalRotatingMessages(unittest.TestCase):
             action.push()
 
         self.assertEqual(len(appl.client.midi.messages_sent), 2)
-        self.assertEqual(list(appl.client.midi.messages_sent[1].__bytes__()), [1, 3, 5])
+        self.assertEqual(list(appl.client.midi.messages_sent[1]), [1, 3, 5])
 
         for action in actions:
             action.release()
@@ -302,7 +298,7 @@ class TestLocalRotatingMessages(unittest.TestCase):
             action.push()
 
         self.assertEqual(len(appl.client.midi.messages_sent), 3)
-        self.assertEqual(list(appl.client.midi.messages_sent[2].__bytes__()), [1, 3, 5])
+        self.assertEqual(list(appl.client.midi.messages_sent[2]), [1, 3, 5])
 
         for action in actions:
             action.release()
@@ -318,7 +314,7 @@ class TestLocalRotatingMessages(unittest.TestCase):
             action.push()
 
         self.assertEqual(len(appl.client.midi.messages_sent), 4)
-        self.assertEqual(list(appl.client.midi.messages_sent[3].__bytes__()), [1, 3, 5])
+        self.assertEqual(list(appl.client.midi.messages_sent[3]), [1, 3, 5])
 
         for action in actions:
             action.release()

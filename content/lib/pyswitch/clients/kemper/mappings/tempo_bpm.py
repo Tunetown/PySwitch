@@ -1,31 +1,28 @@
-from micropython import const
 from ....controller.client import ClientParameterMapping
-from .. import KemperNRPNMessage
-from .. import NRPN_FUNCTION_SET_SINGLE_PARAMETER, NRPN_FUNCTION_REQUEST_SINGLE_PARAMETER, NRPN_FUNCTION_RESPONSE_SINGLE_PARAMETER
-
-_NRPN_ADDRESS_PAGE_RIG_PARAMETERS = const(0x04)
-_NRPN_PARAMETER_ID_BPM = 0x00
-
+from .. import PRODUCT_TYPE, DEVICE_ID_OMNI, INSTANCE_ID
 
 # Tempo (BPM value)
 def MAPPING_TEMPO_BPM():
     return ClientParameterMapping.get(
         name = "BPM",
-        set = KemperNRPNMessage(
-            NRPN_FUNCTION_SET_SINGLE_PARAMETER, 
-            _NRPN_ADDRESS_PAGE_RIG_PARAMETERS,
-            _NRPN_PARAMETER_ID_BPM
-        ),
-        request = KemperNRPNMessage(               
-            NRPN_FUNCTION_REQUEST_SINGLE_PARAMETER, 
-            _NRPN_ADDRESS_PAGE_RIG_PARAMETERS,
-            _NRPN_PARAMETER_ID_BPM
-        ),
-        response = KemperNRPNMessage(               
-            NRPN_FUNCTION_RESPONSE_SINGLE_PARAMETER, 
-            _NRPN_ADDRESS_PAGE_RIG_PARAMETERS,
-            _NRPN_PARAMETER_ID_BPM
-        )
+        set = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x04, 0x00, 0xf7),
+        # KemperNRPNMessage(
+        #     0x01, 
+        #     0x04,
+        #     0x00
+        # ),
+        request = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x41, INSTANCE_ID, 0x04, 0x00, 0xf7),
+        # KemperNRPNMessage(               
+        #     0x41, 
+        #     0x04,
+        #     0x00
+        # ),
+        response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x04, 0x00, 0xf7)
+        # KemperNRPNMessage(               
+        #     0x01, 
+        #     0x04,
+        #     0x00
+        # )
     )
 
 # Output conversion for BPM

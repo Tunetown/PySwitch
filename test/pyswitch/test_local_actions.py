@@ -9,15 +9,9 @@ with patch.dict(sys.modules, {
     "micropython": MockMicropython,
     "displayio": MockDisplayIO(),
     "adafruit_display_text": MockAdafruitDisplayText(),
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
     "adafruit_display_shapes.rect": MockDisplayShapes().rect(),
     "gc": MockGC()
 }):
-    from adafruit_midi.system_exclusive import SystemExclusive
-    
     from lib.pyswitch.ui.elements import DisplayLabel
     from lib.pyswitch.controller.callbacks import BinaryParameterCallback, Callback
     
@@ -32,10 +26,11 @@ class TestLocalActionDefinitions(unittest.TestCase):
 
     def test_binary_switch(self):
         mapping_1 = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         display = DisplayLabel(layout = {
@@ -77,12 +72,13 @@ class TestLocalActionDefinitions(unittest.TestCase):
         self.assertEqual(action._Action__enable_callback, ecb)
 
     def test_display_fixed_test(self):
-        mapping_1 = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
-        )
+        # mapping_1 = MockParameterMapping(
+        #     response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+        #     # SystemExclusive(
+        #     #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     #     data = [0x00, 0x00, 0x09]
+        #     # )
+        # )
 
         display = DisplayLabel(layout = {
             "font": "foo",
@@ -124,12 +120,12 @@ class TestLocalActionDefinitions(unittest.TestCase):
 
 
     def test_display_fixed_test_no_colors(self):
-        mapping_1 = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
-        )
+        # mapping_1 = MockParameterMapping(
+        #     response = SystemExclusive(
+        #         manufacturer_id = [0x00, 0x10, 0x20],
+        #         data = [0x00, 0x00, 0x09]
+        #     )
+        # )
 
         display = DisplayLabel(layout = {
             "font": "foo",

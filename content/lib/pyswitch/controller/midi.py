@@ -1,36 +1,3 @@
-# MIDI Message types: These are all needed to be imported, despite not used: If not, no messages
-# will go through the MIDI routings. If you encounter that messages are not forwarded, the type 
-# might perhaps miss here. (not all are enabled by default to minimize RAM usage).
-# If the message type (status) is not known by the adafruit_midi library at all, you can implement
-# the type yourself (see MidiClockMessage below)
-from adafruit_midi.midi_message import MIDIMessage
-from adafruit_midi.midi_message import MIDIUnknownEvent
-from adafruit_midi.control_change import ControlChange
-from adafruit_midi.program_change import ProgramChange
-from adafruit_midi.system_exclusive import SystemExclusive
-#from adafruit_midi.mtc_quarter_frame import MtcQuarterFrame
-#from adafruit_midi.channel_pressure import ChannelPressure
-#from adafruit_midi.note_off import NoteOff
-#from adafruit_midi.note_on import NoteOn
-#from adafruit_midi.pitch_bend import PitchBend
-#from adafruit_midi.timing_clock import TimingClock
-#from adafruit_midi.start import Start
-#from adafruit_midi.stop import Stop
-
-
-# MIDI Clock custom message type
-#class MidiClockMessage(MIDIMessage):
-#    _STATUS = 0xF8
-#    _STATUSMASK = 0xFF
-#    LENGTH = 1
-#    _slots = []
-
-#MidiClockMessage.register_message_type()
-
-
-##################################################################################################
-
-
 # Describes a routing from source to target, which must be MidiDevices definitions.
 class MidiRouting:
 
@@ -104,12 +71,6 @@ class MidiController:
                 msg = results[i]
         
                 if not msg:
-                    continue
-                
-                if isinstance(msg, MIDIUnknownEvent):
-                    continue
-                
-                if getattr(msg, "_STATUS", None) is None:
                     continue
                 
                 r.target.send(msg)

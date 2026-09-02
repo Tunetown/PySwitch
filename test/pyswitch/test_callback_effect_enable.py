@@ -11,17 +11,11 @@ with patch.dict(sys.modules, {
     "adafruit_display_text": MockAdafruitDisplayText(),
     "usb_midi": MockUsbMidi(),
     "adafruit_display_shapes.rect": MockDisplayShapes().rect(),
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
     "gc": MockGC()
 }):
     from .mocks_appl import *
     from .mocks_ui import *
     from .mocks_callback import *
-
-    from adafruit_midi.system_exclusive import SystemExclusive
 
     from lib.pyswitch.controller.callbacks.effect_enable import EffectEnableCallback
     from lib.pyswitch.controller.actions import PushButtonAction
@@ -49,29 +43,34 @@ class TestCallbackEffectEnable(unittest.TestCase):
         switch_1 = MockSwitch()
         
         mapping_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            ),
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # ),
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         mapping_type_1 = MockParameterMapping(
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x10]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x10]
-            )
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x10, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x10]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x10, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x10]
+            # )
         )
 
         cb = MockEffectEnableCallback(
@@ -109,15 +108,17 @@ class TestCallbackEffectEnable(unittest.TestCase):
 
         appl.init()
 
-        answer_msg_param = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x09, 0x44]
-        )
+        answer_msg_param = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0x44, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x09, 0x44]
+        # )
 
-        answer_msg_type = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )        
+        answer_msg_type = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )        
 
         # Build scene:
         # Send update request
@@ -250,29 +251,34 @@ class TestCallbackEffectEnable(unittest.TestCase):
         switch_1 = MockSwitch()
 
         mapping_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            ),
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # ),
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         mapping_type_1 = MockParameterMapping(
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x10]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x10]
-            )
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x10, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x10]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x10, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x10]
+            # )
         )
 
         cb = MockEffectEnableCallback(
@@ -311,15 +317,17 @@ class TestCallbackEffectEnable(unittest.TestCase):
 
         action_1.label = MockDisplayLabel()
 
-        answer_msg_param = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x09, 0x44]
-        )
+        answer_msg_param = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0x44, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x09, 0x44]
+        # )
 
-        answer_msg_type = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )
+        answer_msg_type = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )
 
         # Build scene:
         # Send update request
@@ -471,29 +479,34 @@ class TestCallbackEffectEnable(unittest.TestCase):
         switch_1 = MockSwitch()
 
         mapping_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            ),
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # ),
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         mapping_type_1 = MockParameterMapping(
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x10]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x10]
-            )
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x10, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x10]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x10, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x10]
+            # )
         )
 
         cb_enable = MockEnabledCallback(output = True)
@@ -532,10 +545,11 @@ class TestCallbackEffectEnable(unittest.TestCase):
 
         appl.init()
 
-        answer_msg_type = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )
+        answer_msg_type = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )
 
         # Build scene:
         # Send update request

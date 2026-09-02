@@ -3,20 +3,19 @@ import unittest
 from unittest.mock import patch   # Necessary workaround! Needs to be separated.
 
 from .mocks_lib import *
+from .mocks_midi import *
 
 # Import subject under test
 with patch.dict(sys.modules, {
     "micropython": MockMicropython,
     "usb_midi": MockUsbMidi(),
-    "adafruit_midi": MockAdafruitMIDI(),
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
+    # "adafruit_midi": MockAdafruitMIDI(),
+    # "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
+    # "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
+    # "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
+    # "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
     "gc": MockGC()
 }):
-    from adafruit_midi.system_exclusive import SystemExclusive
-    from adafruit_midi.control_change import ControlChange
     from lib.pyswitch.controller.client import Client
 
     from.mocks_appl import *
@@ -29,7 +28,7 @@ class MockParameterMapping2(MockParameterMapping):
 class TestClient(unittest.TestCase):
 
     def test_set(self):
-        midi = MockAdafruitMIDI.MIDI()
+        midi = MockMIDI()
         
         client = Client(
             midi = midi,
@@ -37,18 +36,21 @@ class TestClient(unittest.TestCase):
         )
 
         mapping_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            ),
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # ),
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         client.set(mapping_1, 33)
@@ -62,7 +64,7 @@ class TestClient(unittest.TestCase):
 
 
     def test_set_list(self):
-        midi = MockAdafruitMIDI.MIDI()
+        midi = MockMIDI()
         
         client = Client(
             midi = midi,
@@ -71,15 +73,17 @@ class TestClient(unittest.TestCase):
 
         mapping_1 = MockParameterMapping(
             set = [
-                SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x20],
-                    data = [0x01, 0x02, 0x03, 0x04]
-                ),
+                (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x20],
+                #     data = [0x01, 0x02, 0x03, 0x04]
+                # ),
                 None,
-                SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x20],
-                    data = [0x01, 0x02, 0x33, 0x04]
-                ),
+                (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x33, 0x04, 0xf7),
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x20],
+                #     data = [0x01, 0x02, 0x33, 0x04]
+                # ),
             ]
         )
 
@@ -95,7 +99,7 @@ class TestClient(unittest.TestCase):
 
 
     def test_set_not_settable(self):        
-        midi = MockAdafruitMIDI.MIDI()
+        midi = MockMIDI()
 
         client = Client(
             midi = midi,
@@ -103,14 +107,16 @@ class TestClient(unittest.TestCase):
         )
 
         mapping_1 = MockParameterMapping(
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         # Must not throw
@@ -121,7 +127,7 @@ class TestClient(unittest.TestCase):
 
 
     def test_request(self):        
-        midi = MockAdafruitMIDI.MIDI()
+        midi = MockMIDI()
 
         client = Client(
             midi = midi,
@@ -129,14 +135,16 @@ class TestClient(unittest.TestCase):
         )
 
         mapping_1 = MockParameterMapping(
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         listener = MockClientRequestListener()
@@ -151,15 +159,16 @@ class TestClient(unittest.TestCase):
         self.assertEqual(listener.parameter_changed_calls, [])
 
         # Receive ControlChange
-        client.receive(ControlChange(3, 4))
+        client.receive((176, 3, 4)) #ControlChange(3, 4))
         self.assertEqual(listener.parameter_changed_calls, [])
 
         # Receive correct message
         req = client.requests[0]
-        answer_msg = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )
+        answer_msg = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )
 
         mapping_1.outputs_parse = [
             {
@@ -179,7 +188,7 @@ class TestClient(unittest.TestCase):
 
 
     def test_request_no_listener(self):        
-        midi = MockAdafruitMIDI.MIDI()
+        midi = MockMIDI()
 
         client = Client(
             midi = midi,
@@ -187,14 +196,16 @@ class TestClient(unittest.TestCase):
         )
 
         mapping_1 = MockParameterMapping(
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         client.request(mapping_1)
@@ -206,14 +217,15 @@ class TestClient(unittest.TestCase):
         client.receive(None)
         
         # Receive ControlChange
-        client.receive(ControlChange(3, 4))
+        client.receive((176, 3, 4)) #ControlChange(3, 4))
         
         # Receive correct message
         req = client.requests[0]
-        answer_msg = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )
+        answer_msg = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )
 
         mapping_1.outputs_parse = [
             {
@@ -232,7 +244,7 @@ class TestClient(unittest.TestCase):
 
 
     def test_request_add_listeners(self):        
-        midi = MockAdafruitMIDI.MIDI()
+        midi = MockMIDI()
 
         client = Client(
             midi = midi,
@@ -240,17 +252,19 @@ class TestClient(unittest.TestCase):
         )
 
         mapping_1 = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         mapping_2 = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x01, 0x10, 0x20],
-                data = [0x00, 0x02, 0x09]
-            )
+            response = (0xf0, 0x01, 0x10, 0x20, 0x00, 0x02, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x01, 0x10, 0x20],
+            #     data = [0x00, 0x02, 0x09]
+            # )
         )
 
         listener = MockClientRequestListener()
@@ -291,7 +305,7 @@ class TestClient(unittest.TestCase):
 
 
     def test_request_list(self):        
-        midi = MockAdafruitMIDI.MIDI()
+        midi = MockMIDI()
 
         client = Client(
             midi = midi,
@@ -300,52 +314,61 @@ class TestClient(unittest.TestCase):
 
         mapping_1 = MockParameterMapping(
             request = [
-                SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x20],
-                    data = [0x05, 0x07, 0x09]
-                ),
+                (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x20],
+                #     data = [0x05, 0x07, 0x09]
+                # ),
                 None,
-                SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x24],
-                    data = [0x05, 0x07, 0x79]
-                )
+                (0xf0, 0x00, 0x10, 0x24, 0x05, 0x07, 0x79, 0xf7)
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x24],
+                #     data = [0x05, 0x07, 0x79]
+                # )
             ],
             response = [
-                SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x20],
-                    data = [0x00, 0x00, 0x09]
-                ),
-                SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x20],
-                    data = [0x00, 0x00, 0xa9]
-                ),
+                (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7),
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x20],
+                #     data = [0x00, 0x00, 0x09]
+                # ),
+                (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0xa9, 0xf7),
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x20],
+                #     data = [0x00, 0x00, 0xa9]
+                # ),
                 None,
-                SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x23],
-                    data = [0x00, 0x00, 0x07]
-                )
+                (0xf0, 0x00, 0x10, 0x23, 0x00, 0x00, 0x07, 0xf7)
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x23],
+                #     data = [0x00, 0x00, 0x07]
+                # )
             ]
         )
 
-        answer_msg_1 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )
+        answer_msg_1 = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )
 
-        answer_msg_2 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x25],
-            data = [0x00, 0x00, 0x07, 0x47]
-        )
+        answer_msg_2 = (0xf0, 0x00, 0x10, 0x25, 0x00, 0x00, 0x07, 0x47, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x25],
+        #     data = [0x00, 0x00, 0x07, 0x47]
+        # )
 
-        answer_msg_3 = SystemExclusive(
-            manufacturer_id = [0xbb, 0x10, 0x25],
-            data = [0xaa, 0x00, 0x07, 0x47]
-        )
+        answer_msg_3 = (0xf0, 0xbb, 0x10, 0x25, 0xaa, 0x00, 0x07, 0x47, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0xbb, 0x10, 0x25],
+        #     data = [0xaa, 0x00, 0x07, 0x47]
+        # )
 
-        answer_msg_4 = SystemExclusive(
-            manufacturer_id = [0xbb, 0x10, 0x25],
-            data = [0xaa, 0x00, 0x07, 0x47]
-        )
+        answer_msg_4 = (0xf0, 0xbb, 0x10, 0x25, 0xaa, 0x00, 0x07, 0x88, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0xbb, 0x10, 0x25],
+        #     data = [0xaa, 0x00, 0x07, 0x47]
+        # )
 
         mapping_1.outputs_parse = [
             {
@@ -380,14 +403,17 @@ class TestClient(unittest.TestCase):
         # Receive None
         client.receive(None)
         self.assertEqual(listener.parameter_changed_calls, [])
+        self.assertEqual(mapping_1.value, None)
 
         # Receive ControlChange
-        client.receive(ControlChange(3, 4))
+        client.receive((176, 3, 4)) #ControlChange(3, 4))
         self.assertEqual(listener.parameter_changed_calls, [])
+        self.assertEqual(mapping_1.value, None)
                 
         # Receive unregistered message
         client.receive(answer_msg_4)
         self.assertEqual(listener.parameter_changed_calls, [])
+        self.assertEqual(mapping_1.value, None)
 
         # Receive correct message 2 before 1
         client.receive(answer_msg_2)
@@ -422,7 +448,7 @@ class TestClient(unittest.TestCase):
 
 
     def test_request_endless(self):        
-        midi = MockAdafruitMIDI.MIDI()
+        midi = MockMIDI()
 
         client = Client(
             midi = midi,
@@ -432,20 +458,22 @@ class TestClient(unittest.TestCase):
         )
 
         mapping_1 = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         listener = MockClientRequestListener()
 
         client.register(mapping_1, listener)
 
-        answer_msg = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )
+        answer_msg = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )
         
         mapping_1.outputs_parse = [
             {
@@ -468,7 +496,7 @@ class TestClient(unittest.TestCase):
 
 
     def test_request_endless_no_listener(self):        
-        midi = MockAdafruitMIDI.MIDI()
+        midi = MockMIDI()
 
         client = Client(
             midi = midi,
@@ -478,18 +506,20 @@ class TestClient(unittest.TestCase):
         )
 
         mapping_1 = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         client.register(mapping_1)
 
-        answer_msg = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )
+        answer_msg = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )
         
         mapping_1.outputs_parse = [
             {
@@ -511,7 +541,7 @@ class TestClient(unittest.TestCase):
 
 
     def test_request_terminate(self):        
-        midi = MockAdafruitMIDI.MIDI()
+        midi = MockMIDI()
 
         client = Client(
             midi = midi,
@@ -519,14 +549,16 @@ class TestClient(unittest.TestCase):
         )
 
         mapping_1 = MockParameterMapping(
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         listener = MockClientRequestListener()
@@ -540,10 +572,11 @@ class TestClient(unittest.TestCase):
         req.terminate()
         self.assertEqual(req.finished, True)
 
-        answer_msg = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )
+        answer_msg = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )
 
         mapping_1.outputs_parse = [
             {
@@ -563,7 +596,7 @@ class TestClient(unittest.TestCase):
 
 
     def test_request_timeout(self):        
-        midi = MockAdafruitMIDI.MIDI()
+        midi = MockMIDI()
 
         client = Client(
             midi = midi,
@@ -571,14 +604,16 @@ class TestClient(unittest.TestCase):
         )
 
         mapping_1 = MockParameterMapping(
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         listener = MockClientRequestListener()
@@ -607,7 +642,7 @@ class TestClient(unittest.TestCase):
 
 
     def test_request_dependency(self):        
-        midi = MockAdafruitMIDI.MIDI()
+        midi = MockMIDI()
 
         client = Client(
             midi = midi,
@@ -615,26 +650,30 @@ class TestClient(unittest.TestCase):
         )
 
         mapping_dep = MockParameterMapping(
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         mapping_1 = MockParameterMapping(
             depends = mapping_dep,
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x19]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x19]
-            )
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x19, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x19]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x19, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x19]
+            # )
         )
 
         listener = MockClientRequestListener()
@@ -646,10 +685,11 @@ class TestClient(unittest.TestCase):
         
         # Receive dependency message
         req = client.requests[0]
-        answer_msg = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x07, 0x45]
-        )
+        answer_msg = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x07, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x07, 0x45]
+        # )
 
         mapping_dep.outputs_parse = [
             {

@@ -9,16 +9,9 @@ with patch.dict(sys.modules, {
     "displayio": MockDisplayIO(),
     "adafruit_display_text": MockAdafruitDisplayText(),
     "usb_midi": MockUsbMidi(),
-    "adafruit_midi": MockAdafruitMIDI(),
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
     "adafruit_display_shapes.rect": MockDisplayShapes().rect(),
     "gc": MockGC()
 }):
-    from adafruit_midi.system_exclusive import SystemExclusive
-
     from lib.pyswitch.ui.ui import DisplayBounds
     from lib.pyswitch.ui.elements import TunerDisplay, DisplayLabel
     from lib.pyswitch.ui.UiController import UiController
@@ -88,19 +81,21 @@ class TestTunerDisplay(unittest.TestCase):
         mapping_1 = None
         if note_value != None and note_text != None:
             mapping_1 = MockParameterMapping(
-                response = SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x20],
-                    data = [0x00, 0x00, 0x09]
-                )
+                response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x20],
+                #     data = [0x00, 0x00, 0x09]
+                # )
             )
 
         mapping_2 = None
         if deviance_value != None:
             mapping_2 = MockParameterMapping(
-                response = SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x20],
-                    data = [0x00, 0x00, 0x10]
-                )
+                response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x10, 0xf7)
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x20],
+                #     data = [0x00, 0x00, 0x10]
+                # )
             )
 
         deviance_width = 4
@@ -168,15 +163,17 @@ class TestTunerDisplay(unittest.TestCase):
 
         appl.init()
 
-        answer_msg_1 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x09, 0x44]
-        )
+        answer_msg_1 = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0x44, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x09, 0x44]
+        # )
 
-        answer_msg_2 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x09, 0x45]
-        )
+        answer_msg_2 = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0x45, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x09, 0x45]
+        # )
 
         # Build scene:
         # Step 1: Not exceeded

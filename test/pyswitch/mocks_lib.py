@@ -24,64 +24,6 @@ class MockUsbMidi:
     ports = [None, None]
 
 
-class MockAdafruitMIDI:
-    class MIDI:
-        def __init__(self, midi_out = None, out_channel = None, midi_in = None, in_buf_size = None, debug = None):
-            self.midi_out = midi_out
-            self.midi_in = midi_in
-            self.out_channel = out_channel
-            self.in_buf_size = in_buf_size
-            self.debug = debug
-
-            self.messages_sent = []
-            self.next_receive_messages = []
-
-        def receive(self):
-            if self.next_receive_messages:
-                return self.next_receive_messages.pop(0)
-            
-            return None
-        
-        def send(self, midi_message):
-            self.messages_sent.append(midi_message)
-            
-
-class MockAdafruitMIDIControlChange:
-    class ControlChange:
-        def __init__(self, control = 0, value = 0):
-            self.control = control
-            self.value = value
-            self._STATUS = 0xB0
-
-class MockAdafruitMIDIProgramChange:
-    class ProgramChange:
-        def __init__(self, patch = 0):
-            self.patch = patch
-            self._STATUS = 0xC0
-
-class MockAdafruitMIDISystemExclusive:    
-    class SystemExclusive:
-        def __init__(self, manufacturer_id = [0x00, 0x00, 0x00], data = []):
-            self.manufacturer_id = manufacturer_id
-            self.data = data
-            self._STATUS = 0xF0
-
-#class MockAdafruitMIDIStart:
-#    class Start:
-#        pass
-    
-
-class MockAdafruitMIDIMessage:
-    class MIDIUnknownEvent:
-        def __init__(self, status = 0):
-            self.status = status
-
-    class MIDIMessage:
-        @staticmethod
-        def register_message_type():
-            pass
-
-
 class MockGC:
     class MockData:
         def __init__(self):

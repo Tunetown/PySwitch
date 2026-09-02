@@ -6,10 +6,6 @@ from .mocks_lib import *
 
 # Import subject under test
 with patch.dict(sys.modules, {
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
     "gc": MockGC(),
     "time": MockTime
 }):

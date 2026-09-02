@@ -9,16 +9,9 @@ with patch.dict(sys.modules, {
     "displayio": MockDisplayIO(),
     "adafruit_display_text": MockAdafruitDisplayText(),
     "usb_midi": MockUsbMidi(),
-    "adafruit_midi": MockAdafruitMIDI(),
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
     "adafruit_display_shapes.rect": MockDisplayShapes().rect(),
     "gc": MockGC()
 }):
-    from adafruit_midi.system_exclusive import SystemExclusive
-
     from lib.pyswitch.controller.strobe import StrobeController
 
     from .mocks_appl import *
@@ -65,17 +58,19 @@ class TestStrobeController(unittest.TestCase):
 
     def _test_strobe_direction(self, num_switches, speed, num_periods, up, interval):
         mapping_1 = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         mapping_2 = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x10]
-            )
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x10, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x10]
+            # )
         )
 
         strobe = StrobeController(
@@ -292,17 +287,19 @@ class TestStrobeController(unittest.TestCase):
 
     def _test_no_strobe(self, num_switches):
         mapping_1 = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         mapping_2 = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x10]
-            )
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x10, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x10]
+            # )
         )
 
         strobe = StrobeController(

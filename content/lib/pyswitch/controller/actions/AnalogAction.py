@@ -1,7 +1,5 @@
 from ...misc import PeriodCounter, Updateable
 
-from adafruit_midi.system_exclusive import SystemExclusive
-
 class AnalogAction(Updateable):
     
     # Use this action for all analog inputs like expression pedals.
@@ -24,7 +22,7 @@ class AnalogAction(Updateable):
                  convert_value = None,              # Optional conversion routine for displaying values: (value) => string
                  min_raw_value = 1024               # Optional minimum raw value threshold for stable zero
         ):
-        if isinstance(mapping.set, SystemExclusive):
+        if mapping.set[0] == 0xf0:
             if max_value == None:
                 max_value = 16383
         else:

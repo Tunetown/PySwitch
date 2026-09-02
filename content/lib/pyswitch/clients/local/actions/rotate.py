@@ -1,7 +1,5 @@
 from ....controller.callbacks import Callback
 from ....controller.actions import Action
-from ....colors import Colors
-from adafruit_midi.midi_message import MIDIMessage
 
 # Sends a bunch of messages in rotating fashion. The messages as well as the colors and texts will be rotated on each press. 
 # 
@@ -57,13 +55,6 @@ def ROTATING_MESSAGES(messages = None,              # Raw MIDI messages bytes (a
 
 
 class _CustomMessagesCallback(Callback):
-    class _RawMessage(MIDIMessage):
-        def __init__(self, data):
-            self.__data = bytearray(data)
-
-        def __bytes__(self):
-            return self.__data
-
     def __init__(self, 
                  messages,
                  messages_release,
@@ -92,11 +83,11 @@ class _CustomMessagesCallback(Callback):
 
     def push(self):
         if self.__messages:
-            self.__appl.client.midi.send(self._RawMessage(self.__messages[self.__messages_pos]))
+            self.__appl.client.midi.send(self.__messages[self.__messages_pos])
 
     def release(self):
         if self.__messages_release:
-            self.__appl.client.midi.send(self._RawMessage(self.__messages_release[self.__messages_release_pos]))
+            self.__appl.client.midi.send(self.__messages_release[self.__messages_release_pos])
 
         self.__next_step()
         self.update_displays()

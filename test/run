@@ -1,5 +1,5 @@
 #!/bin/bash
 
 #coverage run --rcfile=/project/test/.coveragerc -m memray run -m unittest discover -t /project -s /project/test/pyswitch 
-coverage run --rcfile=/project/test/.coveragerc -m unittest discover -t /project -s /project/test/pyswitch 
+coverage run --rcfile=/project/test/.coveragerc -m unittest discover -t /project -s /project/test/pyswitch $1
 coverage html --rcfile=/project/test/.coveragerc

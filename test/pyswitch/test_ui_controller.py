@@ -9,16 +9,10 @@ with patch.dict(sys.modules, {
     "displayio": MockDisplayIO(),
     "adafruit_display_text": MockAdafruitDisplayText(),
     "adafruit_display_shapes.rect": MockDisplayShapes().rect(),
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
     "gc": MockGC()
 }):
-    from adafruit_midi.system_exclusive import SystemExclusive
-
     from lib.pyswitch.ui.UiController import UiController
-    from lib.pyswitch.misc import Updater
+    # from lib.pyswitch.misc import Updater
 
     from .mocks_ui import *
     from .mocks_appl import *
@@ -81,17 +75,19 @@ class TestUiController(unittest.TestCase):
 
     def test_mappings(self):
         mapping_1 = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         mapping_2 = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x22],
-                data = [0x00, 0x00, 0xe9]
-            )
+            response = (0xf0, 0x00, 0x10, 0x22, 0x00, 0x00, 0xe9, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x22],
+            #     data = [0x00, 0x00, 0xe9]
+            # )
         )
 
         display_driver = MockDisplayDriver(300, 400, init = True)

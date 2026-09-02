@@ -1,7 +1,5 @@
 from ...misc import Updateable
 
-from adafruit_midi.system_exclusive import SystemExclusive
-
 class EncoderAction(Updateable):
 
     # Use this action for all rotary encoders like wheels. The push-down switch of the encoder is 
@@ -29,7 +27,7 @@ class EncoderAction(Updateable):
         ):
 
         # Set properties automatically by the mapping type if not set manually
-        if isinstance(mapping.set, SystemExclusive):
+        if mapping.set[0] == 0xf0:
             if max_value == None:
                 max_value = 16383
             if step_width == None:

@@ -9,15 +9,9 @@ with patch.dict(sys.modules, {
     "micropython": MockMicropython,
     "displayio": MockDisplayIO(),
     "adafruit_display_text": MockAdafruitDisplayText(),
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
     "adafruit_display_shapes.rect": MockDisplayShapes().rect(),
     "gc": MockGC()
 }):
-    from adafruit_midi.system_exclusive import SystemExclusive
-    
     from lib.pyswitch.clients.kemper.actions.morph import KemperMorphCallback
     from lib.pyswitch.colors import Colors
     from lib.pyswitch.controller.callbacks import BinaryParameterCallback
@@ -25,7 +19,6 @@ with patch.dict(sys.modules, {
     
     from .mocks_appl import *
     from .mocks_callback import *
-    from .tools import *
 
 
 class TestKemperMorphCallback(unittest.TestCase):
@@ -40,14 +33,16 @@ class TestKemperMorphCallback(unittest.TestCase):
         switch_1 = MockSwitch()
         
         mapping_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         cb = KemperMorphCallback(
@@ -96,10 +91,11 @@ class TestKemperMorphCallback(unittest.TestCase):
 
         appl.init()
 
-        answer_msg = SystemExclusive(
-            manufacturer_id = [0xbb, 0x10, 0x25],
-            data = [0xaa, 0x00, 0x07, 0x47]
-        )
+        answer_msg = (0xf0, 0xbb, 0x10, 0x25, 0xaa, 0x00, 0x07, 0x47, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0xbb, 0x10, 0x25],
+        #     data = [0xaa, 0x00, 0x07, 0x47]
+        # )
 
         # Build scene:
         # Step 1
@@ -181,14 +177,16 @@ class TestKemperMorphCallback(unittest.TestCase):
         switch_1 = MockSwitch()
         
         mapping_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         cb = KemperMorphCallback(
@@ -239,10 +237,11 @@ class TestKemperMorphCallback(unittest.TestCase):
 
         appl.init()
 
-        answer_msg = SystemExclusive(
-            manufacturer_id = [0xbb, 0x10, 0x25],
-            data = [0xaa, 0x00, 0x07, 0x47]
-        )
+        answer_msg = (0xf0, 0xbb, 0x10, 0x25, 0xaa, 0x00, 0x07, 0x47, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0xbb, 0x10, 0x25],
+        #     data = [0xaa, 0x00, 0x07, 0x47]
+        # )
 
         # Build scene:
         # Step 1
@@ -310,14 +309,16 @@ class TestKemperMorphCallback(unittest.TestCase):
         switch_1 = MockSwitch()
         
         mapping_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         cb = KemperMorphCallback(
@@ -357,10 +358,11 @@ class TestKemperMorphCallback(unittest.TestCase):
         appl.init()
         
         # Set a value in advance
-        answer_msg = SystemExclusive(
-            manufacturer_id = [0xbb, 0x10, 0x25],
-            data = [0xaa, 0x00, 0x07, 0x47]
-        )
+        answer_msg = (0xf0, 0xbb, 0x10, 0x25, 0xaa, 0x00, 0x07, 0x47, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0xbb, 0x10, 0x25],
+        #     data = [0xaa, 0x00, 0x07, 0x47]
+        # )
 
         midi.next_receive_messages = [
             answer_msg
@@ -397,8 +399,8 @@ class TestKemperMorphCallback(unittest.TestCase):
             self.assertEqual(mapping_1.set_value_calls[1], 0)
 
             self.assertEqual(len(appl._Controller__midi.messages_sent), 2)
-            self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[0], mapping_1.set))
-            self.assertTrue(compare_midi_messages(appl._Controller__midi.messages_sent[1], mapping_1.set))
+            self.assertEqual(appl._Controller__midi.messages_sent[0], mapping_1.set)
+            self.assertEqual(appl._Controller__midi.messages_sent[1], mapping_1.set)
         
         if set_internal_state:
             self.assertEqual(appl.shared["morphStateOverride"], 0)

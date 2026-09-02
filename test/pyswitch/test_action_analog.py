@@ -8,19 +8,11 @@ from .mocks_lib import *
 with patch.dict(sys.modules, {
     "micropython": MockMicropython,
     "usb_midi": MockUsbMidi(),
-    "adafruit_midi": MockAdafruitMIDI(),
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
     "displayio": MockDisplayIO(),
     "adafruit_display_text": MockAdafruitDisplayText(),
     "adafruit_display_shapes.rect": MockDisplayShapes().rect(),
     "gc": MockGC()
 }):
-    from adafruit_midi.system_exclusive import SystemExclusive
-    from adafruit_midi.control_change import ControlChange
-    
     from .mocks_misc import MockMisc
     from .mocks_callback import *
 
@@ -183,14 +175,16 @@ class TestAnalogAction(unittest.TestCase):
     def _test(self, data, max_value, num_steps = 1, transfer_function = None, cc_mapping = False):
         if not cc_mapping:
             mapping = MockParameterMapping(
-                set = SystemExclusive(
-                    manufacturer_id = [0x00, 0x10, 0x20],
-                    data = [0x05, 0x07, 0x09]
-                )
+                set = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7)
+                # SystemExclusive(
+                #     manufacturer_id = [0x00, 0x10, 0x20],
+                #     data = [0x05, 0x07, 0x09]
+                # )
             )
         else:
             mapping = MockParameterMapping(
-                set = ControlChange(20, 1)
+                set = (176, 20, 1)
+                # ControlChange(20, 1)
             )
 
         action = AnalogAction(
@@ -259,10 +253,11 @@ class TestAnalogAction(unittest.TestCase):
         
     def test_enable_callback(self):
         mapping = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # )
         )
 
         ecb = MockEnabledCallback(output = True)
@@ -286,10 +281,11 @@ class TestAnalogAction(unittest.TestCase):
         
     def test_calibration(self):
         mapping = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # )
         )
 
         action = AnalogAction(
@@ -360,10 +356,11 @@ class TestAnalogAction(unittest.TestCase):
 
     def test_calibration_with_range(self):
         mapping = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # )
         )
 
         action = AnalogAction(
@@ -434,10 +431,11 @@ class TestAnalogAction(unittest.TestCase):
 
     def test_calibration_with_range_and_function(self):
         mapping = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # )
         )
 
         def transfer(value):
@@ -516,10 +514,11 @@ class TestAnalogAction(unittest.TestCase):
     def test_change_display(self):
         mapping = MockParameterMapping(
             name = "PQ",
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # )
         )
 
         display = DisplayLabel(
@@ -584,10 +583,11 @@ class TestAnalogAction(unittest.TestCase):
         
         mapping = MockParameterMapping(
             name = "PQ",
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # )
         )
 
         display = DisplayLabel(

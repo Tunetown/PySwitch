@@ -10,15 +10,8 @@ with patch.dict(sys.modules, {
     "adafruit_display_text": MockAdafruitDisplayText(),
     "adafruit_display_shapes.rect": MockDisplayShapes().rect(),
     "usb_midi": MockUsbMidi(),
-    "adafruit_midi": MockAdafruitMIDI(),
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
     "gc": MockGC()
 }):
-    from adafruit_midi.system_exclusive import SystemExclusive
-
     from lib.pyswitch.ui.ui import DisplayBounds
     from lib.pyswitch.ui.elements import DisplayLabel, DisplayLabelLayout    
     from lib.pyswitch.misc import Updater
@@ -151,10 +144,11 @@ class TestDisplayLabel(unittest.TestCase):
 
     def test_callback(self):
         mapping_1 = MockParameterMapping(
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         cb = MockDisplayLabelCallback(

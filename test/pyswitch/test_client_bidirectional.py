@@ -9,15 +9,13 @@ with patch.dict(sys.modules, {
     "micropython": MockMicropython,
     "adafruit_display_shapes.rect": MockDisplayShapes().rect(),
     "usb_midi": MockUsbMidi(),
-    "adafruit_midi": MockAdafruitMIDI(),
-    "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
-    "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
-    "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
-    "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
+    # "adafruit_midi": MockAdafruitMIDI(),
+    # "adafruit_midi.control_change": MockAdafruitMIDIControlChange(),
+    # "adafruit_midi.system_exclusive": MockAdafruitMIDISystemExclusive(),
+    # "adafruit_midi.program_change": MockAdafruitMIDIProgramChange(),
+    # "adafruit_midi.midi_message": MockAdafruitMIDIMessage(),
     "gc": MockGC()
 }):
-    from adafruit_midi.system_exclusive import SystemExclusive
-
     from lib.pyswitch.controller.actions import PushButtonAction
     from lib.pyswitch.controller.callbacks import BinaryParameterCallback
     from lib.pyswitch.controller.client import BidirectionalClient
@@ -32,33 +30,39 @@ class TestBidirectionalClient(unittest.TestCase):
         midi = MockMidiController()
 
         mapping_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            ),
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # ),
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         mapping_2 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x21],
-                data = [0x01, 0x02, 0x03, 0x04]
-            ),
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x24],
-                data = [0x00, 0x00, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x21, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x21],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # ),
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x24, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x24],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         protocol = MockBidirectionalProtocol()
@@ -100,33 +104,39 @@ class TestBidirectionalClient(unittest.TestCase):
         midi = MockMidiController()
 
         mapping_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            ),
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # ),
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         mapping_2 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x21],
-                data = [0x01, 0x02, 0x03, 0x34]
-            ),
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x29]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x24],
-                data = [0x00, 0x00, 0x19]
-            )
+            set = (0xf0, 0x00, 0x10, 0x21, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x21],
+            #     data = [0x01, 0x02, 0x03, 0x34]
+            # ),
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x29, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x29]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x24, 0x00, 0x00, 0x19, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x24],
+            #     data = [0x00, 0x00, 0x19]
+            # )
         )
 
         protocol = MockBidirectionalProtocol()
@@ -167,33 +177,39 @@ class TestBidirectionalClient(unittest.TestCase):
         switch_1 = MockSwitch()
 
         mapping_1 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x01, 0x02, 0x03, 0x04]
-            ),
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x05, 0x07, 0x09]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x00, 0x10, 0x20],
-                data = [0x00, 0x00, 0x09]
-            )
+            set = (0xf0, 0x00, 0x10, 0x20, 0x01, 0x02, 0x03, 0x04, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x04]
+            # ),
+            request = (0xf0, 0x00, 0x10, 0x20, 0x05, 0x07, 0x09, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x05, 0x07, 0x09]
+            # ),
+            response = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x09]
+            # )
         )
 
         mapping_2 = MockParameterMapping(
-            set = SystemExclusive(
-                manufacturer_id = [0x00, 0x11, 0x20],
-                data = [0x01, 0x02, 0x03, 0x14]
-            ),
-            request = SystemExclusive(
-                manufacturer_id = [0x00, 0x20, 0x20],
-                data = [0x05, 0x07, 0x02]
-            ),
-            response = SystemExclusive(
-                manufacturer_id = [0x02, 0x10, 0x20],
-                data = [0x00, 0x00, 0x29]
-            )
+            set = (0xf0, 0x00, 0x11, 0x20, 0x01, 0x02, 0x03, 0x14, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x11, 0x20],
+            #     data = [0x01, 0x02, 0x03, 0x14]
+            # ),
+            request = (0xf0, 0x00, 0x20, 0x20, 0x05, 0x07, 0x02, 0xf7),
+            # SystemExclusive(
+            #     manufacturer_id = [0x00, 0x20, 0x20],
+            #     data = [0x05, 0x07, 0x02]
+            # ),
+            response = (0xf0, 0x02, 0x10, 0x20, 0x00, 0x00, 0x29, 0xf7)
+            # SystemExclusive(
+            #     manufacturer_id = [0x02, 0x10, 0x20],
+            #     data = [0x00, 0x00, 0x29]
+            # )
         )
 
         action_1 = PushButtonAction({
@@ -251,15 +267,17 @@ class TestBidirectionalClient(unittest.TestCase):
 
         appl.init()
 
-        answer_msg_1 = SystemExclusive(
-            manufacturer_id = [0x00, 0x10, 0x20],
-            data = [0x00, 0x00, 0x09, 0x44]
-        )
+        answer_msg_1 = (0xf0, 0x00, 0x10, 0x20, 0x00, 0x00, 0x09, 0x44, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x10, 0x20],
+        #     data = [0x00, 0x00, 0x09, 0x44]
+        # )
 
-        answer_msg_2 = SystemExclusive(
-            manufacturer_id = [0x00, 0x12, 0x20],
-            data = [0x00, 0x01, 0x09, 0x44]
-        )
+        answer_msg_2 = (0xf0, 0x00, 0x12, 0x20, 0x00, 0x01, 0x09, 0x44, 0xf7)
+        # SystemExclusive(
+        #     manufacturer_id = [0x00, 0x12, 0x20],
+        #     data = [0x00, 0x01, 0x09, 0x44]
+        # )
 
         # Build scene:
         # Send update request
