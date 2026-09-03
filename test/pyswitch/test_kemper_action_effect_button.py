@@ -114,3 +114,18 @@ class TestKemperActionEffectButton(unittest.TestCase):
         cb.parameter_changed(mapping_rig)
 
         self.assertEqual(action.state, False)
+
+#################################################################################
+
+    def test_midi_channels(self):
+        for c in range(16):
+            self._test_midi_channel(c)
+
+    def _test_midi_channel(self, channel):
+        action = EFFECT_BUTTON(
+            num = 1,
+            midi_channel = channel + 1
+        )
+
+        cb = action.callback
+        self.assertEqual(cb.mapping, MAPPING_EFFECT_BUTTON(1, channel))

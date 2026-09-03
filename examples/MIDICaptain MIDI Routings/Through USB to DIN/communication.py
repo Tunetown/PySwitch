@@ -9,7 +9,7 @@ from pyswitch.clients.kemper import KemperBidirectionalProtocol
 from pyswitch.controller.midi import MidiRouting
 from pyswitch.hardware.devices.pa_midicaptain import PA_MIDICAPTAIN_DIN_MIDI, PA_MIDICAPTAIN_USB_MIDI
 
-# MIDI Devices in use (optionally you can specify the in/out channels here, too)
+# MIDI Devices
 _DIN_MIDI = PA_MIDICAPTAIN_DIN_MIDI()
 _USB_MIDI = PA_MIDICAPTAIN_USB_MIDI()
 

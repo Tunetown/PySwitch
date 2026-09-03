@@ -67,3 +67,19 @@ class TestKemperActionEffectStateExt(unittest.TestCase):
 
         self.assertEqual(cb.get_effect_category_text(0, 2), "foo")
         self.assertEqual(cb.get_effect_category_text(0, 33), "bar")
+
+
+#################################################################################
+
+    def test_midi_channels(self):
+        for c in range(16):
+            self._test_midi_channel(c)
+
+    def _test_midi_channel(self, channel):
+        action = EFFECT_STATE_EXT(
+            KemperEffectSlot.EFFECT_SLOT_ID_C, 
+            midi_channel = channel + 1
+        )
+
+        cb = action.callback
+        self.assertEqual(cb.mapping, KemperMappings.EFFECT_STATE(KemperEffectSlot.EFFECT_SLOT_ID_C, channel))

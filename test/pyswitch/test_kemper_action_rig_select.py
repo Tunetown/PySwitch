@@ -1327,3 +1327,39 @@ class TestKemperActionDefinitionsRigSelect(unittest.TestCase):
         self.assertEqual(appl.shared["morphStateOverride"], 0)
 
         self.assertEqual(len(appl.client.set_calls), 2)
+
+
+####################################################################################################
+
+    def test_midi_channels(self):
+        for c in range(16):
+            self._test_midi_channel(c)
+
+    def _test_midi_channel(self, channel):
+        action = RIG_SELECT(
+            rig = 1,
+            midi_channel = channel + 1
+        )
+
+        appl = MockController()
+        switch = MockFootswitch(actions = [action])
+        action.init(appl, switch)
+        
+        mapping = action.callback._KemperRigSelectCallback__mapping 
+        
+        mapping.value = 1
+        action.update_displays()
+        
+        # Select rig the first time
+        action.push()
+        action.release()
+
+        self.assertEqual(len(appl.client.set_calls), 2)
+        self.assertEqual(appl.client.set_calls[0], {
+            "mapping": MAPPING_RIG_SELECT(0, channel),
+            "value": 1
+        })
+        self.assertEqual(appl.client.set_calls[1], {
+            "mapping": MAPPING_RIG_SELECT(0, channel),
+            "value": 0
+        })

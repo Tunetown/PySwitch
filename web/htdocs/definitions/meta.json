@@ -359,6 +359,14 @@
                     {
                         "name": "cancel_action",
                         "type": "select"
+                    },
+                    {
+                        "name": "channel",
+                        "type": "int",
+                        "range": {
+                            "min": 0,
+                            "max": 15
+                        }
                     }
                 ]
             },
@@ -886,6 +894,14 @@
                         "name": "use_internal_state",
                         "type": "bool",
                         "advanced": 2
+                    },
+                    {
+                        "name": "channel",
+                        "type": "int",
+                        "range": {
+                            "min": 0,
+                            "max": 15
+                        }
                     }
                 ]
             },
@@ -1061,7 +1077,7 @@
                     {
                         "name": "mapping",
                         "type": "select",
-                        "default": "MAPPING_DLY_REV_MIX(KemperEffectSlot.EFFECT_SLOT_ID_REV)",
+                        "default": "MAPPING_DLY_REV_MIX(slot_id = KemperEffectSlot.EFFECT_SLOT_ID_REV)",
                         "comment": "Mapping to be used."
                     },
                     {

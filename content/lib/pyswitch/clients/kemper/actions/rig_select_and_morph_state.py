@@ -14,6 +14,7 @@ def RIG_SELECT_AND_MORPH_STATE(rig,                                            #
                                rig_off = None,                                 # If set, this defines the "off" rig chosen when the action is disabled. Set to "auto" to always remember the current rig as "off" rig
                                bank = None,                                    # If set, a specific bank is selected. If None, the current bank is kept
                                bank_off = None,                                # If set, this defines the "off" bank to be chosen when the action is disabled. Set to "auto" to always remember the current bank as "off" bank
+                               midi_channel = 1,                               # MIDI Channel in range [1..16]
                                display = None, 
                                id = False, 
                                use_leds = True, 
@@ -48,7 +49,8 @@ def RIG_SELECT_AND_MORPH_STATE(rig,                                            #
         text_callback = text_callback,
         text = text,
         rig_btn_morph = rig_btn_morph,
-        momentary_morph = momentary_morph
+        momentary_morph = momentary_morph,
+        midi_channel = midi_channel
     )        
     
     return [
@@ -58,7 +60,7 @@ def RIG_SELECT_AND_MORPH_STATE(rig,                                            #
         # Use a separate action to show morph state
         PushButtonAction({
             "callback": KemperMorphCallback(
-                mapping = MAPPING_MORPH_PEDAL(),
+                mapping = MAPPING_MORPH_PEDAL(midi_channel - 1),
                 comparison_mode = BinaryParameterCallback.NO_STATE_CHANGE,
                 led_brightness_off = "on",
                 display_dim_factor_off = "on",
@@ -71,7 +73,8 @@ def RIG_SELECT_AND_MORPH_STATE(rig,                                            #
             "id": morph_id if morph_id != None else id,
             "enableCallback": KemperMorphDisplayEnableCallback(
                 action_rig_select = rig_select, 
-                morph_only_when_enabled = morph_only_when_enabled
+                morph_only_when_enabled = morph_only_when_enabled,
+                channel = midi_channel - 1
             )
         })            
     ]
@@ -80,15 +83,16 @@ def RIG_SELECT_AND_MORPH_STATE(rig,                                            #
 # Callback to enable the morph state display only when the rig is selected
 class KemperMorphDisplayEnableCallback(Callback):
     def __init__(self, 
-                    action_rig_select, 
-                    morph_only_when_enabled
+                 action_rig_select, 
+                 morph_only_when_enabled,
+                 channel = 0
         ):
         Callback.__init__(self)
         
         self.__action_rig_select = action_rig_select
         self.__morph_only_when_enabled = morph_only_when_enabled
 
-        self.register_mapping(KemperMappings.RIG_ID())
+        self.register_mapping(KemperMappings.RIG_ID(channel))
         self.__last_enabled = None
 
     def enabled(self, action):

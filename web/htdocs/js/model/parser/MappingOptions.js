@@ -14,16 +14,16 @@ class MappingOptions {
                 ]
             }
 
-            // We only resolve the first parameter here (mappings never have more)
+            // We only resolve the first parameter here
             const param = mapping.parameters[0];
 
             function addValues(values) {
                 for(const value of values) {
-                    const argStr = (mapping.parameters.length > 1) ? (param.name + " = ") : "";
+                    const argStr = param.name + " = " + value.value
 
                     ret.push({
-                        name: mapping.name + "(" + argStr + value.value + ")",
-                        value: mapping.name + "(" + argStr + value.value + ")"
+                        name: mapping.name + "(" + argStr + ")",
+                        value: mapping.name + "(" + argStr + ")"
                     });
                 }
             }
@@ -37,13 +37,14 @@ class MappingOptions {
                 addValues(param.meta.data.values);
                 
             } else {
-                throw new Error("No parameter values for parameter " + param.name + " of mapping " + mapping.name + " found in meta.json")
+                throw new Error("No parameter values for parameter " + param.name + " of mapping " + mapping.name + " found in meta.json (client " + param.meta?.client + ")")
             }
+
             return ret;
         }
 
         const clients = await parser.getAvailableMappings();
-
+        
         let ret = addNone ? [
              {
                 name: "None",
@@ -53,7 +54,9 @@ class MappingOptions {
 
         for (const client of clients) {
             for(const mapping of client.mappings) {
-                ret = ret.concat(await getMappingVariants(mapping))
+                const vars = await getMappingVariants(mapping);
+                
+                ret = ret.concat(vars)
             }
         }
 

@@ -72,6 +72,7 @@ class KemperRigNameCallback(Callback):
 
     def __init__(self, 
                  show_name = True,     # Show the rig name in the label
+                 midi_channel = 1,     # MIDI Channel in range [1..16]
                  show_rig_id = False   # Show the rig ID (like 1-1) in the label. Can be False, 'rig', 'bank' or True (to show both rig and bank)
     ):
         Callback.__init__(self)
@@ -85,7 +86,7 @@ class KemperRigNameCallback(Callback):
         # Rig ID
         self.__show_rig_id = show_rig_id
         if show_rig_id:
-            self.__mapping_id = KemperMappings.RIG_ID()
+            self.__mapping_id = KemperMappings.RIG_ID(midi_channel - 1)
             self.register_mapping(self.__mapping_id)    
 
         self.__preselect_initialized = None    
@@ -162,12 +163,13 @@ class TunerDisplayCallback(Callback):
                                                            # The number will be divided by the amount of available switches to get the real max. frame rate (that's
                                                            # why it is called cumulative ;)
                  strobe_reverse = True,                    # If False, the strobe is rotating clockwise when too high / ccw when too low. If True, the other way round.
-                 process_overridden_actions = False        # If set, when in tuner mode, the underlying actions will also be processed after disabling the tuner. 
+                 process_overridden_actions = False,       # If set, when in tuner mode, the underlying actions will also be processed after disabling the tuner. 
                                                            # Also the LEDs keep their initial state (if strobe is disabled of course)
+                 midi_channel = 1                          # MIDI CHannel in range [1..16]
         ):
         Callback.__init__(self)
 
-        self.__mapping = KemperMappings.TUNER_MODE_STATE()
+        self.__mapping = KemperMappings.TUNER_MODE_STATE(midi_channel - 1)
         self.register_mapping(self.__mapping)
         
         self.__splash_tuner = splash_tuner
@@ -196,7 +198,7 @@ class TunerDisplayCallback(Callback):
             from ...controller.strobe import StrobeController
 
             self.__strobe_controller = StrobeController(
-                mapping_state = KemperMappings.TUNER_MODE_STATE(),
+                mapping_state = KemperMappings.TUNER_MODE_STATE(midi_channel - 1),
                 mapping_deviance = KemperMappings.TUNER_DEVIANCE(),
                 dim_factor = strobe_dim,
                 speed = strobe_speed,
@@ -352,7 +354,7 @@ class KemperMappings:
     @staticmethod
     def EFFECT_STATE(slot_id, channel = 0):
         return ClientParameterMapping.get(
-            name = f"Slot State { KemperEffectSlot.EFFECT_SLOT_NAME[slot_id] }",
+            name = f"Slot State { KemperEffectSlot.EFFECT_SLOT_NAME[slot_id] } ({channel})",
             set = (176 + channel, KemperEffectSlot.CC_EFFECT_SLOT_ENABLE[slot_id], 0),
             # ControlChange(
             #     KemperEffectSlot.CC_EFFECT_SLOT_ENABLE[slot_id], 
@@ -364,7 +366,7 @@ class KemperMappings:
             #     KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id],
             #     0x03
             # ),
-            response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id], 0x03, 0xf7)
+            response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id], 0x03, 0x00, 0x00, 0xf7)
             # KemperNRPNMessage(
             #     0x01,
             #     KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id],
@@ -383,7 +385,7 @@ class KemperMappings:
             #     KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id],
             #     0x00
             # ),
-            response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id], 0x00, 0xf7)
+            response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id], 0x00, 0x00, 0x00, 0xf7)
             # KemperNRPNMessage(               
             #     NRPN_FUNCTION_RESPONSE_SINGLE_PARAMETER, 
             #     KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id],
@@ -433,13 +435,13 @@ class KemperMappings:
     # Switch tuner mode on/off (no receive possible when not in bidirectional mode)
     def TUNER_MODE_STATE(channel = 0): 
         return ClientParameterMapping.get(
-            name = "Tuner Mode",
+            name = f"Tuner Mode ({channel})",
             set = (176 + channel, 31, 0),
             # ControlChange(
             #     31, 
             #     0    # Dummy value, will be overridden
             # ),
-            response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 0x7e, 0xf7)
+            response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 0x7e, 0x00, 0x00, 0xf7)
             # KemperNRPNMessage(
             #     0x01,
             #     0x7f,
@@ -451,7 +453,7 @@ class KemperMappings:
     def TUNER_NOTE(): 
         return ClientParameterMapping.get(
             name = "Tuner Note",
-            response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7d, 0x54, 0xf7)
+            response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7d, 0x54, 0x00, 0x00, 0xf7)
             # KemperNRPNMessage(
             #     0x01,
             #     0x7d,
@@ -463,7 +465,7 @@ class KemperMappings:
     def TUNER_DEVIANCE(): 
         return ClientParameterMapping.get(
             name = "Tuner Deviance",
-            response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7c, 0x0f, 0xf7)
+            response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7c, 0x0f, 0x00, 0x00, 0xf7)
             # KemperNRPNMessage(
             #     0x01,
             #     0x7c,
@@ -487,48 +489,42 @@ class KemperMappings:
     # Rig ID
     def RIG_ID(channel = 0):
         return ClientTwoPartParameterMapping.get(
-            name = "Rig ID",
+            name = f"Rig ID ({channel})",
             response = [
                 (176 + channel, 32, 0),
                 (192 + channel, 0)
-                # ControlChange(
-                #     32,
-                #     0    # Dummy value, will be ignored
-                # ),
-                # ProgramChange(
-                #     0    # Dummy value, will be ignored
-                # )
             ]
         )
 
 ####################################################################################################################
 
 
-_PARAMETER_SET_2 = [
-    KemperMappings.EFFECT_TYPE(KemperEffectSlot.EFFECT_SLOT_ID_A),
-    KemperMappings.EFFECT_STATE(KemperEffectSlot.EFFECT_SLOT_ID_A),
+def _PARAMETER_SET_2(channel = 0):
+    return [
+        KemperMappings.EFFECT_TYPE(KemperEffectSlot.EFFECT_SLOT_ID_A),
+        KemperMappings.EFFECT_STATE(KemperEffectSlot.EFFECT_SLOT_ID_A, channel),
 
-    KemperMappings.EFFECT_TYPE(KemperEffectSlot.EFFECT_SLOT_ID_B),
-    KemperMappings.EFFECT_STATE(KemperEffectSlot.EFFECT_SLOT_ID_B),
+        KemperMappings.EFFECT_TYPE(KemperEffectSlot.EFFECT_SLOT_ID_B),
+        KemperMappings.EFFECT_STATE(KemperEffectSlot.EFFECT_SLOT_ID_B, channel),
 
-    KemperMappings.EFFECT_TYPE(KemperEffectSlot.EFFECT_SLOT_ID_C),
-    KemperMappings.EFFECT_STATE(KemperEffectSlot.EFFECT_SLOT_ID_C),
+        KemperMappings.EFFECT_TYPE(KemperEffectSlot.EFFECT_SLOT_ID_C),
+        KemperMappings.EFFECT_STATE(KemperEffectSlot.EFFECT_SLOT_ID_C, channel),
 
-    KemperMappings.EFFECT_TYPE(KemperEffectSlot.EFFECT_SLOT_ID_D),
-    KemperMappings.EFFECT_STATE(KemperEffectSlot.EFFECT_SLOT_ID_D),
+        KemperMappings.EFFECT_TYPE(KemperEffectSlot.EFFECT_SLOT_ID_D),
+        KemperMappings.EFFECT_STATE(KemperEffectSlot.EFFECT_SLOT_ID_D, channel),
 
-    KemperMappings.EFFECT_TYPE(KemperEffectSlot.EFFECT_SLOT_ID_X),
-    KemperMappings.EFFECT_STATE(KemperEffectSlot.EFFECT_SLOT_ID_X),
+        KemperMappings.EFFECT_TYPE(KemperEffectSlot.EFFECT_SLOT_ID_X),
+        KemperMappings.EFFECT_STATE(KemperEffectSlot.EFFECT_SLOT_ID_X, channel),
 
-    KemperMappings.EFFECT_TYPE(KemperEffectSlot.EFFECT_SLOT_ID_MOD),
-    KemperMappings.EFFECT_STATE(KemperEffectSlot.EFFECT_SLOT_ID_MOD),
+        KemperMappings.EFFECT_TYPE(KemperEffectSlot.EFFECT_SLOT_ID_MOD),
+        KemperMappings.EFFECT_STATE(KemperEffectSlot.EFFECT_SLOT_ID_MOD, channel),
 
-    KemperMappings.RIG_NAME(),
+        KemperMappings.RIG_NAME(),
 
-    KemperMappings.TUNER_MODE_STATE(),
-    KemperMappings.TUNER_NOTE(),
-    KemperMappings.TUNER_DEVIANCE()
-]
+        KemperMappings.TUNER_MODE_STATE(channel),
+        KemperMappings.TUNER_NOTE(),
+        KemperMappings.TUNER_DEVIANCE()
+    ]
 
 _SELECTED_PARAMETER_SET_ID = const(0x02)
 _SELECTED_PARAMETER_SET = _PARAMETER_SET_2
@@ -542,8 +538,11 @@ class KemperBidirectionalProtocol: #(BidirectionalProtocol):
 
     def __init__(self, 
                  time_lease_seconds,
+                 channel = 0,                   # MIDI Channel for the FX State mappings.
                  tuner_mode = True
         ):
+        self._selected_param_set = _SELECTED_PARAMETER_SET(channel)
+
         self.state = self._STATE_OFFLINE
         self.__time_lease_encoded = self.__encode_time_lease(time_lease_seconds)
         self.__tuner_mode = tuner_mode
@@ -575,7 +574,7 @@ class KemperBidirectionalProtocol: #(BidirectionalProtocol):
 
     # Must return (boolean) if the passed mapping is handled in the bidirectional protocol
     def is_bidirectional(self, mapping):
-        return mapping in _SELECTED_PARAMETER_SET
+        return mapping in self._selected_param_set
 
     # Must return a color representation for the current state
     def get_color(self):
@@ -617,26 +616,12 @@ class KemperBidirectionalProtocol: #(BidirectionalProtocol):
         if not self.__init_sent:
             return
         
-        # if midi_message[0] != 0xf0:
-        #     return False
-               
-        # # Compare manufacturer IDs
-        # if midi_message.manufacturer_id != self.__mapping_sense.response.manufacturer_id:
-        #     return False
-        
-        # if self.debug:                     # pragma: no cover
-        #     self.__count_relevant_messages += 1
-
-        # Check if the message belongs to the status sense mapping. The following have to match:
-        #   2: function code, (0x7e)
-        #   3: instance ID,   (0x00)
-        #   4: address page   (0x7f)
-        #
-        # The first two values are ignored (the Kemper MIDI specification implies this would contain the product type
-        # and device ID as for the request, however the device just sends two zeroes)
-        if tuple(midi_message[6:9]) != tuple(self.__mapping_sense.response[6:9]):
+        if midi_message[0] != 0xf0:
             return False
-        
+
+        if bytes(midi_message[6:9]) != bytes(self.__mapping_sense.response[6:9]):
+            return False
+
         if self.state != self._STATE_RUNNING:
             self.resend_period.reset()
             
@@ -664,18 +649,6 @@ class KemperBidirectionalProtocol: #(BidirectionalProtocol):
                 self.__time_lease_encoded,
                 0xf7
             )
-            # KemperNRPNExtendedMessage(
-            #     0x7e,
-            #     [
-            #         0x40,
-            #         _SELECTED_PARAMETER_SET_ID,
-            #         self.__get_flags(
-            #             init = init,
-            #             tunemode = self.__tuner_mode
-            #         ),
-            #         self.__time_lease_encoded
-            #     ]
-            # )
         )
 
     # Encode time lease (this is done in 2 second steps for the Kemper)

@@ -4,11 +4,20 @@ from ...kemper import KemperMappings
 from ....colors import DEFAULT_SWITCH_COLOR
 
 # Switch tuner mode on / off
-def TUNER_MODE(display = None, mode = PushButtonAction.HOLD_MOMENTARY, color = DEFAULT_SWITCH_COLOR, text = "Tuner", id = False, use_leds = True, enable_callback = None):
+def TUNER_MODE(display = None, 
+               midi_channel = 1,                       # MIDI Channel in range [1..16]
+               mode = PushButtonAction.HOLD_MOMENTARY, 
+               color = DEFAULT_SWITCH_COLOR, 
+               text = "Tuner", 
+               id = False, 
+               use_leds = True, 
+               enable_callback = None
+    ):
     return PushButtonAction({
         "callback": _TunerModeCallback(
             text = text,
-            color = color
+            color = color,
+            channel = midi_channel - 1
         ),
         "mode": mode,   
         "display": display,            
@@ -20,8 +29,8 @@ def TUNER_MODE(display = None, mode = PushButtonAction.HOLD_MOMENTARY, color = D
 
 # Callback for tuner mode
 class _TunerModeCallback(BinaryParameterCallback):
-    def __init__(self, color, text):
-        self.__mapping = KemperMappings.TUNER_MODE_STATE()
+    def __init__(self, color, text, channel):
+        self.__mapping = KemperMappings.TUNER_MODE_STATE(channel)
         super().__init__(
             mapping = self.__mapping,
             comparison_mode = BinaryParameterCallback.EQUAL,

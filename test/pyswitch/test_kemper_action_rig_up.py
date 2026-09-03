@@ -486,4 +486,38 @@ class TestKemperActionDefinitionsRigUp(unittest.TestCase):
         self.assertEqual(get_next_rig(4, 9), 9)
         
         self.assertEqual(get_next_rig(NUM_RIGS_PER_BANK - 1, NUM_BANKS * NUM_RIGS_PER_BANK - 1), NUM_BANKS * NUM_RIGS_PER_BANK - 1)
+
         
+##############################################################################
+
+    def test_midi_channels(self):
+        for c in range(16):
+            self._test_midi_channel(c)
+
+    def _test_midi_channel(self, channel):
+        action = RIG_UP(
+            midi_channel = channel + 1
+        )
+
+        appl = MockController()
+        switch = MockFootswitch(actions = [action])
+        action.init(appl, switch)
+        
+        mapping = action.callback._KemperRigChangeCallback__mapping 
+        
+        mapping.value = 0
+        action.update_displays()
+        
+        action.push()
+        action.release()
+
+        self.assertEqual(len(appl.client.set_calls), 2)
+        self.assertEqual(appl.client.set_calls[0], {
+            "mapping": MAPPING_RIG_SELECT(1, channel),
+            "value": 1
+        })
+        self.assertEqual(appl.client.set_calls[1], {
+            "mapping": MAPPING_RIG_SELECT(1, channel),
+            "value": 0
+        })
+

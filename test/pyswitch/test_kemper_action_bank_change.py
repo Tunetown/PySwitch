@@ -809,3 +809,44 @@ class TestKemperActionDefinitionsBankChange(unittest.TestCase):
 
 
 
+#########################################################################################################
+
+
+    def test_midi_channels(self):
+        for c in range(16):
+            self._test_midi_channel(False, c)
+            self._test_midi_channel(True, c)
+
+    def _test_midi_channel(self, up, channel):
+        if up:
+            action = BANK_UP(midi_channel = channel + 1)
+        else:
+            action = BANK_DOWN(midi_channel = channel + 1)
+
+        appl = MockController()
+        switch = MockFootswitch(actions = [action])
+        action.init(appl, switch)
+
+        mapping = action.callback._KemperBankChangeCallback__mapping 
+        mapping.value = 8
+        
+        action.push()
+        action.release()
+
+        message = f"Channel {channel} {"Up" if up else "Dn"}"
+        
+        self.assertEqual(len(appl.client.set_calls), 1, message)
+        self.assertEqual(
+            appl.client.set_calls[0], 
+            {
+                "mapping": MAPPING_NEXT_BANK(channel) if up else MAPPING_PREVIOUS_BANK(channel),
+                "value": 0
+            }, 
+            message
+        )
+        self.assertEqual(
+            appl.client.set_calls[0]["mapping"].name, 
+            MAPPING_NEXT_BANK(channel).name if up else MAPPING_PREVIOUS_BANK(channel).name, 
+            message
+        )
+

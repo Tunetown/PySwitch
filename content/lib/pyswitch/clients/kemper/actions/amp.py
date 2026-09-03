@@ -4,6 +4,7 @@ from .. import KemperMappings
 
 # Adjusts the amp gain with a rotary encoder.
 def AMP_GAIN(
+    midi_channel = 1,              # MIDI Channel in range [1..16]
     step_width = None,             # Increment/Decrement for one encoder step. Set to None for auto-detect (NRPN: 80, CC: 1)
     accept_action = None,          # Action to acknowledge the entered value. If None, the encoder directly sets values as you turn it. 
                                    # If you pass an Encoder Button action, the value will just be displayed and the MIDI command to set 
@@ -30,7 +31,7 @@ def AMP_GAIN(
         preview_blink_color = preview_blink_color,
         preview_display = preview_display,
         preview_timeout_millis = preview_timeout_millis,
-        preview_reset_mapping = KemperMappings.RIG_ID(),
+        preview_reset_mapping = KemperMappings.RIG_ID(midi_channel - 1),
         convert_value = _convert_gain,
     )
 

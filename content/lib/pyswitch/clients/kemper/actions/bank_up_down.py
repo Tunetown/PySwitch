@@ -10,7 +10,8 @@ from ..mappings.select import MAPPING_BANK_SELECT
 from .rig_select import RIG_SELECT_DISPLAY_CURRENT_RIG, RIG_SELECT_DISPLAY_TARGET_RIG
 
 # Next bank (keeps rig index)
-def BANK_UP(display = None, 
+def BANK_UP(display = None,
+            midi_channel = 1,                                 # MIDI Channel in range [1..16]
             id = False, 
             use_leds = True, 
             enable_callback = None,
@@ -26,7 +27,7 @@ def BANK_UP(display = None,
     ):
     return Action({
         "callback": KemperBankChangeCallback(
-            mapping = MAPPING_NEXT_BANK() if not preselect else MAPPING_BANK_SELECT(),
+            mapping = MAPPING_NEXT_BANK(midi_channel - 1) if not preselect else MAPPING_BANK_SELECT(midi_channel - 1),
             offset = 1,
             dim_factor = dim_factor,
             display_mode = display_mode,
@@ -46,6 +47,7 @@ def BANK_UP(display = None,
 
 # Previous bank (keeps rig index)
 def BANK_DOWN(display = None,                                   # Reference to a DisplayLabel
+              midi_channel = 1,                                 # MIDI Channel in range [1..16]
               id = False, 
               use_leds = True, 
               enable_callback = None,
@@ -59,9 +61,9 @@ def BANK_DOWN(display = None,                                   # Reference to a
               preselect = False,                                # Preselect mode
               max_bank = None                                   # Highest bank available. Only relevant if preselct is enabled.
     ):
-    return Action({
+    return Action({        
         "callback": KemperBankChangeCallback(
-            mapping = MAPPING_PREVIOUS_BANK() if not preselect else MAPPING_BANK_SELECT(),
+            mapping = MAPPING_PREVIOUS_BANK(midi_channel - 1) if not preselect else MAPPING_BANK_SELECT(midi_channel - 1),
             offset = -1,
             dim_factor = dim_factor,
             display_mode = display_mode,

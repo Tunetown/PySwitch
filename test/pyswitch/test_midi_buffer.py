@@ -1,7 +1,7 @@
 import random
 import unittest
 
-from lib.pyswitch.midi.buffer_raw import MIDIBuffer, sysex
+from lib.pyswitch.midi.buffer import MIDIBuffer, sysex
 
 
 class MockMIDIIn:

@@ -5,23 +5,8 @@ from ....controller.client import ClientParameterMapping
 def MAPPING_ROTARY_SPEED(slot_id):
     return ClientParameterMapping.get(
         name = f"Rot. Speed { KemperEffectSlot.EFFECT_SLOT_NAME[slot_id] }",
-        set = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id], 0x1e, 0xf7),
-        # KemperNRPNMessage(
-        #     0x01, 
-        #     KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id],
-        #     0x1e
-        # ),
+        set = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id], 0x1e, 0x00, 0x00, 0xf7),
         request = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x41, INSTANCE_ID, KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id], 0x1e, 0xf7),
-        # KemperNRPNMessage(               
-        #     0x41, 
-        #     KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id],
-        #     0x1e
-        # ),
-        response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id], 0x1e, 0xf7),
-        # KemperNRPNMessage(
-        #     0x01,
-        #     KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id],
-        #     0x1e
-        # )
+        response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id], 0x1e, 0x00, 0x00, 0xf7),
     )
 

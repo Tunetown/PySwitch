@@ -13,6 +13,11 @@
                         "name": "num",
                         "default": null,
                         "comment": null
+                    },
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
                     }
                 ],
                 "comment": "Effect Button I-IIII (set only). num must be a number (1 to 4).",
@@ -74,13 +79,25 @@
             },
             {
                 "name": "MAPPING_NEXT_BANK",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
+                    }
+                ],
                 "comment": null,
                 "importPath": "pyswitch.clients.kemper.mappings.bank"
             },
             {
                 "name": "MAPPING_PREVIOUS_BANK",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
+                    }
+                ],
                 "comment": null,
                 "importPath": "pyswitch.clients.kemper.mappings.bank"
             },
@@ -194,13 +211,25 @@
             },
             {
                 "name": "MAPPING_MORPH_BUTTON",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
+                    }
+                ],
                 "comment": null,
                 "importPath": "pyswitch.clients.kemper.mappings.morph"
             },
             {
                 "name": "MAPPING_MORPH_PEDAL",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
+                    }
+                ],
                 "comment": null,
                 "importPath": "pyswitch.clients.kemper.mappings.morph"
             },
@@ -212,7 +241,13 @@
             },
             {
                 "name": "MAPPING_TAP_TEMPO",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
+                    }
+                ],
                 "comment": "Switch tuner mode on/off (no receive possible!)",
                 "importPath": "pyswitch.clients.kemper.mappings.tempo"
             },
@@ -248,7 +283,13 @@
             },
             {
                 "name": "MAPPING_FREEZE_ALL_GLOBAL",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
+                    }
+                ],
                 "comment": "Freeze (global) for all reverb and delay modules (no feedback from kemper!)",
                 "importPath": "pyswitch.clients.kemper.mappings.freeze"
             },
@@ -259,6 +300,11 @@
                         "name": "rig",
                         "default": null,
                         "comment": null
+                    },
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
                     }
                 ],
                 "comment": "Selects a rig of the current bank. Rig index must be in range [0..4]",
@@ -266,55 +312,109 @@
             },
             {
                 "name": "MAPPING_BANK_SELECT",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
+                    }
+                ],
                 "comment": "Pre-selects a bank.",
                 "importPath": "pyswitch.clients.kemper.mappings.select"
             },
             {
                 "name": "MAPPING_WAH_PEDAL",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
+                    }
+                ],
                 "comment": null,
                 "importPath": "pyswitch.clients.kemper.mappings.pedals"
             },
             {
                 "name": "MAPPING_VOLUME_PEDAL",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
+                    }
+                ],
                 "comment": null,
                 "importPath": "pyswitch.clients.kemper.mappings.pedals"
             },
             {
                 "name": "MAPPING_PITCH_PEDAL",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
+                    }
+                ],
                 "comment": null,
                 "importPath": "pyswitch.clients.kemper.mappings.pedals"
             },
             {
                 "name": "MAPPING_DELAY_MIX_PEDAL",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
+                    }
+                ],
                 "comment": null,
                 "importPath": "pyswitch.clients.kemper.mappings.pedals"
             },
             {
                 "name": "MAPPING_DELAY_FEEDBACK_PEDAL",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
+                    }
+                ],
                 "comment": null,
                 "importPath": "pyswitch.clients.kemper.mappings.pedals"
             },
             {
                 "name": "MAPPING_REVERB_MIX_PEDAL",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
+                    }
+                ],
                 "comment": null,
                 "importPath": "pyswitch.clients.kemper.mappings.pedals"
             },
             {
                 "name": "MAPPING_REVERB_TIME_PEDAL",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
+                    }
+                ],
                 "comment": null,
                 "importPath": "pyswitch.clients.kemper.mappings.pedals"
             },
             {
                 "name": "MAPPING_VOLUME_OUTPUT_PEDAL",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
+                    }
+                ],
                 "comment": null,
                 "importPath": "pyswitch.clients.kemper.mappings.pedals"
             },
@@ -337,6 +437,11 @@
                     {
                         "name": "slot_id",
                         "default": null,
+                        "comment": null
+                    },
+                    {
+                        "name": "channel",
+                        "default": "0",
                         "comment": null
                     }
                 ],
@@ -377,7 +482,13 @@
             {
                 "type": "function",
                 "name": "KemperMappings.TUNER_MODE_STATE",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
+                    }
+                ],
                 "comment": "Switch tuner mode on/off (no receive possible when not in bidirectional mode)",
                 "importPath": "pyswitch.clients.kemper",
                 "importName": "KemperMappings"
@@ -409,7 +520,13 @@
             {
                 "type": "function",
                 "name": "KemperMappings.RIG_ID",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
+                    }
+                ],
                 "comment": "Rig ID",
                 "importPath": "pyswitch.clients.kemper",
                 "importName": "KemperMappings"
@@ -421,7 +538,13 @@
         "mappings": [
             {
                 "name": "MAPPING_SEND_PROGRAM_CHANGE",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "channel",
+                        "default": "0",
+                        "comment": null
+                    }
+                ],
                 "comment": "Send a simple PC message",
                 "importPath": "pyswitch.clients.local.mappings.generic"
             }

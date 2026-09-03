@@ -40,22 +40,7 @@ def MAPPING_FIXED_DBL_TRACKER():
 def _MAPPING_FIXED(name, param):
     return ClientParameterMapping.get(
         name = name,
-        set = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x05, param, 0xf7),
-        # KemperNRPNMessage(
-        #     0x01, 
-        #     _NRPN_ADDRESS_PAGE_FIXED,
-        #     param
-        # ),
+        set = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x05, param, 0x00, 0x00, 0xf7),
         request = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x41, INSTANCE_ID, 0x05, param, 0xf7),
-        # KemperNRPNMessage(               
-        #     0x41, 
-        #     _NRPN_ADDRESS_PAGE_FIXED,
-        #     param
-        # ),
-        response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x05, param, 0xf7)
-        # KemperNRPNMessage(               
-        #     0x01, 
-        #     _NRPN_ADDRESS_PAGE_FIXED,
-        #     param
-        # )
+        response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x05, param, 0x00, 0x00, 0xf7)
     )

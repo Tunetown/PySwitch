@@ -845,6 +845,51 @@ class TestKemperActionDefinitionsBankSelect(unittest.TestCase):
         self._check_blinking(action, switch_2, display, exp_color, False, exp_state = False)
 
 
+###################################################################################################################
+
+
+    def test_midi_channels(self):
+        for channel in range(16):
+            self._test_midi_channel(channel)
+
+
+    def _test_midi_channel(self, channel):
+        action = BANK_SELECT(
+            bank = 1,
+            midi_channel = channel + 1
+        )
+
+        appl = MockController()
+        switch = MockFootswitch(actions = [action])
+        action.init(appl, switch)
+        
+        mapping = action.callback._KemperBankSelectCallback__mapping 
+        
+        mapping.value = 1
+        action.update_displays()
+        
+        # Select rig the first time
+        action.push()
+        action.release()
+
+        self.assertEqual(len(appl.client.set_calls), 3)
+        self.assertEqual(appl.client.set_calls[0], {
+            "mapping": MAPPING_BANK_SELECT(channel),
+            "value": 0
+        })
+        self.assertEqual(appl.client.set_calls[1], {
+            "mapping": MAPPING_RIG_SELECT(1, channel),
+            "value": 1
+        })
+        self.assertEqual(appl.client.set_calls[2], {
+            "mapping": MAPPING_RIG_SELECT(1, channel),
+            "value": 0
+        })
+
+
+#######################################################################################
+
+
     # Checks if the LEDs are blinking
     def _check_blinking(self, 
                         action, 

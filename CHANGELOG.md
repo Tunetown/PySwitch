@@ -1,5 +1,13 @@
 # PySwitch v2.4.10
+- Performance Optimizations:
+    - Use of a minimalized MIDI buffer implementation instead of Adafruit MIDI, which has huge OO overhead. This saves about 12kB of RAM and is a bit faster, too. This means that the MIDI handlers in communication.py do not take any MIDI channel arguments anymore.
 
+- Features
+    - The MIDI channel for CC/PC messages can now be set independently for each action and display callback using CC/PC mappings. This is now obligatory as the new MIDI buffer does not override status bytes like the Adafruit implementation does. Default is channel 1, so configurations still work.
+
+### Emulator 2.4.10.17
+- Examples:
+    - Updated tunetown examples
 
 
 # PySwitch v2.4.9

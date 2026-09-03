@@ -13,6 +13,7 @@ def BANK_SELECT(bank,                                           # Bank to select
                 preselect = False,                              # Preselect mode. If enabled, the bank is only pre-selected, the change will only take effect when you select a rig next time. Ignores the parameter "bank_off".
                 display_mode = RIG_SELECT_DISPLAY_CURRENT_RIG,  # Display mode
                 display = None,                                 # Reference to a DisplayLabel
+                midi_channel = 1,                               # MIDI Channel in range [1..16]
                 id = False,                                     # ID for paging / enable callbacks
                 use_leds = True,                                # Use the switch LEDs
                 enable_callback = None,                         # Optional callback to enable/disable the action depeinding on things
@@ -36,7 +37,8 @@ def BANK_SELECT(bank,                                           # Bank to select
             color = color,
             color_callback = color_callback,
             display_mode = display_mode,
-            preselect = preselect
+            preselect = preselect,
+            channel = midi_channel - 1
         ),
         "enableCallback": enable_callback
     })
@@ -53,11 +55,13 @@ class KemperBankSelectCallback(Callback):
                  color_callback,
                  display_mode,
                  preselect,
+                 channel,
                  preselect_blink_interval = 400
         ):
         super().__init__()
 
-        self.__mapping = MAPPING_BANK_SELECT()
+        self.__mapping = MAPPING_BANK_SELECT(channel)
+        self._channel = channel
         self.register_mapping(self.__mapping)
 
         self.__bank = bank
@@ -128,17 +132,17 @@ class KemperBankSelectCallback(Callback):
         # Send bank preselect
         if self.__bank_off != None:
             if curr_bank != self.__bank - 1:
-                self.__appl.client.set(MAPPING_BANK_SELECT(), self.__bank - 1)
+                self.__appl.client.set(MAPPING_BANK_SELECT(channel = self._channel), self.__bank - 1)
             else:
-                self.__appl.client.set(MAPPING_BANK_SELECT(), self.__bank_off - 1)
+                self.__appl.client.set(MAPPING_BANK_SELECT(channel = self._channel), self.__bank_off - 1)
         else:        
-            self.__appl.client.set(MAPPING_BANK_SELECT(), self.__bank - 1)
+            self.__appl.client.set(MAPPING_BANK_SELECT(channel = self._channel), self.__bank - 1)
 
         # Also send rig select when not in preselect mode
         if not self.__preselect:
             curr_rig = self.__mapping.value % NUM_RIGS_PER_BANK
 
-            self.__sent_rig_mapping = MAPPING_RIG_SELECT(curr_rig)
+            self.__sent_rig_mapping = MAPPING_RIG_SELECT(curr_rig, channel = self._channel)
             self.__appl.client.set(self.__sent_rig_mapping, 1)
 
             # End preselect display

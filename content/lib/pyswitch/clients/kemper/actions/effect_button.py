@@ -12,6 +12,7 @@ from .. import KemperMappings
 def EFFECT_BUTTON(num,                           # Number of the Effect Button (1 to 4)
                   text = None, 
                   display = None, 
+                  midi_channel = 1,              # MIDI Channel in range [1..16]
                   color = Colors.LIGHT_GREEN, 
                   id = False, 
                   use_leds = True, 
@@ -30,10 +31,11 @@ def EFFECT_BUTTON(num,                           # Number of the Effect Button (
 
     return PushButtonAction({
         "callback": _KemperEffectButtonCallback(
-            mapping = MAPPING_EFFECT_BUTTON(num),
+            mapping = MAPPING_EFFECT_BUTTON(num, midi_channel - 1),
             text = text,
             color = color,
-            use_internal_state = use_internal_state
+            use_internal_state = use_internal_state,
+            channel = midi_channel - 1
         ),
         "mode": PushButtonAction.LATCH,
         "display": display,
@@ -50,7 +52,8 @@ class _KemperEffectButtonCallback(BinaryParameterCallback):
                  mapping,
                  text,
                  color,
-                 use_internal_state
+                 use_internal_state,
+                 channel
     ):
         super().__init__(
             mapping = mapping,
@@ -60,7 +63,7 @@ class _KemperEffectButtonCallback(BinaryParameterCallback):
             use_internal_state = use_internal_state
         )
 
-        self.__rig_mapping = KemperMappings.RIG_ID()
+        self.__rig_mapping = KemperMappings.RIG_ID(channel)
         self.register_mapping(self.__rig_mapping)
 
     def parameter_changed(self, mapping):

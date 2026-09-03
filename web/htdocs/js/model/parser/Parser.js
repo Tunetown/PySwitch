@@ -506,7 +506,7 @@ class Parser {
     async #mixInMetaInformation(data, client) {
         const that = this;
         const meta = JSON.parse(await Tools.fetch(this.basePath + "definitions/meta.json"));
-
+        
         /**
          * Searches a function meta definition for the given function name.
          * No default resolving here.

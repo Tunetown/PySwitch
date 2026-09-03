@@ -91,7 +91,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(midi.messages_sent), 2)
         self.assertEqual(midi.messages_sent[0], mapping_1.set[0])
-        self.assertEqual(midi.messages_sent[1], mapping_1.set[2])
+        self.assertEqual(midi.messages_sent[1], mapping_1.set[1])
         self.assertEqual(mapping_1.set_value_calls, [[33, 55]])
 
 
@@ -398,7 +398,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(midi.messages_sent), 2)
         self.assertEqual(midi.messages_sent[0], mapping_1.request[0])
-        self.assertEqual(midi.messages_sent[1], mapping_1.request[2])
+        self.assertEqual(midi.messages_sent[1], mapping_1.request[1])
         
         # Receive None
         client.receive(None)

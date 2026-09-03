@@ -4,6 +4,7 @@ from .. import KemperMappings
 
 # Adjusts the global rig transpose value.
 def ENCODER_RIG_TRANSPOSE(
+    midi_channel = 1,              # MIDI Channel in range [1..16]
     accept_action = None,          # Action to acknowledge the entered value. If None, the encoder directly sets values as you turn it. 
                                    # If you pass an Encoder Button action, the value will just be displayed and the MIDI command to set 
                                    # it will be sent when the Button action is triggered.
@@ -31,7 +32,7 @@ def ENCODER_RIG_TRANSPOSE(
         preview_display = preview_display,
         preview_timeout_millis = preview_timeout_millis,
         preview_blink_color = preview_blink_color,
-        preview_reset_mapping = KemperMappings.RIG_ID(),
+        preview_reset_mapping = KemperMappings.RIG_ID(midi_channel - 1),
         convert_value = _convert_transpose,
     )
 

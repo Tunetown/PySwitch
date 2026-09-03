@@ -50,14 +50,17 @@ class ClientParameterMapping:
         self.depends = depends    # If another mapping is set here, this mapping will only be requested when the dependency has changed value
                                   # NOTE: In 2.4.1, this is prepared but not realized already
 
-        self.set = list(set) if set else None                    # MIDI Message to set the parameter
-        self.request = tuple(request) if request else None       # MIDI Message to request the value
-        self.response = tuple(response) if response else None    # Response template MIDI message for parsing the received answer        
+        def eval_msg(msg, type_def):
+            return (tuple([type_def(x) for x in msg if x]) if ClientTwoPartParameterMapping.is_list(msg) else type_def(msg)) if msg else None
+
+        self.set = eval_msg(set, bytearray)          # MIDI Message to set the parameter
+        self.request = eval_msg(request, bytes)      # MIDI Message to request the value
+        self.response = eval_msg(response, bytes)    # Response template MIDI message for parsing the received answer
 
     # Parse the incoming MIDI message and set its value on the mapping.
     # If the response template does not match, returns False, and
     # vice versa. Returns True to notify the listeners of a value change.
-    def parse(self, midi_message):     
+    def parse(self, midi_message):
         result = self.parse_against(midi_message, self.response)
         if result != None:
             self.value = result
@@ -67,40 +70,41 @@ class ClientParameterMapping:
 
     # Parse a message against a response message
     def parse_against(self, midi_message, response):
-        if not isinstance(midi_message, (tuple, list)):
-            return
-        
-        if midi_message[0] != response[0]:
-            return
-        
-        # SysEx (NRPN) Messages
-        if midi_message[0] == 0xf0: 
-            # NOTE: We ignore the manufacturer ID for performance reasons (there are two places which
-            # have to be ignored, so we would need two comparisons instead of one)
-            
-            # if tuple(midi_message[1:4]) != tuple(response[1:4]):
-            #     return None
-            
-            if tuple(midi_message[6:10]) != tuple(response[6:10]):
+        try:
+            if midi_message[0] != response[0]:
                 return None
             
-            # The values starting from index 6 are the value of the response.
-            if self.type == self.PARAMETER_TYPE_STRING:
-                # Take as string
-                return ''.join(chr(int(c)) for c in list(midi_message[10:-2]))
-            else:
-                # Decode 14-bit value to int
-                return midi_message[-3] * 128 + midi_message[-2]
+            # SysEx (NRPN) Messages
+            if midi_message[0] == 0xf0: 
+                # NOTE: We ignore the manufacturer ID for performance reasons (there are two places which
+                # have to be ignored, so we would need two comparisons instead of one)
+                
+                # if bytes(midi_message[1:4]) != bytes(response[1:4]):
+                #     return None
+                
+                if bytes(midi_message[6:10]) != bytes(response[6:10]):
+                    return None
+                
+                # The values starting from index 6 are the value of the response.
+                if self.type == self.PARAMETER_TYPE_STRING:
+                    # Take as string
+                    return ''.join(chr(int(c)) for c in tuple(midi_message[10:-2]))
+                else:
+                    # Decode 14-bit value to int
+                    return midi_message[-3] * 128 + midi_message[-2]
 
-        # CC Messages
-        elif midi_message[0] & 0xf0 == 0xb0:
-            if midi_message[1] == response[1]:
-                return midi_message[2]
+            # CC Messages
+            elif midi_message[0] & 0xf0 == 0xb0:
+                if midi_message[1] == response[1]:
+                    return midi_message[2]
 
-        # PC Messages
-        elif midi_message[0] & 0xf0 == 0xc0:
-            return midi_message[1]
+            # PC Messages
+            elif midi_message[0] & 0xf0 == 0xc0:
+                return midi_message[1]
 
+        except TypeError:
+            return  None
+        
         return None
     
     # Set the passed value(s) on the SET message(s) of the mapping.
@@ -122,8 +126,8 @@ class ClientParameterMapping:
 
         elif midi_message[0] == 0xf0: 
             # Sysex 14 bit number
-            midi_message[10] = int(floor(value / 128))
-            midi_message[11] = int(value % 128)
+            midi_message[-3] = int(floor(value / 128))
+            midi_message[-2] = int(value % 128)
 
         elif midi_message[0] & 0xf0 == 0xc0:
             # PC: Set patch
@@ -175,9 +179,9 @@ class ClientTwoPartParameterMapping(ClientParameterMapping):
         super().__init__(
             name = name, 
             create_key = create_key,
-            set = [(x if isinstance(x, int) else list(x)) for x in set] if set else None,
-            request = ((x if isinstance(x, int) else tuple(x)) for x in request) if request else None, 
-            response = ((x if isinstance(x, int) else tuple(x)) for x in response) if response else None,
+            set = set,
+            request = request,
+            response = response,
             value = value, 
             type = type, 
             depends = depends

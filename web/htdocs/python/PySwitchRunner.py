@@ -98,7 +98,7 @@ class PySwitchRunner:
             from pyswitch.controller.controller import Controller
             from pyswitch.controller.midi import MidiController, MidiRouting
             from pyswitch.ui.UiController import UiController
-            from pyswitch.hardware.adafruit.AdafruitUsbMidiDevice import AdafruitUsbMidiDevice
+            from pyswitch.midi.buffer import MIDIBuffer
 
             # from pyswitch.clients.kemper import KemperBidirectionalProtocol
 
@@ -114,12 +114,9 @@ class PySwitchRunner:
             if hasattr(comm_settings, "debug") and comm_settings.debug:
                 print(f"Connecting to MIDI (Input channel(s): { in_channel if in_channel != None else "All" }, Output channel: { out_channel })")
 
-            midi = AdafruitUsbMidiDevice(
-                port_in = midi_in,
-                port_out = midi_out,
-                in_buf_size = 100,
-                in_channel = in_channel,
-                out_channel = out_channel,
+            midi = MIDIBuffer(
+                midi_in = midi_in,
+                midi_out = midi_out
             )
 
             protocol_generator_code = client.getProtocolCode()

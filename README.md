@@ -19,6 +19,8 @@ Features are:
 
 ## Installation
 
+*NOTE: If you are running the PaintAudio Firmware Version 5 on your controller already, you have to downgrade to FW Version 4 before installing PySwitch! See [here](https://forum.kemper-amps.com/forum/thread/65206-pyswitch-firmware-for-paintaudio-midi-captain/?postID=721184#post721184) for details*
+
 1. Connect you device to your computer via USB and power it up. For PaintAudio MIDICaptain controllers, press and hold switch 1 while powering up to tell the controller to mount the USB drive.
 2. On your computer, you should now see the USB drive of the device (named MIDICAPTAIN for Paintaudio controllers, CIRCUITPY for generic boards)
 3. Delete the whole content of the USB drive. For PaintAudio devices, dont forget to save the contents on your hard drive (especially the license folder) if you perhaps want to restore the original manufacturer firmware later.
@@ -54,7 +56,7 @@ The manufacturer PaintAudio also provides a Kemper Player related firmware (<a h
 
 This project is developed generically, so it can basically be run on any board which runs CircuitPy, using the Adafruit libraries to run a TFT display and LEDs, to control basically any device which is controlled in a similar way as the Kemper devices and address any parameter or other information the controlled device provides. You just have to provide the apropriate adapter classes and mappings! 
 
-It would particularly be nice to add support for Line6 and FRactal devices, if anybody owning the one of them wants to be part of the project, we could implement that easily. Just reach me on the Kemper forum (see thread above).
+There are presets already for the Line6 Helix Stomp and the Boomerang Phrase Sampler. It would particularly be nice to add support for Fractal devices, if anybody owning the one of them wants to be part of the project, we could implement that easily. Just reach me on the Kemper forum (see thread above).
 
 ## Startup Options
 
@@ -440,7 +442,6 @@ If you want to send your own custom MIDI messages, you can also define your mapp
 from pyswitch.controller.callbacks import BinaryParameterCallback
 from pyswitch.controller.actions import PushButtonAction
 from pyswitch.controller.client import ClientParameterMapping
-from adafruit_midi.system_exclusive import SystemExclusive
 
 Inputs = [
     {
@@ -451,18 +452,9 @@ Inputs = [
                     "callback": BinaryParameterCallback(
                         mapping = ClientParameterMapping.get(
                             name = "My Boost",   # This name MUST be unique! Use your own custom prefix for example.
-                            set = SystemExclusive(
-                                manufacturer_id = [0x00, 0x20, 0x33], 
-                                data = [0x02, 0x7f, 0x01, 0x00, 0x04, 0x01] # Two value bytes will be added by PySwitch
-                            ), 
-                            request = SystemExclusive(
-                                manufacturer_id = [0x00, 0x20, 0x33], 
-                                data = [0x02, 0x7f, 0x41, 0x00, 0x04, 0x01]
-                            ), 
-                            response = SystemExclusive(
-                                manufacturer_id = [0x00, 0x20, 0x33], 
-                                data = [0x02, 0x7f, 0x01, 0x00, 0x04, 0x01] # Two value bytes will be evaluated by PySwitch
-                            )
+                            set = [0xf0, 0x00, 0x20, 0x33, 0x02, 0x7f, 0x01, 0x00, 0x04, 0x01, 0x00, 0x00, 0xf7],  # The last two are the value bytes and will be set by PySwitch
+                            request = [0xf0, 0x00, 0x20, 0x33, 0x02, 0x7f, 0x41, 0x00, 0x04, 0x01, 0xf7],
+                            response = [0xf0, 0x00, 0x20, 0x33, 0x02, 0x7f, 0x01, 0x00, 0x04, 0x01, 0x00, 0x00, 0xf7] # Last two value bytes will be evaluated by PySwitch
                         ), 
                         color = (255, 100, 0), 
                         text = "Rig Vol", 
@@ -487,7 +479,6 @@ If you want only to send but not receive, you have to set the internal state ena
 from pyswitch.controller.callbacks import BinaryParameterCallback
 from pyswitch.controller.actions import PushButtonAction
 from pyswitch.controller.client import ClientParameterMapping
-from adafruit_midi.system_exclusive import SystemExclusive
 
 Inputs = [
     {
@@ -498,10 +489,7 @@ Inputs = [
                     "callback": BinaryParameterCallback(
                         mapping = ClientParameterMapping.get(
                             name = "My Boost",   # This name MUST be unique! Use your own custom prefix for example.
-                            set = SystemExclusive(
-                                manufacturer_id = [0x00, 0x20, 0x33], 
-                                data = [0x02, 0x7f, 0x01, 0x00, 0x04, 0x01] # Two value bytes will be added by PySwitch
-                            )
+                            set = [0xf0, 0x00, 0x20, 0x33, 0x02, 0x7f, 0x01, 0x00, 0x04, 0x01, 0x00, 0x00, 0xf7]
                         ), 
                         color = (255, 100, 0), 
                         text = "Rig Vol", 
@@ -693,10 +681,7 @@ For example if you want to show some custom text or a parameter value in a displ
 The **communication.py** file defines the handling of MIDI data. This includes the MIDI routing. It must contain a "Communication" dictionary like follows:
 
 ```python
-_USB_MIDI = MidiDevices.PA_MIDICAPTAIN_USB_MIDI(
-    in_channel = None,  # All channels will be received
-    out_channel = 0     # Send on channel 1
-)
+_USB_MIDI = MidiDevices.PA_MIDICAPTAIN_USB_MIDI()
 
 Communication = {
 
@@ -727,8 +712,7 @@ You can for example route MIDI data from/to DIN and/or USB ports to realize MIDI
 ##### MIDI Routings
 
 A routing has a source and a target, both of which must be instances being able to send and receive MIDI messages. You can use:
-- Adafruit's own MIDI handler (adafruit_midi.MIDI)
-- The wrappers AdfruitUsbMidiDevice (for USB MIDI) and AdfruitDinMidiDevice (for DIN MIDI) (recommended) which are also used in the example above (wrapped again by MidiDevices, see the source code there)
+- The wrappers AdfruitUsbMidiDevice (for USB MIDI) and AdfruitDinMidiDevice (for DIN MIDI) (recommended) which are also used in the example above
 - The constant MidiController.APPLICATION. This represents the application itself.
 
 This example will, in addition to normal operation as in the last example, also pass all data from DIN Input to USB output (MIDI Through):
@@ -737,15 +721,8 @@ This example will, in addition to normal operation as in the last example, also 
 
 # Pre-define all needed MIDI devices here in advance 
 # (multiple creation would waste memory)
-_DIN_MIDI = MidiDevices.PA_MIDICAPTAIN_DIN_MIDI(
-    in_channel = None,  # All channels will be received
-    out_channel = 0     # Send on channel 1
-)
-
-_USB_MIDI = MidiDevices.PA_MIDICAPTAIN_USB_MIDI(
-    in_channel = None,  # All channels will be received
-    out_channel = 0     # Send on channel 1
-)
+_DIN_MIDI = MidiDevices.PA_MIDICAPTAIN_DIN_MIDI()
+_USB_MIDI = MidiDevices.PA_MIDICAPTAIN_USB_MIDI()
 
 Communication = {
 
@@ -777,13 +754,6 @@ Communication = {
 
 It is also possible to either route multiple sources to one target or vice verse, to distribute or merge messages. 
 The examples also contains samples for setting up MIDICaptain USB and DIN communication as well as MIDI through, or connecting the application to DIN and/or USB MIDI.
-
-**NOTE**: Not all message types are forwarded by default to save memory, only the message types needed for the Kemper devices are enabled:
-- ControlChange
-- ProgramChange
-- SystemExclusive
-
-There are several other types defined in the <a href="https://docs.circuitpython.org/projects/midi/en/latest/" target="_blank">adafruit_midi library</a>. If you need them to be processed, see file lib/pyswitch/hardware/adafruit.py and add the message types you need in the import section at the top (importing the types is sufficient, no further code changes needed). For types not listed (like MIDI Clock) these can be defined manually, see comments.
 
 #### Bidirectional Communication
 
@@ -827,6 +797,7 @@ The sources are all contained in the lib/pyswitch module, which has the followin
     clients/
     controller/
     hardware/
+    midi/
     ui/
 ```
 
@@ -834,6 +805,7 @@ The sources are all contained in the lib/pyswitch module, which has the followin
 - **hardware** provides access to the adafruit hardware
 - **ui** contains the uiser interface shown on the TFT display
 - **clients** provides code specific to clients (like the Kemper devices). This code is not used in the library itself, but in your config files in the drive root. Further client implementations (for Helix or Quad Cortex devices maybe) can be added here. If you want to contribute an implementation, just create it in the drive root, make it work from there, then share it to others by either putting it into the clients folder and creating a pull request, or just send the file over to me and i will integrate it.
+- **midi** contains the minimalized MIDI buffer implementation which is used instead of adafruit_midi since version 2.4.10 to save memory and processing time
 
 The Controller class in the **controller** folder represents the main application controller class which initiates the processing loop. It is used in the process.py file as follows (irrelevant things omitted for clarity):
 
@@ -1135,7 +1107,7 @@ You should find a coverage report in the test/report folder like this:
 
 ## License
 
-(C) Thomas Weber 2025 tom-vibrant@gmx.de
+(C) Thomas Weber 2025-2026 tom-vibrant@gmx.de
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -1154,6 +1126,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 Kemper, Kemper Profiler, Kemper Profiler Player are trademarks of Kemper GmbH (www.kemper-amps.com)
 Midi Captain, Midi Captain Nano 4, Midi Captain Mini 6 are trademarks of PaintAudio (www.paintaudio.com)
+Helix Stomp is a trademark of Line6
 
 ## Donate
 

@@ -27,7 +27,7 @@ class EmulatorSettings extends Tab {
             .append(
                 $('<div class="emulator-settings" />').append(
                     this.#getConfigSettings(),
-                    this.#getCommSettings()
+                    // this.#getCommSettings()
                 )
             );
     }

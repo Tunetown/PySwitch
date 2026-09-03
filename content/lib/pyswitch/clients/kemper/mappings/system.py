@@ -5,94 +5,34 @@ from ....controller.client import ClientParameterMapping
 def MAPPING_MAIN_VOLUME(): 
     return ClientParameterMapping.get(
         name = "MainVol",
-        set = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 0x00, 0xf7),
-        # KemperNRPNMessage(
-        #     0x01, 
-        #     0x7f,
-        #     0x00
-        # ),
+        set = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 0x00, 0x00, 0x00, 0xf7),
         request = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x41, INSTANCE_ID, 0x7f, 0x00, 0xf7),
-        # KemperNRPNMessage(
-        #     0x41,
-        #     0x7f,
-        #     0x00
-        # ),
-        response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 0x00, 0xf7)
-        # KemperNRPNMessage(
-        #     0x01,
-        #     0x7f,
-        #     0x00
-        # )
+        response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 0x00, 0x00, 0x00, 0xf7)
     )
 
 # Monitor volume
 def MAPPING_MONITOR_VOLUME(): 
     return ClientParameterMapping.get(
         name = "MonVol",
-        set = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 0x02, 0xf7),
-        # KemperNRPNMessage(
-        #     0x01, 
-        #     0x7f,
-        #     0x02
-        # ),
+        set = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 0x02, 0x00, 0x00, 0xf7),
         request = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x41, INSTANCE_ID, 0x7f, 0x02, 0xf7),
-        # KemperNRPNMessage(
-        #     0x41,
-        #     0x7f,
-        #     0x02
-        # ),
-        response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 0x02, 0xf7)
-        # KemperNRPNMessage(
-        #     0x01,
-        #     0x7f,
-        #     0x02
-        # )
+        response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 0x02, 0x00, 0x00, 0xf7)
     )
 
 # Looper volume
 def MAPPING_LOOPER_VOLUME(): 
     return ClientParameterMapping.get(
         name = "LoopVol",
-        set = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 52, 0xf7),
-        # KemperNRPNMessage(
-        #     0x01, 
-        #     0x7f,
-        #     52
-        # ),
+        set = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 52, 0x00, 0x00, 0xf7),
         request = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x41, INSTANCE_ID, 0x7f, 52, 0xf7),
-        # KemperNRPNMessage(
-        #     0x41,
-        #     0x7f,
-        #     52
-        # ),
-        response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 52, 0xf7)
-        # KemperNRPNMessage(
-        #     0x01,
-        #     0x7f,
-        #     52
-        # )
+        response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 52, 0x00, 0x00, 0xf7)
     )
 
 # Space Intensity
 def MAPPING_SPACE_INTENSITY():
     return ClientParameterMapping.get(
         name = "SpaceInt",
-        set = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 36, 0xf7),
-        # KemperNRPNMessage(
-        #     0x01,
-        #     0x7f,
-        #     36
-        # ),
+        set = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 36, 0x00, 0x00, 0xf7),
         request = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x41, INSTANCE_ID, 0x7f, 36, 0xf7),
-        # KemperNRPNMessage(
-        #     0x41,
-        #     0x7f,
-        #     36
-        # ),
-        response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 36, 0xf7),
-        # KemperNRPNMessage(
-        #     0x01,
-        #     0x7f,
-        #     36
-        # )
+        response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 36, 0x00, 0x00, 0xf7),
     )

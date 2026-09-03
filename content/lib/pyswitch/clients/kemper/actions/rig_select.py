@@ -18,6 +18,7 @@ def RIG_SELECT(rig,                                            # Rig to select. 
                bank_off = None,                                # If set, this defines the "off" bank to be chosen when the action is disabled. Set to "auto" to always remember the current bank as "off" bank
                display_mode = RIG_SELECT_DISPLAY_CURRENT_RIG,  # Display mode (show color/text for current or target rig)
                display = None, 
+               midi_channel = 1,                               # MIDI Channel in range [1..16]
                id = False, 
                use_leds = True, 
                enable_callback = None,
@@ -48,7 +49,8 @@ def RIG_SELECT(rig,                                            # Rig to select. 
             text_callback = text_callback,
             auto_exclude_rigs = auto_exclude_rigs,
             rig_btn_morph = rig_btn_morph,
-            momentary_morph = momentary_morph
+            momentary_morph = momentary_morph,
+            channel = midi_channel - 1
         ),
         "enableCallback": enable_callback
     })  
@@ -65,6 +67,7 @@ class _KemperRigSelectCallback(Callback):
                  display_mode,
                  text,
                  text_callback,
+                 channel,
                  auto_exclude_rigs = None,
                  rig_btn_morph = False,
                  momentary_morph = False
@@ -77,7 +80,9 @@ class _KemperRigSelectCallback(Callback):
 
         self.__current_value = -1
 
-        self.__mapping = KemperMappings.RIG_ID()
+        self.__mapping = KemperMappings.RIG_ID(channel)
+        self._channel = channel
+        
         self.register_mapping(self.__mapping)
 
         self.__bank = bank
@@ -148,11 +153,11 @@ class _KemperRigSelectCallback(Callback):
             if self.__bank != None:
                 if self.__bank_off != None:
                     if state:
-                        self.__appl.client.set((MAPPING_BANK_SELECT()), self.__bank_off - 1)
+                        self.__appl.client.set((MAPPING_BANK_SELECT(self._channel)), self.__bank_off - 1)
                     else:
-                        self.__appl.client.set(MAPPING_BANK_SELECT(), self.__bank - 1)
+                        self.__appl.client.set(MAPPING_BANK_SELECT(self._channel), self.__bank - 1)
                 else:
-                    self.__appl.client.set(MAPPING_BANK_SELECT(), self.__bank - 1)
+                    self.__appl.client.set(MAPPING_BANK_SELECT(self._channel), self.__bank - 1)
         
             # If the current rig has not changed, toggle global morphing state
             if self.__mapping.value != None:
@@ -176,11 +181,11 @@ class _KemperRigSelectCallback(Callback):
         self.__sent_rig_mapping = None
 
         if state and self.__rig_off != None and not "preselectedBank" in self.__appl.shared:           
-            self.__sent_rig_mapping = MAPPING_RIG_SELECT(self.__rig_off - 1)            
+            self.__sent_rig_mapping = MAPPING_RIG_SELECT(self.__rig_off - 1, channel = self._channel)
         elif self.__rig != None:
-            self.__sent_rig_mapping = MAPPING_RIG_SELECT(self.__rig - 1)
+            self.__sent_rig_mapping = MAPPING_RIG_SELECT(self.__rig - 1, channel = self._channel)
         elif self.__mapping.value != None:
-            self.__sent_rig_mapping = MAPPING_RIG_SELECT(curr_rig)
+            self.__sent_rig_mapping = MAPPING_RIG_SELECT(curr_rig, channel = self._channel)
 
         if self.__sent_rig_mapping:
             self.__appl.client.set(self.__sent_rig_mapping, 1)

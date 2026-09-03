@@ -6,8 +6,9 @@ from pyswitch.ui.ui import DisplayElement
 from pyswitch.ui.ui import DisplayBounds
 from pyswitch.ui.elements import DisplayLabel
 from pyswitch.controller.callbacks.parameter_display import ParameterDisplayCallback
-from pyswitch.controller.client import ClientParameterMapping
-from adafruit_midi.program_change import ProgramChange
+from pyswitch.clients.local.mappings.general import MAPPING_SEND_PROGRAM_CHANGE
+# from pyswitch.controller.client import ClientParameterMapping
+
 
 _ACTION_LABEL_LAYOUT = {
     "font": "/fonts/H20.pcf",
@@ -32,12 +33,12 @@ _FOOTER_Y = const(
     200
 )
 
-_VERSION_Y = const(
-    40
-)
-_VERSION_HEIGHT = const(
-    160
-)
+# _VERSION_Y = const(
+#     40
+# )
+# _VERSION_HEIGHT = const(
+#     160
+# )
 
 DISPLAY_HEADER_1 = DisplayLabel(
     layout = {
@@ -134,15 +135,13 @@ DISPLAY_LABEL_1 = DisplayLabel(
     }
 )
 
-def MAPPING_RX_PROGRAM_CHANGE():
-    return ClientParameterMapping.get(
-        name = "ProgChg",
-        response = ProgramChange(
-            0    # Dummy value, will be overridden
-        )
-    )
+# def MAPPING_RX_PROGRAM_CHANGE(channel = 0):
+#     return ClientParameterMapping.get(
+#         name = "ProgChg",
+#         response = (192 + channel, 0)
+#     )
 
-_PresetNumberDisplayCallback = ParameterDisplayCallback(mapping = MAPPING_RX_PROGRAM_CHANGE())
+_PresetNumberDisplayCallback = ParameterDisplayCallback(mapping = MAPPING_SEND_PROGRAM_CHANGE())
 
 DISPLAY_LABEL_2 = DisplayLabel(
     bounds = DisplayBounds(

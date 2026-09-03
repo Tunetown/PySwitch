@@ -1,5 +1,5 @@
 from busio import UART as _UART
-from ...midi.buffer_raw import MIDIBuffer as _MIDIBuffer
+from ...midi.buffer import MIDIBuffer as _MIDIBuffer
 
 # DIN MIDI Device
 class AdafruitDinMidiDevice:

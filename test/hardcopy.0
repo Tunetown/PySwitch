@@ -1,0 +1,67 @@
+
+Auto-reload is off.
+code.py output:
+............................................................ Starting with 195.5 KiB of 202.9 KiB
+Showing UI ................................................. Allocated 117.1 KiB     -> 78.4 KiB        38%
+Application loaded ......................................... Allocated 26.8 KiB      -> 51.6 KiB        25%
+Controller: update ......................................... Allocated 464.0 B       -> 51.1 KiB        25%
+Traceback (most recent call last):
+  File "/lib/pyswitch/process.py", line 74, in <module>
+  File "/lib/pyswitch/controller/controller.py", line 155, in tick
+  File "/lib/pyswitch/controller/controller.py", line 175, in __receive_midi_messages
+  File "/lib/pyswitch/controller/inputs.py", line 107, in process
+  File "/lib/pyswitch/controller/inputs.py", line 96, in release
+  File "/lib/pyswitch/controller/actions/__init__.py", line 133, in push
+  File "/lib/pyswitch/clients/local/actions/param_change.py", line 107, in push
+TypeError: unsupported types for __add__: 'NoneType', 'int'
+
+Traceback (most recent call last):
+  File "code.py", line 1, in <module>
+  File "/lib/pyswitch/process.py", line 78, in <module>
+  File "/project/lib/pymidibridge/MidiBridgeWrapper.py", line 95, in error
+  File "/project/lib/pymidibridge/MidiBridgeWrapper.py", line 61, in receive
+  File "/lib/pyswitch/controller/midi.py", line 75, in receive
+  File "/lib/pyswitch/hardware/adafruit/AdafruitUsbMidiDevice.py", line 32, in receive
+  File "adafruit_midi/__init__.py", line 123, in receive
+KeyboardInterrupt:
+
+Code done running.
+
+Press any key to enter the REPL. Use CTRL-D to reload.
+soft reboot
+
+Auto-reload is off.
+code.py output:
+............................................................ Starting with 195.4 KiB of 202.9 KiB
+Showing UI ................................................. Allocated 117.0 KiB     -> 78.3 KiB        38%
+Application loaded ......................................... Allocated 24.9 KiB      -> 53.5 KiB        26%
+Controller: update ......................................... Allocated 464.0 B       -> 53.0 KiB        26%
+Controller: update ......................................... Allocated 1.1 KiB       -> 51.9 KiB        25%
+Controller: update ......................................... Allocated 1.8 KiB       -> 50.1 KiB        24%
+Controller: update ......................................... Allocated 320.0 B       -> 49.8 KiB        24%
+Controller: update ......................................... Allocated 128.0 B       -> 49.6 KiB        24%
+Controller: update ......................................... Allocated 192.0 B       -> 49.5 KiB        24%
+Controller: update ......................................... Allocated 192.0 B       -> 49.3 KiB        24%
+Controller: update ......................................... Released  -384.0 B      -> 49.6 KiB        24%
+Controller: update ......................................... Allocated 192.0 B       -> 49.5 KiB        24%
+Controller: update ......................................... Allocated 192.0 B       -> 49.3 KiB        24%
+Controller: update ......................................... Released  -384.0 B      -> 49.6 KiB        24%
+Controller: update ......................................... Allocated 192.0 B       -> 49.5 KiB        24%
+Controller: update ......................................... Allocated 192.0 B       -> 49.3 KiB        24%
+Controller: update ......................................... Released  -144.0 B      -> 49.4 KiB        24%
+Controller: update ......................................... Allocated 144.0 B       -> 49.3 KiB        24%
+Traceback (most recent call last):
+  File "code.py", line 1, in <module>
+  File "/lib/pyswitch/process.py", line 74, in <module>
+  File "/lib/pyswitch/controller/controller.py", line 155, in tick
+  File "/lib/pyswitch/controller/controller.py", line 181, in __receive_midi_messages
+  File "/project/lib/pymidibridge/MidiBridgeWrapper.py", line 61, in receive
+  File "/lib/pyswitch/controller/midi.py", line 75, in receive
+  File "/lib/pyswitch/hardware/adafruit/AdafruitUsbMidiDevice.py", line 32, in receive
+  File "adafruit_midi/__init__.py", line 123, in receive
+KeyboardInterrupt:
+
+Code done running.
+
+Press any key to enter the REPL. Use CTRL-D to reload.
+

@@ -3,6 +3,7 @@ import unittest
 from unittest.mock import patch   # Necessary workaround! Needs to be separated.
 
 from .mocks_lib import *
+from .mocks_midi import test_mapping
 
 # Import subject under test
 with patch.dict(sys.modules, {
@@ -18,4 +19,7 @@ with patch.dict(sys.modules, {
 class TestLocal(unittest.TestCase):
 
     def test_mappings(self):
-        self.assertIn("ProgChg", MAPPING_SEND_PROGRAM_CHANGE().name)
+        test_mapping(self, MAPPING_SEND_PROGRAM_CHANGE(), exp_name = "PC", exp_midi_channel = 0)
+        test_mapping(self, MAPPING_SEND_PROGRAM_CHANGE(channel = 8), exp_name = "PC", exp_midi_channel = 8)
+
+

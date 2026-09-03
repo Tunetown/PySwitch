@@ -6,6 +6,7 @@ from ..mappings.morph import MAPPING_MORPH_BUTTON, MAPPING_MORPH_PEDAL
 
 # Morph button (faded change of morph state)
 def MORPH_BUTTON(display = None, 
+                 midi_channel = 1,                   # MIDI Channel in range [1..16]
                  text = "Morph", 
                  id = False, 
                  use_leds = True, 
@@ -16,7 +17,7 @@ def MORPH_BUTTON(display = None,
     ):
     return PushButtonAction({
         "callback": KemperMorphCallback(
-            mapping = MAPPING_MORPH_BUTTON(),
+            mapping = MAPPING_MORPH_BUTTON(midi_channel - 1),
             text = text,
             comparison_mode = BinaryParameterCallback.NO_STATE_CHANGE,
             led_brightness_off = "on",
@@ -34,6 +35,7 @@ def MORPH_BUTTON(display = None,
 
 # Morph state (display/LEDs only)
 def MORPH_DISPLAY(display = None, 
+                  midi_channel = 1,                     # MIDI Channel in range [1..16]
                   text = "Morph", 
                   id = False, 
                   use_leds = True, 
@@ -43,7 +45,7 @@ def MORPH_DISPLAY(display = None,
     ):
     return PushButtonAction({
         "callback": KemperMorphCallback(
-            mapping = MAPPING_MORPH_PEDAL(),
+            mapping = MAPPING_MORPH_PEDAL(midi_channel - 1),
             text = text,
             comparison_mode = BinaryParameterCallback.NO_STATE_CHANGE,
             led_brightness_off = "on",

@@ -5,6 +5,7 @@ from .effect_state import KemperEffectEnableCallback
 # 
 # <b>Use with care:</b> This takes quite some RAM memory, so if you run a large configuration you might run into memory allocation failures. In this case, just use the normal Effect State action instead.
 def EFFECT_STATE_EXT(slot_id, 
+                     midi_channel = 1,                               # MIDI Channel in range [1..16]
                      display = None, 
                      mode = PushButtonAction.HOLD_MOMENTARY,
                      show_slot_names = False,
@@ -20,7 +21,8 @@ def EFFECT_STATE_EXT(slot_id,
             text = text,
             color = color,
             show_slot_names = show_slot_names,
-            extended_type_names = _EFFECT_TYPE_NAMES
+            extended_type_names = _EFFECT_TYPE_NAMES,
+            channel = midi_channel - 1
         ),
         "mode": mode,
         "display": display,

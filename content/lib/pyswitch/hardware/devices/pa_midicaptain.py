@@ -4,10 +4,10 @@ from usb_midi import ports as _ports
 # USB Midi in/out for PA MIDICaptain devices. No UART, so ports have to be adafruit MIDI ports from 
 # the usb_midi module.
 def PA_MIDICAPTAIN_USB_MIDI(receive_chunk_size = 50):
-    from ...midi.buffer_raw import MIDIBuffer as _MIDIBuffer
+    from ...midi.buffer import MIDIBuffer as _MIDIBuffer
     return _MIDIBuffer(
-        port_in = _ports[0],
-        port_out = _ports[1],
+        midi_in = _ports[0],
+        midi_out = _ports[1],
         receive_chunk_size = receive_chunk_size
     )
 

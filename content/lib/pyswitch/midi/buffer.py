@@ -15,11 +15,8 @@
 class MIDIBuffer:
     def __init__(
         self,
-        midi_in,                  # MIDI in handler, providing a read(max_num_bytes) method which delivers
-                                  # a bytearray.
-
-        midi_out,                 # MIDI out handler providing a write(bytearray) method.
-
+        midi_in,                  # MIDI in handler, providing a readinto(buffer, num_bytes) -> int method
+        midi_out,                 # MIDI out handler providing a write(bytearray, num_bytes) method.
         receive_chunk_size = 50   # Receiving buffer size. This does NOT affect the maximum 
                                   # length of input messages, just adjusts between RAM usage / CPU time.
                                   # Larger values read more bytes at once which takes more RAM but is 
@@ -117,23 +114,6 @@ class MIDIBuffer:
                             self._next_msg.append(byte)
                             return end_msg()
 
-                        # if byte < 0x80:
-                        #     if self._next_msg_pos == 0:
-                        #         # Manufacturer ID
-                        #         self._next_msg.append(byte)
-                        #         # append_byte_to_msg(byte, MSG_FIELD_MANUFACTURER_ID, self._next_msg)
-                        #         self._next_msg_pos += 1
-
-                        #     elif self._next_msg[MSG_FIELD_MANUFACTURER_ID][0] == 0x00 and self._next_msg_pos < 3:
-                        #         # Manufacturer ID (bytes 2 and 3)
-                        #         append_byte_to_msg(byte, MSG_FIELD_MANUFACTURER_ID, self._next_msg) 
-                        #         self._next_msg_pos += 1
-
-                        #     else:
-                        #         # Append byte to message data. Here we dont need to count up the
-                        #         # position as the length is unknown anyway until the EOX comes.
-                        #         append_byte_to_msg(byte, MSG_FIELD_DATA, self._next_msg)
-
                 else:
                     # Currently no message is parsed: Check for start bytes (Status),
                     # and start parsing a new message if we have a valid status byte.
@@ -141,56 +121,36 @@ class MIDIBuffer:
 
         ##################################################################################################
 
-        # if self._receive_buffer_size > 0:
-        #     print("start")
-        #     print([int(c) for c in self._receive_buffer])
-        #     print(self._receive_buffer_size)
-        #     print(self._receive_buffer_pos)
-
         # If there are bytes left in the last chunk, we continue parsing there first.
         ret = parse()
 
-        # if self._receive_buffer_size > 0:
-        #     print("1st parse")
-        #     print([int(c) for c in self._receive_buffer])
-        #     print(self._receive_buffer_size)
-        #     print(self._receive_buffer_pos)
-        #     print(ret)
-
+        # Message found: Return it
         if ret:
+            # print(f"Parsed {list(ret)}")
             return ret
         
-        # Buffer empty, no message found: Read next bytes into the receive buffer
+        # Buffer empty or no message found: Read next bytes into the receive buffer
         # and try again
         self._receive_buffer_size = self._midi_in.readinto(self._receive_buffer) or 0
+        # if self._receive_buffer_size != 0:
+        #     print(f"Received {list(self._receive_buffer[:self._receive_buffer_size])}")
         self._receive_buffer_pos = 0
 
-        # print([int(c) for c in self._receive_buffer])
-        
-        # if self._receive_buffer_size > 0:
-        #     print("read")
-        #     print([int(c) for c in self._receive_buffer])
-        #     print(self._receive_buffer_size)
-        #     print(self._receive_buffer_pos)
-
-        return parse()
+        ret = parse()
+        if ret:
+            # print(f"Parsed {list(ret)}")
+            return ret
 
     # Sends a message. The format is described in the class comments. Returns if sending was processed. 
     def send(self, message):
         if not message:
             return False
-
-        self._midi_out.write(bytearray(message), len(message))        
+        
+        self._midi_out.write(bytes(message), len(message))        
         return True
 
 ## Helpers for programs using this buffer ##############################################################
 
 # Creates a sysex message
 def sysex(manufacturer_id, data):
-    msg = bytearray([240])
-    for m in manufacturer_id:
-        msg.append(m)
-    for d in data:
-        msg.append(d)
-    msg.append(247)
-    return msg
+    return bytearray((240,) + tuple(manufacturer_id) + tuple(data) + (247,))

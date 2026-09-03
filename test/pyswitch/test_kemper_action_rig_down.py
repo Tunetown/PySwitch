@@ -487,4 +487,36 @@ class TestKemperActionDefinitionsRigDown(unittest.TestCase):
         self.assertEqual(get_next_rig(4, 9), 8)
         
         
+##############################################################################
+
+    def test_midi_channels(self):
+        for c in range(16):
+            self._test_midi_channel(c)
+
+    def _test_midi_channel(self, channel):
+        action = RIG_DOWN(
+            midi_channel = channel + 1
+        )
+
+        appl = MockController()
+        switch = MockFootswitch(actions = [action])
+        action.init(appl, switch)
         
+        mapping = action.callback._KemperRigChangeCallback__mapping 
+        
+        mapping.value = 8
+        action.update_displays()
+        
+        action.push()
+        action.release()
+
+        self.assertEqual(len(appl.client.set_calls), 2)
+        self.assertEqual(appl.client.set_calls[0], {
+            "mapping": MAPPING_RIG_SELECT(2, channel),
+            "value": 1
+        })
+        self.assertEqual(appl.client.set_calls[1], {
+            "mapping": MAPPING_RIG_SELECT(2, channel),
+            "value": 0
+        })
+

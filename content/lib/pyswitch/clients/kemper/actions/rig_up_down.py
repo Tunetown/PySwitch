@@ -12,6 +12,7 @@ def RIG_UP(keep_bank = True,                               # If enabled, the ban
                                                            # the banks are stepped up/down after the last/first rigs of a bank.
            display_mode = RIG_SELECT_DISPLAY_TARGET_RIG,   # Display mode (see definitions above)
            display = None, 
+           midi_channel = 1,                               # MIDI Channel in range [1..16]
            id = False, 
            use_leds = True, 
            enable_callback = None,
@@ -30,6 +31,7 @@ def RIG_UP(keep_bank = True,                               # If enabled, the ban
             text = text,
             text_callback = text_callback,
             keep_bank = keep_bank,
+            channel = midi_channel - 1,
             direction_up = True
         ),
         "display": display,
@@ -43,6 +45,7 @@ def RIG_DOWN(keep_bank = True,                               # If enabled, the b
                                                              # the banks are stepped up/down after the last/first rigs of a bank.
              display_mode = RIG_SELECT_DISPLAY_TARGET_RIG,   # Display mode (see definitions above)
              display = None, 
+             midi_channel = 1,                               # MIDI Channel in range [1..16]
              id = False, 
              use_leds = True, 
              enable_callback = None,
@@ -61,6 +64,7 @@ def RIG_DOWN(keep_bank = True,                               # If enabled, the b
             text = text,
             text_callback = text_callback,
             keep_bank = keep_bank,
+            channel = midi_channel - 1,
             direction_up = False
         ),
         "display": display,
@@ -82,13 +86,15 @@ class _KemperRigChangeCallback(Callback):
                  text,
                  text_callback,
                  keep_bank,
+                 channel,
                  direction_up = True
         ):
         
-        mapping = KemperMappings.RIG_ID()
+        mapping = KemperMappings.RIG_ID(channel)
     
         super().__init__(mappings = [mapping])
 
+        self._channel = channel
         self.__mapping = mapping
         
         self.__color_callback = color_callback
@@ -123,9 +129,9 @@ class _KemperRigChangeCallback(Callback):
         next_rig = next_rig_id % NUM_RIGS_PER_BANK
         
         if next_bank != curr_bank:
-            self.__appl.client.set(MAPPING_BANK_SELECT(), next_bank)
+            self.__appl.client.set(MAPPING_BANK_SELECT(channel = self._channel), next_bank)
             
-        self.__sent_rig_mapping = MAPPING_RIG_SELECT(next_rig)
+        self.__sent_rig_mapping = MAPPING_RIG_SELECT(next_rig, channel = self._channel)
         self.__appl.client.set(self.__sent_rig_mapping, 1)
         
         self.__appl.shared["morphStateOverride"] = 0

@@ -32,7 +32,6 @@ class TestClientParameterMapping(unittest.TestCase):
         with self.assertRaises(Exception):
             ClientParameterMapping.get(name = None)
 
-
     #####################################################################################
 
     def test_parse_sysex(self):
@@ -579,13 +578,13 @@ class TestClientParameterMapping(unittest.TestCase):
     def test_is_list_2part_true(self):
         mapping = ClientTwoPartParameterMapping.get(
             name = uuid4(),
-            set = [
+            set = (
                 (176, 0, 0),
-                (176, 0, 0)
-            ],
+                [176, 0, 0]
+            ),
             request = [
-                (176, 0, 0),
-                (176, 0, 0)
+                bytes((176, 0, 0)),
+                bytearray((176, 0, 0))
             ],
             response = [
                 (176, 0, 0),

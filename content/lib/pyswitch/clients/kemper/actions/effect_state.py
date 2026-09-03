@@ -6,6 +6,7 @@ from ....colors import Colors, DEFAULT_LABEL_COLOR
 
 # Switch an effect slot on / off
 def EFFECT_STATE(slot_id,
+                 midi_channel = 1,                               # MIDI Channel in range [1..16]
                  display = None,
                  mode = PushButtonAction.HOLD_MOMENTARY,
                  show_slot_names = False,
@@ -20,7 +21,8 @@ def EFFECT_STATE(slot_id,
             slot_id = slot_id,
             text = text,
             color = color,
-            show_slot_names = show_slot_names
+            show_slot_names = show_slot_names,
+            channel = midi_channel - 1
         ),
         "mode": mode,
         "display": display,
@@ -109,13 +111,14 @@ class KemperEffectEnableCallback(EffectEnableCallback):
 
     def __init__(self,
                  slot_id,
+                 channel = 0,
                  text = None,
                  color = None,
                  show_slot_names = False,
                  extended_type_names = False
-                 ):
+        ):
         super().__init__(
-            mapping_state = KemperMappings.EFFECT_STATE(slot_id),
+            mapping_state = KemperMappings.EFFECT_STATE(slot_id, channel),
             mapping_type = KemperMappings.EFFECT_TYPE(slot_id)
         )
         self.__text = text

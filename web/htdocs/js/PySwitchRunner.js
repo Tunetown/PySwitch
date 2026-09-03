@@ -75,7 +75,6 @@ class PySwitchRunner {
         await this.pyodide.FS.mkdir("parser");
         await this.pyodide.FS.mkdir("parser/misc");
         await this.pyodide.FS.mkdir("wrappers");
-        await this.pyodide.FS.mkdir("adafruit_midi");
         await this.pyodide.FS.mkdir("adafruit_hid");
         await this.pyodide.FS.mkdir("pyswitch");
         await this.pyodide.FS.mkdir("pyswitch/clients");
@@ -86,6 +85,7 @@ class PySwitchRunner {
         await this.pyodide.FS.mkdir("pyswitch/hardware/adafruit");  
         await this.pyodide.FS.mkdir("pyswitch/hardware/devices");  
         await this.pyodide.FS.mkdir("pyswitch/ui");  
+        await this.pyodide.FS.mkdir("pyswitch/midi");
 
         await this.pyodide.FS.mkdir("pyswitch/clients/kemper");
         await this.pyodide.FS.mkdir("pyswitch/clients/kemper/actions");
@@ -140,23 +140,6 @@ class PySwitchRunner {
             
             //////////////////////////////////////////////////////////////////////////////////////////////
 
-            this.#loadModule("adafruit_midi/__init__.py", localPythonPath),
-            this.#loadModule("adafruit_midi/active_sensing.py", localPythonPath),
-            this.#loadModule("adafruit_midi/channel_pressure.py", localPythonPath),
-            this.#loadModule("adafruit_midi/control_change.py", localPythonPath),
-            this.#loadModule("adafruit_midi/midi_continue.py", localPythonPath),
-            this.#loadModule("adafruit_midi/midi_message.py", localPythonPath),
-            this.#loadModule("adafruit_midi/mtc_quarter_frame.py", localPythonPath),
-            this.#loadModule("adafruit_midi/note_off.py", localPythonPath),
-            this.#loadModule("adafruit_midi/note_on.py", localPythonPath),
-            this.#loadModule("adafruit_midi/pitch_bend.py", localPythonPath),
-            this.#loadModule("adafruit_midi/polyphonic_key_pressure.py", localPythonPath),
-            this.#loadModule("adafruit_midi/program_change.py", localPythonPath),
-            this.#loadModule("adafruit_midi/start.py", localPythonPath),
-            this.#loadModule("adafruit_midi/stop.py", localPythonPath),
-            this.#loadModule("adafruit_midi/system_exclusive.py", localPythonPath),
-            this.#loadModule("adafruit_midi/timing_clock.py", localPythonPath),
-
             this.#loadModule("adafruit_hid/__init__.py", localPythonPath),
             this.#loadModule("adafruit_hid/keycode.py", localPythonPath),
 
@@ -165,7 +148,6 @@ class PySwitchRunner {
             this.#loadModule("pyswitch/__init__.py", circuitpyPath),
             this.#loadModule("pyswitch/misc.py", circuitpyPath),
             this.#loadModule("pyswitch/colors.py", circuitpyPath),
-            this.#loadModule("pyswitch/debug_tools.py", circuitpyPath),
             this.#loadModule("pyswitch/stats.py", circuitpyPath),
             
             this.#loadModule("pyswitch/clients/__init__.py", circuitpyPath),
@@ -259,7 +241,6 @@ class PySwitchRunner {
             this.#loadModule("pyswitch/hardware/adafruit/AdafruitEncoder.py", circuitpyPath),
             this.#loadModule("pyswitch/hardware/adafruit/AdafruitPotentiometer.py", circuitpyPath),
             this.#loadModule("pyswitch/hardware/adafruit/AdafruitSwitch.py", circuitpyPath),
-            this.#loadModule("pyswitch/hardware/adafruit/AdafruitUsbMidiDevice.py", circuitpyPath),
 
             this.#loadModule("pyswitch/hardware/devices/__init__.py", circuitpyPath),
             this.#loadModule("pyswitch/hardware/devices/pa_midicaptain_10.py", circuitpyPath),
@@ -273,6 +254,8 @@ class PySwitchRunner {
             this.#loadModule("pyswitch/ui/layout.py", circuitpyPath),
             this.#loadModule("pyswitch/ui/ui.py", circuitpyPath),
             this.#loadModule("pyswitch/ui/UiController.py", circuitpyPath),
+
+            this.#loadModule("pyswitch/midi/buffer.py", circuitpyPath),
         ]);
     }
 

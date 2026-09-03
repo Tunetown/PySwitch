@@ -133,3 +133,17 @@ class TestKemperActionBankSelectEncoder(unittest.TestCase):
                 "value": 123
             }
         ])
+
+
+    def test_midi_channels(self):
+        for channel in range(16):
+            self._test_midi_channel(channel)
+
+    def _test_midi_channel(self, channel):
+        action = ENCODER_BANK_SELECT(
+            midi_channel = channel + 1
+        )
+
+        self.assertIsInstance(action, EncoderAction)
+
+        self.assertEqual(action._mapping, MAPPING_BANK_SELECT(channel = channel))

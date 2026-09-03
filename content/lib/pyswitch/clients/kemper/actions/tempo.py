@@ -8,6 +8,7 @@ from ..mappings.tempo_bpm import MAPPING_TEMPO_BPM, convert_bpm
 
 # Tap tempo
 def TAP_TEMPO(display = None, 
+              midi_channel = 1,                   # MIDI Channel in range [1..16]
               color = Colors.DARK_GREEN, 
               id = False, 
               use_leds = False, 
@@ -15,7 +16,7 @@ def TAP_TEMPO(display = None,
     ):
     return PushButtonAction({
         "callback": BinaryParameterCallback(
-            mapping = MAPPING_TAP_TEMPO(),
+            mapping = MAPPING_TAP_TEMPO(midi_channel - 1),
             text = "Tap",
             color = color
         ),
@@ -28,6 +29,7 @@ def TAP_TEMPO(display = None,
 
 # Show tempo (blinks on every beat)
 def SHOW_TEMPO(display = None, 
+               midi_channel = 1,                  # MIDI Channel in range [1..16]
                change_display = None,             # If a display label is passed here, the BPM value will be shown there shortly when changed.
                change_timeout_millis = 1500,      # If change_display is set, this determines how long the values shall be shown.
                color = Colors.LIGHT_GREEN, 
@@ -44,7 +46,8 @@ def SHOW_TEMPO(display = None,
             text = text,
             color = color,
             led_brightness = led_brightness,
-            resolve_bpm = display or change_display
+            resolve_bpm = display or change_display,
+            channel = midi_channel - 1
         ),
         "display": display,
         "id": id,
@@ -63,7 +66,8 @@ class _KemperShowTempoCallback(Callback):
                  color, 
                  text, 
                  led_brightness,
-                 resolve_bpm
+                 resolve_bpm,
+                 channel
         ):
         
         super().__init__()
@@ -71,7 +75,7 @@ class _KemperShowTempoCallback(Callback):
         self.__tempo_mapping = MAPPING_TEMPO_DISPLAY()
         self.register_mapping(self.__tempo_mapping)        
 
-        self.__tuner_mapping = KemperMappings.TUNER_MODE_STATE()
+        self.__tuner_mapping = KemperMappings.TUNER_MODE_STATE(channel)
         self.register_mapping(self.__tuner_mapping)
 
         if resolve_bpm:
@@ -87,7 +91,7 @@ class _KemperShowTempoCallback(Callback):
             self.__change_timeout_millis = change_timeout_millis
 
             # Also listen to rig changes to avoid display BPM after each rig change
-            self.__rig_id_mapping = KemperMappings.RIG_ID()
+            self.__rig_id_mapping = KemperMappings.RIG_ID(channel)
             self.register_mapping(self.__rig_id_mapping)
         else:
             self.__preview = None
