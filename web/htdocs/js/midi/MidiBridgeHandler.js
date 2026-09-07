@@ -75,12 +75,8 @@ class MidiBridgeHandler {
             const bridge = new JsMidiBridge();
 
             // Connect bridge output to the output
-            bridge.sendSysex = async function(manufacturerId, data) {
-                await that.#sendSysex(
-                    output,
-                    manufacturerId,
-                    data
-                )
+            bridge.send = async function(message) {
+                await output.send(message);
             }
 
             function cleanup() {
@@ -143,7 +139,7 @@ class MidiBridgeHandler {
         this.#midi.removeListener(bridge.midiListener); 
 
         // Detach bridge
-        bridge.sendSysex = async function() {};
+        bridge.send = async function() {};
         bridge.onReceiveFinish = async function() {};
         bridge.onError = async function() {};
         bridge.midiListener = null;
@@ -155,34 +151,8 @@ class MidiBridgeHandler {
     #listenTo(input, bridge) {
         this.#midi.addListener(
             bridge.midiListener = new MidiListener(input.name, async function(data) {
-                // Check if its a sysex message
-                if (data[0] != 0xf0 || data[data.length - 1] != 0xf7) {
-                    return;
-                }
-                
-                // Pass it to the bridge
-                await bridge.receive({
-                    manufacturerId: Array.from(data).slice(1, 4),
-                    data: Array.from(data).slice(4, data.length - 1)
-                });
+                await bridge.receive(Array.from(data));
             })
         );
-    }
-      
-    /**
-     * Send a sysex message to the passed output Port (instance of MIDIOutput)
-     */
-    async #sendSysex(output, manufacturerId, data) {
-        const msg = [
-            0xf0
-        ].concat(
-            manufacturerId,   
-            data,
-            [
-                0xf7
-            ]
-        );
-
-        await output.send(msg);
     }
 }

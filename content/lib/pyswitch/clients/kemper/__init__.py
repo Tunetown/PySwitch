@@ -13,10 +13,6 @@ from ...ui.elements import TunerDisplay
 NRPN_PRODUCT_TYPE_PROFILER = const(0x00)                     # Kemper Profiler
 NRPN_PRODUCT_TYPE_PROFILER_PLAYER = const(0x02)              # Kemper Profiler Player
 
-# This defines which type of device to control
-# NRPN_PRODUCT_TYPE = NRPN_PRODUCT_TYPE_PROFILER_PLAYER
-
-# NEW:
 PRODUCT_TYPE = NRPN_PRODUCT_TYPE_PROFILER_PLAYER
 
 # Defines how many rigs one bank has
@@ -36,28 +32,8 @@ BANK_COLORS = [
 
 ####################################################################################################################
 
-# Basic values for all NRPN messages
-# NRPN_MANUFACTURER_ID = [0x00, 0x20, 0x33]       # Kemper manufacturer ID
-# NRPN_DEVICE_ID_OMNI = const(0x7f)               # Omni (all devices, only supported mode)
-
-# NEW:
 DEVICE_ID_OMNI = const(0x7f)                  # Omni (all devices, only supported mode)
 INSTANCE_ID = const(0x00)                     # Instance ID for NRPN. The profiler only supports instance 0.
-
-# # NRPN Address pages
-# NRPN_ADDRESS_PAGE_STRINGS = const(0x00)
-
-# # NRPN Function codes
-# NRPN_FUNCTION_REQUEST_SINGLE_PARAMETER = const(0x41)
-# NRPN_FUNCTION_REQUEST_STRING_PARAMETER = const(0x43)
-# NRPN_FUNCTION_REQUEST_EXT_STRING_PARAMETER = const(0x47)
-# NRPN_FUNCTION_RESPONSE_SINGLE_PARAMETER = const(0x01)
-# NRPN_FUNCTION_RESPONSE_STRING_PARAMETER = const(0x03)
-# NRPN_FUNCTION_SET_SINGLE_PARAMETER = const(0x01)
-
-# Generally used NRPN values
-# NRPN_PARAMETER_OFF = const(0)
-# NRPN_PARAMETER_ON = const(1)
 
 # Converts a value in [0..1] to the full NRPN range ([0..16383])
 def NRPN_VALUE(value):
@@ -356,22 +332,8 @@ class KemperMappings:
         return ClientParameterMapping.get(
             name = f"Slot State { KemperEffectSlot.EFFECT_SLOT_NAME[slot_id] } ({channel})",
             set = (176 + channel, KemperEffectSlot.CC_EFFECT_SLOT_ENABLE[slot_id], 0),
-            # ControlChange(
-            #     KemperEffectSlot.CC_EFFECT_SLOT_ENABLE[slot_id], 
-            #     0    # Dummy value, will be overridden
-            # ),
             request = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x41, INSTANCE_ID, KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id], 0x03, 0xf7),
-            # KemperNRPNMessage(               
-            #     0x41, 
-            #     KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id],
-            #     0x03
-            # ),
             response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id], 0x03, 0x00, 0x00, 0xf7)
-            # KemperNRPNMessage(
-            #     0x01,
-            #     KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id],
-            #     0x03
-            # )
         )
     
     # Effect slot type (request only)
@@ -380,17 +342,7 @@ class KemperMappings:
         return ClientParameterMapping.get(
             name = f"Slot Type { KemperEffectSlot.EFFECT_SLOT_NAME[slot_id] }",
             request = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x41, INSTANCE_ID, KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id], 0x00, 0xf7),
-            # KemperNRPNMessage(               
-            #     NRPN_FUNCTION_REQUEST_SINGLE_PARAMETER, 
-            #     KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id],
-            #     0x00
-            # ),
             response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id], 0x00, 0x00, 0x00, 0xf7)
-            # KemperNRPNMessage(               
-            #     NRPN_FUNCTION_RESPONSE_SINGLE_PARAMETER, 
-            #     KemperEffectSlot.NRPN_SLOT_ADDRESS_PAGE[slot_id],
-            #     0x00
-            # )
         )
 
     # Rig date (request only)
@@ -398,17 +350,7 @@ class KemperMappings:
         return ClientParameterMapping.get(
             name = "Rig Date",
             request = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x43, INSTANCE_ID, 0x00, 0x03, 0xf7),
-            # KemperNRPNMessage(               
-            #     0x43, 
-            #     0x00,
-            #     0x03
-            # ),
             response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x03, INSTANCE_ID, 0x00, 0x03, 0xf7),
-            # KemperNRPNMessage(
-            #     0x03, 
-            #     0x00,
-            #     0x03
-            # ),
             type = ClientParameterMapping.PARAMETER_TYPE_STRING
         )
 
@@ -418,17 +360,7 @@ class KemperMappings:
             depends = KemperMappings.RIG_DATE(),
             name = "Rig Name",
             request = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x43, INSTANCE_ID, 0x00, 0x01, 0xf7),
-            # KemperNRPNMessage(               
-            #     0x43,             
-            #     0x00,
-            #     0x01
-            # ),
             response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x03, INSTANCE_ID, 0x00, 0x01, 0xf7),
-            # KemperNRPNMessage(
-            #     0x03, 
-            #     0x00,
-            #     0x01
-            # ),
             type = ClientParameterMapping.PARAMETER_TYPE_STRING
         )
 
@@ -437,16 +369,7 @@ class KemperMappings:
         return ClientParameterMapping.get(
             name = f"Tuner Mode ({channel})",
             set = (176 + channel, 31, 0),
-            # ControlChange(
-            #     31, 
-            #     0    # Dummy value, will be overridden
-            # ),
             response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7f, 0x7e, 0x00, 0x00, 0xf7)
-            # KemperNRPNMessage(
-            #     0x01,
-            #     0x7f,
-            #     0x7e
-            # )
         )
 
     # Tuner note (only sent in bidirectional mode)
@@ -454,11 +377,6 @@ class KemperMappings:
         return ClientParameterMapping.get(
             name = "Tuner Note",
             response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7d, 0x54, 0x00, 0x00, 0xf7)
-            # KemperNRPNMessage(
-            #     0x01,
-            #     0x7d,
-            #     0x54
-            # )
         )
 
     # Tuner deviance from "in tune" (only sent in bidirectional mode)
@@ -466,11 +384,6 @@ class KemperMappings:
         return ClientParameterMapping.get(
             name = "Tuner Deviance",
             response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x01, INSTANCE_ID, 0x7c, 0x0f, 0x00, 0x00, 0xf7)
-            # KemperNRPNMessage(
-            #     0x01,
-            #     0x7c,
-            #     0x0f
-            # )
         )
 
     # Used for state sensing in bidirection communication
@@ -478,12 +391,6 @@ class KemperMappings:
         return ClientParameterMapping.get(
             name = "Sense",
             response = (0xf0, 0x00, 0x20, 0x33, PRODUCT_TYPE, DEVICE_ID_OMNI, 0x7e, INSTANCE_ID, 0x7f, 0xf7)
-            # KemperNRPNExtendedMessage(
-            #     0x7e,
-            #     [
-            #         0x7f
-            #     ]
-            # )
         ) 
     
     # Rig ID

@@ -5,14 +5,10 @@ from lib.pyswitch.midi.buffer import MIDIBuffer, sysex
 
 
 class MockMIDIIn:
-    """Simuliert einen MIDI-Input mit readinto(buf)-Schnittstelle (wie von
-    MIDIBuffer tatsächlich aufgerufen)."""
-
     def __init__(self, initial_data=b""):
         self._queue = bytearray(initial_data)
 
     def feed(self, data):
-        """Weitere Bytes anhängen, als kämen sie neu über die Leitung."""
         self._queue.extend(data)
 
     def readinto(self, buf):
@@ -25,9 +21,6 @@ class MockMIDIIn:
 
 
 class MockMIDIInNoneOnEmpty(MockMIDIIn):
-    """Variante, die bei leerer Queue None statt 0 liefert - manche
-    Geräte-APIs tun das. Der Code fängt das über `or 0` ab."""
-
     def readinto(self, buf):
         if not self._queue:
             return None
@@ -35,8 +28,6 @@ class MockMIDIInNoneOnEmpty(MockMIDIIn):
 
 
 class MockMIDIOut:
-    """Zeichnet alles auf, was geschrieben wird."""
-
     def __init__(self):
         self.messages = []
 
@@ -52,7 +43,6 @@ def make_buffer(data=b"", chunk_size=50, midi_in_cls=MockMIDIIn):
 
 
 def drain(buf, max_msgs=1000):
-    """Ruft receive() auf, bis nichts mehr kommt (max_msgs als Notbremse)."""
     out = []
     for _ in range(max_msgs):
         msg = buf.receive()
@@ -140,26 +130,18 @@ class TestReceiveSysEx(unittest.TestCase):
         self.assertEqual(buf.receive(), bytes([0x90, 0x40, 0x7F]))
         self.assertIsNone(buf.receive())
 
-    def test_realtime_byte_embedded_in_sysex_is_silently_dropped(self):
-        # Laut MIDI-Spezifikation dürfen Realtime-Bytes (z.B. 0xF8 Clock)
-        # jederzeit in einen SysEx-Strom eingestreut werden und sollten von
-        # einem vollständig spec-konformen Parser separat behandelt werden.
-        # Dieser einfache Parser tut das nicht - er verwirft sie stillschweigend
-        # und die SysEx-Nachricht läuft unbeeinflusst weiter. Das ist keine
-        # Beschädigung, aber eine bewusste Vereinfachung - hier dokumentiert.
+    def test_realtime_byte_embedded_in_sysex(self):
+        # Real time bytes
         data = bytes([0xF0, 0x7D, 1, 0xF8, 2, 0xF8, 3, 0xF7])
         buf, _, _ = make_buffer(data)
-        msg = buf.receive()
-        self.assertEqual(msg, bytes([0xF0, 0x7D, 1, 2, 3, 0xF7]))
+        self.assertEqual(buf.receive(), bytes([0xF8]))
+        self.assertEqual(buf.receive(), bytes([0xF8]))
+        self.assertEqual(buf.receive(), bytes([0xF0, 0x7D, 1, 2, 3, 0xF7]))
 
     def test_sysex_without_terminator_never_completes(self):
         buf, midi_in, _ = make_buffer(bytes([0xF0, 0x7D, 1, 2, 3]))
         self.assertIsNone(buf.receive())
-        # Auch nach mehrfachem Pollen ohne neue Daten bleibt es None, es
-        # gibt keinen Crash und keinen Datenverlust - die Teilnachricht
-        # bleibt im internen State erhalten.
         self.assertIsNone(buf.receive())
-        # Kommt der Terminator später nach, wird die Nachricht komplett:
         midi_in.feed([4, 0xF7])
         msg = buf.receive()
         self.assertEqual(msg, bytes([0xF0, 0x7D, 1, 2, 3, 4, 0xF7]))
@@ -228,14 +210,10 @@ class TestReceiveMessageTypes(unittest.TestCase):
         self._assert_single_message_parses_to([0xFF], [0xFF])
 
     def test_undefined_system_common_bytes_are_treated_as_1_byte_messages(self):
-        # 0xF4/0xF5 sind laut Spezifikation "undefined". Der Code faengt sie
-        # ueber den generischen "byte & 0x80"-Zweig als 1-Byte-Nachricht ab.
         self._assert_single_message_parses_to([0xF4], [0xF4])
         self._assert_single_message_parses_to([0xF5], [0xF5])
 
     def test_orphaned_eox_without_preceding_sysex(self):
-        # Ein 0xF7 ausserhalb eines SysEx wird ueber den generischen Zweig
-        # ebenfalls als eigenstaendige 1-Byte-Nachricht behandelt.
         self._assert_single_message_parses_to([0xF7], [0xF7])
 
     def test_all_16_channels_are_recognised_for_note_on(self):
@@ -250,32 +228,45 @@ class TestReceiveMessageTypes(unittest.TestCase):
         buf, midiIn, _ = make_buffer(bytes([
             3, 4, 
             177, 23, 44, 
-            6, 
+            6, 23,
             0xe7, 22, 33, 
-            8, 
             0xf0, 0, 20, 30, 4, 5, 0xf7, 
             0xf8, 
-            6, 
             0xf6,
-            0,
             0xf0
         ]))
         self.assertEqual(buf.receive(), bytes([177, 23, 44]))
+        self.assertEqual(buf.receive(), bytes([177, 6, 23]))
         self.assertEqual(buf.receive(), bytes([0xe7, 22, 33]))
         self.assertEqual(buf.receive(), bytes([0xf0, 0, 20, 30, 4, 5, 0xf7]))
         self.assertEqual(buf.receive(), bytes([0xf8]))
         self.assertEqual(buf.receive(), bytes([0xf6]))
         self.assertIsNone(buf.receive())
 
-        midiIn.feed(bytes([2, 3, 4, 0xf7, 192, 3, 192, 4, 0, 0, 0xf8, 0xf8, 0xf8, 0xf8, 176, 0, 1, 8, 8]))
+        midiIn.feed(bytes([
+            2, 3, 4, 0xf7, 
+            192, 3, 
+            192, 4, 
+            0, 
+            1, 
+            0xf8, 
+            0xf8, 
+            0xf8, 
+            0xf8, 
+            176, 0, 1, 
+            8, 8
+        ]))
         self.assertEqual(buf.receive(), bytes([0xf0, 2, 3, 4, 0xf7]))
         self.assertEqual(buf.receive(), bytes([192, 3]))
         self.assertEqual(buf.receive(), bytes([192, 4]))
+        self.assertEqual(buf.receive(), bytes([192, 0]))
+        self.assertEqual(buf.receive(), bytes([192, 1]))
         self.assertEqual(buf.receive(), bytes([0xf8]))
         self.assertEqual(buf.receive(), bytes([0xf8]))
         self.assertEqual(buf.receive(), bytes([0xf8]))
         self.assertEqual(buf.receive(), bytes([0xf8]))
         self.assertEqual(buf.receive(), bytes([176, 0, 1]))
+        self.assertEqual(buf.receive(), bytes([176, 8, 8]))
         self.assertIsNone(buf.receive())
 
 
@@ -290,35 +281,32 @@ class TestReceiveRobustness(unittest.TestCase):
         stream = bytes([0x05, 0x77, 0x12,
                          0xB0, 10, 20])  
         buf, _, _ = make_buffer(stream)
-        msg = buf.receive()
-        self.assertEqual(msg, bytes([0xB0, 10, 20]))
+        
+        self.assertEqual(buf.receive(), bytes([0xB0, 10, 20]))
+        self.assertIsNone(buf.receive())
 
-    def test_interrupting_status_byte_is_dropped_not_used_to_restart(self):
-        # Kommt waehrend einer Fixed-length-Nachricht ein NEUES Statusbyte
-        # (z.B. weil ein Kabel/Geraet mittendrin eine andere Nachricht
-        # reinschiebt), wird dieses Byte einfach verworfen - es startet
-        # KEINE neue Nachricht und resettet auch nicht die alte. Das
-        # entspricht nicht dem "Running Status reset"-Verhalten aus der
-        # MIDI-Spezifikation, ist hier aber dokumentiertes Ist-Verhalten.
+    def test_interrupting_status_byte(self):
         stream = bytes([0xB0, 10,          # CC, erst 1 Datenbyte
                          0xC3,             # unterbrechendes PC-Statusbyte -> verworfen
-                         20])              # 2. "Datenbyte" der CC
+                         20,               # 2. "Datenbyte" der CC
+                         0xb1, 22, 33      # Further CC
+                         ])
         buf, _, _ = make_buffer(stream)
-        msg = buf.receive()
-        # PC-Statusbyte (0xC3) taucht nirgends auf - es wurde verworfen,
-        # nicht als neue Nachricht gestartet:
-        self.assertEqual(msg, bytes([0xB0, 10, 20]))
+        
+        self.assertEqual(buf.receive(), bytes([0xC3, 20]))
+        self.assertEqual(buf.receive(), bytes([0xB1, 22, 33]))
+        self.assertIsNone(buf.receive())
 
-    def test_no_running_status_support(self):
-        # Dieser Parser unterstuetzt keinen "Running Status" (bei dem
-        # aufeinanderfolgende Nachrichten desselben Typs das Statusbyte
-        # weglassen duerfen). Reine Datenbytes ohne neues Statusbyte nach
-        # einer abgeschlossenen Nachricht werden ignoriert statt als
-        # Fortsetzung interpretiert.
-        stream = bytes([0xB0, 10, 20, 11, 22])  # CC komplett 
+    def test_running_status(self):
+        stream = bytes([0xB0, 10, 20, 11, 22, 55, 66, 0xc3, 2, 4, 5])
         buf, _, _ = make_buffer(stream)
-        msg = buf.receive()
-        self.assertEqual(msg, bytes([0xB0, 10, 20]))
+        
+        self.assertEqual(buf.receive(), bytes([0xB0, 10, 20]))
+        self.assertEqual(buf.receive(), bytes([0xB0, 11, 22]))
+        self.assertEqual(buf.receive(), bytes([0xB0, 55, 66]))
+        self.assertEqual(buf.receive(), bytes([0xc3, 2]))
+        self.assertEqual(buf.receive(), bytes([0xc3, 4]))
+        self.assertEqual(buf.receive(), bytes([0xc3, 5]))
         self.assertIsNone(buf.receive())
 
     def test_incomplete_message_at_end_of_stream_does_not_crash(self):
@@ -419,15 +407,15 @@ class TestSysexHelper(unittest.TestCase):
 
     def test_single_byte_manufacturer_id(self):
         msg = sysex([0x41], [1, 2, 3])
-        self.assertEqual(msg, bytearray([0xF0, 0x41, 1, 2, 3, 0xF7]))
+        self.assertEqual(msg, bytes([0xF0, 0x41, 1, 2, 3, 0xF7]))
 
     def test_three_byte_extended_manufacturer_id(self):
         msg = sysex([0x00, 0x20, 0x29], [10, 20])
-        self.assertEqual(msg, bytearray([0xF0, 0x00, 0x20, 0x29, 10, 20, 0xF7]))
+        self.assertEqual(msg, bytes([0xF0, 0x00, 0x20, 0x29, 10, 20, 0xF7]))
 
     def test_empty_data(self):
         msg = sysex([0x7D], [])
-        self.assertEqual(msg, bytearray([0xF0, 0x7D, 0xF7]))
+        self.assertEqual(msg, bytes([0xF0, 0x7D, 0xF7]))
 
     def test_starts_and_ends_with_sysex_markers(self):
         msg = sysex([0x7D], [1, 2, 3])

@@ -35,6 +35,7 @@ class MIDIBuffer:
         self._next_msg_pos = 0                 # Parsing position in the currently parsed message (0 = status)
         self._next_msg_num_bytes = -1          # Number of bytes for the currently parsed type. -1 means 
                                                # SysEx terminated by 0xf7.
+        self._last_status = None               # Last status byte for running status
 
     # Returns the next available message or None if the buffer is empty. Allows any length of 
     # sysex messages to be received.
@@ -44,6 +45,7 @@ class MIDIBuffer:
             self._next_msg = bytearray([status_byte])
             self._next_msg_pos = 0
             self._next_msg_num_bytes = num_bytes
+            self._last_status = status_byte
 
         # Terminates the parsing of the current message and returns it.
         def end_msg():
@@ -59,24 +61,26 @@ class MIDIBuffer:
         #       performance.
         def parse_status(byte):
             # CC/PC/Sysex
-            if byte & 0xF0 == 0xB0: start_msg(byte, num_bytes = 3)          # CC
-            elif byte & 0xF0 == 0xC0: start_msg(byte, num_bytes = 2)        # PC
+            if byte & 0xF0 == 0xB0: start_msg(byte, num_bytes = 2)          # CC
+            elif byte & 0xF0 == 0xC0: start_msg(byte, num_bytes = 1)        # PC
             elif byte == 0xF0: start_msg(byte, num_bytes = -1)              # SysEx
 
             # Common "live playing" messages with channel
-            elif byte & 0xF0 == 0x90: start_msg(byte, num_bytes = 3)        # Note On
-            elif byte & 0xF0 == 0x80: start_msg(byte, num_bytes = 3)        # Note Off
-            elif byte & 0xF0 == 0xE0: start_msg(byte, num_bytes = 3)        # Pitch bend
-            elif byte & 0xF0 == 0xD0: start_msg(byte, num_bytes = 2)        # Channel pressure
-            elif byte & 0xF0 == 0xA0: start_msg(byte, num_bytes = 3)        # Poly pressure
+            elif byte & 0xF0 == 0x90: start_msg(byte, num_bytes = 2)        # Note On
+            elif byte & 0xF0 == 0x80: start_msg(byte, num_bytes = 2)        # Note Off
+            elif byte & 0xF0 == 0xE0: start_msg(byte, num_bytes = 2)        # Pitch bend
+            elif byte & 0xF0 == 0xD0: start_msg(byte, num_bytes = 1)        # Channel pressure
+            elif byte & 0xF0 == 0xA0: start_msg(byte, num_bytes = 2)        # Poly pressure
             
             # Other system messages with data bytes
-            elif byte == 0xf1: start_msg(byte, num_bytes = 3)               # MIDI Quarter Frame
-            elif byte == 0xf2: start_msg(byte, num_bytes = 3)               # Song Position Pointer
-            elif byte == 0xf3: start_msg(byte, num_bytes = 2)               # Song Select
+            elif byte == 0xf1: start_msg(byte, num_bytes = 2)               # MIDI Quarter Frame
+            elif byte == 0xf2: start_msg(byte, num_bytes = 2)               # Song Position Pointer
+            elif byte == 0xf3: start_msg(byte, num_bytes = 1)               # Song Select
 
-            # Other system messages without arguments: These have the status byte as type and no data.
-            elif byte & 0x80: start_msg(byte, num_bytes = 1)
+            # Realtime messages: These do not open a new msg buffer but are returned immediately
+            elif byte & 0x80: 
+                return bytes([byte])
+                # start_msg(byte, num_bytes = 0)
 
         # Parse the stream. The instance walks through the bytes and remembers the current
         # parsing state in the _next_msg field, which will finally be returned if 
@@ -86,7 +90,7 @@ class MIDIBuffer:
         def parse():
             while True:
                 # Check if there is a completed message
-                if self._next_msg and self._next_msg_pos == self._next_msg_num_bytes - 1:
+                if self._next_msg and self._next_msg_pos == self._next_msg_num_bytes:
                     return end_msg()
 
                 # Are there any bytes left in the receive buffer?
@@ -102,22 +106,44 @@ class MIDIBuffer:
                 if self._next_msg:
                     # We are currently parsing a message which needs at least one byte of data
                     if self._next_msg_num_bytes != -1:
-                        # Fixed length: Append byte to message data.
+                        # Fixed length
                         if byte < 0x80:
+                            # Append byte to message data.
                             self._next_msg.append(byte)
                             self._next_msg_pos += 1
+
+                        else:
+                            # Interrupting status byte: Reset message
+                            rtmsg = parse_status(byte)
+                            if rtmsg:
+                                return rtmsg
                     else:
-                        # SysEx: Check for termination (EOX)
-                        if byte < 0x80:
-                            self._next_msg.append(byte)
-                        elif byte == 0xf7:
+                        # SysEx
+                        if byte == 0xf7:
+                            # Termination (EOX)
                             self._next_msg.append(byte)
                             return end_msg()
 
+                        elif byte < 0x80:
+                            # Data byte
+                            self._next_msg.append(byte)
+
+                        else:
+                            # Interrupting status byte: Reset message
+                            rtmsg = parse_status(byte)
+                            if rtmsg:
+                                return rtmsg
+
                 else:
-                    # Currently no message is parsed: Check for start bytes (Status),
-                    # and start parsing a new message if we have a valid status byte.
-                    parse_status(byte)
+                    # Running Status: Take the last status byte if a data byte is coming along
+                    # and no parsing is done
+                    if byte < 0x80 and self._last_status != None:
+                        parse_status(self._last_status)
+                        self._receive_buffer_pos -= 1
+                    else:
+                        rtmsg = parse_status(byte)
+                        if rtmsg:
+                            return rtmsg
 
         ##################################################################################################
 
@@ -126,19 +152,15 @@ class MIDIBuffer:
 
         # Message found: Return it
         if ret:
-            # print(f"Parsed {list(ret)}")
             return ret
         
         # Buffer empty or no message found: Read next bytes into the receive buffer
         # and try again
         self._receive_buffer_size = self._midi_in.readinto(self._receive_buffer) or 0
-        # if self._receive_buffer_size != 0:
-        #     print(f"Received {list(self._receive_buffer[:self._receive_buffer_size])}")
         self._receive_buffer_pos = 0
 
         ret = parse()
         if ret:
-            # print(f"Parsed {list(ret)}")
             return ret
 
     # Sends a message. The format is described in the class comments. Returns if sending was processed. 
@@ -153,4 +175,4 @@ class MIDIBuffer:
 
 # Creates a sysex message
 def sysex(manufacturer_id, data):
-    return bytearray((240,) + tuple(manufacturer_id) + tuple(data) + (247,))
+    return b'\xf0' + bytes(manufacturer_id) + bytes(data) + b'\xf7'

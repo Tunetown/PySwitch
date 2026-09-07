@@ -23,7 +23,7 @@
 /**
  * Bridge version
  */
-const JMB_VERSION = "0.5.3";
+const JMB_VERSION = "0.6.0";
 
 /**
  * Manufacturer ID of JsMidiBridge
@@ -48,7 +48,7 @@ const JMB_REQUEST_MESSAGE = [0x01];
  * Syntax: [
  *     *PMB_START_MESSAGE,
  *     <CRC-16, 3 half-bytes (only first 16 bits used, calculated over the rest of the message)>,
- *     <Transmission id, 2 half-bytes>,
+ *     <Transmission id, 4 half-bytes>,
  *     <Transmission type, 1 half-byte>,
  *     <Amount of chunks to be expected, 4 half-bytes>
  *     <Path name as utf-8 bytes with no null termination>
@@ -61,7 +61,7 @@ const JMB_START_MESSAGE = [0x02];
  * Syntax: [
  *     *PMB_DATA_MESSAGE,
  *     <CRC-16, 3 half-bytes (only first 16 bits used, calculated over the rest of the message)>,
- *     <Transmission id, 2 half-bytes>,
+ *     <Transmission id, 4 half-bytes>,
  *     <Chunk index, 4 half-bytes>,
  *     <Payload, variable length>
  * ]
@@ -73,7 +73,7 @@ const JMB_DATA_MESSAGE = [0x03];
  * Syntax: [
  *     *PMB_ACK_MESSAGE,
  *     <CRC-16, 3 half-bytes (only first 16 bits used, calculated over the rest of the message)>,
- *     <Transmission id, 2 half-bytes>,
+ *     <Transmission id, 4 half-bytes>,
  *     <Chunk index, 4 half-bytes>
  * ]
  */
@@ -154,7 +154,7 @@ class JsMidiBridge {
     /**
      * Callback to send System Exclusive MIDI messages. Both parameters will be arrays of integers in range [0..127].
      */
-    sendSysex = async function(manufacturerId, data) { };
+    send = async function(manufacturerId, data) { };
 
     /**
      * Callback to get file contents for the given path or file ID. Path will be a string.
@@ -420,29 +420,30 @@ class JsMidiBridge {
 	 */
     async receive(midiMessage) {
         // Check if the message has the necessary attributes
-        if (!midiMessage || !midiMessage.hasOwnProperty("manufacturerId") || !midiMessage.hasOwnProperty("data")) {
+        if (!midiMessage || midiMessage[0] != 0xf0) {
 			return false;
 		}
         
         // Is the message for us?
-        if (JSON.stringify(midiMessage.manufacturerId) != JSON.stringify(JMB_MANUFACTURER_ID)) {
+        if (JSON.stringify(midiMessage.slice(1, 4)) != JSON.stringify(JMB_MANUFACTURER_ID)) {
 			return false;
 		}
         
         // This determines what the sender of the message wants to do
-        const commandId = JSON.stringify(midiMessage.data.slice(
-			0, 
-			JMB_PREFIXES_LENGTH_HALFBYTES
+        const commandId = JSON.stringify(midiMessage.slice(
+			4, 
+			4 + JMB_PREFIXES_LENGTH_HALFBYTES
 		))
 
         // Next there is the checksum for all messages
-        const checksumBytes = new Uint8Array(midiMessage.data.slice(
-			JMB_PREFIXES_LENGTH_HALFBYTES,
-			JMB_PREFIXES_LENGTH_HALFBYTES + JMB_CHECKSUM_LENGTH_HALFBYTES
+        const checksumBytes = new Uint8Array(midiMessage.slice(
+			4 + JMB_PREFIXES_LENGTH_HALFBYTES,
+			4 + JMB_PREFIXES_LENGTH_HALFBYTES + JMB_CHECKSUM_LENGTH_HALFBYTES
 		));
-        let payload = new Uint8Array(midiMessage.data.slice(
-			JMB_PREFIXES_LENGTH_HALFBYTES + JMB_CHECKSUM_LENGTH_HALFBYTES
-		))
+        let payload = new Uint8Array(midiMessage.slice(
+			4 + JMB_PREFIXES_LENGTH_HALFBYTES + JMB_CHECKSUM_LENGTH_HALFBYTES,
+            -1
+		));
 		
 		try {			
             // Checksum test
@@ -680,7 +681,13 @@ class JsMidiBridge {
 		if (!Array.isArray(manufacturerId)) throw new Error("Cannot send manufacturer id " + manufacturerId);
 		if (!Array.isArray(data)) throw new Error("Cannot send data " + data);
 		
-        await this.sendSysex(manufacturerId, data);
+        await this.send(
+            [0xf0].concat(
+                manufacturerId, 
+                data, 
+                [0xf7]
+            )
+        );
 	}
 
 	/**
