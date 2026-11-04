@@ -38,6 +38,53 @@ with patch.dict(sys.modules, {
 
 class TestAnalogAction(unittest.TestCase):
 
+    def test_invalid_sampling_configuration_is_rejected_before_runtime(self):
+        for options, field in (({"max_frame_rate": 0}, "max_frame_rate"),
+                               ({"max_frame_rate": -1}, "max_frame_rate"),
+                               ({"num_steps": 0}, "num_steps"),
+                               ({"num_steps": 65537}, "num_steps"),
+                               ({"auto_calibrate": True, "cal_min_window": 0}, "cal_min_window"),
+                               ({"auto_calibrate": True, "cal_min_window": 0.000001}, "cal_min_window")):
+            with self.subTest(options = options):
+                mapping = MockParameterMapping(set = ControlChange(20, 0))
+                with self.assertRaisesRegex(ValueError, field):
+                    AnalogAction(mapping, **options)
+
+    def test_zero_maximum_default_preview_is_rejected(self):
+        mapping = MockParameterMapping(set = ControlChange(20, 0))
+        label = DisplayLabel(layout = {"font": "foo", "backColor": (0, 0, 0), "textColor": (4, 6, 8)})
+        with self.assertRaisesRegex(ValueError, "max_value"):
+            AnalogAction(mapping, max_value = 0, change_display = label)
+        self.assertFalse(hasattr(label, "value_preview"))
+
+    def test_unused_zero_preview_and_calibration_options_remain_supported(self):
+        mapping = MockParameterMapping(set = ControlChange(20, 0))
+        # A fixed zero output needs no percentage denominator without a display.
+        action = AnalogAction(mapping, max_value = 0, cal_min_window = 0, num_steps = 0.5)
+        appl = MockController()
+        action.init(appl)
+        action._AnalogAction__period = MockPeriodCounter()
+        action._AnalogAction__period.exceed_next_time = True
+        action.process(32768)
+        self.assertEqual(appl.client.set_calls, [{"mapping": mapping, "value": 0}])
+
+        label = DisplayLabel(layout = {"font": "foo", "backColor": (0, 0, 0), "textColor": (4, 6, 8)})
+        converted = AnalogAction(mapping, max_value = 0, change_display = label,
+                                 convert_value = lambda value: "ZERO")
+        converted.init(appl)
+        converted._AnalogAction__period = MockPeriodCounter()
+        converted._AnalogAction__period.exceed_next_time = True
+        converted.process(32768)
+        self.assertEqual(label.override_text, "ZERO")
+
+        # The documented transfer function bypasses quantization.
+        transferred = AnalogAction(mapping, num_steps = 65537, transfer_function = lambda value: 7)
+        transferred.init(appl)
+        transferred._AnalogAction__period = MockPeriodCounter()
+        transferred._AnalogAction__period.exceed_next_time = True
+        transferred.process(32768)
+        self.assertEqual(appl.client.set_calls[-1], {"mapping": mapping, "value": 7})
+
     def test_fix_range(self):
         self._test(
             max_value = 127,

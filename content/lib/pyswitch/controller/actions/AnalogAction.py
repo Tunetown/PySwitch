@@ -31,6 +31,19 @@ class AnalogAction(Updateable):
             if max_value == None:
                 max_value = 127
         
+        if max_frame_rate <= 0:
+            raise ValueError("max_frame_rate must be positive")
+        if num_steps <= 0:
+            raise ValueError("num_steps must be positive")
+        step_width = int(65536 / num_steps)
+        if not transfer_function and step_width == 0:
+            raise ValueError("num_steps exceeds the raw input resolution")
+        cal_min_window = int(65536 * cal_min_window)
+        if auto_calibrate and cal_min_window <= 0:
+            raise ValueError("cal_min_window must span at least one raw input unit")
+        if change_display and not convert_value and max_value == 0:
+            raise ValueError("max_value must be nonzero for percentage preview")
+
         self.id = id
         self.__mapping = mapping
         self.__factor = 65536 / (max_value + 1)
@@ -41,7 +54,7 @@ class AnalogAction(Updateable):
         if self.__enable_callback:
             self.__enable_callback.action = self
 
-        self.__step_width = int(65536 / num_steps)
+        self.__step_width = step_width
         self.__last_value = -1
         self.__transfer_function = transfer_function
         self.__convert_value = convert_value
@@ -49,7 +62,7 @@ class AnalogAction(Updateable):
         self.__calibrate = auto_calibrate
         self.__cal_min = None
         self.__cal_max = None
-        self.__cal_min_window = int(65536 * cal_min_window)
+        self.__cal_min_window = cal_min_window
 
         self.__min_raw_value = min_raw_value   # store the custom min raw value
 
