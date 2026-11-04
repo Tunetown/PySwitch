@@ -125,7 +125,7 @@ class DeviceController {
 
         const bridge = this.#connection.bridge;
         const that = this;
-        return new Promise(async function(resolve, reject) {
+        return new Promise(function(resolve, reject) {
             bridge.throwExceptionsOnReceive = true;
 
             bridge.onReceiveStart = async function(data) {                
@@ -148,7 +148,7 @@ class DeviceController {
                 reject(message)
             }  
     
-            await bridge.request(path, BRIDGE_CHUNK_SIZE_REQUEST);
+            bridge.request(path, BRIDGE_CHUNK_SIZE_REQUEST).catch(reject);
         })        
     }
 
@@ -162,19 +162,20 @@ class DeviceController {
 
         const bridge = this.#connection.bridge;
         const that = this;
-        return new Promise(async function(resolve, reject) {
+        return new Promise(function(resolve, reject) {
             bridge.throwExceptionsOnReceive = true;
+
+            let transmissionId = null;
 
             // Progress (send)
             bridge.onSendProgress = async function(data) {            
                 if (data.type == "error") return;
 
+                if (data.path != path) return;
+                transmissionId = JSON.stringify(Array.from(data.transmissionId));
+
                 that.#controller.ui.progress((data.chunk + 1) / data.numChunks, "Writing " + data.path); // + ": Writing chunk " + data.chunk + " of " + data.numChunks);
 
-                if (data.chunk + 1 == data.numChunks) {
-                    // that.#controller.ui.notifications.message("Successfully saved " + data.path, "S");
-                    resolve();
-                }
             };
 
             bridge.onError = async function(message) {
@@ -182,7 +183,12 @@ class DeviceController {
                 reject(message)
             }  
     
-            await bridge.sendString(path, content, BRIDGE_CHUNK_SIZE_SEND);
+            // The bridge calls this only after the final chunk has been sent and acknowledged.
+            bridge.onReceiveAck = async function(data) {
+                if (JSON.stringify(Array.from(data.transmissionId)) == transmissionId) resolve();
+            };
+
+            bridge.sendString(path, content, BRIDGE_CHUNK_SIZE_SEND).catch(reject);
         })        
     }
 }
