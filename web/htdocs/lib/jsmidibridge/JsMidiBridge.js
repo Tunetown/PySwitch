@@ -235,7 +235,7 @@ class JsMidiBridge {
        
         // Check if file exists and see how many chunks we will need
         let data = await this.getFile(path);
-        if (data === null || data.length == 0) {
+        if (data === null) {
             throw new Error(path + " not found or empty");
         }
 
@@ -512,7 +512,6 @@ class JsMidiBridge {
         // Create a new transmission in the list
         const transmission = {
             lastChunk: -1,
-            time: Date.now(),
             id: transmissionIdBytes,
             type: payload.slice(0, JMB_PREFIXES_LENGTH_HALFBYTES),
             amountChunks: this.bytes2number(payload.slice(JMB_PREFIXES_LENGTH_HALFBYTES, JMB_NUMBER_SIZE_HALFBYTES + JMB_PREFIXES_LENGTH_HALFBYTES)),
