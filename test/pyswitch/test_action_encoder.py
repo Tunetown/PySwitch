@@ -270,6 +270,28 @@ class TestEncoderAction(unittest.TestCase):
                 mapping.value = exp_value
 
 
+    def test_negative_position_is_not_an_initialization_marker(self):
+        for cc_mapping in [True, False]:
+            self._test(
+                cc_mapping = cc_mapping,
+                max_value = 127,
+                step_width = 1,
+                start_pos = 0,
+                start_value = 20,
+                data = [(-1, 19), (0, 20), (1, 21)]
+            )
+
+    def test_first_position_can_be_minus_one(self):
+        for cc_mapping in [True, False]:
+            self._test(
+                cc_mapping = cc_mapping,
+                max_value = 127,
+                step_width = 1,
+                start_pos = -1,
+                start_value = 20,
+                data = [(0, 21), (-1, 20), (0, 21)]
+            )
+
     def test_none_value(self):
         mapping = MockParameterMapping(
             set = SystemExclusive(
