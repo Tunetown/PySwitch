@@ -200,6 +200,8 @@ class EncoderAction(Updateable):
         self.__preselect_active = False
 
         self._last_value = self._get_value()
+        if self.__preselect and self._last_value is None:
+            self._last_value = 0
 
         if self.__preview:
             self.__preview.reset(immediately = immediately)

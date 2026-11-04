@@ -526,6 +526,57 @@ class TestEncoderAction(unittest.TestCase):
         self.assertEqual(len(appl.client.set_calls), 5)
         
 
+    def test_preselect_cancel_before_feedback_uses_zero_baseline(self):
+        for message in (ControlChange(20, 0), SystemExclusive([0, 0x20, 0x33], [1, 0, 4, 1, 0, 0])):
+            with self.subTest(message = type(message).__name__):
+                mapping = MockParameterMapping(set = message)
+                accept = ENCODER_BUTTON()
+                action = EncoderAction(mapping, accept_action = accept, step_width = 1)
+                appl = MockController()
+                action.init(appl)
+
+                action.process(0)
+                action.cancel()
+                self.assertIsNone(mapping.value)
+                action.accept()
+                self.assertEqual(appl.client.set_calls, [])
+
+                action.process(2)
+                self.assertEqual(appl.client.set_calls, [])
+                action.accept()
+                action.accept()
+                self.assertEqual(appl.client.set_calls, [{"mapping": mapping, "value": 2}])
+
+    def test_unknown_cancel_negative_motion_stays_inactive_at_zero(self):
+        mapping = MockParameterMapping(set = ControlChange(20, 0))
+        action = EncoderAction(mapping, accept_action = ENCODER_BUTTON(), step_width = 1)
+        appl = MockController()
+        action.init(appl)
+        action.process(10)
+        action.cancel()
+
+        action.process(9)
+        action.accept()
+        self.assertEqual(appl.client.set_calls, [])
+        action.process(11)
+        action.accept()
+        self.assertEqual(appl.client.set_calls, [{"mapping": mapping, "value": 2}])
+
+    def test_preselect_cancel_keeps_known_feedback_baseline(self):
+        mapping = MockParameterMapping(set = ControlChange(20, 0))
+        mapping.value = 20
+        action = EncoderAction(mapping, accept_action = ENCODER_BUTTON(), step_width = 1)
+        appl = MockController()
+        action.init(appl)
+        action.process(0)
+        action.process(5)
+        action.cancel()
+        action.accept()
+        self.assertEqual(appl.client.set_calls, [])
+        action.process(7)
+        action.accept()
+        self.assertEqual(appl.client.set_calls, [{"mapping": mapping, "value": 22}])
+
     def test_preselect(self):
         mapping = MockParameterMapping(
             set = SystemExclusive(
