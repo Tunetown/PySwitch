@@ -161,10 +161,15 @@ class MidiBridgeHandler {
                 }
                 
                 // Pass it to the bridge
-                await bridge.receive({
-                    manufacturerId: Array.from(data).slice(1, 4),
-                    data: Array.from(data).slice(4, data.length - 1)
-                });
+                try {
+                    await bridge.receive({
+                        manufacturerId: Array.from(data).slice(1, 4),
+                        data: Array.from(data).slice(4, data.length - 1)
+                    });
+                } catch (error) {
+                    if (bridge.throwExceptionsOnReceive) await bridge.onError(error);
+                    throw error;
+                }
             })
         );
     }
