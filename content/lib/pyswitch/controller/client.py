@@ -329,6 +329,10 @@ class Client: #(ClientRequestListener):
     def _register_mapping(self, mapping, listener, send):
         # Add request to the list
         req = self.get_matching_request(mapping)
+        if req and req.finished and listener:
+            # Leave the finished entry for receive() to clean up. A dependency
+            # callback may be registering while that same list is being walked.
+            req = None
         if not req:
             # New request
             req = self.__create_request(mapping)
@@ -395,11 +399,14 @@ class Client: #(ClientRequestListener):
     # request has been found.
     #@RuntimeStatistics.measure
     def get_matching_request(self, mapping):
+        finished = None
         for request in self.__requests:
             if request.mapping == mapping:
-                return request
-            
-        return None
+                if not request.finished:
+                    return request
+                finished = request
+
+        return finished
 
     # Remove all finished requests, and terminate the ones which took too long already
     def __cleanup_requests(self):
