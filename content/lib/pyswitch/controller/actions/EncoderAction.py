@@ -108,6 +108,11 @@ class EncoderAction(Updateable):
     def _set_value(self, value):
         self._mapping.value = value
 
+    # Override to wait for feedback instead of initializing unknown values.
+    def _initialize_value(self):
+        self._set_value(0)
+        return True
+
     # Process the current encoder position
     def process(self, position):
         # Scale by step width
@@ -131,7 +136,9 @@ class EncoderAction(Updateable):
 
         # No value yet
         if self._get_value() == None:
-            self._set_value(0)
+            if not self._initialize_value():
+                self.__last_pos = position
+                return
             
         # Get the delta value
         add_value = position - self.__last_pos

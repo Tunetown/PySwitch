@@ -61,7 +61,12 @@ class _BankSelectEncoderAction(EncoderAction):
 
         self._appl.shared["preselectedBank"] = self._last_value
 
+    def _initialize_value(self):
+        return False
+
     def _get_value(self):
+        if self._mapping.value == None:
+            return None
         return int(self._mapping.value / NUM_RIGS_PER_BANK)
 
     def _set_value(self, value):
