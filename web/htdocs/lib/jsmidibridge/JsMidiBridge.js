@@ -235,13 +235,12 @@ class JsMidiBridge {
        
         // Check if file exists and see how many chunks we will need
         let data = await this.getFile(path);
-        if (data === null) {
+        if (data === null || data.length == 0) {
             throw new Error(path + " not found or empty");
         }
 
         await this.#startSendTransmission({
             path: path, 
-            amountChunks: Math.ceil(data.length / chunkSize),
             chunkSize: chunkSize, 
             message: data,
             type: JMB_TRANSMISSION_TYPE_FILE
@@ -263,7 +262,6 @@ class JsMidiBridge {
 
         await this.#startSendTransmission({
             path: path, 
-            amountChunks: Math.ceil(message.length / chunkSize),
             chunkSize: chunkSize,             
             message: message,
             type: transmission_type
@@ -275,6 +273,9 @@ class JsMidiBridge {
      * Adds a send transmission definition and sends the start message
      */
     async #startSendTransmission(transmission) {
+        // Count and split complete Unicode characters, as the Python bridge does.
+        transmission.message = Array.from(transmission.message);
+        transmission.amountChunks = Math.ceil(transmission.message.length / transmission.chunkSize);
         transmission.nextChunk = 0;
         transmission.id = this.generateTransmissionId();
 
@@ -295,7 +296,7 @@ class JsMidiBridge {
      */
     async #sendNextChunk(transmission) {
         // Read data        
-        const chunk = transmission.message.slice(0, transmission.chunkSize);
+        const chunk = transmission.message.slice(0, transmission.chunkSize).join("");
         transmission.message = transmission.message.slice(transmission.chunkSize);
         
         await this.#sendChunk(transmission, chunk);
@@ -511,6 +512,7 @@ class JsMidiBridge {
         // Create a new transmission in the list
         const transmission = {
             lastChunk: -1,
+            time: Date.now(),
             id: transmissionIdBytes,
             type: payload.slice(0, JMB_PREFIXES_LENGTH_HALFBYTES),
             amountChunks: this.bytes2number(payload.slice(JMB_PREFIXES_LENGTH_HALFBYTES, JMB_NUMBER_SIZE_HALFBYTES + JMB_PREFIXES_LENGTH_HALFBYTES)),
@@ -785,7 +787,7 @@ class JsMidiBridge {
 	 */ 
     bytes2string(data) {
 		const bytes = this.unpackBytes(data);
-		let utf8Decode = new TextDecoder();
+		let utf8Decode = new TextDecoder("utf-8", { ignoreBOM: true });
 		return utf8Decode.decode(new Uint8Array(bytes));
     }    
 
