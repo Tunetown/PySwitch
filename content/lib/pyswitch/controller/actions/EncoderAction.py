@@ -47,7 +47,7 @@ class EncoderAction(Updateable):
         self.__max_value = max_value
         self.__step_width = step_width
 
-        self.__last_pos = -1
+        self.__last_pos = None
         self._last_value = -1
         self.__convert_value = convert_value
 
@@ -114,7 +114,7 @@ class EncoderAction(Updateable):
         position = int(position * self.__step_width)
 
         # Initialize
-        if self.__last_pos == -1:
+        if self.__last_pos is None:
             self.__last_pos = position
 
         # Reset preview if the reset mapping had a value change

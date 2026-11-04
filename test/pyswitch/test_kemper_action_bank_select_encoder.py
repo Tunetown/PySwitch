@@ -31,6 +31,24 @@ with patch.dict(sys.modules, {
     
 class TestKemperActionBankSelectEncoder(unittest.TestCase):
 
+    def test_negative_position_can_return_to_the_original_bank(self):
+        action = ENCODER_BANK_SELECT()
+        mapping = action._mapping
+        previous_value = mapping.value
+        self.addCleanup(setattr, mapping, "value", previous_value)
+        mapping.value = 40
+        appl = MockController()
+        action.init(appl)
+
+        action.process(0)
+        action.process(-2)
+        self.assertEqual(appl.client.last_sent_message["value"], 7)
+        self.assertEqual(mapping.value, 35)
+
+        action.process(0)
+        self.assertEqual(appl.client.last_sent_message["value"], 8)
+        self.assertEqual(mapping.value, 40)
+
     def test(self):
         display = DisplayLabel(layout = {
             "font": "foo"
