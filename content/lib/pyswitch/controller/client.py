@@ -92,9 +92,19 @@ class ClientParameterMapping:
             
             # The values starting from index 6 are the value of the response.
             if self.type == self.PARAMETER_TYPE_STRING:
+                if len(midi_message.data) < 7 or midi_message.data[-1] != 0:
+                    return None
                 # Take as string
                 return ''.join(chr(int(c)) for c in list(midi_message.data[6:-1]))
             else:
+                if len(midi_message.data) < 8:
+                    # Tempo Pulse uses one value byte; other numeric responses use two.
+                    if not (len(midi_message.data) == 7
+                            and midi_message.data[2] == 0x01
+                            and midi_message.data[3] == 0x00
+                            and midi_message.data[4] == 0x7c
+                            and midi_message.data[5] == 0x00):
+                        return None
                 # Decode 14-bit value to int
                 return midi_message.data[-2] * 128 + midi_message.data[-1]
 
