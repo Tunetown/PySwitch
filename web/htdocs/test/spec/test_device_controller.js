@@ -27,6 +27,39 @@ describe('DeviceController file operations', function() {
         });
     }
 
+    function listenConnection() {
+        const packets = [];
+        let listener = null;
+        const output = { name: 'test', send: async function(data) { packets.push(data); } };
+        const midi = {
+            midiAccess: {
+                inputs: new Map([['input', { name: 'test' }]]),
+                outputs: new Map([['output', output]])
+            },
+            addListener: function(value) { listener = value; },
+            removeListener: function() {}
+        };
+        const device = new DeviceController({ midi: midi, ui: { progress: function() {} }, message: function() {} });
+        const connect = spyOn(device.bridge, 'connect').and.callThrough();
+        const ready = device.connect('test');
+        return { device: device, output: output, packets: packets, connect: connect, ready: ready,
+            state: track(ready), receive: function(data) { return listener.receive('test', data); } };
+    }
+
+    async function finishConnection(connection) {
+        const peer = new JsMidiBridge();
+        const incoming = [];
+        peer.sendSysex = async function(manufacturerId, data) {
+            incoming.push([240].concat(manufacturerId, data, [247]));
+        };
+        await peer.error('Ping path not found');
+        for (const packet of incoming) await connection.receive(packet);
+        await connection.ready;
+        const result = await connection.connect.calls.mostRecent().returnValue;
+        connection.packets.length = 0;
+        return result.bridge;
+    }
+
     beforeEach(async function() {
         spyOn(console, 'error');
         bridge = new JsMidiBridge();
@@ -147,5 +180,48 @@ describe('DeviceController file operations', function() {
         await acknowledge(packets[3]);
         await flush();
         expect(result.state).toBe('fulfilled');
+    });
+    it('rejects a save when an ACK-driven later chunk transport fails', async function() {
+        const connection = listenConnection();
+        await flush();
+        const liveBridge = await finishConnection(connection);
+        const error = new Error('Later chunk transport failed');
+        connection.output.send = async function(data) {
+            connection.packets.push(data);
+            if (data[4] == 3 && liveBridge.bytes2number(new Uint8Array(data.slice(12, 16))) == 1) throw error;
+        };
+        const result = track(connection.device.saveFile('inputs.py', 'x'.repeat(BRIDGE_CHUNK_SIZE_SEND + 1)));
+        await flush();
+        const payload = connection.packets[1].slice(8, 16);
+        const ack = [240, 0, 124, 125, 4].concat(Array.from(liveBridge.getChecksum(new Uint8Array(payload))), payload, [247]);
+        await expectAsync(connection.receive(ack)).toBeRejectedWith(error);
+        await flush();
+        expect(result.state).toBe('rejected');
+        expect(result.error).toBe(error);
+    });
+
+    it('rejects an active read when the listener receives an invalid peer message', async function() {
+        const connection = listenConnection();
+        await flush();
+        await finishConnection(connection);
+        const result = track(connection.device.loadFile('inputs.py'));
+        await flush();
+        await expectAsync(connection.receive([240, 0, 124, 125, 1, 0, 0, 0, 1, 247])).toBeRejectedWithError('Checksum mismatch');
+        await flush();
+        expect(result.state).toBe('rejected');
+        expect(result.error && result.error.message).toBe('Checksum mismatch');
+    });
+
+    it('does not turn a local listener failure into a successful connection', async function() {
+        const connection = listenConnection();
+        await flush();
+        const error = new Error('Handshake response transport failed');
+        connection.output.send = async function() { throw error; };
+        await expectAsync(connection.receive([240, 0, 124, 125, 1, 0, 0, 0, 1, 247])).toBeRejectedWith(error);
+        await flush();
+        expect(connection.state.state).toBe('pending');
+        connection.output.send = async function(data) { connection.packets.push(data); };
+        await finishConnection(connection);
+        expect(connection.state.state).toBe('fulfilled');
     });
 });
