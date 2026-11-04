@@ -115,8 +115,8 @@ class PySwitchParser:
             raise Exception("No data loaded")
 
         # Remove first assign as this can lead to endless recursion and is not relevant anyway
-        splashes_py = splashes.to_py()
-        if "assign" in splashes_py: 
+        splashes_py = splashes if isinstance(splashes, str) else splashes.to_py()
+        if isinstance(splashes_py, dict) and "assign" in splashes_py:
             splashes_py["assign"] = None
 
         splashes_node = CodeGenerator(
