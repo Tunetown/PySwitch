@@ -180,6 +180,42 @@ class TestAnalogAction(unittest.TestCase):
             transfer_function = transfer
         )
         
+    def test_calibrated_transfer_input_stays_in_documented_range(self):
+        for cc_mapping, divisor in ((True, 512), (False, 4)):
+            with self.subTest(cc_mapping=cc_mapping):
+                message = ControlChange(20, 0) if cc_mapping else SystemExclusive(
+                    manufacturer_id = [0, 0x20, 0x33],
+                    data = [2, 0x7f, 1, 0, 10, 4]
+                )
+                mapping = MockParameterMapping(set = message)
+                inputs = []
+
+                def transfer(value):
+                    inputs.append(value)
+                    return int(value / divisor)
+
+                action = AnalogAction(
+                    mapping = mapping,
+                    auto_calibrate = True,
+                    transfer_function = transfer
+                )
+                appl = MockController()
+                action.init(appl)
+                action._AnalogAction__period = MockPeriodCounter()
+                for value in (1000, 17384, 9192, 1000):
+                    action._AnalogAction__period.exceed_next_time = True
+                    action.process(value)
+
+                # The first sample only establishes the calibration window.
+                self.assertEqual(inputs, [65535, 32768, 0])
+                self.assertEqual(
+                    [call["value"] for call in appl.client.set_calls],
+                    [int(65535 / divisor), int(32768 / divisor), 0]
+                )
+                self.assertEqual(action._AnalogAction__cal_min, 1000)
+                self.assertEqual(action._AnalogAction__cal_max, 17384)
+                self.assertEqual(action._AnalogAction__cal_factor, 4)
+
     def _test(self, data, max_value, num_steps = 1, transfer_function = None, cc_mapping = False):
         if not cc_mapping:
             mapping = MockParameterMapping(

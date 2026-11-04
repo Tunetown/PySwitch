@@ -104,6 +104,9 @@ class AnalogAction(Updateable):
             # Determine the output value to be sent from the (possibly calibrated) input
             # value in range [0..65535]
             if self.__transfer_function:
+                # Calibration can reach 65536, outside the callback's raw range.
+                if self.__calibrate and value > 65535:
+                    value = 65535
                 # Use an external transfer function
                 v = self.__transfer_function(value)
             else:
