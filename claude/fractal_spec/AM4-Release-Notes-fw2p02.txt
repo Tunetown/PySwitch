@@ -1,0 +1,191 @@
+                                                                                                   IMPORTANT: Always back up
+                                                                                                   your Presets and System using
+                                                                                                   Fractal-Bot built into AM4-Edit
+                                                                                                   before updating firmware.
+
+
+
+
+VERSION 2.02 | September 2, 2026
+The AM4 is now in sync with Axe-FX III v32.06. This version uses DynaCabs version 1.09.
+
+
+NEW FEATURES & IMPROVEMENTS
+    •   New amp models Brit JVM Crunch Green, Orange and Red models.
+    •   New “Large Names” Home Page Style – A new LARGE NAMES option under SETUP > Global Settings >
+        Home Page Style provides an alternative Home Page designed for improved visibility from a standing
+        position. The display automatically changes to match the current footswitch mode:
+
+                    §     Preset Mode shows the four presets of the current bank in large text, plus the current
+                          scene name and block icons in small text.
+                     § Scene Mode shows the four scenes of the current preset in large text, plus the current
+                          preset name and block icons in small text.
+                     § Effects Mode shows the block icons prominently, plus current preset and scene names.
+             o Turning SELECT still changes the current mode.
+             o In Preset and Scene modes, knobs A and B still access to the Preset Directory and Scene Picker.
+    •   New Large Tempo BPM Display – When you use Tap Tempo to adjust the tempo, the current BPM is shown
+        in a large overlay designed to be easily read from a standing position.
+
+FIXES
+    •   USB 1/2 Playback levels increased, including the automatic reset of USB Playback Level to 0.00 dB and the
+        warning that USB playback can now be louder.
+    •   Amp Mode remote control fix: when a remote Pedal/MIDI CC is used to enter Amp Mode, the same control
+        can now be used to exit it.
+    •   Transformer Drive fix: fixed crackling when adjusting Transformer Drive via the Editor.
+    •   Plexi 100W 1970 fix: Normal and Treble gain functions were swapped.
+    •   Tuner mute is now consistently executed when the tuner is launched.
+    •   Footswitch LEDs now restore consistently when exiting the Tuner
+    •   The EDIT LED is now set consistently when changing presets from the editor.
+    •   System Settings backup should now restore correctly in all situations.
+    •   Removed the extraneous “Mix” control in the Volume block.
+    •   Flanger: added missing “Quantize” parameter to Expert edit.
+    •   Fixed incorrect values and displays for some expert reverb parameters (Early Decay, Dispersion, Width, etc.)
+        on certain reverb types.
+    •   Fixed a case where the EDIT light was not cleared after saving.
+    •   Fixed the behavior of the Select knob on the Scene Select page.
+
+    * * *
+RELEASE NOTES HISTORY
+VERSION 2.01 | June 4, 2026
+  •     The AM4 is now up to date with Axe-Fx III firmware 32.05.
+            o General improvements to preamp and power amp modeling.
+            o Updated Amp models based for enhanced feel and a more open, responsive sound.
+                     § Existing presets are automatically updated when you load them.
+            o Added “6160 Block Clean” model
+            o Small tweaks to models based on 5150-style amps.
+            o Added “Deluxe Tweed Normal” model; renamed “Deluxe Tweed” to “Deluxe Tweed Bright”.
+            o Exposed the gain controls for the channel not currently in use in the non-jumpered Deluxe Tweed,
+                5F8 Tweed, and 59 Bassguy models. As on the original amps, the unused channel gain control can
+                interact with the circuit and subtly affect the tone.
+  •     Improved Chorus block:
+            o NEW MODELS: Japan CE-1 Chorus, Japan CE-2 Bass, Japan CH-1, MX134 Stereo, MX234, Rockguy
+                (X100), Small Copy. Some models now include new chorus tone controls.
+            o “Vibrato 1” reworked as “Vibrato”; “Vibrato 2” reworked as “Japan CE-1 Vibrato”.
+            o Japan CE-2 has been remastered.
+            o New expert parameters to set minimum delay time and range.
+  •     New: Set the Mode via MIDI or PEDAL jacks Find these options in SETUP > MIDI/Remote.
+            o Direct mode selection. You can now assign a PEDAL jack or MIDI CC to directly engage Preset Mode,
+                Scene Mode, FX Mode, Amp Mode, Tuner, or the Mode Select page. Any non-zero value on the assigned
+                CC—or any press of a connected switch—will activate the corresponding mode:
+            o Another new option “Mode Via CC Value” uses the value of an assigned MIDI CC to set the mode:
+                0: Mode Select; 1: Preset Mode; 2: Scene Mode; 3: FX Mode
+                4: Tuner/Tap Tempo Mode; 5: Amp Mode; 6-127: (reserved)
+  •     The options Preset Inc/Dec, Scene Inc/Dec and Tuner now support PEDAL 1 and PEDAL 2.
+
+FIXES
+  •     Fixed - Saving the preset while in AMP mode no longer exits amp mode.
+  •     Fixed an issue that could cause the Amp block Input EQ to stop working when Definition is set to 0.
+  •     The correct amp Speaker Impedance curve is now loaded when using the Global Impedance curve.
+  •     Fixed an issue that could set Amp level to -80 dB after copy/pasting the amp block.
+  •     Fixed an issue where an incorrect preset could be loaded after saving to a new location.
+  •     Fixed an issue where the display of the AM4 would not refresh correctly after switching presets in AM4-Edit.
+  •     Fixed excessive blocking distortion in the Supertweed model.
+  •     When GIG MODE is disabled, footswitches 2+3 now work to select AMP MODE in the Mode Select screen.
+  •     Fixed “zipper noise” during rapid changes of global Amp Block Out Volume.
+  •     Corrected issues that could sometimes prevent the EDITED indicator “LED” from displaying properly.
+  •     Changing the Global Speaker Impedance no longer causes a volume drop.
+  •     Corrected a bug that was corrupting the Diode clipping for several drive models including Pi Fuzz.
+  •     Fixed an issue where loading older presets on new firmware could cause amp block issues.
+VERSION 2.00 | March 20, 2026
+NEW FEATURES & IMPROVEMENTS
+              • The AM4 is now up to date with Axe-Fx III firmware 32.02, featuring improved modeling, enhanced
+                accuracy, improved aliasing performance, and more. (See details at the end of these notes.) This
+                version also includes small fixes planned for the upcoming Axe-Fx 32.03 release. Note that some
+                presets may show a slight increase in CPU usage.
+  •     NEW! Swedish Metal Drive pedal model based on a Boss™ HM-2 Heavy Metal.
+        The expert Diode Type now also includes the 1S2473 from this model.
+  •     The Input Gate and Gate block now allow faster Attack times down to 0.1.
+        Note: Setting Attack and Release times too fast in any gate can cause distortion.
+  •     Changed default values of Dual Head Tape type in Delay block to be a bit more musical.
+  •     NEW SPDIF Input Mode option. This setting, available only when INPUT SOURCE is set to SPDIF, determines
+        how incoming SPDIF signals are handled by the AM4 (Left Only, Right Only, L+R Sum, Stereo). The option
+        “LEFT ONLY” will be of special interest to those using the AM4 in a 4CM configuration with the VP4, as it
+        can be used to reduce overall latency. A diagram is provided on the next page.
+
+FIXES
+  •     Fixed an issue where amp level was sometimes not set correctly after a channel change.
+  •     Fixed an issue where Speaker Impedance values were incorrect when using AM4-Edit copy/paste
+  •     Improved the performance of tempo from external MIDI clock, which can push-pull during preset changes.
+  •     Fixed an issue with Preset Changes while Loading Cabs with Ignore Redundant PC set to ON.
+
+NOTES FROM AXE-FX UPDATES
+  •     Double Verb, Vibrato Verb and Super Verb models: the gain Taper was previously 20A, and is now “2-35”.
+        Audition presets and adjust as necessary by slightly lowering the gain.
+  •     Improved power tube grid modeling in Amp block.
+  •     Improved frequency response accuracy for amp models.
+  •     Added “Transistor” Power Tube Type. This is now the default type for the Jazz 120 amp model and models a transistor output stage.
+        Existing presets using this model are automatically updated.
+  •     Fixed wrong gain pot taper on all Double Verb, Vibrato Verb and Super Verb models.
+        Taper was previously 20A, now “2-35”. Remastered models. Audition presets and adjust as necessary.
+  •     Fixed an issue with PVH 6160, PVH 6160+ Lead and 5153 Red amp models. These models have been remastered accordingly.
+        It is recommended to do a soft reset to load the new default values.
+  •     Fixed wrong resistor value in 5153 100W Green amp model. Audition presets and adjust as necessary.
+  •     Fixed wrong resistor value in 5153 100W Stealth Blue model. Audition presets and adjust as necessary.
+  •     Fixed wrong B+ voltage in Friedman BE/HBE models (due to wrong dropping resistor value). These models have been remastered accordingly. The default Negative Feedback has
+        been changed to being commensurate with being taken from the 4-ohm tap. Note that the first-generation BE-100 had the feedback off the speaker jack. This was then changed to the
+        4-ohm tap. The latest version has a three-way switch to select between 4/8/16-ohm taps. Audition presets and adjust as necessary.
+  •     Fixed wrong Master Volume taper in Solo 100 amp models. Remastered the models. Audition presets and adjust as necessary.
+  •     Fixed wrong bass taper in Band-Commander amp model. Audition presets and adjust as necessary.
+  •     Fixed wrong master volume taper in Mr Z MZ-38 amp model. Audition presets and adjust as necessary.
+  •     Fixed preset updater not correctly setting Preamp Hardness if Amp block using EF86 tube type.
+  •     Improved Amp block preamp modeling.
+  •     Fixed wrong Overdrive Volume taper in Fox ODS models. Audition presets and adjust as necessary.
+  •     Fixed an issue with the Euro Uber model where certain combinations of Presence and Depth can cause
+  •     Various other fixes and improvements.
+AM4 + VP4 4CM WITH SPDIF
+For 4CM with a VP4, follow the instructions on p. 24 of the AM4 Owner’s Manual, but connect the SPDIF Output of the VP4 to the SPDIF Input of the AM4.
+This carries the VP4 PRE-FX OUT signal digitally and reduces overall latency by eliminating one round-trip conversion.
+
+Remember to always make all connections and settings before powering on speakers. Power up with all levels down, then raise them gradually.
+VERSION 1.01 | NOVEMBER 2025
+This was the initial release, which had no notes. Please see the AM4 Quickstart and Owner’s Manual.
+
+
+
+VERSION 1.02 | January 15, 2026
+NEW FEATURES & IMPROVEMENTS
+    •   The AM4 is now up to date with Axe-Fx III firmware release 31.03.
+    •   New Deluxe 6G3 amp model based on the bright channel of a 6G4 “Brownface” Deluxe.
+    •   New Citrus Juicer compressor model, based on the Dan Armstrong Orange Squeezer™. The original pedal
+        has a single knob, but the model adds additional parameters for extended flexibility.
+        On the original, the ratio and threshold vary with the specific components used and the internal bias trim. As
+        a starting point, set Threshold to –26.0 dB and Compression to 8.0, then adjust to taste.
+        The new Half-Wave detector type used by this model is also available for other compressor types, offering
+        different attack and release behavior and a slightly grittier character.
+    •   Improved Amp block preamp modeling for more accurate response when the amp is driven harder—for
+        example, when using a boost or overdrive.
+    •   Improved Amp block phase inverter modeling - Went through every model with a fine-toothed comb and
+        adjusted power amp and phase inverter parameters as needed to reflect new modeling.
+    •   Analog Bypass is now available on the AM4. When engaged, the signal passes directly from input to output
+        with no digital conversion, processing, or latency. Analog Bypass can be controlled via a footswitch, MIDI,
+        or an external pedal/switch, and it can also be set to engage automatically when all four blocks are
+        bypassed by using SETUP > Global Settings > Automatic AM4 Bypass.
+    •   Improved “Dwell” in spring reverb types.
+    •   The default startup mode is now Preset Mode instead of FX Mode.
+    •   New warning when an external S/PDIF clock is detected at a frequency other than 48 kHz.
+    •   New “USB 3/4 Record Source” option – Allows USB channels 3/4 to be set to NONE so the input DI signal is
+        not sent to the computer. This option is provided specifically for use with software such as OBS and other
+        streaming or recording applications that cannot select individual USB inputs and instead listen to all
+        available USB channels, which could otherwise result in the DI signal being unintentionally blended with the
+        processed AM4 output.
+    •   v
+
+FIXES
+    •   Corrected the order of Treble Gain / Normal Gain in some amps.
+    •   Fixed the expert Cab Preamp VU meter.
+    •   Fixed an issue that would cause Preamp Tube Type to not update when selecting certain models/modes.
+    •   Fixed incorrect default DynaCabs for Class-A 30W and Band Commander.
+    •   The hardware now follows along perfectly when the amp type is changed in AM4-Edit.
+    •   Changing the Amp Type from AM4-Edit does not trigger a refresh of the control UI.
+    •   Very long preset names no longer cause a problem for the preset picker page.
+    •   Removed non-working stereo spread control from mono spring reverbs.
+    •   Reset System parameters now correctly sets SPDIF In Level to 0.00.
+    •   Fixed interaction of metronome and FX bypass remote switching.
+    •   Fixed an issue caused by certain diode settings in the Drive block.
+    •   Small fixes to the Deluxe Tweed, Band Commander, and Herbie amp models, and Pi Fuzz drive types.
+    •   Corrected the level for USB 3/4 for recording a DI.
+•   Corrected an issue that could occur when changing amp type while DynaCabs were loading.
+•   Fixed Amp GEQ display when it is toggled on/off by a modifier.
+•   Speaker Impedance Curves are now auto-set correctly when changing channels in all cases.
+•   Various other fixes and improvements.
+

@@ -1,0 +1,1079 @@
+Contents
+
+1 Axe-Fx III and FM9
+
+2 FM3
+
+3 FC controllers
+
+4 Legacy devices
+
+4.1 Axe-Fx II
+
+4.2 AX8
+
+4.3 FX8
+
+5 MIDI/Remote menu
+
+5.1 MIDI Channel
+
+5.2 MIDI Thru
+
+5.3 Display Offset
+
+5.4 Scene Revert
+
+5.5 Effect Bypass Mode
+
+5.6 Send Realtime SysEx
+
+5.7 Program Change
+
+5.8 Ignore Redundant PC
+
+5.9 Send MIDI PC
+
+5.10 MIDI PC Offset
+
+5.11 PC Mapping
+
+5.12 Initial Value External Controllers
+
+5.13 Tuner on heel down
+
+5.14 More parameters
+
+6 Send a MIDI Program Change
+
+6.1 When loading a preset
+
+6.2 When switching scenes
+
+6.3 With a Control Switch
+
+7 MIDI Clock
+
+8 MIDI System Exclusive (SysEx)
+
+9 Tips, tricks and troubleshooting
+
+9.1 iOS devices
+
+9.2 Issues with Google Chrome, Pro Tools, Logic
+
+9.3 Issue with Diezel VH4 amplifier
+
+9.4 MIDI ground issue
+
+9.5 MIDI/Remote menu looses settings
+
+9.6 MIDI phantom power
+
+9.7 MIDI noise bleed
+
+10 MIDI tutorial
+
+10.1 What is MIDI
+
+10.2 What is MIDI used for
+
+10.3 What basics do I need to know
+
+10.4 How does MIDI relate to the Axe-Fx II and MFC
+
+10.5 IAs, controllers and modifiers
+
+11 AxeForLemur (legacy)
+
+11.1 Usage
+
+11.2 Design
+
+11.2.1 Design Initialization
+
+11.2.2 Design Device Selection
+
+11.2.3 Design Modifiers
+
+11.2.4 Project Globals
+
+11.3 Objects
+
+11.3.1 aUser
+
+11.3.2 cMain
+
+11.3.3 cS
+
+11.3.4 cScanX
+
+11.3.5 AxeForLemur cShow
+
+11.3.6 cTabSel
+
+11.3.7 cV
+
+11.3.8 AxeForLemur ...
+
+11.4 Development Tools
+
+11.5 Releases and Resources
+
+12 Videos
+
+Axe-Fx III and FM9
+
+The Axe-Fx III has MIDI IN, OUT and THRU ports. The FM9 has a combined MIDI Out/Thru port.
+
+Incoming MIDI data via MIDI IN or via MIDI-over-USB is indicated by a LED on the front panel. Data at the MIDI IN port is passed through to the MIDI THRU port (FM9: MIDI OUT/THRU).
+
+Fractal Audio's proprietary communication protocol for the Axe-Fx III, FM3 and FM9 (which is not MIDI) allows Fractal Audio's FC-6 and FC-12 foot controllers to control the device, through the FASLINK II port, or USB.
+
+There's MIDI support for 3rd-party devices, such as RJM's MIDI foot controllers, to switch presets, scenes and channels, to turn effects on/off, to display preset and scene titles and the tuner and to control tap tempo. This is done through SysEx commands, documented in the Axe-Fx III MIDI for Third-Party Devices guide.
+
+The Axe-Fx III, FM3 and FM9 do not provide fixed MIDI CCs. You can assign these as desired in the MIDI/Remote menu. This menu also lets you instruct the device to process or ignore incoming Program Changes, process or ignore duplicate ("redundant") Program Changes, send out Program Changes through the MIDI OUT port when loading presets, enable mapping of Program Changes, and choose between two Effect Bypass modes. The MIDI settings are part of the system data which can be backed up with Fractal-Bot.
+
+The devices process incoming MIDI-over-USB, but don’t pass incoming MIDI data to outgoing USB. [1]
+
+Windows computers require a driver for MIDI-over-USB. The driver can be downloaded from the product pages on Fractal Audio's website. Install the driver with Fractal-Bot. Mac computers do not require a driver (class compliant).
+
+MIDI-over-USB is much faster on the Axe-Fx III and FM9 than on the II, because of the III's dedicated USB processor. Also, USB communication does not increase CPU usage.
+
+FRACTAL AUDIO QUOTES
+
+Axe-Fx III:
+
+[2]
+The Axe-Fx III moves a LOT more data over USB than the II. The audio is 8x8 vs. 4x2 and the MIDI-Over-USB interface runs 10-100x faster. Therefore it is important that the cable adhere to specifications (5m max).
+
+[3]
+Still USB-over-MIDI but at least 10x faster.
+
+The Scene MIDI block in presets lets you send up to 8 MIDI CCs and PCs through the MIDI OUT port when switching scenes. Also, a Program Change can be transmitted to MIDI OUT upon preset loading.
+
+The FC controllers provide additional MIDI features through the use of Control Switches.
+
+The Owner's Manual lists the MIDI Program Changes that correspond with presets. The first value is MIDI Bank Select, the second one is MIDI Program Change.
+
+Preset 0 = Bank/PC 0,0
+
+Preset 128 = Bank/PC 1,0
+
+Preset 256 = Bank/PC 2,0
+
+Preset 384 = Bank/PC 3,0
+
+MIDI Thru over USB is not supported.
+
+FRACTAL AUDIO QUOTES
+
+[4]
+That would be what we'd call "USB adapter Mode" and it is not a feature of our current generation of products at this time.
+
+FM3
+
+The FM3 has a MIDI IN port and a combined MIDI OUT/THRU port.
+
+It supports MIDI like the Axe-Fx III and FM9 do.
+
+However, the FM3 is NOT a MIDI-over-USB device. It communicates through USB with Fractal-Bot and the editor, but it does not appear as a MIDI device in a DAW or other MIDI programs. To add MIDI-over-USB functionality, use a separate MIDI/USB cable or interface.
+
+The MIDI runs at 5V.
+
+Read this forum thread about the FM3 getting hot when connecting a wireless MIDI adapter
+
+FRACTAL AUDIO QUOTES
+
+FM3:
+
+[5]
+MIDI over USB is used for Fractal-Bot and FM3-Edit, but the FM3 does not appear amongst the MIDI devices on your computer. For the purpose of preset changes, cc messages, tempo, etc, it can definitely be controlled by a 3rd party MIDI device or MIDI interface, such as a MIDI Sport.
+
+[6]
+The FM-3 does NOT support MIDI-over-USB. Sending MIDI to it over USB can lead to unpredictable behavior. 
+
+FC controllers
+
+The FC-6 and FC-12 foot controllers do not support MIDI connectivity.
+
+Legacy devices
+
+Axe-Fx II
+
+The Axe-Fx II has MIDI IN, OUT and THRU ports. Data at the MIDI IN port is passed through to the MIDI THRU port. Incoming MIDI data via MIDI IN or via MIDI-over-USB is indicated by a LED on the front panel. MIDI-over-USB is managed by the main DSP, which is why USB communications increase CPU usage. Data transfers happen via MIDI, MIDI-over-USB, FASLINK or Ethernet/Ethercon. There's support for MIDI controllers through MIDI PCs, MIDI CCs and SysEx. Realtime SysEx is used to provide MIDI controllers with Tuner and Tempo data. MIDI SysEx is used extensively for communication with the editor. MIDI-over-USB is supported for incoming as well as outgoing transmissions. MIDI CCs are set in the MIDI menu. In that menu, you can instruct the II to process or ignore incoming Program Changes, process or ignore duplicate ("redundant") Program Changes, and enable mapping of Program Changes. The MIDI settings are part of the system settings which can be backed up with Fractal-Bot. The II does not transmit a MIDI PC via MIDI OUT when changing presets on the hardware.
+
+Below is a list of all MIDI CCs on the Axe-Fx II XL+. The CCs are listed in the Setup menu as well. There's also a list in the Owners Manual.
+
+INPUT VOLUME 10
+
+OUT1 VOLUME 11
+
+OUT2 VOLUME 12
+
+BYPASS 13
+
+TEMPO TAP 14
+
+TUNER 15
+
+EXTERNAL 1 16
+
+EXTERNAL 2 17
+
+EXTERNAL 3 18
+
+EXTERNAL 4 19
+
+EXTERNAL 5 20
+
+EXTERNAL 6 21
+
+EXTERNAL 7 22
+
+EXTERNAL 8 23
+
+EXTERNAL 9 24
+
+EXTERNAL 10 25
+
+EXTERNAL 11 26
+
+EXTERNAL 12 27
+
+LOOPER1 REC 28
+
+LOOPER1 PLAY 29
+
+LOOPER1 ONCE 30
+
+LOOPER1 DUB 31
+
+LOOPER1 REV 32
+
+LOOPER2 BYP 33
+
+LOOPER2 HALF 120
+
+LOOPER2 UNDO 121
+
+METRONOME 122
+
+SCENE SELECT 34
+
+SCENE INCR 123
+
+SCENE DECR 124
+
+VOLUME INCR 35
+
+VOLUME DECR 36
+
+AMP1 BYPASS 37
+
+AMP2 BYPASS 38
+
+CABINET1 BYP 39
+
+CABINET2 BYP 40
+
+CHORUS1 BYP 41
+
+CHORUS2 BYP 42
+
+COMPRESS1 BYP 43
+
+COMPRESS2 BYP 44
+
+CROSSOVER 1 BYP 45
+
+CROSSOVER 2 BYP 46
+
+DELAY1 BYP 47
+
+DELAY2 BYP 48
+
+DRIVE1 BYP 49
+
+DRIVE2 BYP 50
+
+ENHANCER BYP 51
+
+FILTER1 BYP 52
+
+FILTER2 BYP 53
+
+FILTER3 BYP 54
+
+FILTER4 BYP 55
+
+FLANGER1 BYP 56
+
+FLANGER2 BYP 57
+
+FORMANT BYP 58
+
+FXLOOP BYP 59
+
+GATE1 BYP 60
+
+GATE2 BYP 61
+
+GRAPHEQ1 BYP 62
+
+GRAPHEQ2 BYP 63
+
+GRAPHEQ3 BYP 64
+
+GRAPHEQ4 BYP 65
+
+MEGATAP1 BYP 66
+
+MULTICOMP1 BYP 67
+
+MULTICOMP2 BYP 68
+
+MULTIDLY1 BYP 69
+
+MULTIDLY2 BYP 70
+
+PARAEQ1 BYP 71
+
+PARAEQ2 BYP 72
+
+PARAEQ3 BYP 73
+
+PARAEQ4 BYP 74
+
+PHASER1 BYP 75
+
+PHASER2 BYP 76
+
+PITCH1 BYP 77
+
+PITCH2 BYP 78
+
+QDCHORUS1 BYP 79
+
+QDCHORUS2 BYP 80
+
+RESONATR1 BYP 81
+
+RESONATR2 BYP 82
+
+REVERB1 BYP 83
+
+REVERB2 BYP 84
+
+RINGMOD BYP 85
+
+ROTARY1 BYP 86
+
+ROTARY2 BYP 87
+
+SYNTH1 BYP 88
+
+SYNTH2 BYP 89
+
+TREMOLO1 BYP 90
+
+TREMOLO2 BYP 91
+
+VOCODER BYP 92
+
+VOLUME1 BYP 93
+
+VOLUME2 BYP 94
+
+VOLUME3 BYP 95
+
+VOLUME4 BYP 96
+
+WAHWAH1 BYP 97
+
+WAHWAH2 BYP 98
+
+TONEMATCH BYP 99
+
+AMP1 X/Y 100
+
+AMP2 X/Y 101
+
+CABINET1 X/Y 102
+
+CABINET2 X/Y 103
+
+CHORUS1 X/Y 104
+
+CHORUS2 X/Y 105
+
+DELAY1 X/Y 106
+
+DELAY2 X/Y 107
+
+DRIVE1 X/Y 108
+
+DRIVE2 X/Y 109
+
+FLANGER1 X/Y 110
+
+FLANGER2 X/Y 111
+
+PHASER1 X/Y 112
+
+PHASER2 X/Y 113
+
+PITCH1 X/Y 114
+
+PITCH2 X/Y 115
+
+REVERB1 X/Y 116
+
+REVERB2 X/Y 117
+
+ROTARY1 X/Y 125
+
+ROTARY2 X/Y 126
+
+WAHWAH1 X/Y 118
+
+WAHWAH2 X/Y 119
+
+MIDI THRU:
+
+With the MFC­‐101 at the FASLINK port, do not use the MIDI THRU port. Instead, connect downstream devices to the MIDI OUT port and set MFC ECHO TO MIDI OUT to “ON” in the I/O menu. This turns MIDI OUT into a “soft thru".
+
+If your MFC-101 or other controller is connected to the Axe­‐Fx II's MIDI IN port — whether using 5-­ or 7‐pin — use the standard 5‐pin MIDI THRU port. No special settings are required.
+
+More information about the MIDI THRU functionality of the Axe-Fx II XL and XL+ can be found in the MIDI THRU Guide.
+
+The "MFC ECHO TO MIDI OUT” option in the system settings (XL and XL+ only) echoes all MIDI data from the MFC to MIDI Out. This can be used to send MIDI PC and CC messages to other equipment connected to MIDI Out.
+
+FRACTAL AUDIO QUOTES
+
+PREVIOUS GENERATIONS
+
+[7]
+The Axe-Fx II is not designed to be a general-purpose MIDI I/O. It can handle most things but not large sysex dumps. 
+
+[8]
+The Axe-Fx simply passes the data. It doesn't parse messages. If a message is arriving altered then the fault is in the monitoring software or the OS.
+
+[9]
+MIDI Thru is a "soft" thru. It the delay is problematic for you then you need to change the order of things or use a MIDI splitter.
+
+[10]
+The Axe-Fx was never designed to support multiple MIDI inputs simultaneously.
+
+AX8
+
+The AX8 has MIDI IN and MIDI OUT/THRU ports. It supports "soft" MIDI Thru (MIDI IN > MIDI OUT). Incoming MIDI data is indicated by a LED on the top panel. Data at the MIDI IN port is passed through to the MIDI THRU port. MIDI-over-USB is managed by the main DSP which is why USB communications increase CPU usage. Data transfers happen via MIDI or MIDI-over-USB. MIDI SysEx is used extensively for communication with the editor, but only through MIDI-over-USB. The AX8 accepts incoming MIDI PCs/CCs through MIDI IN and MIDI USB. It does not transmit MIDI CCs itself. The MIDI settings are part of the system settings which can be backed up with Fractal-Bot. The AX8 can send out a single MIDI Progam Change when loading a preset scene. The PC (and the MIDI channel) can vary per scene. When sending from the AX8, MIDI Program Changes are sent via the MIDI Out/Thru port, and SysEx format MIDI Program Changes are sent via USB port.
+
+FX8
+
+The FX8 has MIDI IN and MIDI OUT/THRU ports. It supports "soft" MIDI Thru (MIDI IN > MIDI OUT). Data at the MIDI IN port is passed through to the MIDI THRU port. The FX8 does not have a hardware LED for incoming MIDI traffic (unlike the Axe-Fx II and AX8); when it detects incoming MIDI data, an indicator appears at the top of the LCD screen. MIDI-over-USB is handheld by the main DSP which is why USB communications increase CPU usage. Data transfers happen via MIDI or MIDI-over-USB. MIDI SysEx is used extensively for communication with the editor, but only through MIDI-over-USB. The FX8 accepts incoming MIDI CCs through MIDI IN.  MIDI CCs are set in the system settings. The MIDI settings are part of the System Settings which can be backed up with Fractal-Bot. The FX8 can send out a single MIDI Progam Change and a MIDI Control Change when changing scenes, which can vary per scene. The FX8 can send MIDI data using a footswitch which is assigned to a MIDI footswitch block. It can send a PC and a CC, when turning the switch ON or OFF. This is configured on the Footswitch page. The block supports X/Y switching.
+
+MIDI/Remote menu
+
+This menu can be accessed through the Setup menu on the hardware only.
+
+The settings are saved as part of the system data backup you create with Fractal-Bot.
+
+The parameters are also explained in the Owners_Manuals.
+
+MIDI Channel
+
+Set this to the desired channel (default: 1). Don't select OMNI, because this will slow down MIDI traffic.
+
+MIDI Thru
+
+On devices without a physical MIDI Thru port, this merges messages received at the 5-pin MIDI IN port with any internally generated MIDI data at the MIDI THRU port.
+
+FRACTAL AUDIO QUOTES
+
+Axe-Fx III:
+
+[11]
+You cannot pass USB MIDI messages to the MIDI out port. The feature that would be required is "USB adapter mode" which does not exist on the Axe-Fx III.
+
+[12]
+MIDI Thru is just that, it's a hardware thru. The Axe-Fx does not send any data to MIDI Thru.
+
+Display Offset
+
+The processor starts numbering presets at 0. This parameter lets you shift the displayed number by 1. This adjusts the displayed number only, not the underlying Program Change number (see MIDI PC Offset).
+
+A copy of this parameter also appears in the Global Settings menu on the Axe-Fx III, FM9 and FM3.
+
+Scene Revert
+
+Read this: Scenes
+
+Effect Bypass Mode
+
+Axe-Fx III, FM9 and FM3 only.
+
+This parameter determines how an effect (block) is engaged/bypassed via MIDI. When set to “Value”, the bypass state of an effect assigned to a CC is controlled by the CC value (0 = off, 128 = on). When set to “Toggle”, the bypass state toggles whenever the CC message is received, regardless of the value.
+
+Send Realtime SysEx
+
+Supported on the Axe-Fx II and III, FM9 and FM3.
+
+MIDI tempo and tuner data can be sent continuously from the unit (the only data to be "pushed" by the unit). This allows an external MIDI controller to display the tuner on its display and make a tempo LED blink in time with the device's tempo. Transferring this data requires a bidirectional connection between the unit and the controller.
+
+This parameter doesn't have to be enabled for use with FC-6 and FC-12 foot controllers.
+
+Realtime SysEx on the Axe-Fx II is always disabled when entering the Utility menu.
+
+Realtime SysEx is also used extensively by 3rd-party MIDI controllers to control the Axe-Fx III and FM3, as documented in  this guide.
+
+FRACTAL AUDIO QUOTES
+
+[13]
+Sysex data doesn't have a channel. It is not a voice message. All equipment should ignore any sysex data that does not contain its manufacturer's ID. If you gear is responding to Fractal Audio sysex messages then it is violating the spec. 
+
+Program Change
+
+Instructs the hardware to process or ignore incoming Program Changes.
+
+Ignore Redundant PC
+
+If set to ON, this parameter tells the device to ignore an incoming MIDI Program Change if the corresponding preset is already loaded. This prevents unnecessary reloading and the audio gap that may occur. While the preset isn't re-loaded, effect blocks return to their saved states and the default scene is selected.
+
+This parameter defaults to OFF on the Axe-Fx III, FM9 and FM3.
+
+FRACTAL AUDIO QUOTES
+
+[14]
+The current behavior is as designed. The reasoning behind the implementation is that if Ignore Redundant PC is on then sending a PC gets you back to the original state of the preset but there is no audio dropout as would happen if Ignore was off.
+
+Send MIDI PC
+
+Supported on the Axe-Fx III, FM9 and FM3.
+
+This setting determines whether the Axe-Fx III, FM9 or FM3 automatically sends a MIDI Program Change at its MIDI OUT port upon loading a new preset (front panel, using an FC or otherwise). You can select the MIDI channel to be used.
+
+MIDI PC Offset
+
+This parameter lets you shift Program Change numbers by 1, to improve compatibility with other MIDI devices. This is different from the Display Offset parameter (see above).
+
+PC Mapping
+
+This controls the mapping of incoming MIDI Program Changes to preset numbers and scenes on the Axe-Fx II and III. On the III, FM9 and FM3 this is further configured in the Mapping submenu.
+
+Initial Value External Controllers
+
+Read this: What happens if the pedal is not connected
+
+Tuner on heel down
+
+Read this: Tuner
+
+More parameters
+
+The menu on the Axe-Fx III, FM9 and FM3 lets you map MIDI commands to various functions on the device:
+
+load presets
+
+switch scenes
+
+set global I/O levels
+
+changing output level
+
+bypass effect blocks
+
+change channels
+
+configure external controllers
+
+configure the Looper
+
+etc.
+
+Send a MIDI Program Change
+
+When loading a preset
+
+Enable the SEND MIDI PC parameter in the MIDI/Remote menu to make the device send a MIDI Program Change through the MIDI OUT port when a preset is loaded. The MIDI channel is selectable.
+
+When switching scenes
+
+The Scene MIDI block on the FM3, FM9 or Axe-Fx III lets you send MIDI CCs or PCs through the MIDI OUT port when switching scenes.
+
+With a Control Switch
+
+Configure Control Switches on an Axe-Fx III, FM3 or FM9, and assign these to onboard foot switches or an FC-6 or FC-12 to transmit MIDI Program Changes and Control Changes at will.
+
+MIDI Clock
+
+MIDI Clock is the same as MIDI Beat Clock. Wikipedia: MIDI Beat Clock
+
+Fractal Audio's processors do not transmit MIDI Clock to other devices but they process incoming MIDI clock. This can’t be disabled. 
+
+MIDI commands such as MIDI Start and MIDI Stop are not supported.
+
+FRACTAL AUDIO QUOTES
+
+[15]
+Our products do not recognize or support MTC. They do support MIDI Clock.
+
+MIDI System Exclusive (SysEx)
+
+Known SysEx commands for Fractal Audio devices are listed here: MIDI SysEx
+
+Tips, tricks and troubleshooting
+
+iOS devices
+
+Use a USB-A to USB-B cable, or a wireless MIDI adapter, or the Apple Lightning-to-USB Camera Adapter, to connect the Axe-Fx III or FM9 directly to an iOS device. This lets apps such as BandHelper and Set List Maker send and receive MIDI commands and USB Audio to/from the device without requiring an additional MIDI-to-USB interface (which the Axe-Fx II required)..
+
+This doesn't apply to the FM3.
+
+Issues with Google Chrome, Pro Tools, Logic
+
+Read this: Editors
+
+Issue with Diezel VH4 amplifier
+
+Read this forum thread
+
+MIDI ground issue
+
+FRACTAL AUDIO QUOTES
+
+[16] 
+On MIDI devices the MIDI Out jack should be grounded but the MIDI In jack should not be. MIDI devices powered by wall-warts aren't grounded. The AX-8 uses AC power and is therefore grounded. So a simple solution would be to cut the ground pin (pin 2) at the MIDI In (amp) side. Pin 2 is the important one. Pin 1 is often not wired and even if it is it's not-connected on the AX-8 end. The AX-8 uses pins 2, 4 and 5. The rest are not connected. Pin 2 is ground, 4 and 5 are the data. If the pin 2 is grounded at the amp side then current will flow in the ground which could corrupt the data.
+
+MIDI/Remote menu looses settings
+
+If adjusted parameters in the MIDI/Remote menu return to their default values after powering off and on, there’s probably an issue with the internal battery. It’s exhausted or has come loose.
+
+FRACTAL AUDIO QUOTES
+
+[17]
+It sounds like there is a short in the battery holder or at the memory IC. I've seen this once before. A solder blob was lodged under the battery holder.
+
+MIDI phantom power
+
+Only the Axe-Fx II provided power to MIDI devices over a MIDI cable, also known as "phantom power". This requires a 7-pin MIDI cable (pin definitions) and the power supply for the floor controller to be plugged in at the rear of the Axe-Fx II.
+
+Other Fractal Audio processors (current and legacy) do NOT support MIDI phantom power.
+
+The MIDI phantom power connection can be used for DC as well as AC power. [18]
+
+Warning: do not connect a power supply to the phantom power input on the Axe-Fx II that has a load of more than 1A! E.g. power supplies for Liquid-Foot or RJM foot controllers.
+
+FRACTAL AUDIO QUOTES
+
+PREVIOUS GENERATIONS
+
+[19]
+2.1mm is the standard for DC. 2.5mm is the standard for AC. The phantom power jack is designed for AC, hence the 2.5mm jack
+
+MIDI noise bleed
+
+If you hear a tick in your audio signal which syncs to the tempo, and it's not the Metronome, it's probably MIDI noise bleeding into the signal. You can easily check this by turning off Send Realtime Sysex in the MIDI/Remote menu. If the noise stops, it's indeed caused by the MIDI cabling. Use better MIDI cables and keep the MIDI cables away from problematic sources.
+
+MIDI tutorial
+
+The explanation below is written by former forum member Clarky. 
+
+What is MIDI
+
+MIDI = "Musical Instrument Digital Interface". If I turned that into more friendly English, I’d end up with something like this: MIDI is a means of “interfacing” [connecting] “Musical Instruments” together using a “digitally” encoded protocol [essentially a language]. It is a method of connecting together MIDI capable musical instruments or devices so that they can use a "language" to communicate with each other.
+
+A key thing often misunderstood about MIDI is that it does not actually contain audio or sound, so you can’t actually "hear" MIDI. It’s simply a stream of information or instructions from one device to another. Essentially:
+
+"turn this 'thing' on in that device"
+
+"change the value of this parameter in that effect"
+
+"play this note on that device using this patch"
+
+What is MIDI used for
+
+MIDI is basically all about control - one device being able to control another. Back in the 70’s it’d not be unusual to see a prog rock band with a keys player completely surrounded by all kinds of synthesizers and keyboards. Just take a look at pictures of Keith Emerson or Rick Wakeman from around the 1972 to 1978 era. Sometimes they’d want to play a musical phrase but use more than one sound at the same time and blend them together. In the early days they have to play the part with each hand playing a different synth. It was recognised that some sort of ‘remote control’ was needed. In the early days control was achieved via analogue signals but that had limitations of its own. The thing that really unlocked the door for control was MIDI because:
+
+it was standardized, enabling devices made by different manufacturers to communicate
+
+it could communicate much more information that simple ‘on / off’ and pitch information
+
+So think of MIDI as being the language used for a music specific ‘remote control’. With MIDI I can connect several synths together and use one of them to ‘play’ all of the others. I can use a floor controller [like the MFC] to control a keyboard or FX unit [like the Axe] to make it change preset [program] or to take control of some effect’s parameters enabling control in real-time via switches or expression pedals. I can use a Digital Audio Workstation [like Logic or Ableton] to control effects units [like the Axe] or play synths and keys. I can use a MIDI control surface to control a DAW remotely so that I can ‘play’, ‘stop’, ‘record’, use real faders [just like on a mixing desk] to control the software faders in the DAW’s mixer.
+
+MIDI can also be used to synchronize tape machines to a DAW or sequencer and provide a clock source.
+
+What basics do I need to know
+
+IN / OUT / THRU – these are the MIDI sockets [ports] you’ll see on any MIDI device and here is what they do:
+
+IN – this contains the MIDI in-coming from the controlling instrument / device
+
+OUT – this contains MIDI that is being created by the instrument / device
+
+THRU – this is a copy of the MIDI that arrives from the MIDI IN and is sent outwards to other instruments/ devices
+
+OUT / THRU – as you’d expect, this contains both OUT and THRU MIDI information
+
+Channels – MIDI uses to concept of channels to identify different devices. Example: I could have a Korg synth on channel 1, a Moog synth on channel 2, and could have a Roland to use as the ‘mother board’ [controller keyboard]. I would set the channels in the Korg and Moog myself manually. Roland OUT ----> IN Korg THRU ----> IN Moog. In the Roland I’d setup some presets to also send MIDI on channels 1 and / or 2. Imagine something like this: Roland preset 1 = piano in the Roland and also sends channel 1/pgm 20 [preset 20] which could be strings. I play the Roland preset 1 and hear piano. The MIDI sent from the Roland [MIDI OUT] arrives at the Korg [MIDI IN]. The Korg recognises that channel 1 means “it’s for me” and pgm 20 means “let’s use my strings sound that is stored in preset 20”. The outcome is that you hear piano and strings simultaneously and the Korg also sends a copy of the incoming MIDI IN to the MIDI THRU. The Korg’s MIDI THRU is connected to the Moog’s MIDI IN meaning that the Moog also receives the same MIDI information, but it will only react to anything that arrives on channel 2. So as this MIDI information is on channel 1 the Moog ignores it, and sends a copy of out to it’s MIDI THRU port.
+
+Some devices can be set to MIDI channel OMNI. This means “react to all in-coming MIDI messages from all channels”.
+
+Some examples of common MIDI messages that one device would send to another:
+
+Note messages – this are used to tell keys / synths to turn on / off notes
+
+Program Change – this is a MIDI message that allows a device to make another device to change preset. This is exactly what the MFC does to the Axe
+
+Control Change – this enables a device to control another device’s parameters remotely
+
+System Exclusive [SysEx] – this allows manufacturers to add extra functions and capabilities to those found in regular MIDI. These ‘extras’ are bespoke / manufacturer specific, so you wouldn’t expect a Moog to be able to react to Korg SysEx. But two Korgs with SysEx would have some extra cool capabilities available.
+
+How does MIDI relate to the Axe-Fx II and MFC
+
+By default, the Axe, the MFC and Axe-Edit are all set to MIDI channel 1. When you stomp on a switch on the MFC, the MFC sends a ‘program change’ message out to the Axe. This message contains the MIDI channel [channel 1] and the program [preset] number. The Axe receives this message and changes preset corresponding to the received program number.
+
+IAs, controllers and modifiers
+
+MIDI Control Change [CC] is extremely flexible and enables configurable parameters within the Axe [or any MIDI device] to be controlled remotely. This opens up a vast range of tonal possibilities. These are the key pieces of information that sit within a CC message:
+
+MIDI channel [so we know who this message is aimed at]
+
+CC#: there are 128 control ‘numbers’ available that number from 0 to 127. Some of these numbers are standardized by the industry, for example CC# 7 = master volume (volume control for the whole box, after all effects etc), CC# 16 = ribbon controller / general purpose slide 1 (keys / synth stuff).
+
+Some CC values are ‘spare’. For example; values from 22 to 31 aren’t defined to you can assign them to anything you want.
+
+So now let’s talk about the Axe. The Axe is designed to have a one to one relationship with a controller [such as the MFC]. This being the case, Fractal has created its own assignments of MIDI CC numbers and they can be seen via the front panel in I/O  > CTRL page. There are two columns in here:
+
+Left col = the ‘thing’ in the Axe that can be controlled
+
+Right col = the MIDI CC number that will control it
+
+AxeForLemur (legacy)
+
+AxeForLemur is a Lemur Template designed by David Sorlien to control the Axe-Fx. The Template runs on the Lemur APP by Liine, and connects wirelessly through a logical midi connection to the AxeFx. 
+This page is intended for users and developers of this template. 
+
+Usage
+
+AxeForLemur is a JZML script, licensed by Creative Commons to be a non-commercial, free to use script. The script runs on IOS and Android devices with the Lemur Application from Liine. The Lemur application communicates with the Axe-Fx either through a direct MIDI connection that is connected either through USB or MIDI to the Axe-Fx, or through Wi-Fi to a host computer.
+
+To configure an IOS/Android Patch Editor for the  Axe-Fx:
+
+Purchase the Lemur App (approximately $20-$35) and install it on your Tablet or iPad.
+
+Go to the Liine Website and register yourself as a user, then download the Lemur Editor and Daemon Software.
+
+Connect your Tablet or iPad to your computer's IP network. Verify IP address, and ping your tablet to verify.
+
+Start the Lemur App on your Tablet or iPad.
+
+Download the AxeForLemur.jzml script. The current version is 3.08.
+
+On your PC run the LemurEditor and load the AxeForLemur.jzml script, click Connect to send the script to your Tablet or iPad.
+
+You should see the AxeForLemur Script on your iPad, on the Default AMP page.
+
+If your Axe-Fx is connected to your PC/Mac through a USB cable, run the LIINE LEMUR DAEMON on your machine. This daemon will provide an IP Socket on the Network for MIDI and OSC communications from the iPad to any MIDI devices on your PC/Mac.
+
+Within Lemur on your Tablet or iPad open the Settings drop down list and select "More Settings...", Setup Midi Targets, From: and To:. You may need to tap "Add Target". You should see a list of network computers, with the MIDI devices highlighted. Choose Axe-Fx from the computer that is running the LEMUR DAEMON, for both "From: and "To:. If no devices show up, verify that the iPad is connected to the IP network, and that the Lemur Daemon is running, and the Axe-FX is turned on, and it is connected with USB or MIDI cable.
+
+On the Preset Select page of the AxeForLemur script, configure the MIDI settings to match your setup.   Example, Column-A Device should be set to AxeFxII or AxeFxXL+ etc, MIDI channel to "1" to match your MIDI settings, and Lemur target set to the Target within the Lemur Menu.
+
+Test by tapping the Preset Up/Down.
+
+Troubleshooting can be a bit challenging and might require a bit of system debugging and tweaking.
+
+Design
+
+Design background into key elements of the AxeToLemur script:
+
+Axe For Lemur is a comprehensive Lemur script based in Quasi XML, Objector based C-Script without pre-processor, structures, pointers etc. The Script is object-based, and exists in the JazzInterface tab object AxeForLemur.  Global references exist in this scope.
+
+Design Initialization
+
+Design Device Selection
+
+The preset page (AxeForLemur/dlgProgChange/T1) contains a matrix of MIDI settings for up to four target devices.
+
+For each 'Target Device'  The user can select and increment/decrement (cTargets/padUpDn) the following (cTargets/swSettings):
+
+Type : { AxeFx, AxeFx II, Gen Midi, No Bank, Eclipse } = aUser.cMidi.devtypes[ ]
+
+Display Offset : { 0 or 1 } = aUser.cMidi.dispoffset[ ]
+
+MIDI Channel : { 1 .. 16} = aUser.cMidi.chans[ ]
+
+Lemur Target : { 0.. 3 } = aUser.cMidi.targets[ ]
+
+The user can select one of A,B,C, or D target devices; only one is active at a time.
+
+The objective is to integrate  AxeFxXL and AxeFxXL+ into the list of supported Device Types.
+
+Since this template was last updated by David Sorlien, two new AxeFx devices have been created.    The XL and XL+ have more or less the same SysEx protocols as the AxeFx ( subject to change ), but have New SysEx device ID codes.   The following is a break down of work required to make AxeForLemur support other Fractal Audio Devices.
+
+Essentially the T1/cTargets/swSettings is a 4 x 4 Switch matrix.  Pressing a button will provide a 0..16 button index within the T1/cTargets/swSettings/x variable.  Pressing one of the T1/cTargets/padUpDn will cause the selected T1/cTargets/swSettings/x indexed value to be Incremented/decremented.  The padUpDn/tap() changesbutton matrix.
+
+Add two more values to devtypes
+
+ change:
+   aUser.cMidi.devtypes[a] = clamp(aUser.cMidi.devtypes[a]+1, 0, 4);
+   aUser.cMidi.devtypes[a] = clamp(aUser.cMidi.devtypes[a]-1, 0, 4);
+ to:
+   aUser.cMidi.devtypes[a] = clamp(aUser.cMidi.devtypes[a]+1, 0, 6);
+   aUser.cMidi.devtypes[a] = clamp(aUser.cMidi.devtypes[a]-1, 0, 6);
+
+Add two more strings to button objet lablels
+
+ swSettings/updatelabels()
+ for(i=0;i<4;i++){
+   if(aUser.cMidi.devtypes[i]==0) a[i] = 'AxeFX';
+   else if(aUser.cMidi.devtypes[i]==1) a[i] = 'AxeFX II';
+   else if(aUser.cMidi.devtypes[i]==2) a[i] = 'Gen MIDI';
+   else if(aUser.cMidi.devtypes[i]==3) a[i] = 'No Bank';
+   else if(aUser.cMidi.devtypes[i]==4) a[i] = 'Eclpse';
+   else if(aUser.cMidi.devtypes[i]==5) a[i] = 'AxeXL';
+   else if(aUser.cMidi.devtypes[i]==6) a[i] = 'AxeXL+'; }
+
+Change Device ID's within SysEx messages to include devie ids { 6 and 7 }
+
+ <SCRIPT name="IsAxeSysex(msg)" ..
+ if(msg[0]==0 && msg[1]==1 && msg[2]==0x74 && ( msg[3]<=3 || msg[3]==6 || msg[3]==7 )
+ ...
+ else if(msg[3]==3) st = 'Axe-FX II';
+ else if(msg[3]==6) st = 'Axe-FX XL';
+ else if(msg[3]==7) st = 'Axe-FX XL+';
+
+and change all hard coded device id's "0x74,3" with "0x74,6" or "0x74,7" in 
+
+ SendSetParam(b, p, v)
+ SendGetParam(b, p)
+ SendGetPresetName()
+ SendGetBypState()
+ SendGetPresetNumber()
+ SendLooperMonEn(en)
+ SendGetSceneState()
+ SendSetModifier(b, p, m, v)
+ SendGetModifier(b, p, m)
+ SendPlaceEffect(b, pos, flag)
+ SendConnectEffect(p1, p2, f)
+ SendSetPresetName(name)
+ SynthMidiNoteOnIn(MIDI_ARGS)
+ SendSavePatch(program, bank)
+ SendGetCabName(cabnum)
+
+It makes sense to define a class variable like cV.DevID, and make sure it is set on startup by the AxeFx device ID selected by the A,B,C,D device selector.
+
+Design Modifiers
+
+Modifiers provide a means to dynamically change a subset of the block parameters with automatic, and external functions.    The AxeToLemur Script has a partial implementation of Modifiers.   The AxeToLemur.pdf describes 'double tapping' the intended modify-able' control to enable modifier, but this doesn't appear to be within the implementation. 
+
+Within the 'control's bps[] array, for hw==0, element at index==6 is the Modifier number, if this value is >= 0, then the control should have modify-able values.  This applies to 'bps' of sliders, custom buttons, muxed-sliders.   If the 'control's bps[8] is set to 1, then there is an active modifier on the control.
+
+It is assumed that 'double tapping' the 'Zoom' button will enable a RED "MOD" feature on the Zoom button.  cS.DoubleTap() captures double tap event. This sets cV.dbltapzoom[2] = 1;  A parameter that is 'Modify-able' has a Green 'txt' value.
+
+As of 3.08, the repainting logic within the APP did not support GREEN 'txt' labels.
+
+cS.psmxfdr(obj, p, p, m, t), and cS.psmxcb(obj,b,p,m,t) used to set/map a 'muxed fader' to an AxeFx control.   This function also sets the colour of the text of a control
+
+Notes:
+
+ResetModifierText(..), called when changing pages in Lemur, to clear out cV.modlistlast
+
+(cV.rState==5) modifiers are being queried
+SendGetModifier(..)
+
+(cV.rState==6) modifiers are being queried
+SendGetModifier(mbps[hw], mbps[hw+6], a[i]); response in HandleModifierValMsg(msg), calls UpdateModifier(b, p, m, v);
+
+(cV.rState==7) modifiers are being reset
+SendSetModifier(..) 
+
+buildModCtlList() saves cV.modlist[] to cV.modlistlast[], iterates through all objects in cMain. To find build a cV.modlist[] of modifyable parameters within objects that 1. contain a bps[], 2. are in a visible block, 3. the block is active in the preset, the bps[6] is >= 0.  cV.dbltapzoom[] is filled with same array of objects
+
+cS.DoubleTap() appears to be implemented to open a Modifier Dialog: dlgModifiers.showme(1); but it is not called within the Script.  This function will trigger a 'DoEveryFrame' midi query of the Modifier setting.
+
+3.09 TODO List:
+
+1. confirm all modifier indexes on Fractal Parameters
+
+2. call cS.DoubleTap() when Zoom == MOD and a modifyable control is Tapped.
+
+3. verify control's txt value is rendered RED when control modified control is active (previously engaged, polled through DoEveryFrame())
+
+Project Globals
+
+Var blkd=
+
+Var blksq=
+
+Var blok=
+
+Var blx=
+
+Var debugflag=
+
+Var hw= 'hardware version =0 AxeFx, =1 others, Ultra etc.
+
+Var Querying=
+
+tidx=
+
+Script BuildParamList()
+
+Sets cV.bpobj to first object in cMain, and iterates through all objects to build cV.BlocksToRefresh list. For Block numbers (99..200) that are in the preset values are added to a refresh list
+Script RefreshSequencer()
+
+Script SendCCAxe(ccnum, ccval)
+
+Script SendConnectEffect(p1, p2, f)
+
+Script SendGetByState()
+
+Script SendGetCabName(cabnum)
+
+Script SendGetModifier(b, p, m)
+
+Script SendGetParam(b,p)
+
+Script SendGetPresetName()
+
+Script SendGetPresetNumber()
+
+Script SendGetRoutingGrid()
+
+Script SendGetSceneState()
+
+Script SendLooperMonEn(en)
+
+Script SendPG2Axe(pgnum)
+
+Script SendPlaceEffect(b,pos,flag)
+
+Script SendSavePath(program, bank)
+
+Script SendSetModifier(b, p, m, v)
+
+Script SendSetParam(b, p, v)
+
+Script SendSetPresetName(name)
+
+Script SynthMidiNoeOffIn(MIDI_ARGS)
+
+Script SynthMidiNoteOnIn(MIDI_ARGS)
+
+Script sxoutHandler(b,p, s, val)
+
+Script UserMidiCCIn(MIDI_ARGS)
+
+Script UserMIDINOTEIn(MIDI_ARGS)
+
+Objects
+
+Major AxeForLemur Objects:
+
+aUser
+
+User specific settings, like favorite presets, midi channel. These can be persistent if the user re-saves the script after mondifications are made through the script itself. Global midi CC's are stored in gen1.cc*
+
+Querying : set to 1 during referesh, most likely to prevent re-triggering
+
+aUser.cMidi.gen2 :: MIDI CC # numbers for different MIDI CC parameters
+
+..scenescc[0]  :   MIDI CC # number for 'scene select'
+
+cMain
+
+User interface for Axe-Fx blocks.  
+
+cMain contains UI design and configuration for each Block (pair) Tab within AxeForLemur script
+
+IntState3(..) macro, configures button labels within the UI interface.  Typically these buttons are for Block instance selection, but some are for selecting other aspects of each' block Tab.
+
+Each AxeForLemur Block Tab contains multiple containers, one for each UI element.   These containers more or less contain a symetrical set of attributes, functions and UI controls that allow for support from a common set of functions (else where in the code).
+
+Each UI Element contains:
+ bps: Midi / UI control structure
+ ctl: the lemur screen object
+    x : Primary value for this control
+    z : ???
+ txt:  A screen description of the parameter. Example ('volume')
+ txtval: text object on screen to describe the object parameter value.  Example (0..127)
+ Optional:  
+    cbDlg: a pop up dialog object
+       x : value for the selected value of the dialog
+       tap(..) : function called to initialize the dialog
+
+When a control changes a 'magic' must be called to send the ctl's value to the bps[..] defined midi destination
+
+cS
+
+Common Scripting Object.  
+
+Common Script Object Container
+
+addRefreshParam( b, p) : Adds a parameter to one of:
+
+ (cV.blist[0..249],    cV.plist[0..249]), 
+ (cV.blist2[250..499], cVplist2[250..499]), 
+ (cV.blist3[500..749], cV.plist3[500..749]) at position cV.numcontrols, 
+
+But doesn't appear to increase cV.numcontrols, called from Project.BuildParamList()
+
+cS.psmxfdr(obj, b, p, -1, 'label')
+
+cScanX
+
+AxeForLemur cShow
+
+Group of scripts to refresh Axe Block Tabs.  
+
+cTabSel
+
+cV
+
+Group of global variables. 
+
+blist, plist, blist2, plist2, blist3, plist3  250 entry lists of active 'b==block id's and p==parameter ids.  each list has a physical limit of 250 elements.  These 6 arrays constitute a 2D array of 750 items.
+
+AxeForLemur ...
+
+Pop Up Dialogs.  
+
+Lesser Objects (for now)
+
+cbHideRoutes :
+
+cbHideRoutes :
+
+cbProgName : Button on bottom of UI to display dlgProgChange.showme(x)
+
+cbRefresh :
+
+cbTapTempo : Sends a CC 14 value 127 to currently selected Axe target, method cbTapTempo.hdlSxin(..) sets the lemur Tap button different colors
+
+cbZoom:  A double tap 'Zoom' function for sliders, dont know how this works.
+
+aUser.cMidi.gen2.ccTapTempo
+
+ Global Functions
+
+SendCC2Axe(..)
+
+Development Tools
+
+firstobject XML Editor Application.
+This is a light weight free XML editor that doesnt get confused by the Lemur script. The Editor has a good dual view ( one view is an XML object tree, the other side is the pure text.  Using F7 allows you to sync between the two. 
+
+KDIFF3 http://kdiff3.sourceforge.net
+Since the AxeForLemur is a large monolithic text file, having a good DIFF tool allows you to see the changes LemurEditor and text editors have applied to your file. The LemurEditor does some strange things to this template when it is edited, the preference is to make clean edits with FirstObject Editor, and not use the Lemur Editor directly, as it has a habit of changing many unintended parameters throughout the script.
+
+SVN or Git are good tools to manage progressive changes to the script.
+
+Releases and Resources
+
+return-lemur-support-here
+
+Videos
+
+		

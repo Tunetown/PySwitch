@@ -1,0 +1,2229 @@
+=== post 2389102 | Axelman8 | 2023-02-26T12:28:18-0500 | diy_p1.html
+Hey there,
+
+This thread is for sharing information about your DIY controller project, using a micro-controller of choice and possibly also using the @tysonlt  AxeControl library.
+
+If you are planning on building a controller yourself or you already build one, feel free to chime in and share your project.
+
+There are so much possibilities with micro-controllers and coding languages.  Each build could be inspirational like design, hardware choice, coding language, but most off all is how a build is designed and what tools are used to build it.
+
+This thread could be a pool of knowledge sharing about various builds.  That would be awesome.
+
+So If you are planning on starting your own DIY project, I hope this thread could be an inspiration source and knowledge base.
+
+Also your knowledge could be inspirational for other builders.
+
+About me:
+
+I am not a programmer but I have some limited knowledge on how to use C++ and the Arduino IDE to code. All my minimum knowledge of microcontrollers, Coding with C++ on the Arduino and soldering I learned in this  thread of forum-user @prongs_386 .
+
+After building my first peddleboard, I already wanted to build another version, trying to make it refresh the screens a little faster and making the enclosure road ready.
+
+I will start off in this thread explaining my existing build and the upcoming build.
+
+Cheers
+
+=== post 2389103 | Axelman8 | 2023-02-26T12:28:49-0500 | diy_p1.html
+2020, my first build ever with Arduino Due.
+
+Took me 3 months to fully develop the code and build the unit.
+
+For this build I got all the items from the shopping list provided by @prongs_386  on his Github  page (except the hammond enclosure)
+
+The functional design was allready on paper, but I had no clue how to get it on the Arduino and show the AxefxIII info on the screens:
+
+The start with @prongs_386  his project code was the best start ever.  Without this example, my project wouldn't be what it is today.
+
+My goals I set for the peddleboard:
+
+My build would be a prototype build with wood. Looks nice and is more manageable for a mock-up situation.
+
+I wanted an overview that shows me as much information I could get into one page.  Like the MC101 with the AxeFx2.
+
+On the MC101 peddleboard I could see which effect was available, bypassed or active.  That function I had to have in this build and YES!  Its working with a Hold function and is working perfectly. Very convenient in the usage.
+
+Also,  I wanted to know if a preset had the WaH or Looper available.  This info is shown on top of 2 screens.  The info updates on every preset, even in the AuditionMode screen this info is updated.
+
+Available for MKI (512 presets)  and MKII (1023 presets)
+
+This is how the peddleboard is working on the Arduino Due and the Axecontrol libriary
+
+Global functions (not page related):
+
+My screens are the blue non SD version of the 1.8'  ST7735 160*128. These screens can have a higher refresh rate then red SD version and can run with the Bodmer library.
+
+Using the bodmer library the screens are updated very fast. This libriary is chosen over the standard Adafruit because of performance.
+
+POWER:
+
+The peddleboard runs on 5V 1A usb B connection. Its the same connection to flash a new version from the PC to the Arduino.​The peddleboard  also runs on a powerbank. I use a 10.000mah and that powers the board for aprox. 6 hours.​
+
+CLOCK: 
+
+Seeing the actual time in a 2*16 lcd screen. Works with a DS3231 I2C module​
+
+FREE MEMORY: 
+
+Seeing the amount of available memory in the 2*16 lcd screen.​
+
+TAP TEMPO:  
+
+Tap to set the tempo, or select a tempo using numbers 0-9.  Selection is shown in the 2*16 lcd screen.​Tap tempo screen has 2 versions.   4 bullets flashtempo or a single tempo flash bar. Changeable in the AuditionMode screen.​
+
+NUMBERS: 
+
+Shows a number on every screen 0-9 and you can type a number to select a preset, or set the tap-tempo​
+
+TUNER:  
+
+Shows a tuner in the middle screen.  ALL other functions are OFF, so that the tuner is at most accurate as possible.​Tuner screen has 2 versions. A Pyramid or a Circle.   Changeable in the AuditionMode screen.  -> The tuner code is used from @prongs_386 ​
+
+Pages that build up for scenes, presets, effects, amp/cab channel switching and looper
+
+SCENE PAGE:
+
+View and acces all 8 scenes per preset​View effects, effect state and toggle effect in scenepage​Ability preset down / up.​Show previous/next presetnumber and name in screen.​​PRESET PAGE:
+
+View and select preset banks (0-9, 10-19, 20-29 etc to 511 or 1023). View preset name/number in the screens. After selecting, automaticly return to the scenepage.​AuditionMode for presets and stay in the preset layout and keep on selecting till you choose the preset and go back to the scenepage.​​EFFECT PAGE:
+
+View effects by name, effect state (green /red) and toggle effects state.​
+
+AMP/CAB abcd CHANNEL SWITCH PAGE:
+
+View and select AMP1/AMP2,  CAB1/CAB2​Select per AMP/CAB the channel a-b-c-d​Selecting AMP1 channel, CAB1 will go to this channel (same goes for AMP/CAB2)​Select CAB1/2 channel,  AMP wont change​​LOOPER PAGE:
+
+Show the looper functions  undo, play, record, once, reverse, halfspeed and use the looper.​
+
+When I finished the project, the first thing I did was make a YouTube video  to show the working of the peddleboard.
+
+After using the peddleboard for some time,  I wanted some changes and the latest version is shown on another YouTube video 
+
+The code of this build is on GitHub .  If  you are interested on building this peddleboard with the Arduino Due you will find all you need.
+
+NOTE:  Development stopped for the Arduino Due version:
+
+The development of this build is ended.  A new build with a road-ready enclosure will be build using a Teensy 4.1 micro controller.
+
+-> Development for the Teensy 4.1 has started using the latest existing code from the Arduino Due
+
+-> Parts are dropping in from china so I can start building this project
+
+If you have any question regarding the Arduino Due build, feel free to ask.
+
+Cheers
+
+=== post 2389212 | Axelman8 | 2023-02-26T15:53:06-0500 | diy_p1.html
+TEENSY 4.1 BUILD with all used components
+
+​1x Teensy 4.1​1x Hammond enclosure:  (1456RL1BKBK)​15x TFT screens:   ST7735 1.8 inch blue SPI from ROARKIT store (alixp,  app the seller and make a good price)​18x FootSwitch: (softswitch NON Momentary)​1x 16*2 lcd screen (blue background) used with a i2C 4 pin connector​1x BUCK 45V-9V to 5V​1x BUCK 5V to 3.3V​1x 16 channel multiplexer​16x 10K resistors​1x momentary powerswitch  (I used one with a LED color ring)​4x Stereo 6.3 Jack connectors ( used 2 for exp pedals and 2 for wiring guitar signal to fractal)​4x 220K resistor (2 for the exp pedals)  (2 for TX and RX)​1x cell battery case (with solder connection)​1x USB-B to microUSB extention cable  (connect to the Teensy usb port).​1x micro USB extender cable (to get easy acces to the micro USB. I places the input in a ventilation sloth on the back.)​1x RJ45 female connector with open terminals for cable connection.​​5Mtr 22AWG cable to connect footswitches to multiplexer etcetera​2.5mtrs 16 row grey flat ribbon cable​18x 16pin 2.54mm ribbon IDC socket connector​
+
+NOTE:
+
+My build is working powered by the Faslink (12V) to the peddleboard,  over a CAT6 UTP cable. But the power is not as stable as I wanted to be, so still i'm searching for a better solution (maby 2 connection cables).  Now im temporarely using a 5V external powersource over CAT6 that works.​​EDIT:  Power from Faslink works now.​I needed to transfer the power over 2 connecting cables instead of 1. I just bridged 2 connectors on each side and it works flawlessly .​​I wanted this build to be a 1 cable solution and with the CAT6 I managed to do that.   There may be other solutions, but this works for me.​Offcorse there is still the guitar cable, but I did not have a solution for that (other than wireless), so I connect my guitar to the peddleboard and signal from the peddleboard to the Fractal.  (see the backside of the enclosure on the left near the powerbutton.  That is guitar-in guitar-out.)​​      
+
+* Power management:
+
+The Teensy 4.1 doesn't have 5V,  so I had to be creative to power up the components.​Also,  the Teensy 4.1 does not have enough juice to power al the screens, so had to be creative to external power all the screens. (see the power schema for reference)​​!! Important
+
+Also,  to external Power the Teensy, I had to cut the connection with the usb port.  Now I can use external power and still connect the USB at the same time.  Only USB will not power the Teensy anymore.​ 
+
+* Screens daisy chain:
+
+Create 3 daisy chain rows for the screens. Make sure you will not exceed the cable length of 30cm per row.​The connectors have a perfect fit on the screen pins, so you can create a very stable chained connection between the screens.​The shorter the cable length,  the faster you can run the St7735 SPI screens.  I am on 38Mhz and my cable is max. 27cm.  The max. for ST7735 is​27Mhz, so overclocking is possible with the Bodmer eSPI libriary (that is what I am using).​  
+
+* 16 channel multiplexer.
+
+The multiplexer is for ALL the switches.  But my build has 18 switches,  so 2 are connected to a pin on the Teensy.​Follow this schema to connect the pins to the multiplexer and use 10K resistors for every pin.​Connected the 4 pins to anolog pins (!! NON PWR management)​    
+
+* Connect Screens, Switches and components
+
+Follow the pin schematics to connect.   This is my schema as my layout for the build.​The digital clock has a cell battery,  connect it to the VBAT and GROUND and it will work instantly.​ 
+
+* Software:
+
+Arduino IDE V2.1.1  (works best for me)
+
+Teensyduino V1.57 (Other versions conflict with the MUX and TFT libriary)
+
+You will need these libriarys for the components and software to function correctly
+
+AxeFxControl from TysonIt
+Bodmer TFT_eSPI-master
+MUX74HC4067-master
+SD
+hd44780
+
+What can you change yourself in the layout configuration of the peddleboard:
+
+[coming]
+
+=== post 2426528 | Axelman8 | 2023-05-31T23:16:16-0400 | diy_p1.html
+Reserved
+
+=== post 2426529 | Axelman8 | 2023-05-31T23:17:18-0400 | diy_p1.html
+Here is the Teensy build in action
+
+=== post 2426553 | jordanyte | 2023-06-01T02:09:14-0400 | diy_p1.html
+Looking forward to seeing Teensy version report here. I'm designing a new enclosure.
+
+=== post 2426556 | Axelman8 | 2023-06-01T02:57:15-0400 | diy_p1.html
+[QUOTE jordanyte]
+
+				jordanyte said: 
+
+			Looking forward to seeing Teensy version report here. I'm designing a new enclosure.
+
+		Click to expand...
+
+[/QUOTE]
+Hey there
+
+I can recommend the hammond enclosure,  its aluminium and very easy to handle with a jigsaw.
+
+Also,  one large hole in the middle of the screen square and then jig your way to the corners is more sharp then what I did.  My approach whas a hole in the corner, but that is not "the way" 
+
+Cheers
+
+=== post 2434902 | Axelman8 | 2023-06-28T09:42:08-0400 | diy_p1.html
+[QUOTE jordanyte]
+
+				jordanyte said: 
+
+			Looking forward to seeing Teensy version report here. I'm designing a new enclosure.
+
+		Click to expand...
+
+[/QUOTE]
+Hey there
+
+I have uploaded a video about the Teensy build in post #5
+
+Cheers
+
+=== post 2435415 | lars27 | 2023-06-29T13:47:22-0400 | diy_p1.html
+Finally have my build up and running, used it as a Teensy beta subject with Axelman8's extensive help!. Also using a Seeed Studio XIAO to run the neo-pixels (for the scenes). It works great with my FM9, probably will have that on a riser in back. Coming from a full blown double expanded CAE controller you can never have too many switches LOL. The RJ45 on the back is another breakout for 6 more satellite switches. The top plate was from sendcutsend, the enclosure is a small Hammond the I cut apart, also, I have Rivnuts attaching the top to the enclosure. Lots of work all in all, but very rewarding in the end!
+
+​
+
+=== post 2436409 | tysonlt | 2023-07-02T07:30:18-0400 | diy_p1.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Here is the Teensy build in action
+
+		Click to expand...
+
+[/QUOTE]
+
+That is super, super cool. I am super impressed! A lot if creative ideas on what buttons can do… now I kinda want one!
+
+=== post 2436998 | Dave Merrill | 2023-07-03T22:08:57-0400 | diy_p1.html
+This is great, well done!
+
+Are you considering making any of these for sale? I may well be interested.
+
+I don't have the time to learn and do everything you've accomplished here. (I am a programmer by trade, and I've designed and built some DIY microprocessor-based music gear in the (distant) past, but still.)
+
+=== post 2437050 | Axelman8 | 2023-07-04T04:03:01-0400 | diy_p1.html
+[QUOTE Dave Merrill]
+
+				Dave Merrill said: 
+
+			This is great, well done!
+
+Are you considering making any of these for sale? I may well be interested.
+
+I don't have the time to learn and do everything you've accomplished here. (I am a programmer by trade, and I've designed and built some DIY microprocessor-based music gear in the (distant) past, but still.)
+
+		Click to expand...
+
+[/QUOTE]
+Hey there
+
+Thanks for the reply on the build .
+
+I`m not in it for the sales, but I see that as a big compliment that you would be interested in buying this controller.
+
+This started as a project for me to have a controller doing stuff that I like it to do.
+
+This community gave me the tools to build that controller,  I just used what was allready there and created some functions around it.
+
+The reason I could not sell any of it is because the biggest part of the working controller is not my intellectual property.
+
+Its really not that hard to build. I managed to do most part solderless by using clamped connectors (screens and footswitches) that saved me somuch hours of soldering and if I had outsourced the cutting of the hammond than buildtime would also be decreased by 8 hours.
+
+The hardware and schematics were the biggest challenge,  but that is all figured out and the software is working.
+
+-> I do have the working prototype with the arduino Due (wood top). I could sell it for the hardwareprice would be around 250 euro's.
+
+Anyway,  it would not be a business for me selling peddleboards but if I can help you to have one of these, give me a DM
+
+Cheers
+
+=== post 2437111 | tysonlt | 2023-07-04T10:56:33-0400 | diy_p1.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			The reason I could not sell any of it is bacause the biggest part of the working controller is not my intellectual property.
+
+		Click to expand...
+
+[/QUOTE]
+If you’re talking about the AxeFX library, it’s open source, so go for it! But I understand not wanting to sell. Support is the killer.
+
+=== post 2437117 | Axelman8 | 2023-07-04T11:19:17-0400 | diy_p1.html
+[QUOTE tysonlt]
+
+				tysonlt said: 
+
+			If you’re talking about the AxeFX library, it’s open source, so go for it! But I understand not wanting to sell. Support is the killer.
+
+		Click to expand...
+
+[/QUOTE]
+Yes I'm referring to your libriary man,  its so  . I still dont get it how to ramdom start a callbackfunction like for effects haha   but it works.
+
+Cheers
+
+=== post 2437276 | tysonlt | 2023-07-04T20:03:00-0400 | diy_p1.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Yes I'm referring to your libriary man,  its so  . I still dont get it how to ramdom start a callbackfunction like for effects haha   but it works.
+
+Cheers 
+
+		Click to expand...
+
+[/QUOTE]
+
+I assume you're calling Axe.update() first thing in the main loop() function? You probably want to call registerEffectsReceivedCallback().
+
+The philosophy is that you register which pieces of information you are interested in, and then just call update() in the loop. That will read from the AFX and notify you of what it received. 
+
+Do you want to share the code so I can check what you're trying to do?
+
+=== post 2437377 | tysonlt | 2023-07-05T09:55:44-0400 | diy_p1.html
+Worth mentioning: in setup(), register your callbacks, then call Axe.requestPresetDetails() last, to get the initial preset data. Then it will listen for the Axe to tell us about program changes (if you have that turned on in AFX settings.) Otherwise, you can call refresh() anytime to read the preset details again.
+
+By default it won't fetch effect details, you have to call Axe.requestEffectDetails() manually in your main code. If you want to fetch the effects every time you fetch the preset (either when the axe tell you it's changed, or you call refresh() yourself), then call Axe.fetchEffects(true) in your setup() function. This will fetch effects along with the main preset. This takes a tad longer which is why it's off by default.
+
+=== post 2470975 | Nero | 2023-10-14T16:36:14-0400 | diy_p1.html
+[QUOTE lars27]
+
+				lars27 said: 
+
+			Finally have my build up and running, used it as a Teensy beta subject with Axelman8's extensive help!. Also using a Seeed Studio XIAO to run the neo-pixels (for the scenes). It works great with my FM9, probably will have that on a riser in back. Coming from a full blown double expanded CAE controller you can never have too many switches LOL. The RJ45 on the back is another breakout for 6 more satellite switches. The top plate was from sendcutsend, the enclosure is a small Hammond the I cut apart, also, I have Rivnuts attaching the top to the enclosure. Lots of work all in all, but very rewarding in the end!
+
+​
+
+		Click to expand...
+
+[/QUOTE]
+Love seeing the PixelStomps in action! Did you use a MIDI CHIP for the midi io?
+
+=== post 2470976 | Nero | 2023-10-14T16:43:18-0400 | diy_p1.html
+Love this thread, this is HOLLY powered by a teensy 4.0, it has 6 monochrome oleds, 6 footswitches with neopixels (pixelstomps) usb midi, serial midi, 2 tactile buttons, 6 3mm leds, expression/footswitch jack, usb host midi (for my ax8) and BLE using esp32 to convert BLE to serial and vice versa, i run BMC on it so i can edit it on my computer.
+
+=== post 2470983 | Axelman8 | 2023-10-14T17:32:22-0400 | diy_p1.html
+[QUOTE Nero]
+
+				Nero said: 
+
+			Love this thread, this is HOLLY powered by a teensy 4.0, it has 6 monochrome oleds, 6 footswitches with neopixels (pixelstomps) usb midi, serial midi, 2 tactile buttons, 6 3mm leds, expression/footswitch jack, usb host midi (for my ax8) and BLE using esp32 to convert BLE to serial and vice versa, i run BMC on it so i can edit it on my computer.
+
+		Click to expand...
+
+[/QUOTE]
+Holy !!!!  I understand why she is called HOLLY  its an amazing piece of gear.  Really great build very professional 
+
+Cool that you chime in @Nero  .. Ive been reading and trying all your shared code for the AFXII before I converted to the III.  
+
+Cheers
+
+=== post 2470985 | Axelman8 | 2023-10-14T17:35:38-0400 | diy_p1.html
+Really simple DIY solutions are out there
+
+See this 2 button TRS solution,  easy and confortable without any microcontroller or programming needed.
+
+Cheers
+
+=== post 2471007 | Nero | 2023-10-14T18:31:13-0400 | diy_p2.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Holy !!!!  I understand why she is called HOLLY  its an amazing piece of gear.  Really great build very professional
+
+Cool that you chime in @Nero  .. Ive been reading and trying all your shared code for the AFXII before I converted to the III. 
+
+Cheers 
+
+		Click to expand...
+
+[/QUOTE]
+
+it was actually named after my wife, that was the only way i could think to keep her from questioning the amount of money i spent prototyping it lol it worked...
+
+I remember documenting alot of the Axe FX 2 and AX8 messages on the fractal wiki that was a long time ago when i released axelive!
+
+The 2 was a pain because you had to figure it all out on your own, i spend days sniffing messages between the editor and the AX8 to try to figure out how it worked, now with the 3 we got that 3rd party documentation and you can write a sync solution in a couple of hours.
+
+After seeing your controller i'm going to add support for the ST7735 for BMC, i have a bunch of those displays laying on my bench and now that i see how good they look i'll go for it.
+
+=== post 2471022 | Axelman8 | 2023-10-14T19:55:52-0400 | diy_p2.html
+[QUOTE Nero]
+
+				Nero said: 
+
+			After seeing your controller i'm going to add support for the ST7735 for BMC, i have a bunch of those displays laying on my bench and now that i see how good they look i'll go for it.
+
+		Click to expand...
+
+[/QUOTE]
+That would be awesome .  If you can make it work with the bodmer eSPI library.
+
+Im using a CD74HC4067 16-Channel Multiplexer module, its very convenient to work with and spares a lot of pins. Does BMC support that hardware?
+
+Will read about BMC and see if its any use for my peddleboard atm.    
+
+Cheers
+
+=== post 2471031 | Nero | 2023-10-14T20:18:23-0400 | diy_p2.html
+Im not familiar with the bodmer library, i use the adafruit library at the moment, i was using the teensy libraries for the spis displays which is great but since bmc also has oled support the issue became fonts, i hate the 7x5 fonts so i switch to the adafruit lobrary so all displays use the same custom font i did which is narrow but easy to read from the floor
+
+BMC centers the text on the displays so having a consistent font is a must, does the bodmer library have its own fonts or does it use adafruit fonts? If it uses adafruit fonts then i would give it a try, the adafruit library is alot slower than the teensy one
+
+=== post 2471041 | Axelman8 | 2023-10-14T21:09:30-0400 | diy_p2.html
+[QUOTE Nero]
+
+				Nero said: 
+
+			Im not familiar with the bodmer library, i use the adafruit library at the moment, i was using the teensy libraries for the spis displays which is great but since bmc also has oled support the issue became fonts, i hate the 7x5 fonts so i switch to the adafruit lobrary so all displays use the same custom font i did which is narrow but easy to read from the floor
+
+BMC centers the text on the displays so having a consistent font is a must, does the bodmer library have its own fonts or does it use adafruit fonts? If it uses adafruit fonts then i would give it a try, the adafruit library is alot slower than the teensy one
+
+		Click to expand...
+
+[/QUOTE]
+Yes it uses adafruit fonts. It's the best lib I've used sofar.  
+
+Just had a look at BMC, that looks great!  Will study on it if I can use it and convert my software to use with BMC.
+
+Also had a look at the BMC hardware.  A 32 mux  whaaaat thats awesome.  I thought 16 was the max on a single board.  
+
+Thank you for pointing out BMC,   exiting to get back on another development adventure 
+
+Cheers
+
+=== post 2471044 | Nero | 2023-10-14T21:16:09-0400 | diy_p2.html
+You can have as many muxes as you want, the 4067 can all use the same 4 channel pins they each need a separate analog pin tho, ph and yes BMC supports the hc4067, and many other multiplexers
+
+=== post 2471047 | Nero | 2023-10-14T21:31:54-0400 | diy_p2.html
+Its funny in theory you can wire 17 hc4067s with one analog pin on the teensy and have 256 analog pins
+
+=== post 2471131 | Axelman8 | 2023-10-15T06:51:56-0400 | diy_p2.html
+[QUOTE Nero]
+
+				Nero said: 
+
+			Its funny in theory you can wire 17 hc4067s with one analog pin on the teensy and have 256 analog pins
+
+		Click to expand...
+
+[/QUOTE]
+Hey there @Nero  
+
+Ive been watching some YT videos on the BMC  channel.  Your integration with TeensyDuino and Arduino IDE 2.* is my 'ding dong' for round 2.
+
+Although I know ST7735 is not supported (yet), I'm curious what wil work with the BMC config.h file created with the BMC editor.  
+
+Will start today and report back
+
+If this works like I hope it will, I will have my starting point to build a completely new controller .  
+
+Cheers
+
+=== post 2471149 | Axelman8 | 2023-10-15T08:27:23-0400 | diy_p2.html
+This is cool stuff @Nero ,  I just made my first build using the GUI.     It is very easy to use.  Dont understand yet how to implement my own code and functions yet, but that will come later.
+
+Ive created a config.h file. Now to update the Arduino IDE and add the BMC libriary and see how the teensy responds 
+
+The grid is not big enough to place all the screens, but i guess that doesnt matter for the configuration.  would be great if the grid could be scaled or the objects on the grid so the peddleboard could be fully drawn like it is.  Again I understand that for the configuration file this will not be of any addition.
+
+Here is the layout of my peddleboard as its build in real time.
+
+=== post 2471156 | Dave Merrill | 2023-10-15T09:07:31-0400 | diy_p2.html
+@Nero  I've just been reading about the BMC project, that's really great stuff!
+
+Very powerful, basically no programming needed.
+
+So cool.
+
+=== post 2471426 | fab-gm | 2023-10-16T01:59:46-0400 | diy_p2.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Here is the Teensy build in action
+
+		Click to expand...
+
+[/QUOTE]
+
+Did not see that one yet, well done!
+
+=== post 2471521 | lars27 | 2023-10-16T11:41:44-0400 | diy_p2.html
+[QUOTE Nero]
+
+				Nero said: 
+
+			Love seeing the PixelStomps in action! Did you use a MIDI CHIP for the midi io?
+
+		Click to expand...
+
+[/QUOTE]
+Hey Nero - Sure did!! worked out great
+
+=== post 2471572 | Axelman8 | 2023-10-16T13:54:30-0400 | diy_p2.html
+[QUOTE lars27]
+
+				lars27 said: 
+
+			Hey Nero - Sure did!! worked out great
+
+		Click to expand...
+
+[/QUOTE]
+Whaaat?  lol,  now that I look at your pics, I see you are using the badass midi parts
+
+=== post 2471592 | fab-gm | 2023-10-16T15:17:17-0400 | diy_p2.html
+[QUOTE Nero]
+
+				Nero said: 
+
+			Its funny in theory you can wire 17 hc4067s with one analog pin on the teensy and have 256 analog pins
+
+		Click to expand...
+
+[/QUOTE]
+That's why my PCB's all have multiplexers like the 4067 but also shifters (like the 74HCT595 for leds, see my other threads contrib in this topic) , and also working now  with the MCP23017 and hi speed i2c to multiplex tons of rotary encoders ;-)
+
+The MCP23x17 series are unique for me in the sense that they trigger useful interrupts so that you don't miss synchronous data.
+
+It provides more choices for controllers as you free up a hell lot of IO's!
+
+=== post 2472014 | Nero | 2023-10-17T16:37:49-0400 | diy_p2.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			This is cool stuff @Nero ,  I just made my first build using the GUI.     It is very easy to use.  Dont understand yet how to implement my own code and functions yet, but that will come later.
+
+Ive created a config.h file. Now to update the Arduino IDE and add the BMC libriary and see how the teensy responds 
+
+The grid is not big enough to place all the screens, but i guess that doesnt matter for the configuration.  would be great if the grid could be scaled or the objects on the grid so the peddleboard could be fully drawn like it is.  Again I understand that for the configuration file this will not be of any addition.
+
+Here is the layout of my peddleboard as its build in real time.
+
+View attachment 128001 
+
+		Click to expand...
+
+[/QUOTE]
+you may just have to tighten the layout for now, i'll add more options for sizes of the char display, the char display uses 1 event per line, so line 1 could be the current preset name, line 2 the current scene name and so on.
+
+I also have to go thru the API again, i recently updated BMC to version 2 which changed everything around, because of that i don't think i added custom events to the new version, the idea is that you get say 256 custom events, you assign a button a custom event index, then you add a callback in your sketch, that callback would get the index number along with flags like the type of hardware that is calling that function so with that you could tell the sketch "trigger custom function x" and you can run any code you want there, for leds you return true or false to turn them on/off, etc.
+
+I'll be working more on the API but if you have suggestions as far as what things you would want BMC to do i can implement code for it if it's possible.
+
+I tested the bodmer library for the displays, i tested it with the ILI9341 because i already have one wired up and it's def faster than the adafruit library, a simple fillScreen took this long
+
+Adafruit library about 200ms per fill
+
+bodmer library about 100ms per fill
+
+Teensy's ili9341_t3 (which uses hardware SPI) about 40ms per fill
+
+so i'm going to look at a few other things but so far it sounds worth it to move BMC to the bodmer library just so i can use 1 global font, the only downside of the bodmer library is that i'll have to heavily modify it so that you can use the ILI and ST displays together which is my goal.
+
+=== post 2472064 | Axelman8 | 2023-10-17T19:08:00-0400 | diy_p2.html
+Is it possible to get hacked on a peddleboard?
+
+=== post 2472083 | Dave Merrill | 2023-10-17T20:09:09-0400 | diy_p2.html
+Not hacked, displays are still in sync.
+
+When they're all running independently, that's when you need to worry it's achieved sentience.
+
+=== post 2472275 | Nero | 2023-10-18T11:31:52-0400 | diy_p2.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Is it possible to get hacked on a peddleboard?  
+
+View attachment 128160 
+
+		Click to expand...
+
+[/QUOTE]
+Can you share a picture of the actual displays you are using? like the font and back, or a link to where you got them, i wanna get a couple to test them with BMC
+
+=== post 2472426 | Axelman8 | 2023-10-18T17:13:51-0400 | diy_p2.html
+[QUOTE Nero]
+
+				Nero said: 
+
+			Can you share a picture of the actual displays you are using? like the font and back, or a link to where you got them, i wanna get a couple to test them with BMC
+
+		Click to expand...
+
+[/QUOTE]
+The screens are from this seller:
+
+https://a.aliexpress.com/_EvsZfu3 
+
+Is you buy more then 10 you can app the seller for discount (above some price there is even free shipping) great store good producs fast shipping and great service if anything is wrong.
+
+I had 3 'broken' screens from a stash of 34 I bought , he replaced them for me for free.
+
+I still have 1 defective screen on my peddleboard, but to lazy to replace it 
+
+These screens are really great.  I can overclock them on 3.3V up to 38Mhz
+
+On 5V I clock them 32Mhz and normal is 27Mhz for ST7735. 
+
+With the bodmer library,  you can do all kinds of fast printing on the screens.  Even the sprite function is just stellar .  My tuner is a Sprite and updates ridiculously fast.   The tuner sprite code is borrowed  from @prongs_386  his peddleboard.
+
+Cheers
+
+=== post 2473335 | Axelman8 | 2023-10-21T07:52:35-0400 | diy_p2.html
+I think the universe is telling me something
+
+#TeslaTheory
+
+=== post 2473422 | fab-gm | 2023-10-21T11:43:29-0400 | diy_p2.html
+Like I wrote a long time ago, the power and the quality of the usb midi/audio libs in Teensy products is unique in the arduino world (you can build synths with it!). glad you use them now too 
+
+The only thing I'm not such a great fan (but can always be worked-around) are:
+
+Analog noise high sensivity (you have to be careful with analog inputs as they can get very noisy -> can be annoying for pedals)
+high speed i2c needs pullup resistors adjustments on SDA / SCL (I use 800khz speed ATM but few guys could make it work 1.7Mhz on teensy)
+
+=== post 2473425 | Axelman8 | 2023-10-21T11:56:15-0400 | diy_p3.html
+[QUOTE fab-gm]
+
+				fab-gm said: 
+
+Analog noise high sensivity (you have to be careful with analog inputs as they can get very noisy -> can be annoying for pedals)
+
+		Click to expand...
+
+[/QUOTE]
+Yes this is true,  the analog is very noisy
+
+My pedals are on the analog pins and give a start / end value of all the time. Had to work around that by making the value start at 2 or 125 instead of 1 or 126.
+
+If you have any suggestions how to overcome the start/ end noise im all ears 
+
+Thanx in advance
+
+Cheers
+
+=== post 2473427 | fab-gm | 2023-10-21T12:04:51-0400 | diy_p3.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Yes this is true,  the analog is very noisy
+
+My pedals are on the analog pins and give a start / end value of all the time. Had to work around that by making the value start at 2 or 125 instead of 1 or 126.
+
+If you have any suggestions how to overcome the start/ end noise im all ears
+
+Thanx in advance
+
+Cheers 
+
+		Click to expand...
+
+[/QUOTE]
+that sounds normal, i always use averaging on the pedal inputs, if you shunt the input to ground and remove the pedal do you still read fluctuating value? it could the pedal pots sometimes too...
+
+Another day, gonna implement eeprom pedal calibration, i started to write eeprom code on my branch to switch the floorboard to standard midi program changes when I need to use other devices, so I'll continue on this later (not a lot of spare time to be honest).
+
+I work on these projects in rafal mode : meaning i spend few hours or half a day top (before my gf starts to yell) and implement a bunch of code then can be idle for months LOL
+
+=== post 2473435 | fab-gm | 2023-10-21T12:15:04-0400 | diy_p3.html
+if you want to experiment there is these kind of circuits (super compact!):
+
+https://www.adafruit.com/product/1083 
+
+cheaper boards here 
+
+with 4x 12 bit ADC's and this could be a neat way to isolate analog circuitry as all that would go to the Tenssy board are digital and power pins...
+
+There are other techniques, like using a voltage reference chip instead of power supply 3.3v,  build a low speed rc filter (a bit more involved) to filter out too fast frequencies that are obviously much higher than 100Hz
+
+=== post 2476214 | Nero | 2023-10-27T16:38:09-0400 | diy_p3.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			The screens are from this seller:
+
+https://a.aliexpress.com/_EvsZfu3 
+
+Is you buy more then 10 you can app the seller for discount (above some price there is even free shipping) great store good producs fast shipping and great service if anything is wrong.
+
+I had 3 'broken' screens from a stash of 34 I bought , he replaced them for me for free.
+
+I still have 1 defective screen on my peddleboard, but to lazy to replace it 
+
+View attachment 128218 View attachment 128219 
+
+These screens are really great.  I can overclock them on 3.3V up to 38Mhz
+
+On 5V I clock them 32Mhz and normal is 27Mhz for ST7735.
+
+With the bodmer library,  you can do all kinds of fast printing on the screens.  Even the sprite function is just stellar .  My tuner is a Sprite and updates ridiculously fast.   The tuner sprite code is borrowed  from @prongs_386  his peddleboard.
+
+Cheers 
+
+		Click to expand...
+
+[/QUOTE]
+So i got a pair of the 1.8" and a pair of the 1.44" from this seller, they work great with BMC already, i ran 2 of these only tho but it worked out pretty good, for these displays i'm using the ST7735_t3 which is optimized for teensy but since the Chip Select pins are not the hardware pins it doesn't use the optimized much faster code, still they render really well and really fast, on the attached i have the two 1.8" displays and BMC is synced to logic so those are the first 2 channels, they meters update in real time really fast!, i'll be pushing this out to BMC next week once i've tested them a bit more
+
+=== post 2483909 | jordanyte | 2023-11-15T14:09:12-0500 | diy_p3.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			TEENSY 4.1 BUILD with all used components
+
+View attachment 128046 View attachment 128084 
+
+​1x Teensy 4.1​1x Hammond enclosure:  (1456RL1BKBK)​15x TFT screens:   ST7735 1.8 inch blue SPI from ROARKIT store (alixp,  app the seller and make a good price)​18x FootSwitch: (softswitch NON Momentary)​1x 16*2 lcd screen (blue background) used with a i2C 4 pin connector​1x BUCK 45V-9V to 5V​1x BUCK 5V to 3.3V​1x 16 channel multiplexer​16x 10K resistors​1x momentary powerswitch  (I used one with a LED color ring)​4x Stereo 6.3 Jack connectors ( used 2 for exp pedals and 2 for wiring guitar signal to fractal)​4x 220K resistor (2 for the exp pedals)  (2 for TX and RX)​1x cell battery case (with solder connection)​1x USB-B to microUSB extention cable  (connect to the Teensy usb port).​1x micro USB extender cable (to get easy acces to the micro USB. I places the input in a ventilation sloth on the back.)​1x RJ45 female connector with open terminals for cable connection.​​5Mtr 22AWG cable to connect footswitches to multiplexer etcetera​2.5mtrs 16 row grey flat ribbon cable​18x 16pin 2.54mm ribbon IDC socket connector​
+
+NOTE:
+
+My build is working powered by the Faslink (12V) to the peddleboard,  over a CAT6 UTP cable. But the power is not as stable as I wanted to be, so still i'm searching for a better solution (maby 2 connection cables).  Now im temporarely using a 5V external powersource over CAT6 that works.​​EDIT:  Power from Faslink works now.​I needed to transfer the power over 2 connecting cables instead of 1. I just bridged 2 connectors on each side and it works flawlessly .​​I wanted this build to be a 1 cable solution and with the CAT6 I managed to do that.   There may be other solutions, but this works for me.​Offcorse there is still the guitar cable, but I did not have a solution for that (other than wireless), so I connect my guitar to the peddleboard and signal from the peddleboard to the Fractal.  (see the backside of the enclosure on the left near the powerbutton.  That is guitar-in guitar-out.)​​     View attachment 122650 
+
+* Power management:
+
+The Teensy 4.1 doesn't have 5V,  so I had to be creative to power up the components.​Also,  the Teensy 4.1 does not have enough juice to power al the screens, so had to be creative to external power all the screens. (see the power schema for reference)​​!! Important
+
+Also,  to external Power the Teensy, I had to cut the connection with the usb port.  Now I can use external power and still connect the USB at the same time.  Only USB will not power the Teensy anymore.​View attachment 122647 
+
+* Screens daisy chain:
+
+Create 3 daisy chain rows for the screens. Make sure you will not exceed the cable length of 30cm per row.​The connectors have a perfect fit on the screen pins, so you can create a very stable chained connection between the screens.​The shorter the cable length,  the faster you can run the St7735 SPI screens.  I am on 38Mhz and my cable is max. 27cm.  The max. for ST7735 is​27Mhz, so overclocking is possible with the Bodmer eSPI libriary (that is what I am using).​View attachment 122648 View attachment 122649 
+
+* 16 channel multiplexer.
+
+The multiplexer is for ALL the switches.  But my build has 18 switches,  so 2 are connected to a pin on the Teensy.​Follow this schema to connect the pins to the multiplexer and use 10K resistors for every pin.​Connected the 4 pins to anolog pins (!! NON PWR management)​View attachment 122654 View attachment 122655  View attachment 122656 
+
+* Connect Screens, Switches and components
+
+Follow the pin schematics to connect.   This is my schema as my layout for the build.​The digital clock has a cell battery,  connect it to the VBAT and GROUND and it will work instantly.​View attachment 122646 
+
+* Software:
+
+Arduino IDE V2.1.1  (works best for me)
+
+Teensyduino V1.57 (Other versions conflict with the MUX and TFT libriary)
+
+You will need these libriarys for the components and software to function correctly
+
+AxeFxControl from TysonIt
+Bodmer TFT_eSPI-master
+MUX74HC4067-master
+SD
+hd44780
+
+What can you change yourself in the layout configuration of the peddleboard:
+
+[coming]
+
+		Click to expand...
+
+[/QUOTE]
+Brother, I'm trying to build the teensy firmware for this in Arduino IDE v 2.2.1 but getting errors with some missing header files. In particular the <Preset_amp_ini.h> is missing - is that meant to be in the AxeFXControl library? Do I have the wrong version?
+
+Also some of the other headers in your project I had to move them into the same folder as the INO sketch file for the IDE to find them. Did you have any other preferences set up in Arduino IDE which change the header search paths?
+
+Many thanks! Though I wanted to design my own variant of this with a big rich GUI on a touch screen I've decided I'll never probably have time for that so I should just build your version (thank you for all your time spent and for sharing - we all owe you a beer).
+
+=== post 2483923 | jordanyte | 2023-11-15T14:31:45-0500 | diy_p3.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			TEENSY 4.1 BUILD with all used components
+
+View attachment 128046 View attachment 128084 
+
+​1x Teensy 4.1​1x Hammond enclosure:  (1456RL1BKBK)​15x TFT screens:   ST7735 1.8 inch blue SPI from ROARKIT store (alixp,  app the seller and make a good price)​18x FootSwitch: (softswitch NON Momentary)​1x 16*2 lcd screen (blue background) used with a i2C 4 pin connector​1x BUCK 45V-9V to 5V​1x BUCK 5V to 3.3V​1x 16 channel multiplexer​16x 10K resistors​1x momentary powerswitch  (I used one with a LED color ring)​4x Stereo 6.3 Jack connectors ( used 2 for exp pedals and 2 for wiring guitar signal to fractal)​4x 220K resistor (2 for the exp pedals)  (2 for TX and RX)​1x cell battery case (with solder connection)​1x USB-B to microUSB extention cable  (connect to the Teensy usb port).​1x micro USB extender cable (to get easy acces to the micro USB. I places the input in a ventilation sloth on the back.)​1x RJ45 female connector with open terminals for cable connection.​​5Mtr 22AWG cable to connect footswitches to multiplexer etcetera​2.5mtrs 16 row grey flat ribbon cable​18x 16pin 2.54mm ribbon IDC socket connector​
+
+NOTE:
+
+My build is working powered by the Faslink (12V) to the peddleboard,  over a CAT6 UTP cable. But the power is not as stable as I wanted to be, so still i'm searching for a better solution (maby 2 connection cables).  Now im temporarely using a 5V external powersource over CAT6 that works.​​EDIT:  Power from Faslink works now.​I needed to transfer the power over 2 connecting cables instead of 1. I just bridged 2 connectors on each side and it works flawlessly .​​I wanted this build to be a 1 cable solution and with the CAT6 I managed to do that.   There may be other solutions, but this works for me.​Offcorse there is still the guitar cable, but I did not have a solution for that (other than wireless), so I connect my guitar to the peddleboard and signal from the peddleboard to the Fractal.  (see the backside of the enclosure on the left near the powerbutton.  That is guitar-in guitar-out.)​​     View attachment 122650 
+
+* Power management:
+
+The Teensy 4.1 doesn't have 5V,  so I had to be creative to power up the components.​Also,  the Teensy 4.1 does not have enough juice to power al the screens, so had to be creative to external power all the screens. (see the power schema for reference)​​!! Important
+
+Also,  to external Power the Teensy, I had to cut the connection with the usb port.  Now I can use external power and still connect the USB at the same time.  Only USB will not power the Teensy anymore.​View attachment 122647 
+
+* Screens daisy chain:
+
+Create 3 daisy chain rows for the screens. Make sure you will not exceed the cable length of 30cm per row.​The connectors have a perfect fit on the screen pins, so you can create a very stable chained connection between the screens.​The shorter the cable length,  the faster you can run the St7735 SPI screens.  I am on 38Mhz and my cable is max. 27cm.  The max. for ST7735 is​27Mhz, so overclocking is possible with the Bodmer eSPI libriary (that is what I am using).​View attachment 122648 View attachment 122649 
+
+* 16 channel multiplexer.
+
+The multiplexer is for ALL the switches.  But my build has 18 switches,  so 2 are connected to a pin on the Teensy.​Follow this schema to connect the pins to the multiplexer and use 10K resistors for every pin.​Connected the 4 pins to anolog pins (!! NON PWR management)​View attachment 122654 View attachment 122655  View attachment 122656 
+
+* Connect Screens, Switches and components
+
+Follow the pin schematics to connect.   This is my schema as my layout for the build.​The digital clock has a cell battery,  connect it to the VBAT and GROUND and it will work instantly.​View attachment 122646 
+
+* Software:
+
+Arduino IDE V2.1.1  (works best for me)
+
+Teensyduino V1.57 (Other versions conflict with the MUX and TFT libriary)
+
+You will need these libriarys for the components and software to function correctly
+
+AxeFxControl from TysonIt
+Bodmer TFT_eSPI-master
+MUX74HC4067-master
+SD
+hd44780
+
+What can you change yourself in the layout configuration of the peddleboard:
+
+[coming]
+
+		Click to expand...
+
+[/QUOTE]
+I resolved that problem - the earlier github repo you shared contained the missing header for preset_amp_ini.h in the PARI_INI library. Now I have a problem that the real-time clock library (DS3231) you used is not the same as the one I have installed - there's a member function call missing from the library. 
+
+Can you share which real-time clock library you are using? Thanks!
+
+=== post 2483932 | Axelman8 | 2023-11-15T14:46:08-0500 | diy_p3.html
+[QUOTE jordanyte]
+
+				jordanyte said: 
+
+			I resolved that problem - the earlier github repo you shared contained the missing header for preset_amp_ini.h in the PARI_INI library. Now I have a problem that the real-time clock library (DS3231) you used is not the same as the one I have installed - there's a member function call missing from the library.
+
+Can you share which real-time clock library you are using? Thanks!
+
+		Click to expand...
+
+[/QUOTE]
+Hey there
+
+I didnt public share the teensy build, so I guess you are using the Arduino due build from github?
+
+There is no need for the DS3231 for the teensy (4.*) as it has a build in real time clock.
+
+Let me know if you interest for the teensy build, I will DM you a Share link.
+
+Cheers
+
+=== post 2487073 | jordanyte | 2023-11-22T17:19:41-0500 | diy_p3.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Hey there
+
+I didnt public share the teensy build, so I guess you are using the Arduino due build from github?
+
+There is no need for the DS3231 for the teensy (4.*) as it has a build in real time clock.
+
+Let me know if you interest for the teensy build, I will DM you a Share link.
+
+Cheers 
+
+		Click to expand...
+
+[/QUOTE]
+Hmmm actually building around Teensy 4.1. It seems that some library code is what's causing the call to DS3231. It's not clear what teensy library should be called and if other code mods would be needed as a result of the different RTC...
+
+Hints?
+
+Meanwhile I'm designing a carrier board for the teensy, MIDI opto-isolator, power supply etc.
+
+Thankyou!
+
+=== post 2489961 | Axelman8 | 2023-11-28T18:23:16-0500 | diy_p3.html
+Building a controller is an awesome project, but creating a new workshop is just as much fun .  Just finished this setup today and I'm happy I switched from 49 inch ultra wide to this setup.
+
+Here is an .rdp session to my workstation from my laptop, showing the workstation on the 2 screens as 1 big screen.
+
+Cheers
+
+=== post 2578021 | Axelman8 | 2024-07-13T16:06:35-0400 | diy_p3.html
+Hey there
+
+Its been a while sinds my last update. Have been playing gheeetar lately .
+
+I did have some software developments going on on the teensy controller.
+
+F.i. the sweep of the wah and volume peddle is now updated in the top left screens.. looks awesome.  Thanks to @BobXX  for his suggestion .
+
+Also have made a new tuner... Why not 
+
+ .  
+
+Now it's time to do something about the cable mess on the inside. Sometimes the screens are dimmed because of a cable gets stuck or doesnt connect well. Hopefully that's fixed with these daisy chain PCBs.. just ordered them from pcbWay.  Some screens are defective from the start of this project, so now i will have a chance to update them too.
+
+If this works out well, next will be to make a breakout board for power, Teensy 4.1 and the pushbuttons.  There wil only be connector cables left instead of this mess (I hope)
+
+Cheers
+
+=== post 2578089 | fab-gm | 2024-07-14T00:50:22-0400 | diy_p3.html
+It makes sense and that's why I ended up building my pcb's for my projects too, great progress on your builds, wow I'm truly impressed.
+
+My simple version is still in use and working great for me (I don't need much at the studio TBH) so now I'm trying something else like a neural amp modelers in a teensy or similar boards in a small pedal format.
+
+=== post 2580136 | Axelman8 | 2024-07-22T15:23:21-0400 | diy_p3.html
+Oh and I forgot to mention.
+
+@AlGrenadine  gave us access to the metronome sysex,  so now you can activate the metronome for practice sessions. Man! I use it all the time. Such a small feature with huge effort. Nothing fancy , but it works. Thank you Alex
+
+=== post 2586807 | Axelman8 | 2024-08-16T04:05:20-0400 | diy_p3.html
+Hotswap PCB for the Teensy 4.1 
+
+Cables can stay in the PCB while a new Teensy can be installed.  
+
+KiCad files available if any interest.
+
+=== post 2586834 | tysonlt | 2024-08-16T06:37:25-0400 | diy_p3.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Hotswap PCB for the Teensy 4.1
+
+Cables can stay in the PCB while a new Teensy can be installed. 
+
+KiCad files available if any interest.
+
+View attachment 143948 View attachment 143949 
+
+		Click to expand...
+
+[/QUOTE]
+Nice!
+
+=== post 2586897 | fab-gm | 2024-08-16T10:32:15-0400 | diy_p3.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Hotswap PCB for the Teensy 4.1
+
+Cables can stay in the PCB while a new Teensy can be installed. 
+
+KiCad files available if any interest.
+
+View attachment 143948 View attachment 143949 
+
+		Click to expand...
+
+[/QUOTE]
+I do a similar thing for some projects when I'm too lazy to design a custom pcb, and I found these (for example only they sell fun variants too) useful and cheaper:
+
+=== post 2588219 | Axelman8 | 2024-08-20T15:28:34-0400 | diy_p3.html
+Hey there
+
+Not bad for a 1st tryout pcb. It works for 75% as intended, but it does work great!
+
+This PCB is a st7735 daisy chain connector strip that was designed to connect all the screens together with 1 cable.
+
+While testing I discovered that I made a design error.  To daisy chain SPI data, you really need it to be serial, not parallel. My design is parallel and I hoped it would work when connecting all together to 1 source ,  wellIt doesn't!  Took me forever to find the issue.
+
+Second issue is that the CS line for each screen should be a thicker line than the standard used in the PCB because it uses somuch energy to update the screens.
+
+Now I connected each TFT screen with a 22 AWG cable directly to the teensy.
+
+Also each PCB strip is separately connected to the teensy, so it has its own MOSI and MISO clocking circuit.  If the pcb were serial connected, I could have connect them all together as one and still have a good clocking circuit.
+
+The build works very good and really has a fast response! Have my screens on 5V and clocked 38Mhz.  Before the update the screens were 5V and 27Mhz. They are now brighter too.
+
+Its not the endresult I hoped for with the PCB's,  but it's a stable solution and again, not bad for a first try 
+
+Cheers
+
+=== post 2588234 | Chromatizm | 2024-08-20T16:16:21-0400 | diy_p3.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			@AlGrenadine gave us access to the metronome sysex, so now you can activate the metronome for practice sessions.
+
+		Click to expand...
+
+[/QUOTE]
+There is a midi command for that? Can we use it with other controllers?
+
+=== post 2588254 | Axelman8 | 2024-08-20T17:29:19-0400 | diy_p3.html
+[QUOTE Chromatizm]
+
+				Chromatizm said: 
+
+			There is a midi command for that? Can we use it with other controllers?
+
+		Click to expand...
+
+[/QUOTE]
+Midi, i dont know, but If you use the sysex, yes you can!
+
+See the thread here:
+
+Post in thread 'Metronome on/off switch'
+
+=== post 2588263 | Rex | 2024-08-20T17:51:03-0400 | diy_p3.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Midi, i dont know, but If you use the sysex, yes you can!
+
+See the thread here:
+
+Post in thread 'Metronome on/off switch' 
+
+		Click to expand...
+
+[/QUOTE]
+And SysEx is part of the MIDI spec, if your controller supports it.
+
+=== post 2588367 | Chromatizm | 2024-08-21T05:13:05-0400 | diy_p3.html
+I use Behringer FB1010, so probably won't be able to use this, correct? It just sends PC/CC messages AFAIK
+
+I know very little about MIDI, sadly
+
+=== post 2588374 | Axelman8 | 2024-08-21T06:28:58-0400 | diy_p4.html
+[QUOTE Chromatizm]
+
+				Chromatizm said: 
+
+			I use Behringer FB1010, so probably won't be able to use this, correct? It just sends PC/CC messages AFAIK
+
+I know very little about MIDI, sadly
+
+		Click to expand...
+
+[/QUOTE]
+Hey there,
+
+In my program the code is sysex and its handled by the AxeController library.  Standard midi wont work to start/stop the metronome as far as I know.
+
+Setting tempo also works with the sysex AxeController library and is very convenient to use with the metronome. Set with numbers like 1 9 3+Tempo and you have Metallica Battery tempo and metronome.
+
+Im guessing the FC6 or FC12 have got these options available?  But not sure
+
+=== post 2588942 | fab-gm | 2024-08-23T10:30:17-0400 | diy_p4.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Hey there
+
+Not bad for a 1st tryout pcb. It works for 75% as intended, but it does work great!
+
+../..
+
+View attachment 144146 
+
+		Click to expand...
+
+[/QUOTE]
+Was thinking: I have PCB foot switches at home I never used yet: the idea would be speed up the process of wiring the switches too and so create a big mainboard to start a new floorboard project very fast
+
+=== post 2588974 | Axelman8 | 2024-08-23T12:07:25-0400 | diy_p4.html
+[QUOTE fab-gm]
+
+				fab-gm said: 
+
+			Was thinking: I have PCB foot switches at home I never used yet: the idea would be speed up the process of wiring the switches too and so create a big mainboard to start a new floorboard project very fast 
+
+		Click to expand...
+
+[/QUOTE]
+If that is possible yeah that would be awesome. A big mainboard is very expensive to produce though and if there is damage, its ruined. So Im thinking connecting modular PCB's using connecters like molex, dupont or rj45 even.
+
+=== post 2588977 | unix-guy | 2024-08-23T12:10:40-0400 | diy_p4.html
+[QUOTE Chromatizm]
+
+				Chromatizm said: 
+
+			I use Behringer FB1010, so probably won't be able to use this, correct? It just sends PC/CC messages AFAIK
+
+I know very little about MIDI, sadly
+
+		Click to expand...
+
+[/QUOTE]
+Are you using the stock FCB or do you have one with the UnO or Eureka replacement PROMs?
+
+I am pretty sure the UnO allows sending sysex, in addition to being a massive upgrade in functionality...
+
+=== post 2588986 | Chromatizm | 2024-08-23T12:31:52-0400 | diy_p4.html
+[QUOTE unix-guy]
+
+				unix-guy said: 
+
+			stock FCB
+
+		Click to expand...
+
+[/QUOTE]
+This  I'll probably buy UnO if I have a chance - the delivery now will cost more than the chip itself. My PC is always on anyway. Thanks for the suggestion!
+
+=== post 2588987 | unix-guy | 2024-08-23T12:32:40-0400 | diy_p4.html
+[QUOTE Chromatizm]
+
+				Chromatizm said: 
+
+			This  I'll probably buy UnO if I have a chance - the delivery now will cost more than the chip itself. My PC is always on anyway. Thanks for the suggestion!
+
+		Click to expand...
+
+[/QUOTE]
+Check out the Control Center software for programming it. It's very useful!
+
+=== post 2588989 | Chromatizm | 2024-08-23T12:35:55-0400 | diy_p4.html
+[QUOTE unix-guy]
+
+				unix-guy said: 
+
+			Control Center software
+
+		Click to expand...
+
+[/QUOTE]
+Wow, this one looks too good to be true. Do I understand it correctly it works with stock FCB? Thanks a lot!!
+
+=== post 2588999 | Axelman8 | 2024-08-23T13:05:13-0400 | diy_p4.html
+@unix-guy  reads all the manuals 
+
+If not:
+
+Thats because he wrote them
+
+=== post 2589005 | unix-guy | 2024-08-23T13:17:10-0400 | diy_p4.html
+[QUOTE Chromatizm]
+
+				Chromatizm said: 
+
+			Wow, this one looks too good to be true. Do I understand it correctly it works with stock FCB? Thanks a lot!!
+
+		Click to expand...
+
+[/QUOTE]
+Not that I know of - it's for the UnO as far as I'm aware.
+
+=== post 2589487 | Axelman8 | 2024-08-25T08:34:49-0400 | diy_p4.html
+Okay so next:  getting rid of the 2x16 and replace it with a 2.8 inch ST7789 SPI tft.
+
+It would fit perfectly and would give tons of options to display info.
+
+One of my really grand wish is to show a picture of the AMP used. Saw it in @Piing  his thread for the $50 controller project. Looked very cool and gives a more real world feeling seeing the actual amp.
+
+JPEG of the amps are allready presented in the notorious AMP guide from YEK. These will do just fine
+
+Problem:  There is no way to get the AMP info from the fractal like the preset+scene export from Axe-edit.  Even FracPad or Fractool dont provide this option.
+
+Anyone got any ideas how to extract the AMP a very easy way so I can store a list on the SD-card of the Teensy?  Really appreciate your input.
+
+=== post 2589491 | Piing | 2024-08-25T09:01:54-0400 | diy_p4.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Okay so next:  getting rid of the 2x16 and replace it with a 2.8 inch ST7789 SPI tft.
+
+It would fit perfectly and would give tons of options to display info.
+
+One of my really grand wish is to show a picture of the AMP used. Saw it in @Piing  his thread for the $50 controller project. Looked very cool and gives a more real world feeling seeing the actual amp.
+
+JPEG of the amps are allready presented in the notorious AMP guide from YEK. These will do just fine
+
+Problem:  There is no way to get the AMP info from the fractal like the preset+scene export from Axe-edit.  Even FracPad or Fractool dont provide this option.
+
+Anyone got any ideas how to extract the AMP a very easy way so I can store a list on the SD-card of the Teensy?  Really appreciate your input.
+
+View attachment 144297 
+
+		Click to expand...
+
+[/QUOTE]
+Get more space for a Nextion TFT 4,3" touch display
+
+=== post 2589492 | Axelman8 | 2024-08-25T09:06:06-0400 | diy_p4.html
+[QUOTE Piing]
+
+				Piing said: 
+
+			Get more space for a Nextion TFT 4,3" touch display 
+
+View attachment 144299 
+
+		Click to expand...
+
+[/QUOTE]
+
+Yes thats the one .  But Only got space for the 2.8
+
+Got to do it with this one man,  but your Nextion sure looks fantastic.
+
+=== post 2592822 | Axelman8 | 2024-09-03T11:55:21-0400 | diy_p4.html
+See the actual amp that is active in your preset/scene/channel
+
+Still far way from happening because there is no list of amps used in the preset/channel, but who knows...  We are ready for it 
+
+This looks very cool imho
+
+=== post 2616930 | mavriq | 2024-11-11T10:42:43-0500 | diy_p4.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			While testing I discovered that I made a design error.  To daisy chain SPI data, you really need it to be serial, not parallel. My design is parallel and I hoped it would work when connecting all together to 1 source ,  wellIt doesn't!  Took me forever to find the issue.
+
+Second issue is that the CS line for each screen should be a thicker line than the standard used in the PCB because it uses somuch energy to update the screens.
+
+		Click to expand...
+
+[/QUOTE]
+Can you elaborate more on the parallel issue? The DC, RST, SDA, etc are supposed to be in parallel are they not? 
+
+I'm planning to do something similar and don't want to run into the same issue.
+
+=== post 2616932 | mavriq | 2024-11-11T10:45:15-0500 | diy_p4.html
+Also did you use kicad for the PCB? If so what connector did you use for the screens?
+
+=== post 2616940 | Axelman8 | 2024-11-11T11:20:17-0500 | diy_p4.html
+[QUOTE mavriq]
+
+				mavriq said: 
+
+			Can you elaborate more on the parallel issue? The DC, RST, SDA, etc are supposed to be in parallel are they not?
+
+I'm planning to do something similar and don't want to run into the same issue.
+
+		Click to expand...
+
+[/QUOTE]
+You can run your screens in groups, but make sure your SPI clock runs in serial, so you wont get interference. On higher frequencies this will become a problem when adding more screens.
+
+=== post 2616942 | Axelman8 | 2024-11-11T11:23:19-0500 | diy_p4.html
+[QUOTE mavriq]
+
+				mavriq said: 
+
+			Also did you use kicad for the PCB? If so what connector did you use for the screens?
+
+		Click to expand...
+
+[/QUOTE]
+Yes KiCad,  worked very easily never used it before.  The pcb worked the first time out of the box.  Not really like I intended, but it works great.  
+
+I used the standaard dupont 1*8 connector
+
+=== post 2617065 | mavriq | 2024-11-11T17:06:23-0500 | diy_p4.html
+Ya, First time for KiCad here as well. Used others though. Even bought Circuit Master way back in early 2000s before there were any open source IDEs!
+
+My unit isn't going to be for fractal, but I figured it would be useful to others. I've learned a lot here thanks to many, so hopefully it helps. I figured out who to mux screens with an 74HC595(s) as well, so I'm going to make that an optional part of my design, so the PCB may be useful to many.
+
+=== post 2617074 | Axelman8 | 2024-11-11T17:38:07-0500 | diy_p4.html
+[QUOTE mavriq]
+
+				mavriq said: 
+
+			Ya, First time for KiCad here as well. Used others though. Even bought Circuit Master way back in early 2000s before there were any open source IDEs!
+
+My unit isn't going to be for fractal, but I figured it would be useful to others. I've learned a lot here thanks to many, so hopefully it helps. I figured out who to mux screens with an 74HC595(s) as well, so I'm going to make that an optional part of my design, so the PCB may be useful to many.
+
+		Click to expand...
+
+[/QUOTE]
+Mux screens saves some pins, but limits you to 10MHz max refreshrate frequency of the screens (read it in a faq for the MUX somewhere).  Would advise to mux your switches and cable your screens.
+
+=== post 2617237 | mavriq | 2024-11-12T10:06:08-0500 | diy_p4.html
+I'll have to mock this up then. I googled but didn't find anything specific. But as far as I know you're only limited by the speed of the muxer as far as chip selects are concerned. Which would mean that after about 10 million screens it would impact. But it certainly doesn't hurt to mock it up and double-check. 
+
+I'll report back with my findings. Just got to find a good way to attach all the screens, they all have the standard breadboard pin standoffs right now.
+
+=== post 2617305 | Axelman8 | 2024-11-12T13:11:43-0500 | diy_p5.html
+[QUOTE mavriq]
+
+				mavriq said: 
+
+			I'll have to mock this up then. I googled but didn't find anything specific. But as far as I know you're only limited by the speed of the muxer as far as chip selects are concerned. Which would mean that after about 10 million screens it would impact. But it certainly doesn't hurt to mock it up and double-check.
+
+I'll report back with my findings. Just got to find a good way to attach all the screens, they all have the standard breadboard pin standoffs right now.
+
+		Click to expand...
+
+[/QUOTE]
+Great!  Do show your progress on your build 
+
+Cheers
+
+=== post 2617365 | mavriq | 2024-11-12T16:33:02-0500 | diy_p5.html
+I am going to use these guys for testing. No soldering etc.
+
+If they work, they would be perfect for working with lots of 8-pin displays. There are better ones that are 2-part for more permanent hookups.
+
+=== post 2617367 | Compy | 2024-11-12T16:36:42-0500 | diy_p5.html
+[QUOTE mavriq]
+
+				mavriq said: 
+
+			I am going to use these guys for testing. No soldering etc.
+
+View attachment 147959 
+
+If they work, they would be perfect for working with lots of 8-pin displays. There are better ones that are 2-part for more permanent hookups.
+
+		Click to expand...
+
+[/QUOTE]
+
+IDCs (what you've got pictured here) are great for passthru wiring like you'd use on a communication bus, but their connectivity/resiliency can be flaky over time. Just make sure you're using the right punchdown tool for the right gauge/pitch (this looks like 2.54mm TE-Connectivity at ~22 AWG).
+
+Good luck with the experimentation and the build!
+
+=== post 2617641 | mavriq | 2024-11-13T12:54:12-0500 | diy_p5.html
+Ya these are just temporary. In production, I'm going to use a PCB.
+
+=== post 2618373 | mfunky | 2024-11-15T10:29:35-0500 | diy_p5.html
+I just built a new version of my Ekano Midi Controller based on Arduino. I am new to this forum, so I cannot post pictures, which is ok. 
+
+However, I thought, this might be interesting for you guys (I am not a Fractal User). I created a website with all ressources: Source Code, 3D-Print-Models, Programming Instructions, Drill Templates,... If you search for "Ekano Midi Controller", you will find links for that (probably via Forums from Madbeanpedals or Line6...).
+
+=== post 2618389 | Axelman8 | 2024-11-15T11:12:51-0500 | diy_p5.html
+[QUOTE mfunky]
+
+				mfunky said: 
+
+			I just built a new version of my Ekano Midi Controller based on Arduino.
+
+ I created a website with all ressources: Source Code, 3D-Print-Models, Programming Instructions, Drill Templates,... If you search for "Ekano Midi Controller", you will find links for that (probably via Forums from Madbeanpedals or Line6...).
+
+		Click to expand...
+
+[/QUOTE]
+Thnx for that,  will check it out
+
+=== post 2618802 | mavriq | 2024-11-16T13:43:46-0500 | diy_p5.html
+So I ordered some of these that I designed....
+
+The ST7735s attach to the "bottom" of the board and the rest is on the top. It has an input on the left and a passthrough on the right to go to the next board. The ST7735s are muxed (haven't verified if that works yet in a large setup) and muxed footswitches that attach via the 2-pin headers. If it works, I will make some 3,4, and 5 screen versions after testing.
+
+=== post 2618861 | Axelman8 | 2024-11-16T17:15:12-0500 | diy_p5.html
+Your PCB build looks great. 
+
+My latest additional screen is a ST7789. That one is way better than the ST7735 imho. Faster and nicer view. My next build will be using the ST7789 and maby bigger screens while im at it .   If you have the opportunity,  check out the ST7789
+
+=== post 2618881 | mavriq | 2024-11-16T18:38:50-0500 | diy_p5.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Your PCB build looks great. 
+
+My latest additional screen is a ST7789. That one is way better than the ST7735 imho. Faster ans nicer view. My next build will be using the ST7789 and maby bigger screens while im at it .   If you have the opportunity,  check out the ST7789
+
+		Click to expand...
+
+[/QUOTE]
+
+Thanks!
+
+Ya I was looking at those as well. Saw some that were 2.4"... Had fun fitting it all in on the PCB with the 1.8s, I'm being a real glutton if I go with the bigger ones.  The higher res would be nice. Pin compatible with the ST7739s I have.
+
+=== post 2618892 | Axelman8 | 2024-11-16T19:01:08-0500 | diy_p5.html
+St7789 is the top right screen that shows the tuner.. it runs at 50Mhz atm and is super smooth.  This 2.8'  is a better view for my eyes, but to big to have 16 of those imho . Yes 2.4' just may be the right size.
+
+Also running 2 SPI channels,  1 for the ST7735 and 1 for the ST7789
+
+The teensy supports 3 SPI channels, so there is still room for expanding. Maby place 2 other ST7789 beneath this one, there is still space but I have no use for them I think.  
+
+Could be something else.. idk
+
+=== post 2619105 | mavriq | 2024-11-17T16:35:10-0500 | diy_p5.html
+I've got a 3.5" ILI9488 that is 480x320 and has touch. I'm going to use that for my big screen. Since mine is a regular midi controller I want to be able to do configuration with it.
+
+I'm still trying to figure out how to protect the rest of the screens. I was thinking of a thinner piece of plexiglass under the box instead of over it. How has your top stood up to scratches etc?
+
+=== post 2621827 | mavriq | 2024-11-26T21:10:06-0500 | diy_p5.html
+PCB's came in, they look great. Just hope I didn't muck anything up when designing. They are only test bds anyway, I want to mount the LCDs wth standoffs as they are currently just going to be the solder joints... I'll report back when I have a board filled and tested.
+
+=== post 2622037 | mavriq | 2024-11-27T15:14:04-0500 | diy_p5.html
+Anybody have any good ideas for how to mount the LCDs to a PCB properly? There should be some kind of stand off, but damned if I can find them.
+
+=== post 2622067 | Axelman8 | 2024-11-27T16:38:32-0500 | diy_p5.html
+I bought these 8 pin and 5 pin solder connectors from my chinese friends.
+
+Now A screen can easily connect or disconnect without de-soldering
+
+=== post 2622385 | Yoraco | 2024-11-28T19:03:33-0500 | diy_p5.html
+Hi all,
+
+I have created a web-interface to control the FM3 via MIDI and sniff the FM3 outgoing MIDI sysex messages myself.
+
+https://yoraco.site44.com/fm3midi/ 
+
+Anyone willing to give me some feedback:
+
+does it even work on AXe-fx3, FM9?
+does it work well at all?
+
+thx
+
+=== post 2622400 | unix-guy | 2024-11-28T20:46:15-0500 | diy_p5.html
+[QUOTE Yoraco]
+
+				Yoraco said: 
+
+			Hi all,
+
+I have created a web-interface to control the FM3 via MIDI and sniff the FM3 outgoing MIDI sysex messages myself.
+
+https://yoraco.site44.com/fm3midi/ 
+
+Anyone willing to give me some feedback:
+
+does it even work on AXe-fx3, FM9?
+does it work well at all?
+View attachment 148591 
+
+thx
+
+		Click to expand...
+
+[/QUOTE]
+The devices all have unique device IDs so you'd need to code that at minimum for FM9 or Axe Fx III.
+
+=== post 2622452 | Axelman8 | 2024-11-29T04:00:40-0500 | diy_p5.html
+Hey there
+
+does it even work on AXe-fx3, FM9?
+Fx3 on Windows
+OK:
+Preset change. GUI doesnt update, but preset on the FXIII goes up or down.
+Scene change.
+Toggle the effects. GUI doesnt update, but FXIII does toggle.
+Scrollable sysex messages
+
+NOK:
+Preset change with arrows in GUI
+Frontpanel changes incl sysex info not updating the GUI (maby this is not possible at all to capture)
+
+does it work well at all?
+That depends on what it is supposed to do.  Can you give some functional requirements?​
+
+Thank you for adding the FXIII to your site
+
+Cheers
+
+=== post 2622540 | stub | 2024-11-29T12:19:38-0500 | diy_p5.html
+I'm curious if this browser based tool could be stored locally for off-line use when wi-fi isn't on.
+
+=== post 2622563 | Yoraco | 2024-11-29T14:04:38-0500 | diy_p5.html
+technically speaking: absolutely
+
+...work still ongoing
+
+=== post 2623813 | Yoraco | 2024-12-04T11:45:05-0500 | diy_p5.html
+[QUOTE stub]
+
+				stub said: 
+
+			I'm curious if this browser based tool could be stored locally for off-line use when wi-fi isn't on.
+
+		Click to expand...
+
+[/QUOTE]
+Is now PWA and can be installed for offline usage.
+
+=== post 2623815 | Yoraco | 2024-12-04T11:48:28-0500 | diy_p6.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Hey there
+
+does it even work on AXe-fx3, FM9?
+Fx3 on Windows
+OK:
+Preset change. GUI doesnt update, but preset on the FXIII goes up or down.
+Scene change.
+Toggle the effects. GUI doesnt update, but FXIII does toggle.
+Scrollable sysex messages
+
+NOK:
+Preset change with arrows in GUI
+Frontpanel changes incl sysex info not updating the GUI (maby this is not possible at all to capture)
+
+does it work well at all?
+That depends on what it is supposed to do.  Can you give some functional requirements?​
+
+Thank you for adding the FXIII to your site
+
+Cheers 
+
+		Click to expand...
+
+[/QUOTE]
+I've done some minor fixes:
+
+Click on scene from the list will now update the bypass state of the blocks
+Is now PWA and capable of running offline
+added temporary links to switch between FM3, FM9, AXE Fx III
+some other minor fixes...
+
+"Can you give some functional requirements?"
+
+Thank you, bro. I will come back to your offer
+
+=== post 2623872 | stub | 2024-12-04T15:20:19-0500 | diy_p6.html
+Thanks for the update!!
+
+=== post 2624234 | mavriq | 2024-12-05T21:31:12-0500 | diy_p6.html
+So I finally made progress with the boards I ordered:
+
+The colours are way off in the pic. It looks much better than shown. I made a boo boo on the PCB with the 74hc595 mux chip, so I had to cut a trace and solder a jumper. Other than that, it's running fine. It's even powered from the USB connection. I plan on doing a larger version soon with a 3.3V buck converter. I have a 5V but since Teensy 4.1 is not 5V tolerant, I have to use a lower voltage or the inputs from the mux chip may damage it.
+
+Some Highlights:
+
+I have custom fonts via tft_espi and via Takko OpenFontRender 
+The titles are split into separate lines based on pixels, not character spacing.
+The screens muxed. They are very fast to update.
+Using a sprite as a frame buffer for flicker-free updates.
+The presets are sent to the Teensy via USB MIDI Sysex and stored on the "Eprom"
+I was able to set the clock to 45MHz, but didn't notice much of a difference so I dropped it back to 27MHz for now. Likely be more of a difference when more screens are added.
+
+=== post 2627399 | nonchai | 2024-12-16T13:36:42-0500 | diy_p6.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			St7789 is the top right screen that shows the tuner.. it runs at 50Mhz atm and is super smooth.  This 2.8'  is a better view for my eyes, but to big to have 16 of those imho . Yes 2.4' just may be the right size.
+
+Also running 2 SPI channels,  1 for the ST7735 and 1 for the ST7789
+
+The teensy supports 3 SPI channels, so there is still room for expanding. Maby place 2 other ST7789 beneath this one, there is still space but I have no use for them I think. 
+
+Could be something else.. idk 
+
+View attachment 148157 
+
+View attachment 148158 
+
+		Click to expand...
+
+[/QUOTE]
+this is beyond awesome ! 
+
+I’d wished for ages that L6 with HELIX would allow this - and now so glad i've moved over to Fractal .
+
+is there another thingie like this somewhere - but with knobs instead of stomps? to tweak effect block params etc ?
+
+=== post 2628430 | mavriq | 2024-12-19T22:15:54-0500 | diy_p6.html
+Well, it's alive! Ugly but functional. 
+
+Had a heck of time with the screens due to SPI issues. I had read to keep them in a line somewhere, but that is not correct. SPI should be a star configuration or whateve gives the shortest length. You can see the lower screens are being fed by wires from the breadboard instead of the "out" pins from the middle board. Other lessons. Each st7735 should have it's own .10uf cap as close to VCC as possilbe to gnd. Also, the spi bus wires (MOSI,  SCCLK and CS should have a low value (10-100ohm) resistor in series as close to the teensy as possible. The exact value would be determined after the final build using a scope or logic probe. Use a value that results in the cleanest signals. 
+
+I'm going to try SMD for the next build which will include new lower boards, and 2 uppers for the top screens. Along with a board for the teensy, large display and power supply. I'm also going to do a network connection so I can use Midi over ethernet as well as POE to power the whole thing. Also some regular midi jacks and wall wart jack if you want to use that.
+
+Next up is the firmware which I'm continuing to build. There will also be a flutter app for programing via Sysex so It can be updated via web browser, PC, Android or IOS device. 
+
+Next time maybe I'll try something more ambituous...
+
+=== post 2628481 | Axelman8 | 2024-12-20T02:52:25-0500 | diy_p6.html
+Hey there,
+
+Great progress man and cool to see the mockup...
+
+The SPI gave me some hard times too.  I have them now linefed by the teensy per row to keep the line as short as possible for the clock.
+
+2 rows worked perfectly together in line, but the 3rd added gave me brainshakes.
+
+My build has no 10uf caps or any use off caps anywhere (accept the midi line) , but if it is really needed for the long run I must investigate the use of it.   Good for me to learn some more about these electronics tech things.  The configuration without capacitors works on my end, but for how long
+
+Cheers
+
+=== post 2628560 | mavriq | 2024-12-20T10:47:20-0500 | diy_p6.html
+Ya the caps decouple the screens from the rest of the power line. They keep the power steady to each display. Without out them  power fluctuates and introduces noise to the spi lines attached to them. May not be necessary, but good design practice. I also have a 100uf cap in each row (except the top right now). That is a big well for all the displays and chips on the board.
+
+As for the resistors in line, they match the impedance of the spi output to the inputs. Impossible to calculate, so a scope is used to see how the pulses look on the lines and the value is tweaked to get the cleanest signal. Should be able to get higher speeds with them...
+
+Some good info here .
+
+=== post 2628658 | Axelman8 | 2024-12-20T14:53:22-0500 | diy_p6.html
+[QUOTE mavriq]
+
+				mavriq said: 
+
+			Some good info here .
+
+		Click to expand...
+
+[/QUOTE]
+Thnx for that . Great info
+
+The site says 22-Ohms,  you say 10uf and 100uf,  I need some guidance here cause I dont know sjizzle about electronics lol.  The place where to set the Capacitor/resistors is clear,  but need to know now what kind to choose.  Will try to implement asap to see if it works.   Btw my screens are 5V connected.  Can you give some guidance what to choose?
+
+=== post 2628702 | mavriq | 2024-12-20T17:34:12-0500 | diy_p6.html
+The decoupling caps help maintain a steady supply to the circuit. They charge up and prevent any surges in power from pulling down VCC and causing issues. You want to include them at every "Stage" in a circuit. For example at every TFT, every Multiplixer chip, etc. Typically .1uf at each of these stages works fine. There are formulas for designing power supplies, but for the most part, arbitrary values will work. If you look at datasheets for many CMOS chips they all seem to be around .1uf. I didn't include any on my TFT's but did on my mux chips. 
+
+I also included a "large" decoupling cap on each board. I grabbed whatever I had which in this case was one 100uf and one 47uf electrolytic cap. They decouple the entire board from the rest of the supply. Again, very arbitrary. They all are from VCC to ground. 
+
+Type doesn't matter much for decoupling caps, but electrolytics tend to be the only choice for larger values (10uf+). For my .1uf I used ceramics. Just be careful with electrolytic caps as they have to be installed in the proper direction like a diode or they will blow, often in a big hot spray of acid. So don't do that. 
+
+Here is the schematic for my board updated for .1uf at each tft:
+
+I finally got the new build up and running completely:
+
+I had a heck of a time with the controls on the upper part. Only worked sporadically and lots of presses when nothing actually was. Finally figured out I forgot to put pull up resistors on the breadboard. Duh. Thats what happens when working from memory. While I was fixing that I added some decoupling caps which I also forgot to add...
+
+=== post 2628714 | Axelman8 | 2024-12-20T18:00:11-0500 | diy_p6.html
+Thank you for this very detailed guide.  Will get some caps 1uf and add them.  Ceramic?  Check 
+
+Cheers  
+
+EDIT:  bought them
+
+=== post 2628739 | mavriq | 2024-12-20T19:51:17-0500 | diy_p6.html
+.1uf
+
+=== post 2628756 | mavriq | 2024-12-20T21:55:31-0500 | diy_p6.html
+If anyone needs a good laugh, here is my fixup for the missing caps and pull-up resistors:
+
+I've seen pics of wiring closets that looked similar...
+
+=== post 2628760 | Dave Merrill | 2024-12-20T22:05:34-0500 | diy_p6.html
+Hey, if it's working, good on you!
+
+=== post 2630690 | Axelman8 | 2024-12-27T06:03:55-0500 | diy_p6.html
+Just installed the 1uf ceramic capacitors and the screens are all even bright now. Had some little brightness difference on the bottom and top row, now not anymore.  Have to get a 10uf for the main VCC and ground.
+
+ Thank you @mavriq   for the tips
+
+=== post 2630700 | milesb | 2024-12-27T07:46:30-0500 | diy_p6.html
+Hey All,
+
+Maybe someone can help.  I'm fiddling about with some ideas around midi/sysex etc for my FM3.  I have the AxeFxControl library up and running and it's fine as far as it goes.  However, it doesn't handle some of the functionality around block settings (I'd like to get/set some amp parameters).  So I turned to the sysex documentation in the wiki and I can't help thinking it must be wildly out of date because it doesn't match my reality here.
+
+For example, the docs suggest that after calling GET_FIRMWARE_VERSION you will receive FRONT_PANEL_CHANGE_DETECTED messages - I don't think that's true, and I've tried everything I can think of.  Reading between the lines, it looks like older hardware versions didn't track changes live and put up some sort of "Pause Communication" message.  But these days twiddling a knob on the FM3 is certainly reflected immediately in the Editor.
+
+Another example: the docs suggest that if I send PRESET_BLOCKS_DATA, I should get back a list of the blocks with their Ids.  I don't.  I get a response but it doesn't make sense - it's nearly all 0x01 and decoding it with the for loop in the wiki makes no sense.
+
+		Code:
+
+		00000000: F0 00 01 74 11 0E 1A 01 01 01 01 01 01 01 01 01  �..t............
+00000010: 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01  ................
+00000020: 01 01 01 01 01 01 01 00 F7                       ........�
+
+The extracted block ids make no sense:
+i = 6, id = 16
+i = 11, id = 16
+i = 16, id = 16
+i = 21, id = 16
+i = 26, id = 16
+i = 31, id = 16
+i = 36, id = 112
+
+If I send GET_BLOCK_PARAMETERS_LIST with blockid == 106 (supposedly the blockid of Amp1), the docs suggest I should get a sequence of replies, bracketed with BATCH_LIST_REQUEST_START and BATCH_LIST_REQUEST_COMPLETE, but I don't.  I get a single reply
+
+		Code:
+
+		00000000: F0 00 01 74 11 01 6A 00 7F 77 00 00 00 00 00 00  �..t..j.␡w......
+00000010: 00 02 00 00 00 75 F7                             .....u�
+
+Does anyone know of "better" documentation?  Any other suggestions?
+
+Thanks
+
+Miles
+
+=== post 2630747 | sean.e | 2024-12-27T10:42:37-0500 | diy_p6.html
+The sysex wiki is not applicable to the Axe 3 or FM3; see https://wiki.fractalaudio.com/wiki/index.php?title=MIDI_SysEx#Axe-Fx_III_and_FM3
+
+=== post 2630764 | milesb | 2024-12-27T11:19:24-0500 | diy_p6.html
+Oh that's annoying.  I missed that bit of documentation.  If only I had something better than an FM3...
+
+Thanks
+
+=== post 2630789 | unix-guy | 2024-12-27T12:21:46-0500 | diy_p6.html
+[QUOTE milesb]
+
+				milesb said: 
+
+			Oh that's annoying.  I missed that bit of documentation.  If only I had something better than an FM3...
+
+Thanks
+
+		Click to expand...
+
+[/QUOTE]
+The Axe Fx III is the best there is... And it's the same. So not a case of something better. It's just different.
+
+As mentioned in the wiki, here is the published sysex spec from Fractal (it is limited):
+
+https://www.fractalaudio.com/downloads/misc/Axe-Fx III MIDI for 3rd Party Devices.pdf
+
+=== post 2630793 | unix-guy | 2024-12-27T12:24:08-0500 | diy_p6.html
+[QUOTE sean.e]
+
+				sean.e said: 
+
+			The sysex wiki is not applicable to the Axe 3 or FM3; see https://wiki.fractalaudio.com/wiki/index.php?title=MIDI_SysEx#Axe-Fx_III_and_FM3 
+
+		Click to expand...
+
+[/QUOTE]
+I updated the wiki since that entry was obviously old and didn't mention the FM9. 
+
+Updated link:
+
+https://wiki.fractalaudio.com/wiki/index.php?title=MIDI_SysEx#Axe-Fx_III.2C_FM9_and_FM3 
+
+@yek  - I'm thinking maybe the section below could use a disclaimer that it doesn't apply to Axe Fx III, FM9 and FM3. What do you think?
+
+https://wiki.fractalaudio.com/wiki/index.php?title=MIDI_SysEx#MIDI_SysEx_Functions
+
+=== post 2630797 | Axelman8 | 2024-12-27T12:31:02-0500 | diy_p6.html
+[QUOTE unix-guy]
+
+				unix-guy said: 
+
+			I updated the wiki since that entry was obviously old and didn't mention the FM9.
+
+Updated link:
+
+https://wiki.fractalaudio.com/wiki/index.php?title=MIDI_SysEx#Axe-Fx_III.2C_FM9_and_FM3 
+
+@yek  - I'm thinking maybe the section below could use a disclaimer that it doesn't apply to Axe Fx III, FM9 and FM3. What do you think?
+
+https://wiki.fractalaudio.com/wiki/index.php?title=MIDI_SysEx#MIDI_SysEx_Functions 
+
+		Click to expand...
+
+[/QUOTE]
+Totally agree with the disclaimer. Now  one must first read, try-out and discover that only the legacy is supported.
+
+=== post 2630798 | sean.e | 2024-12-27T12:37:34-0500 | diy_p7.html
+[QUOTE unix-guy]
+
+				unix-guy said: 
+
+			I updated the wiki since that entry was obviously old and didn't mention the FM9.
+
+Updated link:
+
+https://wiki.fractalaudio.com/wiki/index.php?title=MIDI_SysEx#Axe-Fx_III.2C_FM9_and_FM3 
+
+@yek  - I'm thinking maybe the section below could use a disclaimer that it doesn't apply to Axe Fx III, FM9 and FM3. What do you think?
+
+https://wiki.fractalaudio.com/wiki/index.php?title=MIDI_SysEx#MIDI_SysEx_Functions 
+
+		Click to expand...
+
+[/QUOTE]
+
+VP4 as well... And anything else that ever comes along.
+
+=== post 2630805 | unix-guy | 2024-12-27T12:52:39-0500 | diy_p7.html
+[QUOTE sean.e]
+
+				sean.e said: 
+
+			VP4 as well... And anything else that ever comes along.
+
+		Click to expand...
+
+[/QUOTE]
+Good point.
+
+Currently it does say this:
+
+[QUOTE ]
+
+			The messages documented here are compatible between Axe-Fx II, Axe-Fx II XL, Axe-Fx II XL+ and AX8. FX8 messages are not documented.
+
+		Click to expand...
+
+[/QUOTE]
+
+Maybe the sysex for those devices should be a new page that is linked via a subsection here called Axe Fx II and AX8:
+
+So there would be a short sub-section for each generation of devices, each with a link to the sysex documentation.
+
+I am not sure how to create a separate page or if that makes sense. I will defer to yek on that.
+
+=== post 2630973 | mavriq | 2024-12-27T23:17:02-0500 | diy_p7.html
+So I've been taking time to optimize code etc and finally got around to timing drawing with and without a sprite/framebuffer.
+
+The screenshots show the timings for various drawing operations with the timings displayed in the terminal at the bottom. The short of it is, when doing individual operations without using a sprite each screen takes @38ms. When using a sprite it is closer to 20ms. 
+
+That's a lot when you have 18 screens. The sprite saves about 320ms when I have to do a total update. The trade-off is about 40k of memory for my ST7735s. On the Teensy 4.1 that isn't a lot, so I will go with the faster speed...
+
+=== post 2630978 | mavriq | 2024-12-27T23:21:06-0500 | diy_p7.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Just installed the 1uf ceramic capacitors and the screens are all even bright now. Had some little brightness difference on the bottom and top row, now not anymore.  Have to get a 10uf for the main VCC and ground.
+
+ Thank you @mavriq   for the tips 
+
+View attachment 149644 
+
+		Click to expand...
+
+[/QUOTE]
+If the brightness was being pulled down you can bet the signal was messier too. If you can I would get a 50uf Electrolytic cap (10v or so) and put it on each board across the power coming in. And something around 100uf at the start of the supply if there are none in the existing power supply.
+
+=== post 2630985 | unix-guy | 2024-12-27T23:37:02-0500 | diy_p7.html
+[QUOTE unix-guy]
+
+				unix-guy said: 
+
+			Good point.
+
+Currently it does say this:
+
+Maybe the sysex for those devices should be a new page that is linked via a subsection here called Axe Fx II and AX8:
+
+View attachment 149671 
+
+So there would be a short sub-section for each generation of devices, each with a link to the sysex documentation.
+
+I am not sure how to create a separate page or if that makes sense. I will defer to yek on that.
+
+		Click to expand...
+
+[/QUOTE]
+Ok, I figured out how to create a new page and did what I proposed above.
+
+The main page here is now trimmed down: https://wiki.fractalaudio.com/wiki/index.php?title=MIDI_SysEx 
+
+It references the new page for Axe Fx II and AX8 SysEx Functions here:
+
+https://wiki.fractalaudio.com/wiki/index.php?title=MIDI_SysEx_Functions_AxeFxII 
+
+@yek  - let me know if you have any input.
+
+=== post 2631277 | Axelman8 | 2024-12-29T08:41:38-0500 | diy_p7.html
+[QUOTE mavriq]
+
+				mavriq said: 
+
+			Short of it is, when doing individual operations without using a sprite each screen takes @38ms. When using a sprite it is closer to 20ms.
+
+That's a lot when you have 18 screens. The sprite saves about 320ms when I have to do a total update. The trade-off is about 40k of memory for my ST7735s. On the Teensy 4.1 that isn't a lot, so I will go with the faster speed...
+
+		Click to expand...
+
+[/QUOTE]
+It is the library of the font that is slow.  The standard font is blazing fast.  
+
+Other thing: 
+
+I'm using this font from my function without creating a sprite. I write every screen in one function, that saves some ms too, But its much slower than with the standard font.  The teensy is fast enough, so its hardly noticable. 
+
+Other thing:  
+
+Are you using digitalWriteFast()? to set the screens low and high?  Saves some ms too
+
+Waiting for your vid on the full functional working mockup 
+
+Cheers
+
+=== post 2631711 | mavriq | 2024-12-30T19:33:05-0500 | diy_p7.html
+Hmm, never even considered digitalWriteFast(). I will add that for sure.  
+
+I just spent 2 days refactoring my code so there are separations of concerns. This should make doing display changes easier. I wonder why the font makes it slower. On load I can see it, but it never gets sent to the screen, just pixels AFAIK. So that shouldn't be slower. I'm going to take a quick look at the code and see what it shows.
+
+Now that my code is maintainable, I should be able to add a bunch of stuff over the next few days. Going to fire up the large screen and get some stuff happening there too. I'll post a vid once I have some things to show. 
+
+I also wrote a programmer for it. I thought I posted a pic a few days ago, but it didn't post for some reason:
+
+Eventually I'm hoping to get it working on Android, Mac, and IOS as well. It's flutter so it hopefully shouldn't be too big a job.
+
+=== post 2631713 | Axelman8 | 2024-12-30T19:38:48-0500 | diy_p7.html
+Holy shiiiit, even an editor that is super cool 
+
+What interface/development tools are you using? I Would like to investigate/ learn how to etc.  Having a holiday in Thailand so plenty of time to read and learn.
+
+Nevermind, you mentioned Flutter.  Found it 
+
+Happy New Year to all readers
+
+=== post 2631717 | mavriq | 2024-12-30T19:53:59-0500 | diy_p7.html
+So I looked into digitalWriteFast after looking athttps://forum.pjrc.com/index.php?threads/digitalwrite-and-digitalwritefast.76305/#post-353515 thread. I ran the test on mine and its about 10X as fast... wow.
+
+=== post 2631719 | Axelman8 | 2024-12-30T19:56:36-0500 | diy_p7.html
+[QUOTE mavriq]
+
+				mavriq said: 
+
+			So I looked into digitalWriteFast after looking athttps://forum.pjrc.com/index.php?threads/digitalwrite-and-digitalwritefast.76305/#post-353515 thread. I ran the test on mine and its about 10X as fast... wow.
+
+View attachment 149773 
+
+		Click to expand...
+
+[/QUOTE]
+Your welcome
+
+=== post 2631877 | mavriq | 2024-12-31T12:55:17-0500 | diy_p7.html
+The latest issue I've come across is that TFT_eSPI only supports one driver at a time. I think I'm going to have to refactor it from compile time to run time to make this work. I could not find any other way to 2 or more. I tried several experiments to work around the issue, but so far have come up empty.
+
+=== post 2631904 | Axelman8 | 2024-12-31T13:59:30-0500 | diy_p7.html
+[QUOTE mavriq]
+
+				mavriq said: 
+
+			The latest issue I've come across is that TFT_eSPI only supports one driver at a time. I think I'm going to have to refactor it from compile time to run time to make this work. I could not find any other way to 2 or more. I tried several experiments to work around the issue, but so far have come up empty.
+
+		Click to expand...
+
+[/QUOTE]
+I use tft-espi tft. for the standard font. 
+
+For the new font I declare the font at the beginning of the function and then build the screens and on the end of the function I unload the font again.  You can use all the fonds you need with this method
+
+=== post 2631935 | mavriq | 2024-12-31T15:45:32-0500 | diy_p7.html
+Not it's the driver that is the issue. I have an ILI9488 and the ST7735's. There is no way to use them both with the current version of TFT_eSPI as it is all preprocessor directives and trying to use 2 drivers results in name collisions
+
+=== post 2631980 | Axelman8 | 2024-12-31T18:04:13-0500 | diy_p7.html
+Are
+
+[QUOTE mavriq]
+
+				mavriq said: 
+
+			Not it's the driver that is the issue. I have an ILI9488 and the ST7735's. There is no way to use them both with the current version of TFT_eSPI as it is all preprocessor directives and trying to use 2 drivers results in name collisions
+
+		Click to expand...
+
+[/QUOTE]
+Are You using spi0 and spi1?
+
+=== post 2631988 | mavriq | 2024-12-31T18:20:25-0500 | diy_p7.html
+That isn't the issue. You can't use more than one driver with TFT_eSPI at once. If you use 2 drivers you need 2 usersetup.h files which will have the some defines named the same but with different information. So drivers won't work together
+
+=== post 2632774 | mavriq | 2025-01-03T09:23:49-0500 | diy_p7.html
+I spent about 2 days mucking around with TFT_espi and slowly tried to convert it to something that could have the driver defined at runtime rather than compile time. The short of it is I learned a lot, but never did get it going.
+
+The good news is, that I decided to look at st7735_t3 . From staring at the guts of TFT_eSPI I can say there is no support for teensy optimizations except for spi transactions. st7735_t3 on the other hand was written by Paul Stoffregen the creator of the Teensy and KurtE, Teensy wizard... It has many optimizations and a framebuffer as well. It looked to be less jerky updating (to my eyes), and it executes on average about 5ms faster per screen update:
+
+It also has DMA built in, but I didn't get that working correctly yet. That would make it even faster. From what I learned, I can likely get it to work with other displays and add parallel support for screens that support it. Also FLEXIO for Teensy 4 which would be much faster as well.
+
+I will spend a short while trying to get DMA working and then back to getting my ILI9488 working. There is an ILI9488_t3 for that as well and CAN be initialized at run time.
+
+As a side note, I also had to get OpenFontRender working as it would not take the new class as an argument without throwing errors. The issue was that under the hood OpenFontRender wanted to lock things into an SPI transaction. Under the covers, it called TFT_eSPIs strartWrite and endWrite. At first, I thought I would have to make a custom version of OpenFontRender but then had an idea. If I inherited from st7735_t3 and provided implementations of those methods it just might work. In fact it did. So the fix was only this code:
+
+		C++:
+
+		#include <ST7735_t3.h>
+
+class ST7735_mav : public ST7735_t3 {
+    public:
+        ST7735_mav() : ST7735_t3(-1, TFT_DC, TFT_RST) {}
+        void startWrite() {}
+        void endWrite() {}
+};
+
+Not bad for 2mins work.
+
+=== post 2632815 | Dave Merrill | 2025-01-03T10:40:24-0500 | diy_p7.html
+Just to say it, i admire your tenacity and willingness to just dive in. Good stuff!
+
+=== post 2632830 | Axelman8 | 2025-01-03T11:32:44-0500 | diy_p7.html
+I'm away for one month in Thailand, so unable to assist or test.  To bad I didnt update my github with my latest .ino, so I'm unable to check my code.  
+
+DMA is running in my version. I have sent you a copy some weeks ago,  in the .ino  tab on the bottom is the initialization of the DMA.  I think that I'm using the _T3 lib too, but not sure
+
+Amazing stuff you are doing..  thanx for sharing
+
+Cheers
+
+=== post 2632910 | mavriq | 2025-01-03T14:50:54-0500 | diy_p7.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			To bad I didnt update my github with my latest .ino, so I'm unable to check my code.
+
+		Click to expand...
+
+[/QUOTE]
+
+I use VS Code and have git integrated with it. It takes less than a minute to create a repository, then less than 10 seconds to commit and sync each time.
+
+Intellisense is SO much nicer than Arduino IDE, I couldn't live without it.
+
+=== post 2632982 | mavriq | 2025-01-03T17:42:56-0500 | diy_p7.html
+Well, that was a waste of a day. I couldn't get my ILI9488 to work with any driver software. Was ready to throw it through it against the wall. I had it going before using st7735s so it was functional. Now I can see the backlight on, but the display stays black even at startup. I did some pixel writing and readPixel, and everything is working, just not the TFT. So the display is apparently now no good. At least I know it isn't a software or hook-up issue. I guess I'll have to get something of AliExpress and wait a couple of weeks for it... 
+
+In the meantime, I'm going to work on new versions of the pcbs.
+
+=== post 2633047 | Axelman8 | 2025-01-03T20:24:32-0500 | diy_p8.html
+[QUOTE mavriq]
+
+				mavriq said: 
+
+			I did some pixel writing and readPixel, and everything is working, just not the TFT. So the display is apparently now no good.
+
+		Click to expand...
+
+[/QUOTE]
+Hey there
+
+I had same issues sometime back, in my case it was pullup/pulldown, did you check?
+
+=== post 2633655 | mavriq | 2025-01-05T17:07:12-0500 | diy_p8.html
+So I'm thinking about going with 2.4" ST7789 for button displays and a 7" SSD1963 for the programming one. Doesn't anyone have any experience with the SSD1963?
+
+=== post 2633656 | mavriq | 2025-01-05T17:08:14-0500 | diy_p8.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Hey there
+
+I had same issues sometime back, in my case it was pullup/pulldown, did you check?
+
+		Click to expand...
+
+[/QUOTE]
+
+Hmmm, did not. I will look at that.
+
+=== post 2633769 | Axelman8 | 2025-01-06T01:28:14-0500 | diy_p8.html
+[QUOTE mavriq]
+
+				mavriq said: 
+
+			So I'm thinking about going with 2.4" ST7789 for button displays and a 7" SSD1963 for the programming one. Doesn't anyone have any experience with the SSD1963?
+
+		Click to expand...
+
+[/QUOTE]
+The ST7789 is imho a better screen than the ST7735. My next controller will have those screens and then the 2.8' .   But also am searching for e-paper screens with multi color led surroundings. Those might be more efficient for the usecase.
+
+=== post 2633842 | mavriq | 2025-01-06T10:39:47-0500 | diy_p8.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			The ST7789 is imho a better screen than the ST7735. My next controller will have those screens and then the 2.8' .   But also am searching for e-paper screens with multi color led surroundings. Those might be more efficient for the usecase.
+
+		Click to expand...
+
+[/QUOTE]
+
+I never even considered epaper. I can't find one @2" though. Only 1.54 which is smaller than my 1.8s I currently have. Also need touch for my larger screen. Do they make touch versions?
+
+=== post 2633900 | Axelman8 | 2025-01-06T13:06:38-0500 | diy_p8.html
+[QUOTE mavriq]
+
+				mavriq said: 
+
+			I never even considered epaper. I can't find one @2" though. Only 1.54 which is smaller than my 1.8s I currently have. Also need touch for my larger screen. Do they make touch versions?
+
+		Click to expand...
+
+[/QUOTE]
+Try here: 
+
+https://www.waveshare.com/2.13inch-e-paper-b.htm 
+
+Scroll down to see all
+
+Cheers
+
+=== post 2634076 | mavriq | 2025-01-06T22:33:15-0500 | diy_p8.html
+Not sure. The full refresh time is 1.5sec. (there is a typo on the page that says 15sec). Would have to see it in action to see how that would be
+
+=== post 2635014 | mavriq | 2025-01-09T18:51:47-0500 | diy_p8.html
+Was looking at the startup timing for the ST7735 in TFT_eSPI. If you want to speed up initialization, you change change the highlighted number to 150. Saves 350ms. No reason it should be 500ms. Spec sheets all say 150ms.
+
+=== post 2635277 | mavriq | 2025-01-10T13:27:45-0500 | diy_p8.html
+So I'm going with the SD7789s and one of these  7" displays:
+
+You can use an RA8875 and Adafruit makes one  and a touch controller . Edit: that controller is for resistive. This one is already SPI with an interrupt connection. I'll just have to find the right connector.
+
+=== post 2638631 | mavriq | 2025-01-21T14:27:13-0500 | diy_p8.html
+I fixed a couple of issues related to OpenFontRender. If anyone wants the repo it is here .
+
+It fixes the alignment of multi-line text. It also fixes alignment issues in general. The NotoSans_Bold.h included with OpenFontRenderer is wrong as described here . It also incorrectly sets the em size so the font appears much smaller than it should. So keep in mind if you change you will likely have to reset font sizes
+
+=== post 2648227 | Axelman8 | 2025-02-22T15:12:56-0500 | diy_p8.html
+Also easy DIY controller
+
+=== post 2648492 | Alexis | 2025-02-23T12:50:51-0500 | diy_p8.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Also easy DIY controller
+
+		Click to expand...
+
+[/QUOTE]
+
+haha dude, that's so far off this thread.... everybody can build a box like that and connect it to the externals of the fractal
+
+=== post 2648534 | Axelman8 | 2025-02-23T14:10:34-0500 | diy_p8.html
+[QUOTE Alexis]
+
+				Alexis said: 
+
+			haha dude, that's so far off this thread.... everybody can build a box like that and connect it to the externals of the fractal
+
+		Click to expand...
+
+[/QUOTE]
+Lol,  well yeah that is the point. Easy or advanced, it's DIY
+
+=== post 2648590 | Alexis | 2025-02-23T15:45:57-0500 | diy_p8.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Lol,  well yeah that is the point. Easy or advanced, it's DIY
+
+		Click to expand...
+
+[/QUOTE]
+yeah, sure but it misses the THREAD TITLE 
+
+based on MIDI​
+
+=== post 2648593 | Axelman8 | 2025-02-23T15:50:22-0500 | diy_p8.html
+[QUOTE Alexis]
+
+				Alexis said: 
+
+			yeah, sure but it misses the THREAD TITLE 
+
+based on MIDI​
+
+		Click to expand...
+
+[/QUOTE]
+Touche
+
+=== post 2648602 | Alexis | 2025-02-23T16:02:11-0500 | diy_p8.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Touche
+
+		Click to expand...
+
+[/QUOTE]
+
+=== post 2664235 | Axelman8 | 2025-04-22T16:34:36-0400 | diy_p8.html
+[QUOTE mavriq]
+
+				mavriq said: 
+
+			I fixed a couple of issues related to OpenFontRender. If anyone wants the repo it is here .
+
+It fixes the alignment of multi-line text. It also fixes alignment issues in general. The NotoSans_Bold.h included with OpenFontRenderer is wrong as described here . It also incorrectly sets the em size so the font appears much smaller than it should. So keep in mind if you change you will likely have to reset font sizes
+
+		Click to expand...
+
+[/QUOTE]
+Hey there,
+
+I read on Github that you are still testing the lib.  It is ready to be used?  I would like to try it man    
+
+The current allignment isnt a issue for me atm,  but if it could be better  offcorse i'm all in.
+
+Cheers
+
+=== post 2665845 | David Granados | 2025-04-28T06:13:55-0400 | diy_p8.html
+Midi Piggy Box. Controller for my FM3
+
+​
+
+=== post 2665846 | David Granados | 2025-04-28T06:15:01-0400 | diy_p8.html
+I've been working last month on my new version of a midi controller. I'm a technology teacher in a village near Barcelona. 
+
+My first attempt was a controller for another Kemper amp. I had some troubles dealing with sysex messages.
+
+When I bought Fm3 in January, I tried to redesign my controller. I found tysonIt library, and it was a lot easier then. Thanks so much.
+
+I am using an Arduino Mega with a 4x20 LCD screen. Everything works except when I change the preset in my Fm3 Everything is working except when I change the preset in my Fm3. Then it only refreshes the new number and name of the current scene. Not much important because I change presets from the controller and everything is actualized.
+
+Actually, I'm thinking about how to display all scene names in the screen and toggle effects.
+
+=== post 2667827 | nightbirdsong | 2025-05-05T23:44:00-0400 | diy_p8.html
+Hi~When using third-party MIDI controllers, do you encounter conflicts between snapshot changes and IA switch values?  If I use IA Switch #1 to turn on an effect, Then disable the effect via snapshot switching or program change, will the IA Switch #1 update to reflect the actual bypass? thank you!
+
+=== post 2667834 | unix-guy | 2025-05-06T01:12:42-0400 | diy_p9.html
+[QUOTE nightbirdsong]
+
+				nightbirdsong said: 
+
+			Hi~When using third-party MIDI controllers, do you encounter conflicts between snapshot changes and IA switch values?  If I use IA Switch #1 to turn on an effect, Then disable the effect via snapshot switching or program change, will the IA Switch #1 update to reflect the actual bypass? thank you!
+
+		Click to expand...
+
+[/QUOTE]
+Answered in your other thread.
+
+=== post 2671291 | Axelman8 | 2025-05-17T05:14:49-0400 | diy_p9.html
+Hey there,
+
+Here are some recent videos of the Teensy controller latest working version.
+
+=== post 2671865 | mavriq | 2025-05-19T12:37:44-0400 | diy_p9.html
+[QUOTE Axelman8]
+
+				Axelman8 said: 
+
+			Hey there,
+
+I read on Github that you are still testing the lib.  It is ready to be used?  I would like to try it man  
+
+The current allignment isnt a issue for me atm,  but if it could be better  offcorse i'm all in.
+
+Cheers
+
+		Click to expand...
+
+[/QUOTE]
+Sorry for the delayed response. I have been working and have not had any time to work on personal projects. However, my repository is working and has been tested by me and others , but it has not yet been merged. You can use my repository since there have been no other updates to the main library.
+
+Hopefully, I can get back to all this soon.
+
+=== post 2790541 | Axelman8 | 2026-06-18T14:54:03-0400 | diy_p9.html
+Hey there
+
+I got some development in the works.  New features with assigning collors to the screens, AMP and effects channel ABCD changeable on the fly options and a songs functionality and its all configuarable with a full screen editor.  This project is never finished 
+
+Will update with more info soon
+
+Cheers

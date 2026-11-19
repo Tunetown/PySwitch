@@ -1,0 +1,4396 @@
+Axe-Fx III Firmware Release Notes
+
+33.01
+
+Added “Digital Output Level” to Setup -> I/O -> Audio. At the default level of 0.0 dB the USB and digital
+outputs will have the same behavior as firmware version 32.06 and prior. In some cases, this can cause
+clipping of the USB or AES/SPDIF outputs. Turning the level down will prevent clipping. A value of -18.0
+dB normalizes these digital outputs to the same level as USB computer input channels 7 and 8.
+
+
+
+33.00
+
+NOTE: This firmware requires installation of Dyna-Cabs version 1.10 (included in the .zip file). Refer to
+the Dyna-Cab Installation Guide for details. Although not necessary it is recommended to install the
+firmware before the Dyna-Cabs.
+
+IMPORTANT — Axe-Fx III Mark I owners: back up User Cab Bank 2 before updating!
+
+This firmware adds the NAM (Neural Amp Modeler) block (full details below). On Axe-Fx III Mark I
+models, NAM storage replaces User Cab Bank 2. Any IRs in this bank will be permanently erased, and the
+bank will no longer be available for IRs. Before updating, back up User Cab Bank 2 with Fractal-Bot, or
+save individual IRs with Manage Cabs.
+
+Axe-Fx III Mark II models have separate memory for NAM, so User Cab Bank 2 is not affected.
+
+
+Added NAM Player (Neural Amp Modeler) block. This block plays NAM A2 captures of amps, overdrives,
+fuzzes, compressors, DI boxes, preamps, etc. NAM A2 is the newest NAM model architecture; captures
+made with earlier NAM architectures are not supported. NAM has rapidly established itself as the best
+capture technology available.
+
+The NAM block runs on the same core as the Amp block. There are two versions of the NAM algorithm:
+Full and Lite. The Full algorithm uses about six times the CPU of the Lite version. This limits the
+maximum number of blocks per preset to one of the following:
+
+    •   (2) Amp blocks.
+    •   (2) NAM blocks. In this configuration both NAM blocks run in ‘Full’ mode.
+    •   (1) Amp block and (2) NAM blocks. In this configuration the second NAM block runs in ‘Lite’
+        mode on non-Turbo units. On units equipped with a Turbo DSP both NAM blocks run in ‘Full’
+        mode.
+
+On Mark I models there are 128 storage locations. Mark II models have 256 slots.
+The NAM block features about a dozen Tone Stacks. The Active type is based on a generic active EQ.
+The other types are based on tone stacks found in various tube amps and interact like these passive
+networks do. These “quasi” tone stacks are unique, however, in that when the controls are all at noon
+the response is flat whereas in a tube amp there is usually a pronounced midrange dip. The midrange
+dip has been removed (because the amp is already providing that) but the tone stacks otherwise behave
+like passive tone stacks.
+
+The position of the tone controls can be placed before or after the model. For the most authentic
+behavior the tone controls should be placed in the PRE position for Fender-style amps (i.e. Deluxe
+Reverb, Twin Reverb, etc.) and in the POST position for Marshall-style amps (Marshall, Friedman, Rectos,
+5150, etc.).
+
+The NAM block also features a “Bright” control and a “Bright Cap” control. Together these allow the
+user to alter the input spectrum in a fashion similar to the way an amp’s volume control with a bright
+capacitor work and allows you to brighten or darken the input to the NAM block. Positive values make
+the input brighter; negative values make it darker. The “Bright Cap” alters the frequency range the
+control effects. Large values increase the range towards the midrange.
+
+TONE3000 integration - The TONE3000 library of NAM A2 captures is now built into Axe-Edit III. Open
+TONE3000 from the Tools menu and sign in with your TONE3000 account. You can search for tones,
+filter by type, or browse popular tones in the Discover tab. Captures install directly to the Axe-Fx III,
+with no files to download or unzip. If you already use TONE3000, your downloads and favorites appear
+under Your Tones. New captures are available as soon as they’re shared. Requires Axe-Edit III version
+1.15.03 or later. Thanks to the TONE3000 team for partnering with us on this integration, and to the
+community of capture creators whose work makes it possible. TONE3000 is the largest online library of
+NAM captures, with thousands of captures of amps, pedals, and complete rigs.
+https://www.tone3000.com
+
+You can also manually install NAM A2 captures downloaded from tone3000.com or other sites. Unzip
+the downloaded file if needed, then drag-and-drop the .nam file into the “Manage NAM” window in
+Axe-Edit, or directly onto the “Type” field in the NAM Player block’s editor panel.
+
+Thanks to Amalgam Audio, a free bank of NAM captures is also available to help you get started with the
+new block. Download the bank and send it using Fractal-Bot in the new version of Axe-Edit:
+https://www.fractalaudio.com/downloads/firmware-presets/axe-fx-3/33p0/Amalgam_NAM_Models.zip
+
+Amalgam Audio is a leading producer of premium, studio-grade captures of sought-after vintage,
+boutique, and modern guitar amplifiers. You can find more of their captures at
+https://www.tone3000.com/amalgamaudio or https://amalgamcaptures.com.
+
+Added the following Dyna-Cabs (and their accompanying impedance curves):
+
+    •   1x12 Blankenship V30
+    •   1x12 Brit JM T652
+    •   1x12 Citrus CV30
+    •   1x12 Class-A 15W Blue
+    •   1x12 Suhr ACE50
+    •   2x12 Citrus JR CV30
+    •   2x12 Class-A 30W Pre-Rola
+    •   2x12 Matchbox D-30 25W
+    •   2x12 Matchbox D-30 30W
+    •   4x12 1960B T1221 Pre-Rola
+    •   4x12 1960B T75
+    •   4x12 1960B Creamback
+    •   4x12 Citrus 1970s
+
+New “Cygnus X-4” amp modeling:
+
+    •   Improved preamp-to-power amp interaction in Amp block. The Hi Cut Freq parameter under
+        the PREAMP section has been deprecated.
+    •   Improved triode modeling.
+    •   Improved cathode follower modeling. This makes models that use cathode followers have a
+        tighter response and little more “hair”.
+    •   Improved power amp modeling.
+    •   Improved preamp voltage sag accuracy.
+    •   Improved Speaker Impedance Curve accuracy with new fitting tools.
+
+The above improvements make the amp models sound more “open” and dynamic.
+
+New Drive block modeling algorithms using “virtual analog” modeling. This makes the models sound
+warmer and more organic. Most of the pedal types have been remastered as a result. Some
+“composite” diode types have been added, i.e., “FET+BAT41” which model different combinations of
+diodes in series (in this case a MOSFET and a BAT41 Schottky diode in series). NOTE: Some models now
+have different default values. These models are NOT automatically updated in existing presets so that
+your presets are not changed.
+
+Improved Flanger, Reverb, Plex and Megatap blocks.
+
+New statistical pitch detector improves Pitch block resulting in better/faster tracking and less errors.
+
+Improved Pitch block. Latency is reduced. Fewer artifacts. New Formant Correct and Formant Shift
+controls. Turning Formant Correct to ON makes pitch shifting sound more natural, especially for more
+shift. Formant Shift allows altering the formants of the tone and is usable with or without pitch shifting.
+With no pitch shifting Formant Shift can make your guitar sound like a baritone guitar or a mandolin.
+
+Improved CPU usage.
+
+Improved GUI responsiveness.
+The Speaker Impedance Curve parameter in the Amp block now sorts selections alphabetically.
+
+Added “Ladder Filter” type to Filter block. This is a very accurate emulation of the classic Moog Ladder
+Filter with its unique overdrive characteristics. It will self-oscillate, if desired, by turning the Resonance
+control near the maximum (USE WITH CAUTION!). Modulation of the cutoff frequency is also
+supported. The Mode switch selects between the classic low-pass filter type and a band-pass (the band-
+pass mode can be used to create a unique wah effect). The Order parameter selects between a 2-pole
+or 4-pole design. The Bass Comp parameter allows the user to compensate for the decrease in bass
+response as the Resonance is increased.
+
+Added “Touch-Ladder” type to Filter block. This is based on the Ladder Filter type but the frequency is
+controlled by an envelope detector. This is similar to the Touch-Wah type but uses a Moog Ladder Filter
+with its unique characteristics and sound.
+
+Added DELETE ALL BLOCKS and CREATE LAYOUT TEMPLATE functions to Layout->Tools.
+
+Fixed wrong grid stopper resistor value in Friedman BE/HBE models.
+
+Fixed issue with amps with cathode followers that drive multiple tone stacks (Brit JVM, JS410, Dizzy V4).
+This makes these amp models sound more “open”.
+
+Fixed Optical and JFET types in Compressor block can potentially generate a NaN causing the output to
+mute.
+
+Fixed only first Program Change works when a MIDI controller is using running status.
+
+Fixed bit crusher rounding bug in Drive and Delay blocks. This resulted in excessive even-order
+distortion at high bit-reduction settings.
+
+Fixed Vocoder not working properly when using one of the grid rows as the Analysis Source.
+
+Fixed Level in Gate block being applied twice. Existing presets should be auditioned as the level out of
+the block may be changed.
+
+Fixed issue with Tuner when Tuning Offsets are on an playing low notes (basses and lowest string on 7-
+string guitars).
+
+Fixed using MIDI Bank Select to select a bank other than 0 along with PC Mapping ON could result in a
+corrupted patch recall.
+
+Various other fixes and improvements.
+
+
+
+32.06
+Added Brit JVM Crunch Green, Orange and Red models based off the Crunch channel of a Marshall
+JVM410.
+
+Changed behavior of Plex block so that Master Pitch only controls pitch and not detune. Master Detune
+still only controls detune.
+
+
+
+32.05
+
+Added PVH 6160 Block Clean amp model.
+
+Added Deluxe Tweed Normal amp model. Existing Deluxe Tweed model renamed to Deluxe Tweed
+Bright.
+
+Fixed wrong capacitor value in 5153 100W Red amp model (probably not audible).
+
+
+
+32.04
+
+Improved power amp modeling.
+
+Updated many amp models based on new analysis methods. Existing presets are automatically updated
+with new default values for some advanced parameters.
+
+Fixed some Chorus models (Analog Mono, Analog Stereo, etc.) have less depth than earlier firmware if
+Auto-Depth is ON.
+
+Fixed Multiplexer block not selecting USB audio inputs correctly.
+
+
+
+32.03
+
+Improved Chorus block. Remastered the Japan CE-2 model. Added EQ controls to some models. Added
+the following models:
+
+    •   Japan CE-1 Chorus. Based on a Boss CE-1 in chorus mode.
+    •   Japan CE-1 Vibrato. Based on a Boss CE-1 in vibrato mode.
+    •   Japan CH-1. Based on a Boss CH-1.
+    •   MX234. Based on an MXR M234 Analog Chorus.
+    •   Small Copy. Based on an EXH Small Clone.
+    •   Japan CE-2 Bass. Based on a Boss CE-2B.
+    •   Vibrato. A generic vibrato effect.
+    •   Rockguy: Based on the Rockman X-100 chorus.
+    •   MX134 Stereo: Based on an MXR M134 Stereo Chorus.
+Updated various default values (and hidden parameters) in Amp block based on new analysis methods.
+For many amps this improves the feel and makes the amp sound more “open”. Existing presets are
+automatically updated.
+
+Fixed Input EQ in Amp block not working if Definition is 0.0.
+
+Fixed excessive blocking distortion in Supertweed model.
+
+Fixed switching between channels in Delay block can cause a background whine if the previous channel
+was using Dry Diffusion.
+
+
+
+32.02
+
+Improved Amp block preamp modeling.
+
+Added “Oversampling” parameter to Drive block. When set to HIGH the oversampling rate is doubled
+which results in less aliasing. NOTE: This will increase CPU usage considerably.
+
+Reduced CPU usage in some blocks.
+
+Fixed an issue where overdriving the input of the Amp block, whether with an external Drive block or
+using the internal Input Boost (or both), causes excessive aliasing for some amp models.
+
+Fixed wrong Overdrive Volume taper in Fox ODS models. Audition presets and adjust as necessary.
+
+Fixed an issue with the Euro Uber model where certain combinations of Presence and Depth can cause a
+crash.
+
+
+
+32.01
+
+Added Dry Diffusion control to Delay block. This allows adjusting the dry diffusion separate from the
+wet diffusion.
+
+Added Delay controls to Mixer block. This allows adding up to 64 samples of delay to each signal. This
+can be used to compensate for latency when routing things in parallel.
+
+Fixed turning Gain up to 10 in some amp models can cause Amp block to crash.
+
+Fixed an issue with the Euro Uber model where certain values of Depth combined with certain speaker
+impedance curves can cause a crash.
+
+Added checking for invalid/duplicate modifiers (which can be caused by 3rd-party apps) during preset
+recall and removes them.
+32.00
+
+Improved power tube grid modeling in Amp block.
+
+Improved frequency response accuracy for amp models.
+
+Improved diffusion in Delay block. The dry signal is now diffused along with the delayed signal. This
+makes the effect more musical.
+
+Increased pitch tracking range in Pitch block to ~2500 Hz. This allows tracking pinch harmonics better.
+
+Improved pitch shifting for low frequencies, e.g. bass guitars.
+
+Grouped types in Reverb block to aid in selection.
+
+Increased range of Attack Time in Input block. Attack Time can now be set to a minimum of 0.1 ms.
+Existing presets are automatically updated.
+
+Increased range of Attack Time in Gate block. Attack Time can now be set to a minimum of 0.1 ms.
+Existing presets are automatically updated.
+
+Added Swedish Metal model to Drive block based on a Boss HM-2.
+
+Added 1S2473 diode type to Drive block (to support Swedish Metal model).
+
+Added “Transistor” Power Tube Type. This is now the default type for the Jazz 120 amp model and
+models a transistor output stage. Existing presets using this model are automatically updated.
+
+Fixed wrong gain pot taper on all Double Verb, Vibrato Verb and Super Verb models. Taper was
+previously 20A, now “2-35”. Remastered models. Audition presets and adjust as necessary.
+
+Fixed an issue with PVH 6160, PVH 6160+ Lead and 5153 Red amp models. These models have been
+remastered accordingly. It is recommended to do a soft reset to load the new default values.
+
+Fixed wrong resistor value in 5153 100W Green amp model. Audition presets and adjust as necessary.
+
+Fixed wrong resistor value in 5153 100W Stealth Blue model. Audition presets and adjust as necessary.
+
+Fixed wrong B+ voltage in Friedman BE/HBE models (due to wrong dropping resistor value). These
+models have been remastered accordingly. The default Negative Feedback has been changed to being
+commensurate with being taken from the 4-ohm tap. Note that the first-generation BE-100 had the
+feedback off the speaker jack. This was then changed to the 4-ohm tap. The latest version has a three-
+way switch to select between 4/8/16-ohm taps. Audition presets and adjust as necessary.
+
+Fixed wrong Master Volume taper in Solo 100 amp models. Remastered the models. Audition presets
+and adjust as necessary.
+Fixed wrong bass taper in Band-Commander amp model. Audition presets and adjust as necessary.
+
+Fixed wrong master volume taper in Mr Z MZ-38 amp model. Audition presets and adjust as necessary.
+
+Changed default values of Dual Tape type in Delay block to be a bit more musical.
+
+Fixed preset updater not correctly setting Preamp Hardness if Amp block using EF86 tube type.
+
+Various other fixes and improvements.
+
+
+
+31.03
+
+Improved Auto-Swell type in Volume block. The new algorithm features a dynamic threshold which
+tracks the average level of the input signal. The Hysteresis control determines how much the short-term
+level must drop below the average level to reset the gate. The Threshold control determines the
+absolute threshold at which the gate will close.
+Improved Envelope Follower in Megatap, Multitap and Plex blocks.
+
+Increased range of High Cut control in Pitch block. The High Cut can now be reduced to as low as 200
+Hz.
+
+Added Triggering to Arpeggiator type in Pitch block. When Threshold is set other than “OFF” the
+arpeggiator will trigger when the input signal exceeds the threshold.
+
+Changed behavior of Arpeggiator so that when the sequence is finished the sequence resets to the first
+step (rather than stopping at the last step).
+
+Improved pitch tracking in Pitch block.
+
+Fixed Amp block first stage bias point can get corrupted and produce unwanted distortion.
+
+Various other fixes and improvements.
+
+
+
+31.02
+
+Fixed wrong Preamp Hardness being loaded for amp models with pentode preamps (i.e., AC-20 EF86).
+
+Fixed crash in Div/13 CJ11 models.
+
+Fixed inadvertent error introduced into AC-20 models.
+
+
+
+31.01
+Added “Deluxe 6G3” amp model based on the bright channel of a 6G3 “Brownface” Deluxe.
+
+Added “Citrus Juicer” Compressor model based on a Dan Armstrong Orange Squeezer. Unlike the
+Orange Squeezer the model allows you to adjust the compression ratio and threshold independently
+and also features Emphasis, Drive and Tone controls. The ratio and threshold of the actual pedal vary
+with the particular JFET used and the internal bias trim. Set the Threshold to -26.0 dB and Compression
+to 8.0 as a starting point and adjust to taste.
+
+Added “Half-Wave” Detector Type to Compressor block. This is similar to the Peak type except the
+rectifier is half-wave as opposed to full-wave. This alters the attack and release ballistics and can add a
+bit more grit to the sound.
+
+Added warning if system clock frequency is incorrect (e.g. when using AES/SPDIF as the clock source and
+the clock is at 44.1 kHz instead of 48 kHz).
+
+Improved Amp block preamp modeling (again). This yields more accurate behavior when the amp input
+is pushed (e.g., when using an internal or external overdrive/boost).
+
+Improved Amp block phase inverter modeling.
+
+Went through every model with a fine-toothed comb and adjusted power amp and phase inverter
+parameters as needed to reflect new modeling.
+
+Improved dwell algorithm for spring types in Reverb block.
+
+Fixed wrong output transformer impedance ratio in Deluxe Tweed models (only slightly off).
+
+Fixed wrong bias point in Band-Commander model.
+
+Fixed instability in Pi Fuzz model for certain values of Sustain.
+
+Fixed wrong time constant in Herbie models (probably not audible).
+
+Various other fixes and improvements.
+
+
+
+31.00
+
+Improved preamp modeling in Amp block. This yields more accurate harmonic response and better feel.
+NOTE: The Preamp Tube Hardness parameter functions differently now. Existing presets are
+automatically updated to the default value for the amp model.
+
+Improved power amp modeling in Amp. This yields a more controlled low end, especially for non-MV
+amps.
+
+Added “Surround Delay” type to Delay block. This type produces “rotating” echoes that appear to move
+around the listener. The Rotation parameter determines how rapidly the echoes rotates. With Rotation
+at 100% the echoes will rotate 180 degrees each time (front, back, front, etc). At 50% the echoes will
+rotate 90 degrees (front, right, back, left, front, etc.). Negative values will cause the echoes to rotate in
+the opposite direction.
+
+Added “Auto Align” switch to Cabinet block. When OFF the IR is delayed by the appropriate amount
+based on the Distance parameter (automatic time alignment is turned on). The user can add additional
+delay using the Align tab. Note that the actual delay can be less than the displayed delay as all IR delays
+are normalized to the shortest delay (so as to minimize overall latency). The Align tab has been changed
+to display the delay in ms rather than distance to reduce confusion with the Distance parameter. NOTE:
+Existing presets will have Auto Align set to ON as this was the prior behavior.
+
+Added On/Off switch for Metronome. This can be controlled remotely as well by setting the desired
+control source in the MIDI/Remote -> Other menu.
+
+Added Suhr Reactive Load Speaker Impedance Curve.
+
+Various other fixes and improvements.
+
+
+
+30.01
+
+Fixed loss of gain in Wah block if Drive is nonzero.
+
+
+
+30.00
+
+NOTE: This firmware requires installation of Dyna-Cabs version 1.09 (included in the .zip file). Refer to
+the DynaCab Installation Guide for details. Be sure to install the firmware before installing the Dyna-
+Cabs.
+
+Added Tracking Mode parameter to Synth and Ring Mod blocks. When set to “BASS” the pitch tracking
+range is shifted down one octave with the lowest detectable note being approximately F#0.
+
+Increased upper range of pitch detectors to approximately F#6. This prevents loss of tracking if playing
+at the 24th fret on the high E string and bending up a whole step.
+
+Added “PI Fuzz – Bass” model based on a Deluxe Bass Big Muff Pi.
+
+Added “NoAmp Bass DI” based on a SansAmp BassDriver DI.
+
+Added “NoAmp Bass Pre” based on a SansAmp BassDriver DI with the speaker emulation bypassed. This
+can be used into a Cabinet block or as a boost into an Amp block.
+Added “Royal Bass DI” based on a Noble Bass Preamp DI. The model has been modified with more gain
+so that it can be overdriven. With the Drive knob at 5.00 the gain is the same as the actual preamp.
+Also, instead of a Low Cut switch, the model uses an adjustable Low Cut control.
+
+Added “7 Band Pedal” Graphic EQ type based on a Boss GE-7.
+
+Added “7 Band Bass Pedal” Graphic EQ type based on a Boss GE-7B.
+
+Added “1x8 Princetone” Dyna-Cabs captured from a 5F2 Tweed Princeton w/ a very nice sounding 8”
+Jupiter speaker. Added corresponding Speaker Impedance Curve.
+
+Added “1x12 Black Majik” Dyna-Cabs captured from a Supro Black Majik with a Jensen P12Q speaker.
+Added corresponding Speaker Impedance Curve.
+
+Added “8x10 SV Bass” Dyna-Cabs captured from an Ampeg SVT. Added corresponding Speaker
+Impedance Curve. Thanks to Mike "Dr. Bonkers" Santasiero for the files from his DynaCab Pack, "Dr.
+Bonkers 8x10 SBB Bass". If you like this selection of mics, you can purchase the entire pack for Cab Lab
+at https://shop.fractalaudio.com
+
+Improved accuracy of Sustain control vs. position in PI Fuzz models.
+
+Fixed wrong resistor value in Blackglass 7K model. Remastered model as a result.
+
+Fixed incorrect gain in Colortone Booster and Colortone OD models.
+
+Fixed wrong capacitor value in all Blackface Vibrato models (Deluxe Verb, Double Verb, Super Verb,
+Vibroverb), Div/13 FT37 models and the Double Verb Silverface model. Change probably isn’t very
+noticeable.
+
+Fixed wrong resistor value in Deluxe Verb Normal model. Remastered model as a result.
+
+Fixed Modern Gate type can get stuck closed if input above threshold during boot.
+
+Various other fixes and improvements.
+
+
+
+29.01
+
+Improved intelligent pitch shifting in Pitch block.
+
+Notes:
+
+    •    The Pitch Tracking parameter selects between Off, Chords and Notes. In Chords mode the
+         tracking is optimized for playing multiple notes simultaneously and trades latency for stability.
+         In Notes mode latency is reduced at the expense of stability. In Notes mode simple chords can
+         be tracked but complex chords may present difficulty for the pitch tracker. The Tracking Adjust
+         parameter allows for fine adjustment of the stability vs. latency trade-off.
+    •   The Pitch Tracking parameter is only available for chromatic shifting types (this includes
+        whammy types). Diatonic shifting necessarily requires playing single notes and the algorithm is
+        automatically set to Notes mode for these types.
+
+Improved CPU usage for some types in Compressor block.
+
+Reduced filtering of rear panel pedal inputs. This allows faster response to rapid pedal movements.
+
+Fixed pop/thump when switching to/from certain Drive types.
+
+Various other fixes and improvements.
+
+
+
+29.00
+
+Improved Amp block preamp modeling. Most amp models have been updated as a result. Audition
+presets and adjust as necessary.
+
+Changed name of Supro 1695T to Supro Black Magick at Supro’s request.
+
+Fixed switching from Supro Black Magick model to certain models using the editor can cause a crash.
+
+Fixed wrong plate resistor value in PVH 6160 Block Lead and PVH 6160+ Lead models.
+
+Fixed Gain knob not working in USA MK V Green model.
+
+Fixed compander in Delay block not working correctly due to stack/hold changes.
+
+Various other fixes and improvements.
+
+
+
+28.08
+
+Added Supro 1695T amp model based on a Supro Black Magick.
+
+Fixed Presence knob taper in PVH 6160 models.
+
+Fixed wrong UI for USA MK V Green amp model.
+
+Fixed Amp block Soft-Reset function does not set Edited LED.
+
+Added global parameter to notify editor when a refresh is necessary.
+
+Various other fixes and improvements.
+
+
+
+28.07
+Improved Drive block by modeling output buffer distortion (where applicable).
+
+Added “Angry Chuck” Drive pedal model based on a JHS Angry Charlie.
+
+Added “Guardian Photon Speed” Drive pedal model based on a Greer Lightspeed.
+
+Recaptured the 1x15 Vibratoverb Dyna-Cab using a new speaker as the old one sounded tired. The
+corresponding speaker impedance curve has also been updated.
+
+Corrected a minor mistake in the effects loop recovery for the PVH amp models.
+
+Renamed all “Prince Tone” models to “Princetone” because some customers thought this meant the
+amp was used by His Royal Purpleness.
+
+Various other fixes, tweaks and improvements.
+
+
+
+28.06
+
+Added “Soft-Reset” function to Amp block. This can be accessed from the Type page. Executing a soft-
+reset retains the values for the gain, tone controls, EQ, MV, etc. but resets advanced parameters to their
+default values.
+
+Remastered all Solo 100 amp models. If using these models, it is recommended to do a soft-reset.
+
+Remastered all Solo 99 Lead amp models. If using these models, it is recommended to do a soft-reset.
+
+Fixed wrong resistor value in Cameron CCV and Atomica models (effect is likely negligible).
+
+Corrected a minor parameter error in the Deluxe Verb Vibrato, Double Verb Vibrato, Double Verb
+Silverface, Super Verb Vibrato, Vibrato Verb and Div/13 FT37 models.
+
+
+
+28.05
+
+Improved Amp block output transformer modeling.
+
+Tweaked parameters for amps with cold clipping stages slightly to better reflect new insights and
+measurements.
+
+Remastered all Brit JVM and JS410 amp models. If using these models, it is recommended to do a soft-
+reset of the model by deselecting and reselecting the type.
+
+Remastered Solo 88 Rhythm and Lead models. If using these models, it is recommended to do a soft-
+reset of the model by deselecting and reselecting the type.
+Remastered all Recto2 amp models. If using these models, it is recommended to do a soft-reset of the
+model by deselecting and reselecting the type.
+
+Remastered all USA MK IV Lead amp models. If using these models, it is recommended to do a soft-
+reset of the model by deselecting and reselecting the type. NOTE: The taper of the Overdrive control
+has changed. Audition and adjust presets as necessary.
+
+Remastered all USA MK IIC+ amp models. If using these models, it is recommended to do a soft-reset of
+the model by deselecting and reselecting the type. NOTE: The taper of the Overdrive control has
+changed. Audition and adjust presets as necessary.
+
+Remastered all USA Pre LD2 amp models. If using these models, it is recommended to do a soft-reset of
+the model by deselecting and reselecting the type. NOTE: The taper of the Gain control has changed.
+Audition and adjust presets as necessary.
+
+Corrected an error in calculating the bias point of an early gain stage in amp models with five or more
+gain stages (likely not audible).
+
+
+
+28.04
+
+Fixed display bug for Send MIDI Clock.
+
+
+
+28.03
+
+Added “1x12 Scholz” Dyna-Cab. This is a subset of the 1x12 West Coast Classic Dyna-Cab available in our
+store and is based on a MojoTone™ West Coast cabinet with a 12” Scholz SugarCone™ Classic speaker.
+
+Added “77 Custom OD” based on an MXR M77 Custom Badass Modified OD.
+
+Added modifier capability to Sensitivity parameter in Filter block (for Envelope Filter and Touch-Wah
+types).
+
+Remastered all “PVH” amp models. A soft reset is recommended to load the new default values.
+
+Fixed wrong capacitor value in OD 250 and OD 250 Gray models.
+
+Fixed rare crash in Compressor block that can occur when switching presets/scenes/channels.
+
+Fixed Tremolo block graph not working if Rate is set to LFO1 SYNC.
+
+Fixed Send MIDI Clock allowed for incompatible USB firmware versions. MIDI Clock send is only
+supported for USB firmware versions greater than 1.14. To send MIDI Clock over USB requires USB
+firmware version 1.17 or greater.
+28.02
+
+Added adjustable Q to Low Cut and High Cut in Reverb block. Note: The Q only affects the response if
+the Slope is set to 12 dB/oct.
+
+Updated spring models in Reverb block. A soft reset is recommended if you use these types to load the
+new default values.
+
+Added Vibrato-King Custom Spring type.
+
+Changed name of “Spring Drive” to “Dwell” as this is what is commonly used on spring reverb units.
+Note that the Dwell control is automatically compensated. Therefore, changing the Dwell will not affect
+the mix unlike a hardware spring reverb, it will just make the sound more “splashy”.
+
+Rearranged Spring Reverb menu so that most commonly used controls are on the same line.
+
+Added Negative Feedback control to UI for Friedman BE/HBE models since this is now a control on the
+actual amp.
+
+Improved Amp block phase inverter grid clipping model accuracy.
+
+
+
+28.01
+
+Improved Spring Reverb algorithms.
+
+Added “Plexi Brown” tone stack. This is the tone stack from EVH’s amp with a 50K mid pot.
+
+Fixed rare crash when switching Compressor type from Axe-Edit.
+
+Fixed global settings not recalled after using a song in a setlist and then rebooting.
+
+Tweaked some power tube parameters slightly.
+
+
+
+28.00
+
+New Vibe algorithm in Phaser block. The default values have changed for the Vibe models and existing
+presets are automatically updated to the new defaults. If you have edited the default values you may
+wish to audition your presets accordingly.
+
+Added “LFO Mode” to the Phaser block. When set to UNIVIBE the amplitude of the LFO is roughly
+proportional to the LFO Rate. When set to NORMAL the amplitude is constant. NORMAL allows deeper
+phasing at slow rates than would be possible with an actual Univibe.
+Added Low Cut and High Cut controls to Phaser block for the wet path.
+
+Added “Modern Vibe” model to Phaser block. This is based on a classic UniVibe but with modern input
+buffer and LFO.
+
+Changed “Exponent” to “VCR Shape” in Phaser block as this more accurately describes the control
+function.
+
+Complete overhaul of the Compressor block:
+
+   •   New Dynami-Comp algorithm:
+          o New algorithm accurately models various nonlinearities for faithful reproduction.
+          o Added Knee Type to allow varying the knee shape.
+          o Added Tone control (like in various clones).
+          o Added Drive control. The Drive control allows overdriving the OTA which can be used to
+              add saturation. The control is preset when selecting one of the Dynami-Comp types but
+              can be altered by the user.
+          o Added Input/Output graph.
+          o A low-CPU version of this algorithm is available with the Econo-Dyno-Comp.
+   •   New “VCA Bus Compressor” algorithm:
+          o Based on a VCA feedback design (e.g., SSL Bus Compressor).
+          o Dynamic time constants. Extremely fast attack times are achievable as the actual attack
+              time is always less than the programmed time (decreases dynamically).
+          o This algorithm replaces the Studio FB Compressor.
+          o Auto Att/Rel has been removed as it is no longer applicable.
+   •   New JFET Compressor algorithm:
+          o Based on classic JFET rackmount compressors.
+          o Dynamic time constants.
+          o The Attack and Release times are the “native” times of the detector. The actual Attack
+              and Release times will be much shorter (about 5 times). The native range of Attack
+              Time for an 1176 is 0.1 ms to 5.5 ms. The Release Time range is 59 ms to 1.1 s.
+          o Due to the design of these compressors the minimum compression ratio is 4:1. Any
+              settings below 4.0 will be clamped at 4:1.
+          o Unlike the actual hardware the algorithm’s threshold is variable so instead of varying
+              the input and output gains we give you a more convenient method (and Automatic
+              Makeup Gain).
+          o Due to the very fast attack times these types of compressors will distort. This is often
+              used for effect. Low frequencies are distorted more.
+          o The “Drive” control allows overdriving the output stage for added distortion.
+          o Perfect for fattening up your sound and adding grit. Works well as a “finishing”
+              compressor at the end of a chain (usually before time-based effects). Also great for
+              vocals, bass and drums.
+   •   New Optical Compressor Algorithm:
+           o   Based on classic optical rackmount compressors.
+           o   Times are “doubly dynamic”. The times are dynamic due to the feedback topology of
+               the compressor and the attack and release times of the photocell are also dynamic. The
+               Attack and Release Time controls set the nominal times of the photocell. However, the
+               times will vary with the program level.
+          o Due to the design of these compressors the minimum compression ratio is 4:1. Any
+               settings below 4.0 will be clamped at 4:1.
+          o Whereas hardware optical compressors typically have a fixed compression ratio (usually
+               about 4:1) and a limiting option this algorithm allows adjusting the ratio from 4:1 to
+               (nearly) infinite.
+          o Rather than input/output gain controls the algorithm allows adjusting the threshold
+               instead which requires less fiddling with the makeup gain.
+          o The Emphasis control replicates the internal “Limiter Response” adjustment. This
+               control may be on the front panel of some clones and the operation may be reversed
+               depending upon the manufacturer. The Emphasis Frequency control allows shifting the
+               frequency range of the curve.
+          o The “Drive” control allows overdriving the output stage for added distortion.
+          o The smooth attack and release characteristics of this type make it ideal for vocals and
+               acoustic instrument sources.
+   •   New JFET Pedal Algorithm:
+          o Based on pedals with a JFET as the shunt resistor in a non-inverting op-amp
+               configuration.
+          o Replaces the JFET Sustainer type.
+   •   Added Rockguy Compressor Type:
+          o Similar to the JFET Pedal algorithm mentioned above but with dynamic release time and
+               several other enhancements.
+   •   New Tube Compressor Algorithm (now called “Vari-Mu Tube Compressor”):
+          o Based on a tube compressor using “remote-cutoff” tubes for gain control.
+          o Dynamic attack times.
+          o The actual compression ratio is somewhat nebulous due to the nature of the circuit but,
+               in general, the minimum ratio is about 2:1 and the maximum ratio is about 20:1. The
+               Threshold and Compression controls interact. The graph assists with adjusting the
+               controls.
+          o This compressor has big, swoopy compression curves and a warm tone making it useful
+               for adding “glue” to a track or mix.
+          o The “Drive” control allows overdriving the output stage for added distortion.
+   •   NOTE: These changes may affect the sound of your presets. If you use the Compressor block in
+       your presets you should audition your presets accordingly.
+
+Improved Reverb block. Reverbs based on real spaces have more natural sounding reflections and are
+more immersive.
+Improved behavior of Plex and Multitap Delay blocks when changing channels or presets. If the type has
+changed the delay lines are cleared. If the type has not changed the delay lines are not cleared allowing
+for spillover between channels. If Spillover is on, the delay lines are not cleared between preset changes
+if the type has not changed.
+
+Improved Room modeling in Cabinet block. Mic Spacing is also changed to distance in cm. Default is
+ORTF standard of 17 cm. This may change the sound of your presets if you use this. Audition your
+presets accordingly.
+
+Added Filter page and graph to Plexi GUI to assist with editing filter parameters.
+
+Added “Ducking” control to Tremolo block. This reduces the intensity of the effect as you play louder.
+
+Added Tube Drive 5-Knob model.
+
+Added “Brit 800 Studio 20” amp model based on a Marshall SC20H.
+
+Renamed Brit Studio 20 to “Plexi Studio 20”.
+
+Updated default Negative Feedback value for Friedman BE/HBE models. On the actual amp the negative
+feedback comes off the speaker jack (for some weird reason). Previously the amp models assumed an 8-
+ohm cabinet which would make the feedback effectively off the 8-ohm tap. However, the matching
+cabinet is 16 ohms and using a 16-ohm cabinet results in more negative feedback and a “tighter” tone so
+we’re now using that as a default value as people seem to prefer that. The models were also
+“remastered” as a result.
+
+Improved triode modeling algorithms.
+
+Various other fixes and improvements.
+
+
+
+27.03
+
+Improved Drive block.
+
+Improved PI Fuzz model. The new model also allows changing the type and quantity of diodes used in
+the transistor feedback paths, adds a “Wicker” switch which removes the feedback capacitors and adds
+a “Tone” switch which allows bypassing the tone circuitry.
+
+Added “PI Fuzz – Triangle” model. This is based on a 1971 “Triangle” Big Muff PI. Thie model also
+includes the Tone Wicker mods.
+
+Added “PI Fuzz – Ram’s Head” model. This is based on mid-70’s “Ram’s Head” Big Muff PI. The model
+also includes the Tone Wicker mods.
+Added “PI Fuzz – Russian” model. This is based on a Sovtek produced “Civil War” Big Muff PI. The
+model also includes the Tone Wicker mods.
+
+Added “Colortone Booster” model based on a Colorsound Power Booster (with added Master control).
+
+Added “Colortone OD” model based on a Colorsound Overdriver (with added Master control).
+
+Added “MOSFET Distortion” model based on an Ibanez MT10 Mostortion.
+
+Added “Super Fuzz” model based on a Univox Superfuzz. The model also features a tone control which
+allows varying the frequency of the notch. Use the Bias control to simulate the “Octave” control found
+on some clones.
+
+Updated DS1 Distortion model to Second Edition specs.
+
+Improved Tube Drive 4-Knob model. If you are using this model in a preset a soft reset of the block is
+recommended to load the new default values.
+
+Reworked Blackglass 7K model.
+
+Added 1N5819 Schottky and Yellow LED diode models to Drive block.
+
+Fixed resistor mistakenly attached across drive pot on Plexi 2204 model.
+
+Fixed Phaser block LFO Reset not working properly for some types.
+
+Fixed wrong Miller capacitance value in Brit 800 models (probably not audible).
+
+Various other fixes and improvements.
+
+
+
+27.02
+
+Added Integral Pre type to Drive block. This is based on a TC Electronics Integrated Preamp.
+
+Improved Filter block Touch-Wah detector behavior.
+
+Improved Sweep Delay algorithm in Delay block. Added selectable filter type.
+
+Improved Quad Diffusor algorithm in Multitap Delay block. New algorithm now has stereo output with
+adjustable spread and LFO controlled filters.
+
+Exposed “Algorithm” type in Multitap Delay block. This allows changing the underlying algorithm
+without changing the various parameters. This can be used to experiment with different algorithms
+without losing parameter settings as occurs when changing the Type.
+
+Fixed MIDI Clock not changing when switching to a new preset and Tempo To Use is set to “Preset”.
+Fixed Controllers may stop working if unit is left on for more than a few days.
+
+
+
+27.01
+
+Added “Touch Wah” type to Filter block. This is similar to the Envelope Filter but uses a different type of
+detector and voltage-to-frequency converter. This type can be used to create interesting touch-
+sensitive filter sounds. It can also be used to replicate the Korg A3 Touch Wah sound as follows:
+
+    -   Set Mode to MIX
+    -   Set Start Freq to maximum. Set Stop Frequency to minimum.
+    -   Start with a fairly high Attack Time, around 500ms.
+    -   Set Release Time to around 200ms.
+    -   Adjust Sensitivity to taste.
+
+Improved Auto-Swell type in Volume block. Added Release time and Hysteresis controls to allow fine-
+tuning to playing style. Hysteresis controls how much extra the signal must fall below the threshold
+before the detector releases.
+
+Changed the Envelope Follower in the Megatap, Multitap and Plex blocks to use the same algorithm as
+the improved Auto-Swell algorithm in the Volume block as the purpose of the Envelope Follower is to
+generate volume swells.
+
+Added MIDI Clock transmit. This can be configured to send MIDI clock messages to MIDI, USB or both
+(or off). Default is MIDI only. NOTE: USB Firmware 1.17 or greater is required to send MIDI Clock over
+USB. If you require MIDI Clock to a USB host then you need to install USB Firmware version 1.17 or
+greater.
+
+Added selectable MIDI Clock receive source. This can be configured to receive MIDI clock messages
+from MIDI or USB (or off). Default is MIDI.
+
+Added activity sensing to internal pedals, FC pedals and external controllers. This stops Auto-Engage
+from engaging an effect if the pedal/controller is not connected. This prevents, for example, a Wah
+being engaged if Auto-Engage is on but no pedal is connected (i.e., you left your expression pedal at
+home).
+
+Added selectable Tuner color theme.
+
+Fixed LFO Phase not working for Vibe modes in Phaser block.
+
+Reduced boot time.
+
+Various other fixes and improvements.
+27.00
+
+Improved Amp block preamp algorithms, especially for amps with multiple gain stages. Tones are
+“gutsier” and have a more dynamic response with more “pop”. Also improves accuracy when input of
+Amp block is driven by a Drive pedal (whether real or virtual).
+
+Improved cathode follower algorithm improves accuracy near onset of clipping. This results in warmer
+tones at edge-of-breakup and better cleanup when rolling off the volume knob (for amps that use a
+cathode follower). Due to the new algorithm the Grid Clipping parameter has been removed.
+
+New power amp algorithm. New algorithm more accurately models bias excursion and duty cycle
+modulation. The results in more complex tone with better, punchier feel.
+
+Added “Envelope Filter” to Filter block. This is based on the classic Mutron effect with some modern
+touches:
+
+    •   The start and stop frequencies are freely assignable. Start can be lower or higher than stop.
+        Simply set Start Freq higher than Stop Freq to sweep down.
+    •   The Sweep Shape knob controls the mapping of the detector to the filter frequency. A value of
+        0.0 is a linear mapping. Higher values become progressively more nonlinear and make the
+        response more “quacky”. The default value is commensurate with a typical consumer Vactrol.
+    •   The detector attack and release times are programmable. Default values match the original
+        pedal.
+    •   The Emphasis control allows emphasizing the higher frequencies into the detector to even out
+        the response when playing higher notes.
+    •   The detector source is selectable between the block input or any of the hardware inputs. This
+        allows placing the filter after an Amp or Drive block but using the instrument input as the
+        source.
+    •   A detector meter facilitates easy adjustment of the detector sensitivity to match your guitar and
+        playing dynamics.
+
+Added “Auto-Wah” to Filter block. This is based on the same “circuit” as the Envelope Filter but
+replaces the detector with an LFO.
+
+Added LFO Tempo control to Filter block.
+
+Improved tuner. New algorithm is faster and more accurate.
+
+Added Crossfade Time control to Crystal Echoes type in Pitch Block.
+
+Improved pitch shifting.
+
+Reduced CPU usage of Wah block slightly.
+
+Remastered Vibrato Lux model.
+Added date and time to version information returned to Axe-Edit. This obviates the need to “Refresh
+After New Firmware” if updating from beta releases (requires updated Axe-Edit).
+
+Fixed wrong capacitor value in Band-Commander model.
+
+Fixed missing PI grid stopper resistor in Comet 60 and Comet Concourse models.
+
+Various other fixes and improvements.
+
+
+
+26.01
+
+Improved Drive block. Remastered most models as a result.
+
+Updated Timothy models to V4 spec.
+
+Updated Fat Rat model.
+
+Added Kill Dry to Megatap block.
+
+Fixed Rat model can generate NaNs under very rare circumstances.
+
+Fixed pops/clicks can occur when changing Preamp Type or Saturation control in Cab block and Preamp
+Mode is set to “High Quality”.
+
+
+
+26.00
+
+Improved phase inverter modeling in Amp block. This yields more “weight” and a more open tone when
+driving the virtual power amp hard (i.e. non-MV amps or MV turned up high).
+
+Updated phase inverter parameters for most models based on new analysis tools.
+
+Added “2x12 5153 Stealth” and “4x12 5153 Stealth” DynaCabs.
+
+Fixed stand-in switch Tap functions not working in some cases.
+
+Fixed pops/clicks can occur when changing Preamp Type in Cabinet block.
+
+
+
+25.04
+
+Improved cathode follower algorithm. This results in a more open and dynamic response for models
+that use a cathode follower.
+Updated Plexi 100W and 1959SLP models. A soft reset of the Amp block is required to load the new
+default values.
+
+Updated phase inverter parameters for many amp models.
+
+Fixed Per-preset switches with "Preset" functions now correctly trigger Layout Links in all cases:
+tap/hold, normal/stand-in.
+
+
+
+25.03
+
+Fixed per-preset footswitch preset operations not triggering their layout link function.
+
+Fixed inability to reorder songs from the front panel in set 2, 3, or 4.
+
+Fixed pops/clicks when using Stack/Hold in Plex Delay.
+
+
+
+25.02
+
+Added “1x12 Friedman” speaker impedance curve.
+
+Fixed clicks and pops can occur when adjusting drive level of Rat Distortion.
+
+Fixed wrong value in phase inverter in Deluxe Verb Vibrato model.
+
+
+
+25.01
+
+Improved optical types in Tremolo block. Additionally, the LFO Type, Duty Cycle and Shape are now set
+to the most appropriate values when selecting the Tremolo Type but may be overridden by the user.
+
+Fixed modifier accidentally removed from Chorus block Bypass control.
+
+Fixed low frequency thump when switching Amp channels.
+
+
+
+25.00
+
+New “Cygnus X-3” amp modeling:
+
+    •   Improved preamp algorithms.
+    •   Improved power amp algorithms.
+    •   Improved output transformer loss modeling.
+    •   Improved preamp supply voltage modeling.
+    •   Nearly all amp models have been “remastered” as a result of new measurement techniques and
+        analytical methods.
+
+As a consequence of the new modeling many default parameter values have been changed. Existing
+presets are automatically updated to the new parameter values upon recall. The updated parameters
+are:
+
+    •   Preamp Low Cut Freq
+    •   Preamp Hi Cut Freq
+    •   Triode1/2 Plate Frequency
+    •   All Cathode Follower parameters
+    •   Preamp Bias
+    •   Preamp Bias Excursion
+    •   PI Bias Excursion
+    •   Power Tube Bias Excursion
+    •   Transformer LF/HF
+    •   Transformer Drive
+    •   Power Tube Grid Bias
+    •   Cathode Resistance
+    •   Cathode Time Constant
+    •   Negative Feedback
+    •   Supply Sag
+
+Added “Sunrise Splendor” Drive model. Existing model renamed “Sunrise Splendor Hi-Cut” to denote
+that the Hi-Cut switch is engaged.
+
+Added “Class-A 30W Brilliant” Amp model.
+
+Added “Kill Dry” control to Delay, Multitap Delay, Pitch, Plex and Reverb blocks. When set to ON the dry
+signal is muted. This simplifies routing these blocks in parallel. When using these blocks in parallel the
+user can turn Kill Dry on and set the wet level using the Mix control, leaving the Level control at 0dB.
+This also has the advantage that the wet level is controlled by the global Reverb/Effects Mix, if desired.
+
+Improved Input block Noise Gate.
+
+Improved Classic Expander and Modern Expander types in Gate block.
+
+Fixed wrong Miller capacitance value in Deluxe Verb Vibrato, Double Verb Vibrato, Super Verb Vibrato
+and all Vibrato Verb models.
+
+Fixed wrong FX loop recovery gain in Suhr Badger models.
+
+Fixed global settings not recalled if MIDI data is present on the MIDI In jack during bootup.
+Fixed wrong Overdrive Volume taper in ODS-100 HRM, ODS-100 Ford and Bludojai Lead amp models.
+Existing presets should be auditioned and adjusted as necessary.
+
+Various other fixes and improvements.
+
+
+
+24.04
+
+Changed Tuner mute logic so that only selected source is muted when Mute is set to INPUT.
+
+Updated Fryette D60 models.
+
+Updated Citrus RV50 model.
+
+Updated CA3+ Rhythm and Lead models.
+
+Updated Friedman BE/HBE models.
+
+Updated Recto1 and Recto2 models.
+
+Fixed Bit Reduction not working in Delay block.
+
+Various other fixes and improvements.
+
+
+
+24.03
+
+Fixed Mr Z MZ models crashing.
+
+Fixed spurious tone in input when Noise Gate is disabled.
+
+
+
+24.02
+
+Improved Stack/Hold behavior in Delay block for Tape types. While the echoes will still degrade over
+time if Stack/Hold is on the degradation is improved and only due to the losses of the virtual tape.
+
+Improved Intelligent and Noise Reducer gate types in Input block. This eliminates the slight squeaking
+sound as the gate releases when using aggressive settings.
+
+Improved Brit Silver model.
+
+Fixed Ping-Pong types in Delay block not working properly.
+
+Fixed popping when switching scenes.
+
+Various other fixes and improvements.
+24.01
+
+Fixed right channel volume reduced in Cabinet block when Preamp is active.
+
+Fixed Delay block distorting when presented with very high-level signals.
+
+
+
+24.00
+
+Improved speaker compression and amp interaction modeling.
+
+Changed Master Volume taper for Recto1 models to agree with actual amp. This will slightly reduce the
+volume into the virtual power amp. Audition presets accordingly.
+
+Added Global MV control to JS410 amp models. Master Volume has been renamed Channel MV. These
+two master volume controls can be used to balance the tone into the power amp (as in the real amp).
+The Channel MV decreases the high frequencies as it is turned down whereas the Global MV is
+transparent.
+
+Added USA MK V Red amp models.
+
+Improved accuracy of USA JP IIC+ models.
+
+Improved accuracy of TX Star models. Global MV controls have been added as the Channel MV in these
+amps affect the tone (and interacts with the Presence control).
+
+Improved Stack/Hold behavior in Delay block:
+
+    •   In Hold mode repeats are now infinite (or nearly, may degrade over many minutes/hours)*.
+    •   Added Stack Feedback and Hold Feedback parameters. This allows adjusting the decay time
+        independently for the stack and hold modes.
+    •   Improved transition between Stack/Hold states.
+
+    *Note that if the Compander is enabled and/or Bit Reduction is greater than zero that the echoes
+    will degrade over time. If you want infinite repeats then Compander must be OFF and Bit Reduction
+    set to zero. Infinite repeats are also not available in the Tape types as the tape algorithm is
+    inherently lossy (like a real tape).
+
+Improved handling of external word clock. If no clock is present unit will fall back to internal clock until a
+clock is detected.
+
+Extended range of Preset Increment/Decrement sources to include rear pedal jacks.
+Fixed attack behavior of Dynamicomp model to strong input signals. Default attack time also adjusted
+to match reference pedal.
+
+Fixed wrong PI bias point in Class-A 30W models.
+
+Fixed several mistakes in Div/13 CJ amp models.
+
+Fixed several mistakes in Two Stone J35 models.
+
+Fixed wrong phase inverter bias excursion parameters in Car Ambler model.
+
+Fixed VU meter in Cabinet block Preamp section only showing left channel. Meter now shows the sum
+of left and right.
+
+Various other fixes and improvements.
+
+
+
+23.05
+
+Changed Presence control taper on all 6160 and 5153 amp models to replicate the actual amp. It is
+advised to audition any presets that use these models and adjust accordingly.
+
+Due to the improved triode algorithm introduced in 23.00 many amps have had their preamp bias points
+updated. Existing presets are automatically updated upon recall.
+
+Improved Gapless Switching performance.
+
+Fixed Output 1 Configuration being overwritten by Output 2-4 configuration.
+
+Fixed several mistakes in 5153 Stealth models. If using these models it is recommended to do a soft-
+reset of the model by deselecting and reselecting the type.
+
+Fixed Sene MIDI GUI not updating correctly when changing scenes via front panel.
+
+Various other fixes and improvements.
+
+
+
+23.04
+
+Fixed wrong Negative Feedback value for Brit 800 2203 models.
+
+Fixed Bright switch off by default on 5153 100W Stealth Blue model.
+
+
+
+23.03
+Improved CPU usage.
+
+Added "Nobelium OVD-1” Drive model based on a Nobels ODR-1. The BC (Bass Cut) switch is modeled
+via the Bass Response control. Set the Bass Response to 1.0 to duplicate the response of the pedal with
+the Bass Cut switch engaged. Set Bass Response to 5.0 to duplicate response with BC switch
+disengaged.
+
+Added Sunrise Splendor model based on a JHS Morning Glory.
+
+Added Gauss Drive model based on a Mesa Flux Drive.
+
+Added Brit 800 2203 models.
+
+Renamed Brit 800 to Brit 800 2204 High.
+
+Added Brit 800 2204 Low model.
+
+Added 5153 100W Stealth amp models.
+
+Added USA MKV Green amp model.
+
+Changed default values of Speaker Drive and Speaker Thump to better align with measurements of
+typical speakers.
+
+Added NFB Compensation switch in Amp block. This defaults to On. Turning it off disables the negative
+feedback volume compensation at the output of the Amp block.
+
+Fixed LFO2 not working in Chorus block.
+
+Fixed wrong Distortion pot taper in DS1 Distortion models.
+
+Fixed wrong Gain pot taper in Angle Severe models.
+
+Fixed wrong output pad in USA JP IIC+ Green model.
+
+Fixed wrong default tonestack in 1959SLP and Plexi 100W 1970 models.
+
+Fixed EQ graphs in some blocks not updating when resetting the channel.
+
+Fixed Output Configuration being overridden by Copy parameter. I.e., if Output 2 Configuration is set to
+Copy L->R but Copy Output 1 is ON then the output would have the same configuration as Output 1
+(e.g., Stereo).
+
+Various other fixes and improvements.
+
+
+
+23.02
+Fixed Rotary block LFO stuck.
+
+
+
+23.01
+
+Improved CPU usage.
+
+Fixed audio artifacts can occur when switching Reverb block channels if there are different types
+between channels, i.e., switching between a plate reverb and a room reverb.
+
+Fixed LFO quantization generating wrong number of steps.
+
+
+
+23.00
+
+Improved Amp block triode algorithm.
+
+Improved Spring Reverb algorithm:
+
+    •   New algorithm is based on a digital waveguide with scattering nodes. This algorithm achieves
+        accurate spring reproduction recreating the iconic “drip” and flutter of classic spring tanks.
+    •   There are two internal Spring Reverb types. The type can be selected using the Tank Type
+        parameter. This parameter defaults to the appropriate type based on the model.
+    •   The first type has all the springs in parallel. This is used by the British Spring and Studio Spring
+        models. This is equivalent to an Accutronics Type 8 reverb tank.
+    •   The second type has a pair of springs in series in parallel with one or more pairs of springs in
+        series. This is equivalent to an Accutronics Type 4 (four springs) or Type 9 (six springs).
+    •   For the second Spring Reverb type the reflection off the junction between the coupled springs is
+        controlled by the Scattering parameter. Vintage Accutronics reverb tanks exhibit more reflection
+        off the junction than modern, Asian-made reverb tanks.
+    •   The “Drip” parameter controls the dispersion of the springs.
+    •   The various models have different tone controls.
+    •   Several new models have been added. The Tube Spring model is based on a 6G15 Tube Reverb
+        and has an authentic tone control. Studio Spring is a hypothetical spring reverb with six long
+        springs in parallel.
+    •   Note that the Modulation parameters have been removed as they are not compatible with the
+        new algorithm.
+    •   Existing presets using Spring Reverb types are reset to default values. Audition as necessary.
+
+Improved Reverb block early reflections. As a result, the default values of Early Level and Late Level for
+the models have been updated. Existing presets are automatically updated to the new values. Audition
+as necessary. The Early and Late Level parameters have also been removed from the Basic page of the
+Reverb block.
+Added “Pre-Delay Tap” parameter to Reverb block. This selects the input to the reverb engine. When set
+to OUTPUT the behavior is as before. When set to INPUT the initial delay is absent. This allows more
+natural “Echo-Verb” sounds. This is now the default for these types of models and existing presets are
+automatically updated.
+
+New Plate Reverb algorithm. This new algorithm captures the dispersion (Star Wars™ Laser “pew, pew”
+sound) and unique stereo imaging of classic plate reverbs. Dispersion is adjustable via the Dispersion
+
+parameter. Typical plates are around 25-50%. Set to higher values to exaggerate the effect. Stereo
+imaging is adjustable via the Pickup Spacing parameter.
+
+Updated many of the Reverb models. Existing presets are not affected. Reselecting the model will load
+the new default values.
+
+Improved Tremolo block:
+
+    •   The optical tremolo algorithm has been completely rewritten.
+    •   There are now three types of optical tremolo: Optical Trem 1: This type is based on optical pedal
+        tremolos where depth controls the intensity of the LED. Optical Trem 2: This type is based on
+        optical pedal tremolos where depth controls a “mixer” pot. This type has more “throb” than
+        Optical Trem 1. Neon Trem: This type is based on the optical tremolo in classic “Blackface” amps
+        which used a neon bulb to illuminate the LDR.
+    •   The Tremolo type has been renamed “VCA Trem” and is based on a voltage-controlled amplifier
+        topology.
+    •   An LFO waveform monitor has been added for appropriate types.
+
+Improved Tape Delay algorithm. The LFO1 Target and LFO2 Target parameters have also been removed
+from the Modulation tab as they are not applicable.
+
+Improved Tape Chorus algorithm. The Number Voices parameter has also been removed from the GUI
+as it is not applicable to this type.
+
+Updated Controller LFOs. The “Astable Beta” parameter for the LFOs has been renamed “Shape” and
+now controls the shape of the LFO for all types except Square and Random.
+
+Updated all JS410 Lead models based on a current production JVM410HJS. The Crunch models were
+tested and did not require updating.
+
+Added JS410 Lead Green amp model.
+
+Added "2x12 USA C90 Open Back" speaker impedance curve.
+
+Added Pitch High Cut parameter to Reverb block. This can be used to darken/brighten the pitch-shifted
+component of the reverb.
+
+Added Modifier capability to High Cut parameter in Delay block.
+Added Smoothing parameter to Cabinet block in Dyna-Cab mode.
+
+Improved channel switching speed. Amp and Cabinet block channel switching times, in particular, are
+much improved. This, in turn, improves preset and scene switching times.
+
+Preset, scene and channel changes are now gapless, if desired. A global parameter (Setup->Global
+Settings->Gapless Changes) allow turning this feature on or off.
+
+Fixed NaN could occur in Euro Uber model at certain combinations of Presence and Speaker Impedance.
+
+Various other fixes and improvements.
+
+
+
+22.01
+
+Added Revv Gen Green amp models.
+
+
+
+22.00
+
+Version 22 Introduces Dyna-Cab™ cabinet modeling.
+
+The Cabinet block now has two modes of operation: Legacy and Dyna-Cab. Legacy is the previous style
+of operation.
+
+Dyna-Cab cabinet modeling allows freely positioning the microphone. We took an approach of quality-
+over-quantity:
+
+    •   Dyna-Cab IRs are a full 2048 samples.
+    •   Mic positions are sampled at a fine spatial resolution.
+    •   Four mic choices are available: Condenser, Ribbon, Dynamic 1 and Dynamic 2.
+    •   All IRs are time-aligned with each other. They have been processed using a new algorithm that
+        ensures alignment without destroying phase information. You can mix-and-match IRs from
+        different cabs/mics and they'll always be perfectly aligned.
+
+The Amp block now features “Auto Dyna-Cab Impedance”. When set to ON the speaker impedance
+curve of the Amp block will follow the Cabinet Type in the first mixer slot of the associated Cabinet
+block. I.e., if the Cab Type in the first mixer slot of Cabinet 1 is, say, 4x12 5153 and the Mode is Dyna-Cab
+then Amp 1’s speaker impedance will automatically be set to 4x12 5153.
+
+Added “Treble Shift” control to Tone page of USA IIC+ models. This is an alias of the “Fat” control found
+on the Preamp page and performs the same function.
+
+Added clip warning if Input 1 clips. This is indicated on the Mini-Tuner.
+Added meters to Input page of I/O menu. Input 1 meter will turn red if clipping occurs.
+
+Added Speaker Impedance Curves for “2x12 Class-A 30W Silver”, “2x10 Heart Key” and “4x12 1960BV”.
+
+Added “4 Band JMPRE-1” type to Graphic EQ block. Note that the upper two bands of this type have
+more boost/cut range than the version in the Amp block.
+
+Added “Revv Gen” amp models based on a Revv Generator 120. There are three models for each of the
+Purple and Red channels corresponding to the three levels of the “Aggression” switch.
+
+Improved Amp block channel switching speed.
+
+Fixed side-chain filters not working in Gate block.
+
+Fixed a filter in the Wah block not being initialized.
+
+Various other fixes and improvements.
+
+
+
+21.04
+
+Fixed Tuner not working if Offsets are on.
+
+21.03
+
+Improved dynamic speaker modeling in Amp block.
+
+Reverted bypass speed of Drive block to fast.
+
+Fixed channel changes on blocks with “Slow Bypass” are not smooth.
+
+Fixed IR(s) not loading in Cabinet block when switching channels if previous channel had a slot Soloed.
+
+Fixed presets with lots of modifiers (>20) and moderately high CPU usage can cause starvation of
+graphics thread.
+
+Improved Tuner.
+
+
+
+21.02
+
+Added "59 Bassguy RI Jumped" amp model based on a ’59 Bassman LTD Reissue.
+
+Added “JP IIC+ Shred” Input Boost type to Amp block. This replicates the “Shred” switch on the
+Mesa/Boogie JP2C.
+
+Added “Bosom Boost” Drive model based on a Friedman Buxom Boost.
+Added “OD-One Overdrive” Drive model based on a Boss OD-1.
+
+Improved Compressor block:
+
+   •   Improved Studio FF Compressor 1 type. New algorithm yields smoother release and “fatter”
+       compression. This type is suitable for a wide range of uses now including bus and mastering.
+       Type has been renamed Studio FF Compressor.
+   •   Improved Optical Compressor types. New algorithm features improved ballistics and inherent
+       soft knee for vintage optical compression sounds.
+   •   Improved Dynamics Processor type. New algorithm also supports various detector types.
+   •   Improved JFET Compressor type.
+   •   Added Optical Sustainer type based on optocoupler-based pedal compressors..
+   •   Added Analog Sustainer type. This is an upwards compressor using the same “analog” gain
+       computer as the Analog Compressor type yielding a natural soft-knee response.
+   •   Added JFET Sustainer type. This is based on a rare JFET-based pedal compressor where the JFET
+       is in the op-amp’s feedback network.
+   •   The range of the Release Time has been increased to 2ms to 2s.
+   •   Added graph for Analog Compressor and Sustainer types.
+   •   New Auto-Makeup Gain algorithms for most types provides better output level tracking vs.
+       Threshold and Ratio. Note: As a result, the output level of the compressor block may be slightly
+   •   different compared to previous firmware. Auditioning presets that use the Compressor block is
+       recommended.
+   •   Selectable Auto-Makeup Gain has been added to Optical, Tube and Analog Compressor types.
+   •   Studio FF Compressor 2 has been renamed Studio FF Sustainer.
+   •   Studio FB Compressor 1 has been renamed Studio FB Compressor and Studio FB Compressor 2
+       has been renamed Studio FB Sustainer.
+   •   Types have been alphabetized.
+
+Improved Gate block:
+
+   •   Improved Downward Expander type. The “Hold Time” parameter has been removed as it is not
+       compatible and no longer needed with the new algorithm. This type has been renamed “Classic
+       Expander” as it based off classic analog downward expanders.
+   •   Added “Modern Expander” type. This type uses a novel approach to the envelope detector
+       resulting in improved ballistics compared to traditional analog expanders. A “Knee Type”
+       parameter has been added which allows selecting between hard-knee expansion and varying
+       degrees of soft-knee expansion.
+
+Improved Noise Gate in Input block:
+
+   •   Improved performance based on new algorithm developed for Gate block.
+   •   A Mode selection has been added allowing the user to select between “Easy” and “Advanced”.
+       In Easy mode the number of parameters is reduced simplifying the adjustment procedure for
+        those who are unfamiliar with the finer details of gates/expanders for guitar noise reduction
+        applications.
+
+Changed bypass/engage speed for the following blocks: Drive, Filter, Graphic EQ, Parametric EQ,
+Tremolo and Wah. These blocks now bypass/engage with a gentle fade as rapid bypass/engage with
+these types of blocks can sound abrupt.
+
+Updated PVH 6160 Block and PVH 6160+ models. New models have more accurate Gain knob response.
+
+Reduced default Power Tube Grid Bias for PVH 6160 and Recto models as previous default was hotter
+than these amps are typically run due to the non-adjustable bias.
+
+Improved Speaker Thump algorithm in Amp block.
+
+Added “Oxbow Loadbox” and “Double Notes Loadbox” speaker impedance curves based on a Universal
+Audio Ox and Two Notes Torpedo, respectively.
+
+Fixed Transformer and Vintage preamp types in Cabinet block not ported correctly during a previous
+firmware update. This manifested as the distortion not being frequency dependent.
+
+Various other fixes and improvements.
+
+
+
+21.01
+
+Added “Paragon” type to Wah block based on a Tycobrahe Parapedal.
+
+Fixed Hi Treble not working in Amp block.
+
+
+
+21.00
+
+New “Cygnus X-2” amp modeling:
+
+   •    Improved Amp block output transformer algorithm. New algorithm more accurately models B-H
+        curve resulting in a clearer low end. New algorithm now also accounts for effect of speaker
+        impedance on transformer response.
+   •    Improved power tube modeling. This yields better dynamics, improved low frequency accuracy
+        and more accurate interaction with output transformer.
+   •    Improved cathode follower algorithm. Provides more accurate “cleanup” when volume is rolled
+        off.
+   •    Improved triode algorithm more accurately models plate bypass capacitors.
+   •    Improved dynamic frequency response accuracy. This yields more “crunch” and less “fizz” with
+        high gain tones, especially for detuned styles.
+   •    Various other improvements.
+    •   All amp models have been updated as a result of the aforementioned improvements.
+
+The default values of various parameters have been updated. Existing presets are automatically
+updated to the new values upon load.
+
+Improved Drive block modeling to more accurately model effects of op-amp finite open-loop gain and
+GBW product.
+
+Added “Griddle Cake” Drive model based on a Crowther Hot Cake. The “XLF” switch on the pedal can be
+replicated by turning the Bass Response knob fully CW.
+
+Added “Overdrive Volume” parameter to Dumble-type amp models (ODS-100, Two Stone, etc.). This is
+sometimes labeled “Ratio” or “Lead Master”. As the Master Volume on these amps often has a bright
+capacitor the Overdrive Volume control allows setting the Master Volume higher to counteract the
+bright cap and then lowering the power amp drive with the Volume.
+
+Added “Plate Suppressor Diodes” parameter. This value is set automatically when the amp model is
+chosen but the user can override the default setting. Most amps do not have suppressor diodes but
+some do (e.g., Trainwreck Express). These diodes (also called “snubber” or “flyback” diodes) prevent
+undershoot on the power tube plates due to inductive kick and reduce upper harmonics thereby
+reducing “fizz”.
+
+The Ideal amp controls have been updated.
+
+Added Brit Studio 20 Amp model based on a Marshall SV20H.
+
+Added Plexi 50W 6CA7 Jumped Amp model. This is simply the jumped version of the Plexi 50W 6CA7.
+
+Added features to the IR Capture Utility. The manual will be updated with the relevant information.
+
+Renamed USA Clean to USA Rhythm 1 to be more in line with actual amp.
+
+Reduced CPU usage in some cases.
+
+Changed tone stack tapers for Class-A 30W TB to vintage specs.
+
+Fixed wrong capacitor value in USA JP IIC+ models when Presence Shift is off.
+
+Fixed wrong coupling capacitor value in 1959SLP Treble, 1959SLP Jumped and 1987x Treble amp models.
+
+Fixed wrong resistor value in tone stack of Solo 88 Rhythm and Lead models. Probably not audible
+though.
+
+Fixed low frequency behavior of Recto2 models due to loss of precision.
+
+Fixed wrong treble pot taper in CA3+ models.
+
+Fixed wrong capacitor value in Friedman HBE V1 Fat model.
+Fixed wrong resistor value in AC-20 12AX7 models.
+
+Fixed wrong Depth knob taper in Archean models.
+
+Fixed wrong capacitor value and wrong feedback network connection in Energyball model.
+
+Fixed missing resistor in Euro Uber tone stack.
+
+Fixed High Mid control in Drive block set to minimum when importing presets created prior to 19.01.
+
+Various other fixes and improvements.
+
+
+
+20.04
+
+More Drive block improvements. Drive block now incorporates the “Chase Transform Technique” for
+converting analog networks to equivalent digital filters. This improves accuracy in the high frequency
+region.
+
+Added Esoteric Bass RCB and BB Pre AT Drive models.
+
+Update BB Pre Drive model to match latest circuit (version 1.5).
+
+Increased the range of the Level parameters in Multitap Delay to -100% to +100%.
+
+Added cross feedback parameters to Quad Parallel type in Multitap Delay block. Added “Aurora Delay”
+preset to demonstrate capability.
+
+Added PVH 6160 Crunch model.
+
+Fixed Klone Chiron optional EQ not working.
+
+FC: Fix Layout: Inc/Dec mini-display labels to show the correct destionation layout when in Destination #
+or Destination Name.
+
+Various other fixes and improvements.
+
+
+
+20.03
+
+Improved Drive block.
+
+Fixed Amp block Transformer HF being incorrectly set when using two Amp blocks.
+
+Fixed Amp block Bypass state not being set correctly when using Scene Manager in Axe-Edit.
+
+Removed USB Buffer Level meters as they are no longer applicable.
+Various other fixes and improvements.
+
+
+
+20.02
+
+Improved speaker impedance curve fitting algorithm. This results in more accurate and more “colorful”
+modeling as the previous algorithm tended to damp box resonances somewhat. All the speaker
+impedance curves have been updated using the new routine. Existing presets are automatically updated
+to use the updated curves if “Update Pre-20.02 Presets Spkr Imp Upon Load" is set to YES in the Setup
+menu.
+
+Added 4x12 Lerxst Omega speaker impedance curve.
+
+Added 1x12 Deluxe Oxford speaker impedance curve.
+
+Added 4x12 Hipower Pete T speaker impedance curve.
+
+Added 4x12 Hipower Lindsey B speaker impedance curve.
+
+Added 4x12 USA Semi-Open speaker impedance curve.
+
+Added 2x12 Dizzy RV speaker impedance curve.
+
+Added 4x12 London Town Tall speaker impedance curve.
+
+Fixed Tap Times lost during patch/channel changes in Rhythm Tap Delay mode of Ten-Tap Delay block.
+
+The A-Z knob will work correctly in both directions when editing the name of a Setlist.
+
+Changes will now be immediately reflected for all slots when editing a Setlist songs.
+
+Removed USB Buffer Size from Setup->Audio when USB Firmware is detected as being >= v1.14 as it is
+not applicable.
+
+Various other fixes and improvements.
+
+
+
+20.01
+
+Added Speaker Thump control to Amp block. Speaker Thump models the dynamic, nonlinear behavior
+of a guitar speaker. A value of 5.0 roughly corresponds to an amplifier running into a speaker rated at
+the same power as the amplifier, i.e., a 100W amplifier running into a 100W speaker. The reset value is
+a conservative 2.5 which represents, i.e., a 50W amp running into a 100W speaker. Note that the
+majority of the response is in the subsonic region and the effect is primarily tactile. Existing presets are
+not affected and the value will be zero.
+Improved Amp block output transformer modeling. This requires updated Transformer LF/HF values for
+the amp models. Existing presets are automatically updated to the new values upon recall.
+
+Decreased minimum diffuser time in Delay block to 1%.
+
+Added G12T-75 speaker impedance curve.
+
+Added 2x12 Class-A Greenback speaker impedance curve.
+
+Added 2x12 Two Stone 1265 speaker impedance curve.
+
+Added Depth control to Authentic page for Brit Super, Brit 800 Mod and JMP-1 amp models.
+
+Added Diamante Fire amp model based on a Diamond Del Fuego.
+
+Changed “Drive” to “Gain” for Amp block preamp gain control as this is more consistent with naming in
+real amps.
+
+Fixed switching channels on Drive block can cause pop.
+
+Fixed switching channels on bypassed blocks can cause an audio gap.
+
+Fixed wrong drive taper in Mr. Z Highway 66 model.
+
+Fixed wrong capacitor value in Friedman Smallbox model.
+
+FC: Fixed Factory Default layouts so FX Bypass and Channel switches use the correct blocks.
+
+FC: Fixed an issue that prevented the Hold function from working correctly for some Stand-in Switches.
+
+FC: Fixed UI to refresh when performing "Reset" on a Setlist or a Song from the front panel.
+
+FC: Fixed Setlist functions to not load a song when "Song Load" is set to "None"
+
+FC: Layout Link will no longer unduly trigger when exiting the Tuner.
+
+FC: Preset: Select in Bank switches now stop flashing when the preset is changed by any means other
+than an FC footswitch (editor, front panel, etc.)
+
+FC: Preset: Select in Bank switches now flash consistently when used with Bank: Select switches.
+
+FC: Preset: Toggle in Bank now consistently and correctly loads the "Primary" preset after changing the
+bank.
+
+FC: Removed "PREVIOUS" from Bank: Select function as it was replaced by "2nd Press = Previous Bank".
+
+Various other fixes and improvements.
+20.00
+
+New “Block Mixer” algorithm results in faster/quieter scene and channel changes. This new algorithm
+allows placing Amp blocks in series without the concomitant sound bursts that would normally occur
+when switching scenes.
+
+New Speaker Drive algorithm in Amp block. This new algorithm more accurately models the frequency
+dependent distortion of guitar loudspeakers. The default value (upon resetting the block) is 2.0 which
+gives roughly 1 dB of compression. Setting the value to 0.0 defeats the speaker drive modeling. Higher
+values give a smoother and more focused sound, rounding off the “sharp edges” and yielding greater
+compression.
+
+Added new “Dynamic Distortion” block. This effect distorts the input signal dynamically, applying more
+distortion to different frequency ranges depending upon the shape of the filter. When the signal level is
+low the output will be the same as the input. As the signal level increases more distortion will occur in
+those bands boosted by the filter shape. This is a powerful tool for final shaping/mastering of your tone.
+The block contains a handful of presets which demonstrate the basic technique.
+
+Added ability to use Pre-Delay in Reverb block as a simple echo. Pre-Delay now features Tempo,
+Feedback and Mix parameters. The pre-delay time has also been increased to 1s. Several types have
+been added demonstrating the capabilities.
+
+Fixed Amp block Scene Ignore not being recalled correctly in some cases.
+
+Fixed USB buffer level setting not sticking between power cycles.
+
+Layout Link configured on a tap function for a footswitch will no longer incorrectly execute when
+activating the switch exits the Tuner.
+
+Various other fixes and improvements.
+
+NOTE: THIS FIRMWARE IS NOT COMPATIBLE WITH PREVIOUS VERSIONS OF AXE-EDIT. A NEW VERSION
+OF AXE-EDIT IS REQUIRED FOR USE WITH THIS VERSION.
+
+NOTE: If you installed firmware 20.00 beta 4, you may find that some FC effect switches are now
+mapped to the wrong effects. For example, a switch that was set to bypass REVERB 1 may now bypass
+AMP 1 instead. This release prevents this problem from occurring you are upgrading from 19.x or
+older.
+
+ If you installed 20.00 beta 4, however, this will have already modified your layouts, so you will need
+to either restore them from a backup, or adjust the individual switches manually. Layouts can be
+restored using a "System" backup from Fractal-Bot, or a "Layouts" file from Axe-Edit. If you'd rather
+reset to the factory default FC layouts, find this under SETUP> FC Controllers> Reset.
+19.08
+
+Fixed error in Amp block low frequency resonance behavior.
+
+
+
+19.07
+
+Fixed bypass state can load wrong when switching from a preset with Scene Ignore on.
+
+Changed Compressor block so that times display actual value for the various pedal types.
+
+Various other fixes and improvements.
+
+
+
+19.06
+
+Added new Setlists/Songs feature, which can be used with an FC Controller to access presets
+and scenes in custom order during live performance. A new Setup menu area provides full
+access from the front panel, with a corresponding new area of Axe-Edit which offering
+import/export and more. For additional details, please see the Setlists & Songs Mini-Manual,
+located at: https://www.fractalaudio.com/sss-manual
+
+Added Scene Ignore to Multiplexer block.
+
+Improved Amp block transformer/speaker interaction modeling. The “Voice Coil Resistance” parameter
+has been repurposed/renamed “Speaker Impedance”. The various parameters work as follows:
+
+Transformer Matching: Sets the impedance ratio (square of the turns ratio) of the output transformer.
+Speaker Impedance: Sets the relative nominal impedance of the speaker. To simulate connecting, e.g., a
+4-ohm speaker to an 8-ohm output you would set Speaker Impedance to 0.5. Conversely to simulate
+connecting a 16-ohm speaker you would set it to 2.0.
+
+Update PI Bias Excursion parameters for many Amp models based on new measurement technique.
+
+Fixed Parametric EQ and Megatap blocks can cause GUI hang if modifier attached to parameter and
+update rate is set to FAST.
+
+
+
+19.05
+
+Added “Scene Ignore” to most blocks. When set to ON, Scene Ignore instructs the block to ignore scene
+changes. Scene Ignore is a per-channel parameter. This allows turning Scene Ignore to OFF on one or
+more channels which will then allow a scene change to set the block to a desired state if the block is on
+that channel.
+Improved CNFB algorithms in Amp block resulting in smoother distortion and improved clarity.
+
+Improved preset/scene switching when input impedance changes between presets/scenes.
+
+FC: Switch Ring Color settings of "Off" will now work correctly.
+
+FC: Effect: Chan Select LED ring will properly be dim when an effect is bypassed.
+
+Various other fixes and improvements.
+
+
+
+19.04
+
+Fixed some Amp models can NaN due to index out-of-bounds.
+
+
+
+19.03
+
+Added Dual Detune Delay type to Pitch block. This type is comprised of two detuners with delay up to
+2.0 seconds. Each detuner can feed back to itself and/or the other detuner.
+
+Renamed Oversampling Mode “BEST PERFORMANCE” to “BEST QUALITY” for clarity.
+
+Fixed Amp block instability when Output Mode is set to FRFR and Voice Coil Resistance is set very high.
+
+Fixed Bludojai Lead model missing resistor between last preamp stage and power amp.
+
+FC: Fixed Stand-In Switches not displaying correctly for certain switches.
+
+FC: When the Effects: Chan Select function is used with SMART BYPASS selected as 2nd Press, the main
+LCD will now display ENABLED/BYPASSED along with the configured channel.
+
+FC: Corrected a bug which caused some per-preset switches to not show the desired mini-display text or
+LED ring color.
+
+Various other fixes and improvements.
+
+
+
+19.02
+
+Updated 59 Bassguy and 5F8 Tweed models to include both Drive controls.
+
+Added 59 Bassguy Normal, 5F8 Tweed Normal and 5F8 Tweed Jumped amp models.
+
+Added JMPRE-1 Output EQ type to Amp block. This type replicates the active EQ used in the JMP-1
+preamp (see below).
+Added JMPre-1 Clean1/2 models. Note: The real amp has a fixed, passive tone stack with an active 4-
+band EQ. Therefore, the Bass/Mid/Treble controls when using Authentic Tone Controls are mapped to
+the Graphic EQ. The passive tone stack itself, however, is adjustable. With all controls at noon the tone
+stack is equivalent to the real amp’s fixed tone stack. You can access these controls using the Ideal Tone
+Controls or via Axe-Edit.
+
+Updated JMPre-1 OD1/2 models. As with the Clean1/2 models the Bass/Mid/Treble controls now are
+mapped to the Graphic EQ when using Authentic Tone Controls.
+
+Updated default cathode follower values for Matchbox D-30 model.
+
+Added Spread control to Dual Delay and Tape types in Delay block. Spread acts as master pan in this
+case and is modifiable.
+
+Added assignable third LFO to Delay block. This LFO can be assigned to Level, Pan or Spread and
+multiplies the corresponding value by the LFO value.
+
+Added “Oversampling Mode” to Global menu. This parameter allows selecting between BEST
+PERFORMANCE and MIN. LATENCY.
+
+Improved Input block gate performance.
+
+Fixed Drive block can crash under rare circumstances when switching between certain models (from
+Blackglass 7K to diode-based model).
+
+Fixed Amp block Transformer Match control not working properly.
+
+Renamed Speaker Impedance to Voice Coil Resistance to more accurately describe the function of the
+control. Note that this includes all other “parasitic” resistances, i.e., speaker cable resistance, output
+transformer winding resistance, etc.
+
+Rearranged order of pages in Amp block so that Input EQ and Output EQ are after Tone page.
+
+Fixed Flanger block can cause loud transient at startup in rare circumstances.
+
+The following FC enhancements/fixes are implemented:
+
+    •   Added “Scene Level + Save” to the “Utility” functions.
+    •   Added "Invert Mini-Displays" under the APPEARANCE section of the FC Controllers’ Config page.
+    •   Added a “STARTUP VIEW” to the FC Controllers: Device page.
+    •   Added an option for “2nd Press = Previous Bank” to Bank: Select function.
+    •   Added an option for “2nd Press = Previous Preset” to Preset: Select and Preset: Select in Bank
+        functions.
+    •   Added the option “2nd Press" to Effect: Select Channel function. The two choices are "Smart
+        Bypass" which is a pre-existing feature, and "Previous Channel" which toggles to the previously
+        selected channel instead.
+    •   Added a “Current Channel” Mini-Display Label option to Effect: Chan Inc/Dec.
+    •   Added a 1.5 second delay to functions that trigger a save of the preset to allow multiple actions
+        before a single save.
+    •   Fixed Bank limit calculations in some circumstances.
+    •   Updated the switch ring LED to be dim instead of off for Function Effect: Select Channel when
+        Smart Bypass is ON and the effect is in the preset but the effect is bypassed.
+    •   Fixed stand-in switches not executing the tap function correctly when a hold function is
+        assigned.
+    •   Added "Current" option to the display functions for Bank: Inc/Dec function.
+    •   Added "Current Name" and "Current #" options to the display functions or Preset: Inc/Dec and
+        Scene: Inc/Dec functions.
+    •   Fixed an issue when changing function to "Bypass" when the currently selected effect does not
+        have a Bypass function (e.g., Mixer, Multiplex).
+    •   Fixed an issue when changing FC effect type from "MultiPlex" to an effect containing fewer
+        channels.
+
+Various other fixes and improvements.
+
+
+
+19.01
+
+Added Damping control to Modifiers. The default, EXPONENTIAL, is the classic damping style where the
+modifier value has an exponential attack/decay. LINEAR selects a linear attack/decay.
+
+Added Type control to ADSRs. The default, EXPONENTIAL, is an analog style where the ADSR has an
+exponential attack/decay. LINEAR selects a linear attack/decay.
+
+Improved Phase Inverter Bias Excursion accuracy for some amp models (mostly non-MV types). Note:
+The improved PI Bias Excursion accuracy results in an increase in bias excursion in most cases. Bias
+excursion primarily manifests as intermodulation distortion, particularly subharmonic distortion. This
+produces a chunkier tone with more growl and also yields a thicker tone when rolling off the volume or
+playing lightly. The amount of bias excursion can be adjusted using the PI Bias Excursion control in the
+Advanced menu.
+
+Renamed Timothy and Suhr Riot Drive models to clarify switch position.
+
+Added Hi Mid control to Drive block.
+
+Fixed Blackglass 7K model as reference pedal was defective. Added “Grunt” and “Attack” knobs to GUI
+(Grunt switch on pedal is a selectable low cut so knob duplicates Low Cut control).
+
+Changed response of Horizon Precision Drive “Attack” control to match pedal (was reversed previously).
+Any presets using this model should be adjusted accordingly.
+Improved accuracy of “G-taper” used for tone control in some Drive models, i.e., T808, VS9, Super OD,
+etc. Impact on existing presets is likely negligible but any presets using Tube Screamer models and their
+variants should be auditioned.
+
+Fixed selecting Gibtone Scout tone stack causes NaN in certain amp models.
+
+Fixed Amp block headroom meter monitoring wrong circuit node.
+
+Fixed GUI not being redrawn when switching between a knob menu and a list menu.
+
+Various other fixes and improvements.
+
+
+
+19.00
+
+Version 19.00 firmware represents the first use of the Chase Nonlinear Feedback (CNFB) technique for
+the solution of nonlinear ODEs. The power amp algorithm has been completely rewritten using the
+CNFB method. This provides improved accuracy, especially in the clipping and power supply sag
+behavior vs. frequency.
+
+Added y-axis labels to RTA.
+
+Added Time Shape parameter to Megatap Delay. The EXP/LOG setting is the default and behaves as
+before allowing time shapes between exponential and logarithmic (including linear). The SIGMOID
+setting is a four-quadrant shape that allows time shapes between sigmoid and inverse sigmoid. The
+COSINE and SINE settings select sine wave shapes with the Time Alpha parameter controlling the
+number of periods from 1 to 8.
+
+Added 11 power tube types from various manufacturers.
+
+Improved Amp block bypass/engage behavior to prevent level surges.
+
+FC: Amp Level Save now has an option for 0 dB to allow saving a preset via a footswitch.
+
+Fixed signal level into power amp a bit too high in 6160 models.
+
+Fixed High Cut control not working in Mr. Z MZ-38 model.
+
+Fixed Compressor block Auto Makeup Gain not being updated when changing types.
+
+Fixed wrong op-amp clip threshold for DS1 models in Drive block.
+
+Various other fixes and improvements.
+
+
+
+18.03
+Fixed Angle Severe and Energyball amp models hanging on certain combinations of Presence and Depth.
+
+Fixed USB Output summed to mono if Global Output Mode set to MUTE.
+
+Various other fixes and improvements.
+
+
+
+18.02
+
+Fixed cathode follower algorithm not working correctly for some models.
+
+
+
+18.01
+
+Fixed error in Amp block low frequency dynamic speaker impedance calculation.
+
+
+
+18.00
+
+Overhauled the Compressor block:
+
+   •    Improved Auto-Makeup gain behavior.
+   •    Added Input Level switch. When set to INSTRUMENT the detector is optimized for guitar-level
+        signals, i.e., before an amp block. When set to LINE the detector is optimized for post-amp level
+        signals.
+   •    The Pedal, Optical, Tube, Analog, JFET and Dynamicomp types have been completely redone
+        resulting in improved performance. These types now inherently perform automatic makeup
+        gain.
+   •    Auto Attack/Release has been removed from the Pedal and Dynamicomp types as it is no longer
+        applicable.
+   •    NOTE: Due to all these changes the behavior and output volume of the Compressor block may
+        be different. It is recommended to audition any presets using the Compressor block and adjust
+        as required.
+
+Improved Stack/Hold implementation in Delay block so that “texture” is applied to audio when
+Stack/Hold is on.
+
+Improved Amp block cathode follower algorithm. Algorithm now uses higher order solution of nonlinear
+ODE for more accurate low frequency response.
+
+Improved Amp block power amp algorithm. New algorithm more accurately models dynamic changes in
+speaker impedance resulting in more “complexity”.
+
+Improved Tape preamp types in Cabinet block.
+Added check to prevent excessive message queuing, i.e., when selecting amp model using Value knob.
+
+Added MUTE option to Output 1/2 Configuration. This allows muting the analog outputs while still
+passing data via USB. This can be used when using the Axe-Fx III in conjunction with computer plug-ins.
+
+Added global Speaker Impedance Curve. When set to DEFAULT the speaker impedance curve used when
+selecting an amp model is the default curve for that amp model, otherwise it is the selected curve.
+NOTE: this does not affect existing presets. The selected curve is used only when selecting a new amp
+model.
+
+Added several new Impedance Curves to Amp block. Thank you to Dr. Bonkers Soundlab for these.
+
+Added Modifier capability to LFO Enable and Mod Frequency in Filter block.
+
+Added RCB Boost to Amp block Boost types.
+
+Reduced CPU usage for background GUI tasks.
+
+Fixed DS-1 Drive types have no gain when Drive is at 0.0.
+
+Fixed Reverb pitch buffers not being cleared if Pitch Mix is zero.
+
+Fixed Turbo version aborting processing at CPU usage lower than limit.
+
+Fixed Angle Severe models becoming unstable with certain speaker impedance curves. Note: the
+presence network for these models has been updated. Presets using these amp models should be
+auditioned as the tone may have changed.
+
+Various other fixes and improvements.
+
+
+
+17.03
+
+Improved Stack/Hold implementation in Delay block so that “texture” is applied to audio when
+Stack/Hold is on.
+
+Added check to prevent excessive message queuing, i.e., when selecting amp model using Value knob.
+
+Added MUTE option to Output 1/2 Configuration. This allows muting the analog outputs while still
+passing data via USB. This can be used when using the Axe-Fx III in conjunction with computer plug-ins.
+
+Added global Speaker Impedance Curve. When set to DEFAULT the speaker impedance curve used when
+selecting an amp model is the default curve for that amp model, otherwise it is the selected curve.
+NOTE: this does not affect existing presets. The selected curve is used only when selecting a new amp
+model.
+Improved Pedal, Optical, Tube, Analog, JFET and Dynamicomp types in Compressor block. Auto
+Attack/Release has been removed from Pedal and Dynamicomp types as it is no longer applicable.
+NOTE: These types now inherently perform automatic makeup gain. You should audition any presets
+using these types and adjust the Output Level accordingly.
+
+Added Input Level switch to Compressor block. This allows tailoring the compressor’s response for
+instrument level or line level signals.
+
+Added several new Impedance Curves to Amp block. Thank you to Dr. Bonkers Soundlab for these.
+
+Fixed DS-1 Drive types have no gain when Drive is at 0.0.
+
+Fixed Reverb pitch buffers not being cleared if Pitch Mix is zero.
+
+Fixed Turbo version aborting processing at CPU usage lower than limit.
+
+Various other fixes and improvements.
+
+
+
+17.02
+
+Added “ALL” as an option to Spillover in Global Settings. When Spillover is set to ALL the Delay, Reverb,
+Plex, Multi-Delay, Megatap and Ten-Tap blocks will not clear their buffers when switching presets.
+
+Fixed Amp block Master Volume not working properly for JS410 and Texas Star models (introduced in
+17.01).
+
+Improved IR Player block so that volume is consistent if Mode is set to Parallel and only one IR is being
+used.
+
+Fixed Plex and Multi-Delay Blocks displaying wrong type when recalling preset.
+
+
+
+17.01
+
+
+ Added 10 FullRes IRs to the Legacy bank provided by Valhallir and York Audio. These are at the end of
+the bank. These can be loaded into the IR Player blocks or into Slots 3 and 4 of the Cabinet blocks. Note
+that Slots 1 and 2 of the Cabinet blocks do not support FullRes.
+
+Adjusted Looper behavior so that when reaching the maximum recording time the behavior switches to
+that defined by Record 2nd Press ONLY on the first pass of a new recording.
+
+ Added dedicated Pitch Shifting to the Reverb block. This can be used to create “Shimmer Reverbs”
+easier than using separate Pitch and Reverb blocks (and with less CPU usage). Several new types are
+included to demonstrate the capability.
+The Pitch Direction parameter controls the direction of the pitch shifters. FORWARD runs both shifters
+forward. REVERSE runs both in reverse. FOR/REV runs Voice 1 forward and Voice 2 in reverse. REV/FOR
+runs Voice 1 in reverse and Voice 2 forward.
+
+The Pitch Position parameter controls the location of the pitch shifters. INPUT locates the shifters at the
+input of the block. MATRIX locates the shifters inside the reverb matrix. FEEDBACK locates the shifters
+in the matrix feedback loop. MATRIX and FEEDBACK can yield more intense effects and also helps the
+reverb “stick” to the notes better. FEEDBACK builds slightly slower than MATRIX. CAUTION: The
+MATRIX and FEEDBACK positions can cause instability at high values of Pitch Mix and Pitch Feedback. In
+general Pitch Feedback should be low or zero when using MATRIX or FEEDBACK.
+
+Overhauled the Megatap block. See the updated Blocks Guide for details.
+
+Added modulation to Diffusers in the Delay, Multitap and Megatap blocks.
+
+Improved Auto-Swell type in Volume block. Added S-Taper to taper selections.
+
+Added Modern Gate type to Gate block. This type is similar to the Classic Gate except the gate opens in
+a constant linear-in-dB manner. This naturally makes the attack slower as the gate first opens and can
+be used for both traditional gating and for special effects like audio swells.
+
+Increased maximum sustain for the applicable types in the Compressor block. Existing presets are
+automatically updated.
+
+Added new types to the Multitap Delay block.
+
+Added new types to the Plex Delay block.
+
+Added LFO for filter in Plex Delay block.
+
+Added new types to Flanger block.
+
+Improved accuracy of Master Volume in Amp block for low settings.
+
+Improved accuracy of Drive block Drive control for low settings.
+
+Fixed wrong resistor value in Solo 88 Lead input circuit. Impact is probably negligible.
+
+Fixed wrong resistor value in USA Pre LD2 overdrive circuit. This increases gain slightly. You may need
+to audition any presets using these models and adjust gain accordingly.
+
+Fixed Multitap block bandpass filters not being disabled if Master Q set to minimum.
+
+Fixed block input not muting in bypass if Bypass Mode is Thru.
+
+Fixed Chorus block left delay line getting unsynchronized when switching between types.
+
+Fixed pressing Tuner button in Axe-Edit brings up Reverb UI.
+Fixed Amp block power tube “kvb” not being set correctly in rare circumstances. This caused the output
+level of the amp block to change depending upon the previous preset used.
+
+Fixed wrong B+ voltage for Temolo Lux amp model.
+
+Fixed IR Capture not saving correctly if IR Type set to UltraRes.
+
+Improved CPU usage.
+
+Various other fixes and improvements.
+
+Special thanks to Leon Todd, Simeon Harris and Cooper Carter for new effect type contributions.
+
+
+
+17.00
+
+Version 17 introduces FullRes™ Impulse Response processing. FullRes processes IRs up to 64K points
+with zero latency using a novel technique. This provides up to 1.37 seconds of response time. Seasoned
+producers and engineers often mix in “Room Mics” during recording to increase the depth and liveliness
+of recordings. However, the typical live room has a reverb time of 500-700 milliseconds, well beyond
+the 20-40 ms afforded by typical IR processing. FullRes allows capturing the full response of a typical
+live room and even the response of small-to-medium halls and clubs. FullRes can also be used for
+convolution reverb applications for reverb times less than 1.37 seconds.
+
+The IR Player block and the Cabinet block both support FullRes IRs. The last two slots of the Cabinet
+block support FullRes. This is sufficient to provide two room mics, a left and a right, along with two
+direct mics within a single Cabinet block.
+
+The new FullRes User IR bank supports up to 64 FullRes IRs. When capturing an IR selecting the USER FR
+bank will automatically set the IR Type to FullRes. Likewise, when setting the IR Type to FullRes the
+bank will automatically be set to USER FR. FullRes IRs can be processed with minimum-phase or auto-
+trim, if desired. However, minimum-phase is not recommended as this will tend to destroy the
+reflection information.
+
+The Scratchpad bank has been updated to support FullRes IRs.
+
+NOTE: The FullRes User IR bank is only available on the Axe-Fx III Mark II. The original Axe-Fx III has
+less non-volatile memory and therefore does not have the necessary resources to store the IRs. The
+Scratchpad bank supports FullRes IRs but the data will be lost when the unit is powered off.
+
+IR management has been completely rewritten providing smoother performance and better integration
+with Axe-Edit.
+
+The IR Player block now supports two IRs with individual level and pan controls for each IR. Setting the
+IR Length to OFF defeats the IR. A Mix control is also provided so the block can be used as a convolution
+reverb. A Mode control allows the two IRs to be in parallel or series. When in series the individual level
+and pan controls are defeated and removed from the UI.
+
+Increased Mic Distance range in Cabinet block to 3.4m (~11 feet). This allows delaying room mic IRs that
+have been trimmed to remove the leading silence. The alignment graph now features a Zoom control
+that changes the abscissa between 3ms and 12ms.
+
+Improved Pitch Detection performance.
+
+The UI has been improved to support double-tap of certain keys as follows:
+
+    •   Double-tapping EDIT edits the previous block.
+    •   Double-tapping HOME enters the layout grid.
+    •   Double-tapping STORE prompts immediately.
+    •   When on the Home or Layout pages double-tapping the Quick Entry knobs does the following:
+           o A: Enters the Amp 1 menu.
+           o B: Enters the Drive 1 menu.
+           o C: Enters the Cab 1 menu.
+           o D: Enters the Delay 1 menu.
+           o E: Enters the Reverb 1 menu.
+
+The buttons in the effects GUI have been simplified to a single page.
+
+Fixed names of Dizzy V4 2 and Dizzy V4 3 swapped.
+
+Added FAS Buttery amp model.
+
+Added 1S1588T diode SPICE model to Drive block. This is the Toshiba version of the 1S1588 and is
+reportedly the diode used in the “best sounding” TS-808s. The T808 OD models have been updated to
+use this diode. Existing presets are unchanged.
+
+Added “Valve Screamer VS9” and "Maxoff 808" Drive models.
+
+Improved scene switching to prevent signal “leaking” into bypassed blocks.
+
+Added Max Loop Time parameter to Looper. This sets the maximum recording time. This allows a loop
+to be automatically created once the loop time exceeds this value.
+
+Changed Looper behavior so that if recording and time reaches the maximum recording time the mode
+changes to that specified by Record 2nd Press.
+
+Added support for Axe-Fx III Mark II “Turbo”.
+
+Various fixes and improvements.
+16.05
+
+Improved behavior of Synth block Shift control when attached to a modifier.
+
+Fixed Compressor block GUI not displaying properly in some cases.
+
+Fixed FAS Brootalz model inadvertently changed since it was referencing the Angle Severe presence
+network which was changed.
+
+Fixed Master Time not working in Plex block for Plex Detune and Plex Shift types.
+
+Fixed Tone Match block IR Slot number in Export page not displaying correctly in some circumstances.
+
+
+
+16.04
+
+Added “Indicate Edited on Scene Change” to Global Settings.
+
+Improved Sequencer functionality. The Run control has now been expanded to STOP | PAUSE | RUN.
+When set to PAUSE the sequencer will halt but not reset the sequence count. The Step control allows
+manually stepping the sequencer when the sequencer is paused or running.
+
+Improved Rotary block drive algorithm.
+
+Fixed using two Amp blocks in certain combinations of models causing high frequency whine.
+
+
+
+16.03
+
+Updated Amp block default Excursion Time and Release Time values as some were entered incorrectly.
+Existing presets are automatically updated to the new default values upon recall.
+
+Improved Delay block algorithms and models. Improved menus by adding a basic Config page with the
+essential controls and an Advanced page with all the controls for that model. Added a Master Time
+control.
+
+Added Compander type to Compressor block. The Transients control adjusts the transient modification.
+Values less than zero soften the attack, value greater than zero emphasize the attack.
+
+Improved Amp block power amp transient response accuracy.
+
+Fixed wrong attenuation between preamp and power amp in Class-A 30W Bright model.
+
+Fixed Headroom meter stuck in certain circumstances when using two Amp blocks.
+
+Fixed Amp block displaying wrong channel number when setting channel via Scene Manager in Axe-Edit.
+Fixed pop when switching channels on Input block when using different gate types.
+
+
+
+16.02
+
+Improved Amp block power tube grid bias excursion algorithm. The default Excursion Time and Release
+Time values have been updated as a result. Existing presets are automatically updated to the new
+default values upon recall.
+
+Improved Delay block so repeats do not degrade when Hold is activated.
+
+Added Rows 1-6 as Reference Sources for Tone Match block.
+
+Added Power Amp Modeling ON|OFF control to Amp block and removed that functionality from the
+Supply Sag control. Existing presets are automatically updated upon recall.
+
+Fixed Master Comb Time not working in Multitap Delay block when using Quad Series type.
+
+Fixed Reverb High Cut Slope not working.
+
+
+
+16.01
+
+Improved output transformer / speaker impedance interaction modeling. This yields more accurate low
+frequency response. Note that the Transformer LF parameter effectively adjusts the transformer’s
+inductance. Increase this value to simulate a smaller transformer, decrease to simulate a larger
+transformer.
+
+Improved power amp cathode current calculation accuracy for cathode biased models.
+
+Updated default Power Tube Grid Bias and Negative Feedback on many models based on new
+measurement technique. NOTE: As a result of this existing presets will update the aforementioned
+parameters to the new default values upon recall.
+
+Added frequency cursor to Parametric EQ graph.
+
+Updated Blackglass 7K Drive block model. Previous model was incorrect due to defective reference unit.
+
+Increased gain range of Filter and Parametric EQ blocks to +/-20 dB. Also increased gain range of input
+EQ in Amp block. Existing presets are automatically updated.
+
+Improved Reverb algorithms. Added a couple new types.
+
+Fixed incorrect channel indication in Amp block when changing scenes if Scene Revert is true.
+
+Fixed incorrect Drive control taper in Jr. Blues amp models.
+Fixed incorrect default P.I. Bias Excursion in Princetone Reverb and Div/13 CJ Boost models.
+
+Fixed missing UI for several Friedman amp models.
+
+Fixed missing pad between preamp and power amp in USA Pre Lead models.
+
+Fixed pop when changing Amp block channels between models with disparate gains.
+
+Fixed switching to a preset with a Reverse Delay from certain other presets causes noise burst at
+switchover.
+
+Fixed NaN in Stereo Tri-Chorus if Delay Time and Rate are set to minimum.
+
+Various optimizations and improvements.
+
+
+
+16.00
+
+New “Cygnus” amp modeling algorithms.
+
+Added “Sonic Dist” Drive type.
+
+Fixed popping when switching channels in Drive block in rare cases.
+
+Fixed Studio FF Compressor 2 type not working properly if Knee is set to “Hard”.
+
+Fixed Delay block maximum time limited to 8s regardless of entered time.
+
+Fixed Amp block not updating properly when changing scenes if Scene Revert is on.
+
+Various other fixes and enhancements.
+
+
+
+15.01
+
+Improved output transformer modeling in Amp block. For typical values of Transformer Drive the
+difference is subtle but mathematically more accurate adding a pleasing low-end growl and improving
+“tightness” in high-gain sounds. For high values of Transformer Drive the difference is more
+pronounced. If you have increased Transformer Drive on your presets above the default value then you
+should audition your presets.
+
+Fixed Depth control not working on some amp models.
+
+
+
+15.00
+Improved Amp block power amp modeling. Improved algorithm yields accurate dynamic frequency
+response which results in clearer bass and extended highs. More “chug”, “thump” and “chime”. NOTE:
+Existing presets should be auditioned. While the overall tone isn’t significantly changed, the transient
+frequency response is enhanced which may alter the tonal perception.
+
+Added ability to route AES/SPDIF or USB 5/6 to any input. This has been achieved by changing
+“SPDIF/AES Select” to “Digital Input Source” which allows choosing between AES, SPDIF or USB 5/6.
+Each input now has an “Input Source” selectable between Analog or Digital.
+
+Increased maximum delay time for Delay blocks to 16 seconds.
+
+Added “DS1 Distortion” Drive type.
+
+Added “DS1 Distortion Mod” Drive type based on a DS1 w/ popular mods.
+
+Added “59 Bassguy Jump” amp model.
+
+Many of the Fender® amps have been “modified” with authentic presence and depth networks even if
+the real amp doesn’t have them (this was required for the new power amp algorithm). When the Tone
+Control Display is set to IDEAL the Presence and Depth controls can be used to shape the power amp
+response just as if the real amp had been modified. Setting the Presence and Depth controls to zero
+effectively removes the modifications. WARNING!!! If your presets use non-zero values of Presence
+and/or Depth for amp models whose real counterparts do not have presence and/or depth circuits your
+presets may sound different and should be adjusted accordingly. I.e., if you have turned Presence up for
+the Deluxe Verb model your preset’s tone will have changed as a real Deluxe Reverb does not have a
+presence network (and Presence defaults to zero for that model).
+
+Fixed GUI bug for TS9DX Hot model.
+
+Fixed Scales menu in Global Settings.
+
+Fixed clicking in Amp block if large number of modifiers are connected to controls.
+
+Fixed modifiers connected to Amp block can cause unwanted change if modifier is only active for one
+channel.
+
+Fixed erroneous values can be displayed when changing channels on a block and the GUI configuration
+between channels is different, i.e. different number of EQ sliders or different authentic amp parameters.
+
+Fixed second pot of ganged dual pot in Citrus Terrier amp model applied at wrong point in circuit.
+
+Fixed Ratio at maximum in Compressor block should display “INFINITE” but doesn’t when first entering
+page.
+
+
+
+14.06
+Fixed bypass state not changing in Layout menu when zoomed out.
+
+Fixed Metronome Level controls in Tempo menu not updating.
+
+Fixed LFO Phase parameter doesn't work when LFO Type is set to ASTABLE.
+
+Fixed 0.2 dB loss in some blocks (i.e. the Return block).
+
+Reduced audio gap when switching channels in Amp block.
+
+Added “TS9DX Hot” Drive model.
+
+
+
+14.05
+
+Improved client-server protocol to reduce message traffic. This results in snappier GUI performance
+especially for presets with high CPU usage. The new protocol is backwards compatible with Axe-Edit,
+however the latest version of Axe-Edit is required to take full advantage of the improvements.
+
+Improved Amp block power tube grid clipping algorithm.
+
+Fixed error in Studio FB compressor type that could result in distortion under certain circumstances.
+
+Fixed wrong gain constant in Tube Drive 4-Knob model.
+
+Fixed feedback network not fully initialized in Recto and Triple Crest models. In most cases this is
+inaudible but in rare cases when switching between Amp block channels the tone and gain of the power
+amp could be incorrect.
+
+Fixed LFO Phase not working when LFO type is set to Astable.
+
+Fixed incorrect extra feedback path in Pitch block for Quad Chromatic Delay and Quad Diatonic Delay
+types.
+
+
+
+14.04
+
+Fixed NaN when setting a tone control to zero in certain amp models (introduced in 14.02).
+
+
+
+14.03
+
+Fixed Cabinet block LF/HF damping applied to only left/right respectively.
+
+Fixed setting a tone control to maximum in Amp block can cause NaN in certain models (introduced in
+14.02).
+14.02
+
+Fixed Euro Uber model gain dropping if Input Drive set to maximum.
+
+Fixed Fat Switch changing wrong capacitor value on Archean model.
+
+
+
+14.01
+
+Added semi-parametric EQ to Multitap Delay block. The EQ is similar to the Filter block with the
+addition of selectable low cut and high cut filter slopes. Note that the overall gain of the EQ
+automatically adjusts to unity when using any filter types that boost frequencies so as to prevent
+instability.
+
+Added second source to Modifiers. A Modifier can now have two sources: Source 1 and Source 2. Each
+modifier has an individual Scale parameter from 0 to 100%. The operation between the two sources is
+selected via the Operation parameter and allows addition, subtraction or multiplication of the two
+sources.
+
+Changed behavior of Random LFO so that value changes when switching from Stop to Run.
+
+Improved boot time.
+
+Updated Euro Uber amp model. It is recommended to do a soft reset of the model by deselecting and
+then reselecting the Amp type.
+
+Added several new amp models.
+
+Fixed wrong capacitor value in Brit JVM OD1 Orange and Red models.
+
+
+
+14.00
+
+Improved Amp block cathode follower accuracy. The Hardness parameter has been removed and the
+default values have been changed. Existing presets are automatically updated. If you have edited the
+cathode follower parameters you should audition your presets as these parameters will automatically be
+reset to default values when the preset is loaded.
+
+Because of the cathode follower change the following amp models have been updated:
+Friedman Small Box
+Dizzy V4 Blue (all models)
+Herbie (all models)
+Recto 1/2 (all models)
+Due to the discovery of a measurement error the JMPre-1 models have been completely reworked. If
+you are using any of these models it is recommended to reset the block and audition your preset(s).
+
+The Tube Pre model has been changed so that the power amp is off by default.
+
+Added a couple new amp models.
+
+Fixed turning Diffusion Time all the way up in Delay block causes noise.
+
+Fixed ADSR graph goes funky if Attack time is set very low and other times are relatively large.
+
+Fixed knob labels for sliders not centered under sliders if number of sliders is less than 5.
+
+Added support for Axe-Fx III Mark II.
+
+
+
+13.03
+
+Added modifier capability to Multitap Delay block Level parameters.
+
+Added modifier capability to Synth block Attack parameters.
+
+Fixed Amp block generating NaN at startup in rare cases due to uninitialized data.
+
+Fixed output level knob value not applied to Output 1/2 if Global EQ type set to NONE.
+
+Fixed first preset may be temporarily erased if corrupted data in User Cab Bank.
+
+FC: Tuner will now automatically display whenever tuner is displayed on Axe-Fx III.
+
+
+
+13.02
+
+Added “Compulsion Distortion HP” Drive type. Existing type name changed to “Compulsion Distortion
+LP”.
+
+Added “Tuner on Heel Down” to MIDI/Remote. The corresponding controller will automatically display
+the tuner when the value is less than 5%. Typically the user would set this to the same CC# (or
+internal/external pedal) that they use for their primary volume control, whether that is assigned to a
+global volume control or to a modifier in a Volume block. For example, if you use CC #23 as External
+Control 1 and connect that to the Volume 1 block in all your presets then set this to 23. Likewise if you
+use FC 1 Pedal 1 as a global Input 1 Volume control then set this to FC 1 Pedal 1. Now when you set your
+expression pedal to the heel down position the tuner will automatically display.
+
+Added marker to ADSR graphs. Also changed ADSR graphs to show curves in linear units (rather than
+log).
+Added Master Chorus Rate and Master Chorus Depth parameters to Multitap Delay block. The Master
+Rate and Master Depth have been renamed Master LFO Rate and Master LFO Depth. Master LFO Depth
+no longer controls the chorus depth.
+
+Improved layout of Multitap Delay GUI.
+
+Improved Drive block CPU usage for diode-based models.
+
+Improved CPU usage for Reverb block in high-quality modes.
+
+Fixed filter modulation not working in Multitap Delay block.
+
+Fixed Graphic EQ not working for Output 1 and 2.
+
+Fixed USB/Digital Metronome Level controlling wrong output.
+
+13.01
+
+Fixed global Input Gain loading wrong value.
+
+Changed global Input Gain and Amp block Input Trim to read in linear units due to confusion over the
+meaning of dB.
+
+
+
+13.00
+
+Improved Drive block modeling. New algorithm uses a novel solution to solve the nonlinear ODE of a
+diode clipper with memory (i.e. a capacitor). The accuracy of the diode I-V curve is also greatly
+improved. This new algorithm has the accuracy of implicit iterative solutions with speed rivaling explicit
+solutions. CPU usage is only slightly increased vs. the previous algorithm. Note that many of the Drive
+models will now behave differently and presets should be auditioned. The behavior of the tone controls
+in some models has also changed. Of note are the Timmy models where the tone controls are now
+faithful to the actual pedal and decrease bass/treble when turned clockwise.
+
+The Drive block now features a “Bass Response” control for types based on the Rat, Tube Screamer and
+various derivates. In some models this is duplicated on the Basic page as it is the Bass/Voice/etc. control
+(and renamed accordingly). This function was previously provided by the Low Cut control. The Low Cut
+control is now a separate control that allows adjusting the input highpass frequency. Existing presets
+will automatically be updated with the new default value for the Low Cut control.
+
+Added Bias control to GUI of all Drive block models.
+
+Added “Headroom” monitoring meter to Amp block. The most common reason for “muddy” tones with
+high-gain amps is incorrect setting of the Master Volume control. The Headroom meter displays the
+voltage at the virtual power tubes in dB. If the Master Volume is too high the meter will be near 0 dB
+most of the time. Note that this only applies to amps where the power amp is intended to run “clean”
+like the 6160, Recto, etc. Non-Master Volume amps get their distortion from the power amp distorting
+so this recommendation does not apply.
+
+
+
+12.14
+
+Improved Amp block Speaker Compression modeling. New algorithm is more accurate and sounds
+smoother with more “growl”.
+
+Fixed incorrect default Negative Feedback for Deluxe Verb models (correct value is 2.00 if you want to
+update existing presets).
+
+Fixed NaN when changing Drive block type if modifier is attached to Drive or Tone.
+
+
+
+12.13
+
+Changed Amp block Input Trim to read in dB.
+
+Fixed Setup->MIDI/Remote menu corrupted.
+
+
+
+12.12
+
+Added Modifier capability to:
+  Controller block LFO Output B Phase
+  Input block Output Level
+  Amp block Variac
+  Amp block Input EQ Frequency
+  Amp block Graphic EQ
+  Parametric EQ block Freq, Q and Gain
+  Graphic EQ block sliders
+
+Added Input 1 Gain parameter to Setup->I/O->Input menu. This allows trimming the Input 1 gain to
+adjust for variations in guitar output level without having to adjust each preset.
+
+Changed Home page behavior so that selected page doesn’t change after recalling a preset from the
+Preset page.
+
+FC: FC #4 will now reflect the appropriate layout
+
+FC: Disable FC-6/FC-12 compatibility mode when loading FC-6 factory defaults
+12.11
+
+Added LFO High Cut to Controllers.
+
+Fixed Flanger block Rate not updating correctly.
+
+Fixed missing PHV 6160+ CLEAN tone stack string.
+
+NOTE: This firmware is NOT compatible with Axe-Edit versions prior to 1.06.00. You MUST install 1.06.00
+or later BEFORE using Axe-Edit with this firmware.
+
+
+
+12.10
+
+Changed External Controller Initial Values to be continuously adjustable from 0 to 100%.
+
+Fixed Amp block crackling in rare cases.
+
+Fixed Amp block Variac has no effect when Supply Type is set to DC.
+
+Fixed NaN if Reverb block Crossover Freq is set very high and Low Freq Time is set very low.
+
+NOTE: This firmware is NOT compatible with Axe-Edit versions prior to 1.06.00. You MUST install
+1.06.00 or later BEFORE using Axe-Edit with this firmware.
+
+
+
+12.09
+
+Improved power tube modeling yields smoother overdrive especially for semi-clean and edge-of-
+distortion tones.
+
+Increased Amp block B+ monitor range as Variac settings can cause B+ voltage to fluctuate beyond
+visible limits.
+
+Added 6CA7 power tube type. While the 6CA7 is generally regarded as a substitute for the EL34 it is
+actually a different tube with the 6CA7 being a beam tetrode. This particular tube type is modeled after
+the original Sylvania “Fat Bottle” 6CA7.
+
+Increased tuner sensitivity.
+
+Fixed clicking when changing MUTE/SOLO switches in Cabinet block while playing.
+
+Fixed click/pop in Pitch block when going from negative (or no) shift to positive shift.
+
+Fixed Pitch block Custom Scale number not displaying correctly.
+12.08
+
+Improved Reverb algorithms.
+
+Added ECONOMY mode to Reverb block. This can be used to reduce CPU usage when building elaborate
+presets.
+
+Decreased minimum Attack Time of Compressor block to 0.1 ms. Existing presets are automatically
+updated.
+
+Added JFET Compressor type.
+
+Added three new Studio Compressor types. Studio FF Compressor 2 is similar to Studio FF Compressor 1
+(formerly called Studio Compressor) except that it is an “upwards compressor” as opposed to a
+downwards compressor. Studio FB Compressor 1 and 2 are feedback compressors with downwards and
+upwards compression respectively. As these are feedback compressors, they yield a different sound
+than a feedforward compressor commonly referred to as “fat” with smoother dynamics. Note that
+nature of feedback compressors can result in distortion at extreme control settings (fast attack/release,
+high ratio, etc.). It is therefore recommended to set Auto Att/Rel to ON in these instances.
+
+Improved Intelligent Pitch Shifter algorithm. This applies to all Pitch types except Dual and Quad Detune
+or when the Tracking Mode is set to OFF. The pitch detection algorithms have also been improved. The
+Tracking Mode parameter has been renamed “Pitch Tracking” and is selectable between OFF, FAST and
+SMOOTH.
+
+Improved pitch detection for Synthesizer and Ring Modulator blocks.
+
+Improved Crystal Echoes algorithm. The Crossfade Time and Crossfade Type parameters have been
+removed as they are no longer applicable.
+
+Added Diffusion to Crystals type in Pitch block. This can be used to “smear” transients for a softer
+sound.
+
+Improved Plex Shift and Plex Shimmer types in the Plex block. The Cross-fade parameter has been
+removed. For the Plex Detune type the Cross-fade parameter has been renamed Granule Length as that
+is a more accurate description.
+
+Improved Envelope Followers in Megatap, Multitap and Plex Delay blocks.
+
+Added PVH 6160+ Clean Bright and PVH 6160+ Crunch Bright amp models based on a Peavey 6505+
+Rhythm channel with the Bright switch engaged. Note that the bright switch on this channel does not
+engage a capacitor on the drive potentiometer as is typical but instead disengages a treble cut circuit.
+
+Renamed PVH 6160+ Rhythm and PVH Rhythm B models PHV 6160+ Clean and PVH 6160+ Crunch
+respectively for clarity.
+
+Improved Downward Expander in Gate block when Detector Type is PEAK.
+Removed the Frequency Range parameters from the Multiband Compression block and extended the
+range of the Crossover Frequency parameters to cover the entire range previously available. Existing
+presets are automatically updated. Note that when adjusting a Crossover Frequency that the unit will
+automatically adjust the complementary frequency to ensure the mid band is at least one octave wide.
+
+Fixed Tremolo block trigger turning off even when threshold is set to OFF.
+
+Fixed wrong resistor value in Brit JVM models causing excessive blocking distortion.
+
+Fixed using Astable LFO type in some effects causes noise.
+
+Fixed switching between types in Chorus block can causes clicks.
+
+Fixed wrong default Depth value for 5153 Red model (real amp has fixed depth resistor). Removed
+Depth controls from all 5153 Authentic GUI pages (except 5153 50W Blue for which the real amp does
+have a Depth control).
+
+Fixed Drive block clicking when changing channels when bypassed.
+
+FC: Views for Layout Link will now be restored properly after reboot.
+
+FC: When entering the Master Layout menu via the switch-combo, the FC-6 will now always go to View
+1.
+
+FC: Per-Preset labels will no longer be displayed for unassigned switches.
+
+
+
+12.07
+
+Improved Compressor block. The RMS detector type has been improved resulting in smoother decay.
+The Auto Attack/Release algorithm has been improved resulting in less “chatter” when using low attack
+and/or release times. The Tube Compressor and Analog Compressor types now support RMS+Peak
+detector mode. A new knee shape algorithm in the Studio Compressor has been implemented resulting
+in a more musical tangential response like that of classic analog compressors.
+
+Improved Downward Expander in Gate block. The RMS detector type has been improved resulting in
+smoother decay. Added Detector Type parameter which allows selecting between RMS (default) and
+Peak types.
+
+Improved Multiband Compressor based on improvements to Compressor block. Added Auto
+Attack/Release mode.
+
+Improved Astable LFO type so that adjustments to Beta, which can occur when changing channels, do
+not cause “baseline wander”.
+FC: When navigating the editor or front panel, certain screens will no longer reset the value used by
+external modifiers for FC Pedals.
+
+
+
+12.06
+
+Improved performance of noise gate in Input block. Both the Classic and Intelligent types have been
+improved. The new Noise Reducer type reduces noise while preserving the attack of the note. It does
+this by using intelligent filtering to remove line noise and high frequency hiss will leaving the rest of the
+spectrum intact. Be sure to set the global Line Frequency to a value commensurate with the AC
+frequency in your country. Note that the Classic and Intelligent types can achieve complete silence
+while the Noise Reducer type can let some sound through as it is designed to be as transparent and
+unobtrusive as possible.
+
+Improved Downward Expander type in the Gate block.
+
+Fixed zipper noise when using an FC pedal to control input volume.
+
+Fixed Delay Time not sticking for Ten Tap Delay.
+
+Removed Bass, Mid and Treble controls from Capt Hook 1B amp model as this mode models the channel
+with the EQ Bypass engaged.
+
+Fixed incorrect Dry Level in following Drive block models (was 100%, should be 0%):
+        Shred Distortion
+        M-Zone Distortion
+        Ruckus (all versions)
+
+Fixed High Slope controls in Cabinet block non-functional.
+
+Added graphs to Setup -> I/O -> Pedal menu for pre/post-calibration visualization.
+
+FC: Fix Tap Tempo function setting incorrect tempo when assigned to a stand-in switch.
+
+FC: Fix Tuner not exiting when tapping a Stand-In Switch whose Hold function is Tuner.
+
+FC: Fix UI of Stand-In Switches page not showing text representations of settings.
+
+FC: Fix View Inc/Dec when accessing MLM on an FC-6 via Master Layout "Switch-Combo".
+
+FC: Fix View Inc/Dec mini-LCD display when set to "Destination #".
+
+FC: The main LCD will now display the correct first preset in the bank if the Global Setting for "Display
+Offset" is set to '1.'
+
+FC: Stand-in switches will now perform their hold function based on the Hold Function Mode specified
+on the Config page of FC Controllers.
+12.05
+
+Rolled back FC changes temporarily until bugs are fixed.
+
+Added modifier capability to ADSR Sustain Level.
+
+
+
+12.04
+
+Updated the default value of P.A. Cathode Bias Resistor for some models. Existing presets are NOT
+changed. The new default values are listed here if you want to apply them to your presets:
+
+        AC-20 DLX: 61%
+        Boutique 1,2: 48%
+        Blankenship Leeds: 58%
+        Car Roamer: 56%
+        Class-A 15W TB: 56%
+        Class-A 30W: 46%
+        Citrus A30: 56%
+        Citrus Terrier: 60%
+        Deluxe Tweed: 49%
+        Div/13 CJ: 56%
+        Div/13 FT37: 56%
+        FAS Class-A: 56%
+        Gibtone Scout: 76%
+        Hot Kitty: 50%
+        Matchbox D30: 59%
+        Nuclear Tone: 78%
+        Wrecker Liverpool: 59%
+
+Improved pedal calibration.
+
+Changed parameter value display to update if control is attached to modifier.
+
+Added Triple Crest amp models based on a Mesa Triple Crown TC-100. Note that the actual amp’s
+“Tight” switch engages a built-in Tube Screamer circuit which can be replicated using a Drive block or
+the Amp block’s internal Boost feature.
+
+Fixed a couple mistakes in Citrus Terrier amp model.
+
+Fixed clicking when engaging/bypassing effects which change input impedance.
+Fixed some parameters that should be modifiable (i.e. Chorus Rate, Rotary Rate, etc.) are not displayed
+as such.
+
+FC: Add FC Views to allow access to all 12 switches from the FC-6.
+
+FC: Add 'Current' display options for the toggle functions.
+
+FC: Mini-LCD text for Per-Preset Placeholders with no functions assigned to them.
+
+FC: Exit Tuner when a switch is tapped if that switch has Tuner as a Hold function.
+
+
+
+12.03
+
+Improved Amp modeling.
+
+Added Low Cut to Dual Chorus type.
+
+Improved Delay block Stack/Hold operation when using short delay times.
+
+Added DynamiComp type to Compressor block. This is a pedal-style compressor with a faster attack
+behavior.
+
+Fixed Input block UI.
+
+Fixed Modifier graph when changing scenes remotely.
+
+Fixed audio glitch when switching between two presets using Spring reverb.
+
+Fixed fuzzy tone from some amp models if Sat Switch is engaged.
+
+
+
+12.02
+
+Fixed UI unresponsive if modifier attached to Filter block Frequency control.
+
+Fixed Filter block graph does not update if type changed from Axe-Edit.
+
+
+
+12.01
+
+Added Stack/Hold to Reverse, Dual and Sweep Delay types. All delay types now support Stack/Hold.
+
+Added ALLPASS type to Filter block. This is a multi-stage “Phase Rotator” with feedback. With feedback
+set to zero it can be used to change the shape of transients. Using feedback causes constructive and
+destructive interference and can be used to create interesting tonalities. The Order can be set from 1 to
+12 with progressively more phase rotation occurring. Attaching a modifier to the Frequency parameter
+can result in interesting chorus or wah effects. The red trace in the GUI is the phase response.
+
+Improved preset/scene switching.
+
+Fixed artifacts in Wah block when Control knob is attached to a high-speed source, i.e. LFO with high
+rate.
+
+Fixed some values not displaying correctly (i.e. High Crossover Freq. in Multiband Compressor).
+
+Fixed some parameters being unintentionally reset when editing a block.
+
+
+
+12.00
+
+Added “2x12 Godzilla” Speaker Impedance Curve based on a Zilla Fatboy.
+
+Complete overhaul of the Flanger block. See the included flanger.pdf document for details.
+
+Complete overhaul of the Phaser block. See the included phaser.pdf document for details.
+
+Added separate Filter Slope controls for the Cabinet block. The range of the slopes has been extended
+to include 18 and 24 dB/octave. Existing presets will be automatically updated to the correct values
+based on the previous Filter Slope value.
+
+Added separate Low Cut Slope control for Delay block. Updated models accordingly.
+
+Added “FAS Express” amp model based on hypothetical modifications to a Trainwreck Express.
+
+Improved messaging system so that changing presets while Axe-Edit is running does not cause audio
+dropout (requires Axe-Edit version 1.4.00 or later).
+
+Improved Scene switching speed.
+
+Added LFO Quantize to Filter, Flanger and Phaser blocks.
+
+Added Triggering to Tremolo block. When the Tremolo is triggered the Tremolo will engage and the LFO
+phase will start at the Start Phase value. This allows easily synchronizing the Tremolo to your playing.
+Set to “OFF” to defeat the trigger.
+
+Added Optical Tremolo type to Tremolo block.
+
+Addded “Astable” type to LFOs. This simulates an astable Op-amp Multivibrator as is commonly found
+in effect pedals. “Beta” controls the shape of the LFO. High values approach a square wave while low
+values approach a triangle wave.
+Added Stack/Hold parameter to Plex Delay and Plex Verb types in the Plex block. When set to STACK
+incoming audio is stacked on existing audio and held. When set to HOLD existing audio is held.
+
+Changed Hold parameter in Delay block to Stack/Hold (see above).
+
+Changed Hold parameter in Reverb block to Stack/Hold (see above).
+
+Added “OD 250” Drive model based on a DOD Overdrive 250 (gray version).
+
+Added adjustable slope to Parametric EQ block for outer bands when type is set to BLOCKING.
+
+Added LFO monitors to Control block.
+
+Drive block EQ now supports placement pre- or post-distortion.
+
+Added “Stereo Mind Guy” delay type.
+
+Added ULTRA-HIGH quality mode to Reverb block. This mode increases the modulation at the expense
+of a slight increase in CPU usage.
+
+Improved Gate block. New algorithm has less chatter and tighter gating. This is now called the
+Downward Expander type.
+
+Added Classic Gate type to Gate block. This type is based on the classic noise gate where the gate opens
+when the Threshold value is exceeded and decays to the Attenuation value when below the Threshold
+value and the Hold timer has expired. This type offers harder gating and is useful for aggressive styles.
+
+Improved Spring Reverb algorithm. Also added “Boiiinnng!” parameter which controls the “springiness”
+of the reverb.
+
+Fixed loss of precision in certain amp models (i.e. Plexi 50W Normal) when Input Drive is set very low.
+
+Fixed Align tab in Cabinet block not displaying traces properly after changing channels/scenes from Axe-
+Edit.
+
+
+
+11.01
+
+Updated Speaker Impedance Curves for 2x12 Jazz 120, 4x10 Brit JM45 and 4x12 Hipower. Also added
+the following new curves:
+2x12 Bassbuster (based on a Fender Bass Breaker)
+1x12 Tweed Alnico Blue (based on a Fender Deluxe with Celestion Blue)
+4x12 PVH 6160 (based on a Peavey 5150 w/ Sheffields)
+4x12 Euro (based on a Bogner standard)
+2x12 Recto (based on a Mesa Rectifier)
+Added “Matchbox D-30 EF86” amp model. While the real amp has a six-position Tone switch, the model
+has a continuously variable tone control. Note that the Tone control is mapped to the Bass control in
+Ideal mode as the Tone switch is essentially a bass cut control.
+
+
+
+11.00
+
+Amp block now uses new high-order speaker impedance modeling. 52 speaker impedance models (and
+two LB-2 models) are included and can be selected using the Speaker Impedance Curve parameter (on
+the Advanced page). Selecting an amp model will load an appropriate default Speaker Impedance Curve
+for that amp model. The Cabinet Resonance parameter can be used to adjust the amount of cabinet
+resonance in the impedance curve. NOTE: The 2x12 Bassguy, 2x12 Jazz 120, 4x10 Brit JM45 and 4x12
+Hipower data is incomplete and will be updated in a future release.
+
+Setting Global “Update Pre-11.x Presets Spkr Imp Upon Load" parameter to YES will automatically
+update the Speaker Impedance Curve for the Amp blocks upon preset recall to use an appropriate
+Speaker Impedance Curve for that amp model. Setting the parameter to NO will leave existing presets
+unaffected. NOTE: Setting this to YES will also cause the EDITED LED to light indicating the preset has
+been modified.
+
+Fixed Recto1/2 models default Negative Feedback and Power Tube Bias values slightly too low.
+
+Fixed loss of precision in Drive block Tone control for some models (Rat, Timothy, et. al.) causing low
+frequency build-up over time.
+
+
+
+10.02
+
+Fixed popping noise can occur when switching between certain amp models. This also results in faster,
+smoother preset, scene and channel changes.
+
+Fixed wrong Basic tab of Drive block when Ruckus LED/Si type selected.
+
+Added Wrecker Liverpool Bright amp model. This models the amp with the three-position Bright switch
+in the brightest position.
+
+
+
+10.01
+
+Fixed divide-by-zero can happen in Drive block when using certain combinations of different diode types
+and a very strong input signal or when switching between different types.
+
+Fixed can’t access Drive block Advanced GUI page for Ruckus LED/Si type.
+Changed Drive block Slew Limit to Slew Rate and updated default value of the models. Existing presets
+will be updated to the new default value upon recall. Note that the parameter now controls the slew
+rate and lower values equal less high frequency response at high amplitudes and vice-versa (the action is
+reversed from the previous firmware versions).
+
+Added Wrecker Express Bright amp model. This models the amp with the three-position Bright switch in
+the brightest position.
+
+
+
+10.00
+
+Added Downtune control to Tuner. The Downtune control allows for simplified tuning when tuning
+down one to four semitones. The Tuner display will read the “natural” name of the note, i.e. if tuning
+down one semitone an Eb will read E. In addition any blocks that utilize pitch information will also be
+transposed accordingly.
+
+Added Display Mode control to Tuner. This control allows selecting between all flats, all sharps or a
+mixture of sharps/flats for the displayed note name.
+
+New power amp modeling algorithm. This algorithm improves the plate impedance accuracy
+substantially. This yields tighter bass, crunchier midrange and “chimier” highs.
+
+Due to the changes in the power amp modeling algorithm the Power Tube Hardness parameter now
+behaves differently. Selecting a Power Tube Type loads the “knee voltage” for the power tubes and this
+voltage can be adjusted up or down using Power Tube Hardness. Higher values yield a lower knee
+voltage and more abrupt clipping and vice-versa. Existing presets will have Power Tube Hardness reset
+to 5.0 upon recall.
+
+The range of the Transformer Match control has been reduced to 0.5 to 2.0. Existing presets will have
+this value reset to 1.0.
+
+The Ideal Tetrode and Ideal Pentode power tube models are no longer applicable and have been
+replaced with 5881 and 6L6GB models, respectively.
+
+The PI Bias Excursion values have been updated for some amp models. Existing presets will
+automatically be updated to the new default values. If you typically alter this parameter you should
+audition your presets.
+
+The Amp block Dynamic Impedance parameter is no longer applicable and has been removed.
+
+Added KT77 power tube type.
+
+Improved Drive block. New diode modeling algorithm improves clipping accuracy especially for diodes
+with higher saturation currents, i.e. 1N270 and other germanium types.
+Added D9E and D18 diode models to Drive block. These are Soviet germanium diodes valued for their
+smooth distortion characteristics.
+
+Added “Ruckus LED/Si” type to Drive block. This model is based on a Suhr Riot with the toggle switch set
+to select the hybrid LED/Silicon Diode position.
+
+Added “5 Band Mark” type to Graphic EQ block.
+
+Fixed exported Tone Matches may, in rare cases, not sound the same as the Tone Match.
+
+Fixed long delay times (over 1.5 seconds) in Plex Shift can cause artifacts.
+
+
+
+9.01
+
+Fixed Amp block input drive network instability in rare cases when switching between certain presets.
+
+Fixed some amp models can become unstable for certain combinations of Negative Feedback and high
+values of Speaker Impedance and/or Transformer Match.
+
+Added “Gain Enhancer” mode to Amp block Output Compressor. This mode can be used to simulate the
+acoustic reinforcement of a loud amp coupling into the guitar and enhancing the output signal.
+
+
+
+9.00
+
+New power amp modeling algorithm. This new algorithm now also separates the transformer matching
+from the speaker impedance. A new parameter, Speaker Impedance, allows adjusting the relative
+impedance of the virtual speaker. For example, to simulate connecting a 16-ohm speaker to an 8-ohm
+output set Speaker Impedance to 2.0. Transformer Matching, on the other hand, changes the
+impedance ratio of the virtual output transformer.
+
+To support the new power amp algorithm the internal transformer matching values and negative
+feedback values have been updated. The new negative feedback values will load when selecting an
+existing preset. If you typically adjust Negative Feedback when creating a preset be sure to audition
+your presets as the parameter value will be reset to the default value upon preset load.
+
+Fixed Amp block Output EQ wrong frequencies if EQ Location set to “Input”.
+
+Fixed Amp block “Hi-Cut” calculation for amps without negative feedback. This affects the following
+models:
+All AC-20 models
+All Class-A 15W and 30W models
+Citrus Terrier
+Boutique 1 and 2
+FAS Class A
+Hot Kitty
+Matchbox D-30
+Mr. Z MZ-8 and MZ-38
+Ruby Rocket and Ruby Rocket Bright
+Supremo Trem
+Wrecker Rocket
+
+Fixed incorrect default P.A. Cathode Resistance value for Citrus Terrier model (correct value is 96%) and
+Class-A 15W model (correct value is 83%).
+
+
+
+8.00
+
+Improved amp modeling.
+
+Added Swap Scene function to Layout->Tools.
+
+Fixed Plex block Shimmer Verb causing NaN if Reverb Size set to 0%.
+
+Fixed Tone Match block erroneous results on preset recall due to uninitialized data.
+
+Fixed sluggish Axe-Edit behavior after boot on high CPU presets.
+
+Fixed Rotary block Input Select not working correctly.
+
+Fixed Compressor block sidechain filter not working if gain set to 0.0 dB.
+
+
+
+7.01
+
+Firmware image now uses compressed initialization. This results in a smaller file size and faster
+firmware updates.
+
+Added Input Select to Megatap Delay, Multitap Delay, Plex Delay, Reverb and Rotary blocks.
+
+Fixed Input Impedance not set correctly if an active effect is in a different row and prior column than the
+effect that should be controlling the impedance.
+
+FC: Fixed stand-in switches not activating the down half of their assigned function.
+
+
+
+7.00
+Improved power amp modeling. New algorithm accounts for variation in load voltage as a function of
+transformer turns ratio. I.e. reducing the Transformer Matching will reduce the output level and vice-
+versa.
+
+Fixed low output level for Shred Distortion Drive model.
+
+FC: Fixed tap function executing on hold when "Hold Execute" is set to "Switch Up".
+
+FC: Fixed switch executing from wrong layout after a stand-in switch is used.
+
+FC: Fixed MLM functionality when cloning mixed units (FC-12's and FC-6's).
+
+FC: Added FC-6/FC-12 compatibility mode. When enabled, FC-6(s) will use buttons 1, 2, 3 for the bottom
+row and buttons 7, 8, 9 for the top row. Accessible from HOME->SETUP->FC Controllers->Config Page,
+FC-6/FC-12 Compatibility Mode. It is disabled by default.
+
+FC: When "Reveal Holds" is active the hold function states will be displayed (with default ring colors
+only) and button presses will execute the hold functions.
+
+FC: Fixed hold functions firing on the MLM hold switch (switch 3 on FC-6 and switch 6 on FC-12)
+preventing MLM mode from executing.
+
+
+
+6.04
+
+Reduced background task priority on high CPU presets to improve client (i.e. Axe-Edit) performance.
+
+Added “CC Boost” type to Amp block.
+
+Improved CPU usage.
+
+Optimized LCD graphics for better response.
+
+Changed FC tuner note names to match main tuner (i.e. Eb instead of D#).
+
+Added Solo feature to Parametric EQ block. When a band is soloed the frequency range for that band is
+isolated allowing the user to fine-tune the band.
+
+Fixed output level of PI Fuzz model too low.
+
+Fixed Modifier auto-engage not working when Auto-Engage is set to SLOW POSITION and the Update
+Rate is set to FAST.
+
+Fixed Supremo Trem model missing Tone control in Authentic mode. Note: the Tone control is mapped
+to High Cut in Ideal mode.
+
+Fixed FC and Axe-Edit not displaying tempo correctly if preset using global tempo.
+FC: Fixed Layout Link not executing if no function is assigned to the switch.
+
+FC: Added Mode parameter to Utility/Reveal Hold for Momentary/Toggle.
+
+FC: Added Hold Function Execute Mode: TIMEOUT or SWITCH UP. "TIMEOUT" is same as the previous
+behavior. When set to "SWITCH UP", the hold function executes when you release the held footswitch,
+allowing precise musical timing.
+
+FC: Fixed Per-Preset/Placeholder #24 not working.
+
+
+
+6.03
+
+Fixed long preset load time if preset using Filter block with Frequency parameter connected to modifier.
+
+
+
+6.02
+
+Added LFO to Filter block. When enabled, the LFO will modulate the frequency of the filter between the
+Frequency and the Mod. Frequency. The local LFO simplifies modulated filtering and frees up the global
+LFOs for other tasks.
+
+Added adjustable filter to Plex block wet signal. Filter can be any of the standard types (all types except
+comb filter types). Frequency, Q and Gain are modifiable.
+
+Added Shimmer Verb type to Plex block.
+
+The Mode parameter in the IR Player block has been replaced by a Length parameter.
+
+Changed Home page behavior so that menu stays on selected tab when returning. Pressing HOME while
+on the Home page resets to first tab.
+
+FC: Improved communication reliability when using very long cables (requires FC firmware version 1.08).
+
+FC: Fix preset tempo being used when global is selected .
+
+FC: Add Layout Inc/Dec function.
+
+
+
+6.01
+
+Fixed memory allocation error causing boot irregularities.
+
+
+
+6.00
+Firmware 6.00 introduces the PERFORM tabs found on the HOME screen of the Axe-Fx III. There are two
+PERFORM tabs: Per-Preset and Global. The PERFORM tabs can be configured with up to 10 user-
+selected controls from any of the blocks found in the current preset (including CONTROLLERS and
+GLOBAL). Configuration of the PERFORM tabs is done via Axe-Edit III. Allowable controls include rotary
+knobs, push-buttons, drop-downs, and toggle controls (e.g., on/off controls).
+
+        The "Perform-PP" controls are stored per-preset. Adding or removing a control from "Perform-
+        PP" will change the EDIT state of the preset.
+
+        The "Perform-Gbl" controls are stored in the Global Settings. Adding or removing a control from
+        "Perform-Gbl" is automatically saved to the Global Settings.
+
+        Performance controls are added via the editor from a block's parameter view. The editor's
+        selected parameter control is assigned to the desired Performance tab through a popup menu or
+        a hot-key combination. [Please note the "Edit Modifier..." popup menu item for modifiable
+        parameters. Modifiable parameters can quickly jump to the "Edit Modifier" dialog by pressing
+        the hotkey 'M'.]
+
+        Hotkey assignments for Perform controls:
+          * Per-Preset Add: SHIFT + '1' through '0', where '0' is the tenth control on the tab.
+          * Per-Preset Remove: SHIFT + ALT + '1' through '0', where '0' is the tenth control on the tab.
+          * Global Add:
+            * Mac: COMMAND + F1 through F10.
+            * Windows: CTRL + F1 through F10.
+          * Global Remove:
+            * Mac: COMMAND + SHFIT + F1 through F10.
+            * Windows: CTRL + SHIFT + F1 through F10.
+
+        The editor's Perform view is accessed via the "Perform" button or the Tools / Performance menu.
+        From this view, Per-Preset Performance controls can be imported and/or exported using the
+        "Block Library" control. Additionally, the view's "Per-Preset" and "Global" tabs allow label editing
+        for controls already assigned to the "Perfrom-PP" and "Perform-Gbl" tabs.
+
+
+Changed Cabinet, IR Player and Tone Match block IR windowing so that window length is proportional to
+IR length (rather than a constant window length).
+
+Doubled length of IR Capture Utility sweep. This improves SNR in challenging environments, i.e. a large,
+noisy room when capturing “far-field” IRs. The time between sweeps has also been increased to allow
+the room reverberation to decay sufficiently before starting the next sweep.
+
+Improved Amp block power amp modeling.
+
+Added five “Manual” controllers to Controllers menu. These can be used as modifiers for real-time
+manipulation of parameters from the front panel.
+
+Combined LFO 1 and LFO 2 menus into a single menu.
+Fixed Ring Mod block left/right slightly unbalanced.
+
+Fixed Looper allows playback even if no loop exists causing noise.
+
+FC: Further fixes for startup timing issues.
+
+FC: Fixed Inc/Dec functions' upper limits defaulting to zero.
+
+FC: Fixed learning of FC external pedals and switches in MIDI/Remote.
+
+FC: Fixed external switch polarity not showing correctly on the FC Controllers Remote page.
+
+
+
+5.08
+
+Added Low Cut and High Cut to individual IRs in Cabinet block. Filter slopes are also selectable from 6 to
+24 dB/oct.
+
+Added IR Length parameter to individual IRs in Cabinet block. Shorter lengths can be used to remove
+room reflections and/or decrease CPU usage.
+
+Changed Pitch block so that pitch detection is performed even when block is bypassed. This allows using
+the Learn function while the block is in bypass.
+
+Fixed sometimes unit will hang at boot if an FC-12 running firmware version 1.06 or later is connected.
+
+Fixed pop when switching from Hipower amp models to certain other amp models.
+
+FC: Fix Layout Link not working when in MLM mode.
+
+FC: Fix EZ Page changing values of Switch 1 even if no switch has been selected .
+
+FC: Fix inc/dec wrap operation.
+
+
+
+5.07
+
+Improved Preset/Scene/Channel switching time.
+
+Fixed wrong default Cathode Follower Compression values for Brit JVM and JS410 amp models.
+
+Fixed AES/SPDIF input shifted by one bit causing clipping at -6 dBFS.
+
+FC: Added support for stand-in switches (assign external switches to perform a function assigned to an
+FC switch).
+
+FC: Support for FC firmware 1.06 (switch behavior and polarity)
+FC: Added shortcut keys to/from Per-Preset and Global
+
+FC: Added warning on switch page if the switch is overridden in the current preset
+
+FC: Fix per-preset overrides not working on MLM page 2 for the FC-6
+
+FC: Fix layout link and MLM interaction (switch 3 for the FC-6 and switch 6 for the FC-12)
+
+FC: Fix layout link for per-preset switches
+
+
+
+5.06
+
+Added USA JP IIC+ Green amp model (channel 1).
+
+Fixed wrong internal transformer matching value for Friedman Small Box model.
+
+Fixed popping when switching between channels/scenes/patches with very different block levels.
+
+Fixed incorrect error message when updating USB firmware via Fractal-Bot.
+
+Fixed Upper Limit on functions in the Bank category reverting to '51' on restart (regardless of bank size).
+
+Fixed FC layout names getting clobbered if knob A is used to Nav while editing.
+
+Fixed loading defaults squashing the version (and other dummy params) on the devices page.
+
+Display Effect name for Effect functions on the Overrides page of Per-Preset FC Settings.
+
+Configurable timeout for the notifications on the FC main LCD.
+
+Updated FC function Effect->Channel Select to turn off the LED ring if the effect is bypased and Smart
+Bypass is enabled.
+
+Added TEST ON and TEST OFF to CS MIDI for the FC.
+
+
+
+5.05
+
+Fixed missing menu for USA JP IIC+ Yellow amp model when using authentic controls.
+
+
+
+5.04
+
+Added USA JP IIC+ Yellow amp model (channel 2). . NOTE: To emulate the “Shred” mode turn the High
+Treble control to approximately 3-4 dB (or adjust to taste, you are not limited by a single switch).
+Fixed corruption in FC Remote menu.
+
+
+
+5.03
+
+Added USA JP IIC+ Red amp model (channel 3). NOTE: To emulate the “Shred” mode turn the High
+Treble control to approximately 3-4 dB (or adjust to taste, you are not limited by a single switch).
+
+Fixed hold functions on page two of the Master Layout Menu for the FC-6.
+
+Fixed FC Bank -> Inc/Dec function's upper limit from resetting to the maximum bank number on reboot
+or bank size change.
+
+Fixed copy/paste of FC Layouts not setting Layout Link.
+
+Fixed FC Layout Link for hold functions not surviving a reboot.
+
+Fixed wet data muting during channel change in Multitap block.
+
+
+
+5.02
+
+Fixed presets created with firmware prior to 3.00 defaulting Amp block EQ Off/On parameter to Off
+instead of On.
+
+
+
+5.01
+
+Fixed presets created with firmware prior to 3.00 not loading various parameters correctly. These
+parameters are primarily the Spread parameters in the Chorus, Flanger, Rotary and Reverb blocks,
+among others.
+
+
+
+5.00
+
+Completely new Amp block cathode follower algorithm yielding more accurate results. The “Ideal”
+cathode follower type is no longer supported as it is incompatible and has been removed from the GUI.
+The Cathode Follower Time and Ratio parameters have also been removed as they are no longer
+applicable. A “Grid Clipping” parameter has been added which allows the user to adjust the grid clipping
+in the cathode follower. Lower values reflect the softer response of classic British and American tubes
+like Mullard, Sylvania and RCA. Higher values simulate the response of modern Chinese and Russian
+tubes with more abrupt clipping.
+Updated various Amp block parameters related to new cathode follower algorithm. Existing presets are
+automatically updated to the new values.
+
+Added AES/SPDIF Input Level control. This is located in the I/O->USB/AES menu. NOTE: this parameter
+will default to -40 dB after installation of the firmware. Be sure to adjust to the desired level if using the
+AES or SPDIF inputs.
+
+Added Treble Booster and Mid Booster boost types to Amp block.
+
+Improved Scene/Channel change logic. Only the wet data is muted when changing scenes and channels
+now leaving the dry data intact which results in smoother transitions.
+
+Changed Control block Envelope Follower behavior so that when the signal exceeds the threshold the
+control value starts at zero rather than jumping to the threshold value.
+
+Fixed wrong bass pot taper in Friedman Small Box model.
+
+Fix FC per-preset corruption with some presets.
+
+NOTE: Due to the new algorithms several amp block parameters are reset to default values when
+loading old presets. Included in these parameters is Preamp Bias Excursion. If you had altered this
+parameter in a preset note that it will be reset and you may want to readjust it.
+
+
+
+4.03
+
+Fixed Div/13 CJ 11 amp model muted when two Amp blocks used.
+
+
+
+4.02
+
+Fixed issue with certain amp models, i.e. Legato 100, exhibiting excessive blocking distortion.
+
+Fixed loss of communications with FC-X foot controllers after being left on for very long periods of time,
+i.e. overnight.
+
+Various fixes and improvement for FC-X controllers.
+
+
+
+4.01
+
+Fixed triode modeling algorithm for amp models with “cold clipping” stages, i.e. Recto, SLO, etc.
+
+
+
+4.00
+Improved Amp block preamp tube modeling.
+
+Improved Amp block cathode follower grid modeling.
+
+Improved power amp modeling for “Class-A” type amp models.
+
+Added modifier capability to Decay Time, Level 1-8 and Pan 1-8 controls in Plex Delay block.
+
+Added Presence Shift control to Amp block Tone page for the appropriate models when using Authentic
+controls.
+
+Added SV Bass 1 amp model. This is the original SV Bass model prior to the change in 2.05. The new SV
+Bass model added at 2.05 has been renamed SV Bass 2.
+
+Added FAS Skull Crusher amp model. The nastiest, most brutal amp model to ever escape from the
+seventh circle.
+
+Reworked PI Fuzz model based on older “Triangle” version reference. A soft-reset of the model is
+required to load the new parameter values. Note that duplicating the behavior of a fuzz pedal requires
+that the pedal be the first non-bypassed block following the Input 1 block and the input block
+impedance must be set to Auto since fuzz pedals load down the guitar’s pickups.
+
+Added “Unlink All Blocks From Global” function to Layout->Tools menu. This unlinks all blocks from any
+global blocks to which they may be linked.
+
+Expanded the names of the “USA” models to more clearly indicate the switch settings.
+
+Fixed Tone page for Plexi 100W 1970 not showing Normal Drive control.
+
+Fixed incorrect capacitor value and wrong default Low Cut value in BB Pre Drive model.
+
+Fixed wrong default Low Cut value in Eternal Love and Esoteric ACB Drive models.
+
+Fixed Output EQ in Amp block not being redrawn when changing channels and number of bands is
+different.
+
+Fixed wrong triode plate frequency in Herbie CH3 model.
+
+Fixed wrong mid and treble tapers in all Herbie models. Existing presets should be auditioned.
+
+
+
+3.02
+
+Improved Drive block. WARNING!!! The sound of some of the drive models may have changed
+significantly.
+
+    •   Drive models based on op-amp and diode clipping topologies have been completely overhauled.
+    •   For many types there is now a “Dry Gain” control. This parameter controls the amount of “dry”
+        signal mixed with the “wet” (distorted) signal. For a Tube Screamer-based model this will
+        default to 100% due to the topology. For other types this will default to 0. Values up to 200%
+        are allowed. Note that the dry data is added before any tone controls and therefore is not
+        exactly equivalent to a mix but rather replicates the behavior of analog circuits.
+    •   Drive types based on op-amp and diode clipping circuits now allow control over the type and
+        quantity of diodes in the positive and negative polarity. For example, the user can select (2)
+        1N34A diodes for positive signal polarity and (1) red LED for negative. Experiment with the
+        various diode types and quantities to obtain new and unique sounds.
+    •   The Basic GUI page now reflects only the controls found on the actual pedal. In cases where the
+        actual pedal does not have any tone controls a simple Tone control is included for convenience.
+    •   Added several new types.
+
+Added “All” to Tuner Input Source selection. This sums all inputs.
+
+Added Global "Tone Control Display" parameter. When set to Authentic (default) only those controls
+present on the actual amp are displayed. When set to Ideal all tone controls are displayed. Also, when
+set to Authentic the Bass, Mid and Treble controls are reset to default values when changing models to
+ensure accuracy for models that may not have these controls.
+
+Fixed Tone Match block not updating correctly between preset changes if different Mode used.
+
+Fixed loss of low frequency resolution for Tone Match block when set to Off-Line mode.
+
+
+
+3.01
+
+Fixed Graphic EQ pages not responding to navigation buttons.
+
+Fixed FC load defaults correctly sets bank size before configuring switches.
+
+Fixed FC use "Scene X" on main LCD if scene name is blank.
+
+Fixed load FC-12 defaults won't switch first FC to layout 7.
+
+Fixed FC scene name not updating if character(s) removed from end.
+
+
+
+3.00
+
+Improved amp modeling.
+
+Improved speaker compliance algorithm.
+
+Improved algorithms for modulation effects.
+Improved Tone Match block graphs.
+
+Improved Reverb block.
+
+Added “EQ Off / On” control to Amp block. This modifiable parameter turns the graphic EQ on and off.
+
+Added Plex Verb type to Plex block. While the Reverb block is designed for authentic, natural-sounding
+reverbs, the Plex Verb type is designed for large, ethereal reverb sounds. This type is also simple to use
+with no time, tempo, level or pan parameters required. For best results turn the Diffusion Mix up when
+using this type.
+
+Added Spread and Pre-Delay controls to Plex block.
+
+Increased the range of the Low Freq Time and High Freq Time in the Reverb block. This allows for
+creative reverb sounds. Several new reverb types have been added to illustrate these effects.
+
+The Chorus, Flanger, Plex, Reverb and Rotary blocks now supports Spread values from -200% to 200%.
+Values beyond +/-100% increase the apparent image beyond the stereo field. The action of the spread
+control has also been improved so that the apparent volume remains constant vs. spread value.
+
+Fixed IR Capture utility sometimes not working in Cab+DI mode.
+
+Fixed slow response in IR Capture configuration menu when changing bank/slot.
+
+Fixed Cabinet block graphs not showing traces for non-UltraRes IRs.
+
+Fixed Input Source for Pitch Follower not exposed.
+
+Fixed FC-X custom Mini-Display Label for Effect, Chan Select.
+
+
+
+2.05
+
+Added Threshold parameter for all types in Compressor block.
+
+Change Drive block behavior so that when changing the Drive Type the graphic EQ is reset.
+
+Reworked SV Bass amp model. Model is now based on a 1970 Ampeg SVT with 6550 power tubes and
+the midrange switch in position 3.
+
+Cabinet block now automatically corrects the polarity of IRs that are inverted, i.e. captured from the
+back of a cabinet.
+
+Added floor reflection modeling to Cabinet block. The intensity of the floor reflections can be adjusted
+with the new “Floor Reflections” parameter. Floor reflections play a large role in “amp in the room”
+sound. If the amp is on a carpet the floor reflections are minimal. If the amp is on a wood or other hard
+surface the floor reflections are significant. Existing presets will initialize this value to 0% so as to not
+change the sound. The default value is 50%. Note that negative values, while not realistic, are
+supported which inverts the reflection.
+
+Added Diffusion to the Cabinet block room modeling.
+
+Improved IR Capture Utility. User can now select between conventional deconvolution and reverse filter
+processing. In a high-noise environment the reverse filter technique can provide better results. In low-
+noise environments the conventional technique can provide slightly better bandwidth and magnitude
+accuracy. Note that the prior firmware used the reverse filter technique.
+
+Added Processing parameter to IR Capture Utility. This selects between “Minimum-Phase” which
+transforms the IR into a minimum-phase version, “Auto-Trim” which removes the leading silence, and
+“None” which applies no processing at all. Note: prior firmware always used minimum-phase
+processing.
+
+Added Delay Compensation to IR Capture Utility. This allows compensating for time-of-flight delay
+when capturing IRs. For example when capturing far-field IRs there may be significant time delay due to
+the distance of the mic from the speaker. This can reduce the precision of the measurement if the delay
+is excessive. To use the compensation configure the graph to the Time display. Do a test sweep and
+note the waveform delay. Dial in the desired amount of compensation delay and repeat as necessary.
+Note that the speed of sound is roughly 1 ft/ms so a mic that is 10 ft from the speaker would incur
+roughly 10 ms of delay. Note that IR Capture Utility will automatically compensate for delays up to
+approximately 20 ms (1K samples). Correction is only required for delays greater than 20 ms.
+
+Added alignment graph to Cabinet block showing a zoomed time series of the IRs allowing visual
+adjustment of the mic distance. When using IRs that have not been minimum-phase processed this
+facilitates aligning the IRs.
+
+Added Volume Increment/Decrement CCs for Output 2.
+
+Added “Analog Compressor” to Compressor block. This compressor has a natural soft-knee response
+and captures the vibe of the classic compressors of the 70’s and 80’s.
+
+Added Mix control to Multiband Compressor block.
+
+Added Knee Type control to Multiband Compressor block.
+
+Corrected the VU meters in the Output block to compensate for the “unity gain” nature of Outputs 3
+and 4. Note that the Output block meters are BEFORE the Level controls (pre-fader) on the front panel
+and are therefore unaffected by the Level controls. The meters indicate the internal signal level relative
+to full-scale (dBFS).
+
+Renamed Dumble-style amp models with PAB on accordingly.
+
+Changed Volume Inc/Dec behavior so that muting is not performed.
+Various changes and fixes for FC-6/12 foot controllers. Note: this firmware, or a later version, should be
+installed for proper operation of the foot controllers.
+
+Fixed clicking noise in Pitch block at certain values of shift and tracking.
+
+Fixed Cabinet block LF Damping and HF Damping parameters sometimes not working.
+
+Fixed output gain of Compressor block when using either of the Pedal types dependent upon the Ratio
+control of the Studio type.
+
+Fixed crash when adjusting Amp block Screen Q rapidly.
+
+
+
+2.04
+
+Added “Tube Compressor” type to Compressor block. This type is based on classic tube compressors
+like the Altec Lansing 436C. Since this type uses “variable mu” processing it may add subtle, and
+possibly desirable, distortion to the audio.
+
+Added “FF Comb” and “FB Comb” types to Filter block. FF Comb is a feed-forward comb filter and FB
+Comb is a feedback comb filter. Delay Time controls the order of the comb filters, higher values result in
+more closely spaced notches and vice-versa. Depth controls the intensity of the filter, higher values
+result in deeper notches/peaks and vice-versa.
+
+Added Comb Filter Type parameter to Multidelay block. The names of the parameters in the block have
+been changed from “Resonator” to “Comb Filter”.
+
+Added clock sync checking in I/O menu. If the user selects one of the digital input sources (SPDIF or AES)
+as the clock source and there is no valid input the menu will indicate no clock source.
+
+Changed Cabinet block Room Size display to meters for clarity.
+
+Fixed Cabinet block does not update if a newly captured IR is saved to an IR location in use.
+
+Fixed Cabinet block “AIR” mixing is done before level normalization.
+
+Fixed USB 5/6 Input Level affects SPDIF/AES input level.
+
+Fixed setting size very low on room types in Reverb block can cause crash.
+
+
+
+2.03
+
+Changed Looper behavior so that Play indicator only lights during recording when overdubbing.
+
+Added Looper Crossfade parameter. When set to ON the loop fades out/in at the end/start of the loop.
+Improved Cabinet block room emulation. New algorithm provides denser and more immersive
+reflections.
+
+Added Room Shape parameter to Cabinet block which selects between and hall and room shape.
+
+Added “Bias Trem” type to Tremolo block. This uses a tube emulation algorithm to replicate the bias
+tremolo used in vintage tube amps.
+
+Added “Harmonic Trem” type to Tremolo block. This recreates the famous sound of the tremolo circuit
+in the old “Brownface” amplifiers. This effect splits the spectrum and applies modulation to the two
+frequency bands. The Crossover Slope parameter selects the filter order for the crossover. The original
+circuit used a 6 dB/octave crossover. Higher slopes can give a more intense effect. The crossover
+frequency can be changed with the Crossover Frequency parameter. Note: unlike most
+implementations the Axe-Fx III version is full stereo and can be used before or after the Amp block
+without losing stereo separation. Additionally the effect supports LFO phase for the left/right which can
+be used to achieve unique sounds. Furthermore the effect supports LFO types other than Sine for even
+more unique sounds.
+
+Note: both the Bias Trem and Harmonic Trem use nonlinear processing techniques and, as such, may
+add distortion to the audio signal just as their tube-based counterparts would.
+
+Added “Grinder” boost type based on a Fortin Grind to the Amp block.
+
+Added USB Input Level controls. These are located in Setup->I/O->USB. Note that these values will
+default to -40 dB after the firmware upgrade.
+
+Changed background tasks to run dynamically based on available processing time. This prevents
+sluggish behavior of Axe-Edit and MIDI controllers immediately after startup.
+
+Fixed IR capture export not working consistently causing issues with Cab-Lab 3.
+
+Fixed incompatibility with Live mode in Cab-Lab 3 when using Axe-Fx III as the audio interface.
+
+Fixed Reverb block NaN if setting size extremely low and turning modulation depth way up.
+
+
+
+2.02
+
+Fixed issue in phase inverter modeling causing excessive bias excursion in some amp models.
+
+Fixed Reverb block causing crash if setting size to less than 6.0 for certain types.
+
+Fixed FC GUI corruption when changing presets via foot controller.
+
+Various other fixes and enhancements for FC-X controllers.
+2.01
+
+Added “Filter Type” to Compressor Side-chain.
+
+Added “Auto-Swell” type to Volume block. This simulates “pinky swells” using the guitar volume knob.
+Threshold sets the input power to start the volume swell. When the input power drops below the
+threshold the swell circuit is reset and the volume drops to zero. Attack sets the rate at which the
+volume increases.
+
+Increased size of VU meters and added gain readout in Layout GUI.
+
+Added ability to select the source of USB Outputs 7,8 (to computer). Inputs 2-4 can be assigned to USB
+7,8.
+
+Improved Amp block phase inverter modeling.
+
+Fixed minor error in Amp block voltage to speaker displacement transfer function causing more
+parameter shift than expected for a given Speaker Compliance setting.
+
+
+
+2.00
+
+Improved Amp block speaker dynamic parameter modeling. The new Speaker Compliance parameter
+controls the nonlinear behavior of the virtual speaker. Existing presets will load with this parameter at
+0.0 and will be unchanged tonally from the previous firmware (IOW your presets will not be altered).
+Selecting a new amp model or resetting the block will set the value to 50% which is a typical value for
+guitar speakers.
+
+Improved Amp block cathode follower modeling.
+
+Improved Looper cross-fade at start/end of loop.
+
+Improved stability and latency of Pitch block.
+
+Improved anti-aliasing performance of Pitch block.
+
+Added Temperament parameter to Pitch block. When set to “Just”, pitch shifting uses just
+temperament with ratios defined by the harmonic overtone series. When set to the default value of
+“Equal”, equal temperament tuning is used. Just temperament can be used to give a “sweeter”
+harmony, especially when followed by distortion.
+
+Added “Virtual Capo” type to Pitch block. This is a simple one-voice pitch shift that is intended for drop-
+tuning and virtual capo use and is easy to configure and use.
+
+Changed Pitch block behavior so that when selecting Whammy or Virtual Capo types the Mix is
+automatically set to 100%, otherwise 50%.
+Improved algorithms in Multitap block.
+
+Added two options to the Filter Order in the Cabinet block. “L: 6, H: 12” sets the filter slope to 6
+dB/octave for the low cut and 12 dB/octave for the high cut. “L: 12, H: 6” sets the filter slope to 12
+dB/octave for the low cut and 6 dB/octave for the high cut.
+
+Changed Looper meter, CPU meter and Layout VU meter colors to cyan so that thresholds are visible to
+those with red-green colorblindness.
+
+Fixed Looper not playing when pressing Once if Trim Start is nonzero.
+
+Fixed MIDI running status ignored if active sense messages received between status messages.
+
+Fixed Master Resonator Time not working in Multitap Delay.
+
+Fixed diffusion not working on delay lines 2-4 in certain types in Multitap Delay.
+
+Various changes and fixes for FC-X controllers.
+
+Minor tweaks and improvements to the GUI.
+
+
+
+1.18
+
+Fixed meters on Home->Meters sometimes getting stuck.
+
+Fixed MIDI-Over-USB hanging when receiving certain SysEx messages intended for other products. This
+occurs with some DAW software (i.e. Logic) at startup causing subsequent SysEx commands to be
+ignored rendering Axe-Edit non-responsive.
+
+Fixed certain 3rd-party MIDI SysEx messages not processed properly when SysEx messages are also being
+received via USB (i.e. changing a block bypass state or channel via a MIDI foot controller while also using
+Axe-Edit).
+
+Fixed adjustments to global Noisegate Offset do not take effect until editing Input block.
+
+Fixed booting to preset with two amp blocks does not correctly initialize.
+
+Fixed block channel change so that muting does not occur if block is bypassed.
+
+Fixed IR Player block allows linking to Global Blocks.
+
+Changed range of Attack and Release parameters in Input block gate to more suitable values.
+
+
+
+1.17
+Fixed NaN when selecting “USA” amp types.
+
+
+
+1.16
+
+Improved Multiband Compressor block so that mid-band gain is automatically compensated for
+crossover response.
+
+Added Frequency Range parameters to Multiband Compressor block. This selects between Low and High
+frequency ranges yielding more flexible crossover frequencies.
+
+Added Crossover Slope parameter to Multiband Compressor block. Choices are 12 and 24 dB/octave.
+
+Added FAS Boost to Amp block input boost types.
+
+Added Output Mode to Amp block. The default value, FRFR, is the classic mode and designed for use
+with monitors or recording. The SS PA + Cab mode is intended for use with a solid-state power amp and
+conventional guitar cab. In this mode speaker compression modeling behaves differently relying on the
+speaker for compression while still simulating the interaction with the power amp. NOTE: this mode is
+not intended for use with current drive power amps, i.e. tube power amps, Class-D current feedback
+amps (Quilter Tone Block), etc. NOTE: this mode CAN be used with FRFR monitors in high volume
+applications where the monitor’s speakers are compressing thereby achieving a more dynamic
+response.
+
+Added 10-band, 2/3 octave types to Graphic EQ block. These types center the filter frequencies on a
+narrower range best suited to finely sculpting guitar tones.
+
+Added 10-band, 2/3 octave graphic equalizer to Drive block. The EQ can be enabled/disabled via the
+Graphic EQ parameter which is also modifiable.
+
+Added 8-band, 2/3 octave graphic equalizer to Wah block. The EQ can be enabled/disabled via the EQ
+parameter which is also modifiable.
+
+Fixed moving cabs with Axe-Edit causes corrupted empty slots.
+
+Fixed Looper status not reported correctly via MIDI.
+
+Fixed Looper doesn’t always start if threshold is off.
+
+Fixed metronome turning on when executing Reset System Parameters.
+
+Various fixes and changes for FC series foot controllers.
+
+
+
+1.15
+Added (2) IR Player blocks. These are simple versions of the Cabinet block that can be used to process
+IRs for various purposes such as applying Tone Matches separate from the Tone Match block. For
+example, an IR Player block can be used to apply a Tone Match of a guitar at the beginning of a chain
+leaving the Tone Match block available for amp matching.
+
+Added Output 1 Volume Increment and Output 1 Volume Decrement CC assignments. When the CC
+assigned to Volume Increment/Decrement is received the scene volume for Output 1 is incremented or
+decremented by 1 dB and the preset automatically saved.
+
+Added Metronome function. To enable the metronome press the Tempo button and adjust the level for
+the desired output(s). Note: the metronome levels persist across presets and are reset to OFF at power
+on.
+
+Improved Looper block:
+   1. Added Record Threshold parameter. When set to a value greater than -80 dB recording will not
+       start until the input signal exceeds the set value. The Record icon will blink when the Looper is
+       armed for recording and will turn solid when recording starts. The meter at the bottom of the
+       page can be used to help set the Threshold. Use the soft knob or main Value knob to adjust the
+       threshold value (or use the Record Threshold parameter on the Config page).
+   2. Added Trim Start and Trim End parameters to the Looper block. These parameters can be used
+       to adjust the start and end points of the loop. The graph on the Control page provides
+       visualization of the loop and the start/end points.
+   3. Added Quantize parameter. When set to ON the loop length is quantized to the nearest beat.
+   4. Added Record 2nd Press parameter. Choices are Overdub – existing behavior, second press of
+       Record ends loop and enters overdub; Play – second press of Record ends loop and enters play;
+       Stop – second press of Record ends loop.
+   5. Added Speed parameter. When Speed is set to HALF the virtual tape runs at half the normal
+       speed. The speed can be also be toggled via a MIDI CC message.
+   6. Improved cross-fading at the start and end of the loop.
+
+Added Mode parameter to Tone Match block. When set to OFF-LINE the processing is adjusted to
+better suit matching recorded sources such as guitar stems. When set to LIVE the processing is as
+before and better suited to matching a real-time source such as the output of a guitar amp.
+
+Added Damping Time to Sequencer. This controls the time it takes to slew from the one value to the
+next.
+
+Improved CPU usage for Synthesizer block when oscillator type is white or pink noise.
+
+Improved Tuner.
+
+Various GUI tweaks and improvements.
+
+Changes/improvements to 3rd-Party MIDI device support (see AXE-FX III MIDI FOR THIRD-PARTY DEVICES
+document for details).
+Fixed ADSR graphs not initializing properly on preset recall.
+
+Fixed some parameter displays dependent on Tempo, i.e. Delay Time, not updating when new Tempo is
+entered.
+
+Fixed Mixer and Multiplexer blocks shouldn’t be bypassable.
+
+Fixed Tremolo block bug when LFO Type set to SAW DOWN.
+
+
+
+1.14
+
+Added MIDI CC for Looper Stop. This allows stopping recording or playback of the Looper via MIDI
+automation.
+
+Added Friedman HBE 2018 C45 amp model.
+
+Added gain monitoring for Input Dynamics control in Amp block.
+
+Fixed MIDI status dump not working correctly.
+
+Fixed divide-by-zero fault if turning Master Volume to zero on JS410 amp models.
+
+
+
+1.13
+
+Added “Dual Chorus” type to Chorus block. This type has independent LFOs for the left and right delay
+lines. Delay lines are BBD emulations.
+
+Added “SSB Upper” and “SSB Lower” types to Ring Modulator block. These select the upper and lower
+sidebands of the modulation, respectively.
+
+Added single-sideband ring modulators to Multidelay block. These can be used to create strange and
+interesting echo sounds. To defeat the modulators turn Master Ring Mod Mix to 0.
+
+Added chorusing to individual delay lines in Multidelay block. There are four LFOs, one for each delay
+line. The rate and depth of each LFO is individually adjustable. These add to the main LFOs which
+modulate each delay line at the same frequency but different phases. By using short delay times the
+Multidelay block can now act as four parallel choruses, each with independent rate and depth.
+
+Added Quad-Tap Band Delay type to Multidelay block. This type has the same configuration as the
+Quad-Tap delay except the filters are outside the feedback paths.
+
+Added band highlighting to RTA block. Turn Value knob to select desired band. The frequency of the
+selected band is displayed in the upper left corner.
+Increased number of channels in Multiplexer block to six, one for each row.
+
+Changed preset recall behavior if Ignore Redundant PC is on. If Ignore Redundant PC is on and the
+desired scene (set via PC mapping) is different than the current scene the preset is not loaded but the
+scene IS changed.
+
+Added MIDI support for 3rd-party devices to set/get scene, channel, bypass, scene names and preset
+names, control the Looper, tap tempo, etc. via System Exclusive messages. See the Axe-Fx III MIDI for
+Third-Party Devices document for implementation details.
+
+Added Preset Increment/Decrement controllers. These can be used to increment/decrement the
+current preset. The Preset Start and Preset End parameters control the range of presets selected and
+selection wraps at the limits. Preset mapping and offsets are ignored.
+
+Improved Tempo accuracy for MIDI clock.
+
+Fixed Barberpole type in Phaser block broken.
+
+Fixed no preset loading on startup if Ignore Redundant PC is on.
+
+Fixed Scratchpad Cab #1 not loading automatically when doing an IR capture.
+
+Various changes and fixes for FC controllers.
+
+
+
+1.12
+
+Added Global Block support for Input 1 block.
+
+Added Scene Volumes to Output block.
+
+Improved Multidelay block. The Band Delay type has been replaced by a more flexible Quad Parallel
+Delay. The Quad Parallel Delay and the Quad Series Delay now feature four delay lines in a parallel or
+series configuration, respectively, as before, with the output of each delay line feeding a series
+combination of a bandpass filter and a resonator. Added drive, low-cut and hi-cut filters allow further
+tone sculpting. To defeat the bandpass filters set Master Q to minimum. To defeat the resonators set
+Master Resonator Feedback to 0.
+
+Improved Spring Reverb algorithm. New algorithm features improved dispersion modeling and
+adjustable low and high frequency decay time ratios.
+
+Improved knob response for fine adjustments.
+
+Fixed Reverb GUI so that only valid parameters show on All page for selected type.
+
+Fixed system backup hanging if on preset containing certain types of foot controller data.
+Fixed engaging Tuner causes reset of External Controller values.
+
+Fixed Ignore Redundant PC not working.
+
+Fixed Tremolo block not updating rate when entering tempo.
+
+
+
+1.11
+
+Fixed Multiband Compressor and Output GUI.
+
+Fixed Looper block Dry Level not working.
+
+
+
+1.10
+
+Improved Scene/Channel switching.
+
+Added “Stereoizer” type to Enhancer block. While the Classic and Modern types rely on micro-delays
+and inversions to create artificial stereo, the new Stereoizer uses multiple high-order filters to create a
+realistic stereo image.
+
+Fixed Phaser block level dropping 3 dB when effect is engaged.
+
+
+
+1.09
+
+Added “Effect Bypass Mode” to MIDI menu. When set to “Value” the bypass state of an effect assigned
+to a CC is controlled by the CC value. When set to “Toggle” the bypass state toggles whenever the CC
+message is received, regardless of the value.
+
+Added “Default Scene” parameter to Global menu. When set to “As Saved” the scene selected when
+recalling a preset is the scene that was active when the preset was saved. When set to a particular
+scene value that scene will always be selected when a preset is recalled.
+
+Added Channel parameter to modifiers. This allows applying the modifier to all channels or only a
+selected channel of an effect block.
+
+Added Tilt EQ to Amp block Input EQ types.
+
+Added Boost Type and Boost Level to Amp block. There are seven boost types: Neutral, T808, T808
+Mod, Super OD, Full OD, AC Boost and Shimmer. All boosts act as “clean boosts” replicating the oft-
+used “Drive on 0, adjust Level as desired” boost technique. The boost allows boosting the amp block
+without requiring a separate Drive block. The Boost Level parameter controls the amount of boost.
+Added Modifier ability to Formant block Resonance parameter.
+
+Added “Prompt on Edited Preset Change” parameter to Global Settings. When set to ON the unit will
+prompt before changing presets if the current preset has been edited (and prevent you from losing your
+edits). NOTE: Be sure to change this value to OFF before performing!
+
+Added Global Blocks. There are 8 Global Blocks per effect instance. Not all effects support Global Blocks
+(i.e. Mixer, RTA, etc.). There are four operations associated with a Global Block:
+     1. Link To Global Block: This operation links the selected effect with a Global Block. The Global
+         Block data is NOT loaded. Upon saving the preset the Global Block is saved. Any other presets
+         linked to this Global Block will load the Global Block data upon recall.
+     2. Load From Global Block: This operation loads data from a selected Global Block but does NOT
+         link the block.
+     3. Link To and Load From Global Block: This operation links an effect to a Global Block AND loads
+         data from the Global Block. Upon saving the preset the Global Block is saved. Any other presets
+         linked to this Global Block will load the Global Block data upon recall.
+     4. Unlink From Global Block. This operation disassociates the effect from any Global Blocks.
+
+Global Block operations are accessible from the Tools page in the Layout menu.
+
+Improved scene switching algorithm resulting in much faster, smoother scene changes.
+
+Improved Reverb algorithms.
+
+Changed Looper behavior:
+   1. Pressing Undo while recording undoes the last recorded layer, as before. Pressing Undo when
+      the loop is stopped now erases the loop data. Pressing Undo during playback undoes the last
+      recorded layer. Pressing Undo again (during playback) restores the undone layer. Subsequent
+      presses toggle the layer on and off.
+   2. Pressing Record now always starts a new layer (previously pressing Record during the first layer
+      stopped recording and entered playback).
+   3. Pressing Once while recording stops the loop.
+
+Added Dry Level parameter to Looper Block.
+
+Improved Input block noise gate. When the Type is set to Intelligent (default) the noise gate now
+provides smart EMI filtering which reduces hum and buzz. NOTE: For best results the AC Line Frequency
+parameter in the Global Settings menu should be set to match the power line frequency of your country
+(i.e. 60 Hz for North America, 50 Hz for EU, etc.).
+
+Improved Amp block output transformer modeling.
+
+Various changes to support Axe-Edit.
+
+Various changes to support FC-6/12 controllers.
+Changed default value for Setup -> MIDI -> Program Change to ON.
+
+Fixed Scene MIDI block not sending correct data on preset change.
+
+Fixed cabinet names not showing up in cab picker until background tasks are finished.
+
+Fixed wrong Preamp Bias value in Plexi 2204 model.
+
+Fixed Pitch block LFO Tempo not being updated on tempo changes.
+
+Fixed RTA block not updating on preset change.
+
+Fixed noise in Looper block when pressing Undo.
+
+Fixed Modifier Auto-Engage working erratically if Update Rate set to Slow or Medium.
+
+Fixed MIDI PC Offset not being applied.
+
+Fixed crash if flooding unit with MIDI data during boot.
+
+Fixed hang if MIDI Send PC is set to OMNI.
+
+
+
+1.08
+
+Various changes to support Axe-Edit.
+
+Fixed Channels not copying correctly when using Scene copy utility function.
+
+Fixed Global data not being saved after import (restore).
+
+Fixed Reverb hold not working for Spring types.
+
+
+
+1.07
+
+Fixed Pitch block not setting number of voices correctly, i.e. Whammy modes should have one voice but
+two voices were audible.
+
+Fixed Input 1 Level Meters not scaled properly when input source is USB.
+
+Fixed minor bug in Rotary GUI.
+
+Fixed wrong default Output Level value in Return block.
+
+Fixed garbage data in SPDIF output buffer if no Output 1 block in layout.
+Added “Update Rate” parameter to Modifiers. Values are Slow | Medium | Fast. The Update Rate
+selects the rate at which the modifier updates the target parameter. For most applications a slow rate is
+sufficient. Under some circumstances a slow rate may cause “zipper noise”. Increasing the rate will
+reduce the noise at the expense of increased CPU usage.
+
+
+
+1.06
+
+Added “Solo” ability to Cab block.
+
+Added “Plexi 2204” Amp model based on a 1981 JMP 50W Master Volume head.
+
+Added modifier capability to Resonator block Chord and Frequency parameters.
+
+Fixed Output block buffer stuck when bypassed causing high pitched tone.
+
+Fixed Pitch block not initializing correctly on patch change.
+
+Fixed Pitch block sometimes getting “stuck” on negative harmony shifts.
+
+Fixed distortion on Crystal Echoes pitch type if Direction is set to Reverse and Shift is set to +4.
+
+Fixed MIDI message(s) immediately following a PC message being ignored, i.e. Scene Select CC.
+
+Fixed some minor GUI bugs.
+
+
+
+1.05
+
+Added ability to route block when Layout is zoomed out.
+
+Added Input Source select to ADSR and Envelope in Control block.
+
+Fixed MIDI bank select.
+
+Fixed Scene Copy function not copying Amp block bypass states.
+
+Fixed can’t select Amp type when creating a new preset if the previous preset had the Amp block
+channel as anything other than ‘A’.
+
+Fixed External Controller initial values not being applied and garbage values in any of these controllers
+that are not assigned.
+
+
+
+1.04
+Fixed low-cut and high-cut filters not working in Multitap Delay block.
+
+Fixed Amp blocks bypass states not being preserved across preset changes.
+
+Fixed Tone Match block Smoothing parameter not working.
+
+Fixed Quad Tape Delay missing modifier for Motor Speed (formerly labeled Tape Speed).
+
+Fixed MIDI CC Channel changes not responding above values of 3.
+
+Various GUI enhancements and improvements.
+
+
+
+1.03
+
+First public firmware release.
+

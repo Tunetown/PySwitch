@@ -1,0 +1,380 @@
+                                                                                                   IMPORTANT: Always back up
+                                                                                                   your Presets and System using
+                                                                                                   Fractal-Bot built into VP4-Edit
+                                                                                                   before updating firmware.
+
+
+
+
+VERSION 4.04 | September 2, 2026
+The VP4 is now in Sync with Axe-Fx III 32.06
+UPDATES, IMPROVEMENTS, FIXES
+    •   New “Large Names” Home Page Style – A new LARGE NAMES option under SETUP > Global Settings >
+        Home Page Style provides an alternative Home Page designed for improved visibility from a standing
+        position. The display automatically changes to match the current footswitch mode:
+
+                     §    Preset Mode shows the four presets of the current bank in large text, plus the current
+                          scene name and block icons in small text.
+                     § Scene Mode shows the four scenes of the current preset in large text, plus the current
+                          preset name and block icons in small text.
+                     § Effects Mode shows the block icons prominently, plus current preset and scene names.
+             o Turning SELECT still changes the current mode.
+             o In Preset and Scene modes, knobs A and B still access to the Preset Directory and Scene Picker.
+    •   New Large Tempo BPM Display – When you use Tap Tempo to adjust the tempo, the current BPM is shown
+        in a large overlay designed to be easily read from a standing position.
+
+FIXES
+•   In the Plex Block, “Master Pitch” now controls Shift but not Detune. (Master Detune controls Detune.)
+•   The scale degree (“Harmony”) is now recalled correctly when using a Chromatic scale in the Intelligent shifter.
+•   Tuner mute is now consistently executed when the tuner is launched.
+•   Footswitch LEDs now restore consistently when exiting the Tuner
+•   The EDIT LED is now set consistently when changing presets from the editor.
+•   System Settings backup should now restore correctly in all situations.
+•   Removed the extraneous “Mix” control in the Volume block.
+•   Flanger: added missing “Quantize” parameter to Expert edit.
+•   Fixed incorrect values and displays for some expert reverb parameters (Early Decay, Dispersion, Width, etc.) on
+    certain reverb types.
+•   Fixed a case where the EDIT light was not cleared after saving.
+•   Fixed the behavior of the Select knob on the Scene Select page.
+
+* * *
+RELEASE NOTES HISTORY
+
+
+VERSION 4.03 | June 4, 2026
+UPDATES, IMPROVEMENTS, FIXES
+    •   Improved Chorus block:
+           o NEW MODELS: Japan CE-1 Chorus, Japan CE-2 Bass, Japan CH-1, MX134 Stereo, MX234, Rockguy
+               (X100), Small Copy. Some models now include new chorus tone controls.
+           o “Vibrato 1” reworked as “Vibrato”; “Vibrato 2” reworked as “Japan CE-1 Vibrato”.
+           o Japan CE-2 has been remastered.
+           o New expert parameters to set minimum delay time and range.
+
+    •   New: Set the Mode via MIDI or PEDAL jacks Find these options in SETUP > MIDI/Remote.
+           o Direct mode selection. You can now assign a PEDAL jack or MIDI CC to directly engage Preset Mode,
+                Scene Mode, FX Mode, Tuner, or the Mode Select page. Any non-zero value on the assigned CC—or any
+                press of a connected switch—will activate the corresponding mode:
+           o Another new option “Mode Via CC Value” uses the value of an assigned MIDI CC to set the mode:
+                    o 0: Mode Select
+                    o 1: Preset Mode
+                    o 2: Scene Mode
+                    o 3: FX Mode
+                    o 4: Tuner/Tap Tempo Mode
+                    o 5-127: (reserved)
+
+    •   The options Preset Inc/Dec, Scene Inc/Dec and Tuner now support PEDAL 1 and PEDAL 2.
+
+FIXES
+•   Fixed an issue where an incorrect preset could be loaded after saving to a new location.
+•   Corrected issues that could sometimes prevent the EDITED indicator “LED” from displaying properly.
+
+Corrected a bug that was corrupting the Diode clipping for several drive models including Pi Fuzz.
+VERSION 4.02 | March 20, 2026
+UPDATES, IMPROVEMENTS, FIXES
+
+  •     NEW! Swedish Metal Drive pedal model based on a Boss™ HM-2 Heavy Metal. The expert Diode Type now
+        also includes the 1S2473 from this model.
+  •     Pitch tracking improvements:
+            o Increased high range to ~2500 Hz to allow better tracking of pinch harmonics etc.
+            o Improved low frequency shifting for , e.g. bass guitars.
+  •     The Input Gate and Gate block now allow faster Attack times down to 0.1 ms.
+        Note: Setting Attack and Release times too fast in any gate can cause distortion.
+  •     Changed default values of Dual Head Tape type in Delay block to be a bit more musical.
+  •     NEW SPDIF Input Mode option. This setting, available only when INPUT SOURCE is set to SPDIF, determines
+        how incoming SPDIF signals are handled by the VP4 (Left Only, Right Only, L+R Sum, Stereo).
+
+FIXES
+  •     Improved the performance of tempo from external MIDI clock, which can push-pull during preset changes.
+
+
+
+VERSION 4.01 | January 15, 2026
+UPDATES, IMPROVEMENTS, FIXES
+
+  •     The VP4 is now in sync with Axe-Fx firmware 31.03.
+  •     Improved pitch shifting in Pitch block. The Pitch Tracking parameter is now limited to NOTES and CHORDS
+        (OFF is no longer supported). The Tracking Adjust parameter has been removed as it is no longer relevant.
+  •     Increased range of High Cut control in Pitch block. The High Cut can now be reduced to as low as 200 Hz.
+        Note that saved VP4-Edit block library files will need to be manually updated and re-saved.
+  •     Added Triggering to Pitch Block > Arpeggiator (Expert Edit). When Trigger Thresh is set to any setting
+        except “OFF”, the arpeggiator triggers when the input level exceeds this level. To use this as a triggered
+        phrase sequencer, set Repeats to 1 and Mix to 100%. Also changed behavior of Arpeggiator so that when
+        the sequence is finished it resets to the first step (rather than stopping at the last step).
+  •     Improved Envelope Follower in Megatap, Multitap and Plex blocks.
+  •     Improved Dwell in spring reverb types.
+  •     Improved Auto-Swell type in Volume block. It now adapts to your playing level for smoother, more
+        consistent swells. The expert Hysteresis control determines how much the short-term level must drop
+        below the average level to reset the gate. Threshold determines the level below which the gate is closed.
+  •     New “USB 3/4 Record Source” option – Allows USB channels 3/4 to be set to NONE so the input DI signal is
+        not sent to the computer. This option is provided specifically for use with software such as OBS and other
+        streaming or recording applications that cannot select individual USB inputs and instead listen to all
+        available USB channels, which could otherwise result in the DI signal being unintentionally blended with the
+        processed VP4 output.
+  •     Fixed an issue caused by certain diode settings in the Drive block.
+  •     Very long preset names no longer cause a problem for the preset picker page.
+  •     VP4 is now supported in Cab-Lab version 1.01.01 or newer.
+  •     Various other fixes and improvements.
+        *        *       *
+VERSION 4.0 | December 9, 2025
+NEW EFFECT TYPES
+  •     NEW “Surround Delay” type in the Delay block. This stereo, psychoacoustic delay produces “rotating”
+        echoes that seem to move around the listener. The Rotation parameter determines how rapidly the echoes
+        rotates. With Rotation at 100% the echoes will rotate 180 degrees each time (front, back, front, etc). At 50%
+        the echoes will rotate 90 degrees (front, right, back, left, front, etc.). Negative values will cause the echoes
+        to rotate in the opposite direction.
+  •     NEW Citrus Juicer compressor based on the Armstrong Orange Squeezer™
+  •     NEW Drive Pedal types!
+             o PI Fuzz Bass — based on a Deluxe Bass Big Muff Pi.
+             o NoAmp Bass DI — based on a SansAmp™ BassDriver™ DI.
+             o NoAmp Bass Pre — SansAmp™ BassDriver™ DI with speaker emulation bypassed
+             o Royal Bass DI — based on a Noble Bass Preamp DI (with more gain and adjustable Low Cut
+  •     NEW Graphic EQ types
+             o 7 Band Pedal — based on a Boss GE-7, and 7 Band Bass Pedal — based on a Boss GE-7B
+
+PITCH DETECTOR UPDATES
+  •     Added Tracking Mode parameter to Synth and Ring Mod blocks. When set to “BASS” the pitch tracking
+        range is shifted down one octave with the lowest detectable note being approximately F♯0.
+  •     Enhanced pitch detection to track higher notes (approximately F♯6).
+
+ADDITIONAL UPDATES
+  •     Lowered CPU usage for all presets!
+  •     New Metronome On/Off switch with MIDI/Remote option.
+  •     Tuned the filtering of expression pedals to allow faster response.
+  •     Remastered the Blackglass 7k drive pedal model.
+  •     A warning now appears when an incoming SPDIF signal is not running at 48k.
+  •     Using a modifier on Tape Delay Motor Speed now works correctly.
+  •     Fixed MIDI Learn Mode not working in some cases.
+  •     Moving an empty block no longer resets the neighboring block.
+  •     Improvements to Expert Edit for various blocks.
+  •     Bank changes between VP4-Edit and footswitches now stay in sync.
+
+FIXES
+  •     USB Audio fix for macOS. The VP4 should now perform reliably in all cases.
+  •     Modifier “dot” now updates correctly in all cases.
+  •     Fixed Learn mode not working for External 2, 3, 4.
+  •     Corrected the Input Gate to show “Release” instead of “Ratio”. (Ratio is available in Expert Edit.)
+  •     Fixed a bug that could cause problems while saving if you changed presets WHILE the Overwrite? Prompt
+        was displayed on screen.
+  •     Fixed a rare case where the “Modern Gate” gate type could get stuck.
+  •     Additional small fixes.
+VERSION 3.0 | September 9, 2025
+UPDATES & NEW FEATURES
+✅ Improved shifting in the Pitch block. The VP4 now features the latest pitch shifting from the Axe-Fx III.
+   To make the most of this new improvement, please review the following notes:
+   • Types including Custom Shifter, Fixed Shift types, Octave Polygen types, Virtual Capo, and Whammy offer a
+       Pitch Tracking setting which selects between Notes, Chords, and Off modes.
+           o Chords – greater stability for intricate chords, at the cost of increased latency.
+           o Notes – Fastest tracking for individual notes at the cost of stability on complex chords.
+           o OFF can be used to emulate vintage shifters without tracking intelligence.
+   • Tracking Adjust (in Expert Edit) lets you fine-tune the trade-off between stability and latency.
+   • For other Pitch types, tracking is set internally to required values and cannot be adjusted.
+
+✅ NEW! Send Scene MIDI Sync - This new feature provides a simple, automatic way to send a MIDI CC message
+when you change the scene. Unlike the current Scene MIDI message system, this is a simple global option. You can
+use it to sync two VP4 units, change scenes on another Fractal Audio product, or control 3rd-party MIDI gear.
+Two new parameters under SETUP > MIDI are used to configure this feature.
+    •   Send Scene Sync Channel – choose OFF, a specific channel (1–16), or OMNI.
+           o Send Scene Sync CC – choose which CC# (1–127) will be sent. Note: For synchronous scene
+               changes on another Fractal Audio product, change SETUP > MIDI > Scene Select to the same CC#.
+Each time you change scenes, the VP4 sends the chosen CC number on the chosen channel. The value of the CC
+equals the scene number minus one (Scene 1 = 0, Scene 2 = 1, etc.). This works with scene changes from
+footswitches, Scene Mode, incoming MIDI, or the editor. The VP4 does not send a Scene CC message when you
+change presets. (By default, presets load whichever scene was selected when you last saved them.)
+
+✅ NEW! IR PLAYER BLOCK – Fractal Audio Systems pioneered the use of installable Impulse Responses (IRs) in
+guitar gear with the original User Cab feature in the Axe-Fx — later refining the format with UltraRes™ for improved
+realism and performance. An IR is an audio snapshot that captures how a speaker, mic setup, or acoustic space
+shapes sound. It’s most often used to recreate the tone of a guitar speaker cabinet, but also works for acoustic
+body modeling and other creative applications. Highlights:
+     • Load and mix up to two IRs per IR Player block.
+     • One IR Player block per preset.
+     • Store up to 256 IRs onboard.
+     • Manage IRs via “Manage Cabs” or Fractal-Bot in VP4-Edit.
+     • Adjustable level, pan, and length.
+     • Mute an un-used IR to silence it and save CPU.
+     • With Parallel/Stereo setting, IRs are processed as left and right.
+     • In Series mode, IRs are processed sequentially in mono.
+DRIVE BLOCK UPDATES
+  •   NEW “Angry Chuck” drive pedal model based on a JHS™ Angry Charlie™.
+  •   NEW “Guardian Photon Speed” drive pedal model based on a Greer™ Lightspeed.
+  •   Improved Drive block by modeling output buffer distortion where applicable.
+  •   Fixed: Sunrise Splendour High Cut switch now works correctly (On = Cut)
+  •   Fixed: Compulsion Distortion Mode switch now works correctly (LP = Low Pass, HP = High Pass)
+ADDITIONAL UPDATES & FIXES
+  •   Eliminated a click that could occur in some cases when bypassing/engaging the wah.
+  •   “PEDAL 2” value now appears and functions correctly in SETUP menu scenarios.
+  •   On the Controllers > Tempo page, the ENTER button now consistently maps to TAP TEMPO, regardless of
+      which parameter has focus.
+  •   Reset Channel no longer displays odd values upon initial load.
+  •   The Exit button on the Tools Confirmation Dialog now works reliably in all scenarios.
+  •   Improved MIDI compatibility with controllers from Morningstar and Roland.
+  •   The type picker for effects is now smoother and more reliable. You can switch directly from the current type
+      to any other type without cycling through each option in between. To set a type, turn A/B or SELECT to your
+      desired type and press ENTER. Page right to edit parameters as usual.
+  •   New SPDIF In Level setting under SETUP > Audio allows you to trim the level of incoming SPDIF signals.
+  •   In the Drive block, the Level setting is no longer reset when changing Mode.
+  •   Fixed an issue that could cause a crash when using IR Player > Expert Edit.
+  •   The IR Player block should now consistently show channel names.
+  •   Fixed an issue loading preset “Z4” after using press-and-hold to wrap from preset “A1”.
+  •   Added support for compatibility with a future version of Cab-Lab.
+  •   Various additional small fixes.
+VERSION 2.02 | May 28, 2025
+NEW FEATURES, UPDATES, FIXES
+  •   Fixed Global Tap Tempo always changing to 120 BPM when changing presets.
+
+      Note: Global Tempo is a system-wide setting that updates whenever you tap or adjust the tempo manually. It
+      remains set in the background and is used by any preset with “Tempo To Use” set to “GLOBAL”. Presets can
+      alternately use their own saved tempo by changing Controllers > Tempo > Tempo To Use to “PRESET”.
+
+
+VERSION 2.01 | May 20, 2025
+NEW FEATURES, UPDATES & FIXES
+  •   NEW: “77 Custom OD” Drive pedal type based on MXR M77 Custom Badass Overdrive.
+  •   NEW: “Reset All Channels” feature in the Home > Tools menu.
+      Use this to set all channels in the designated block back to their default settings.
+  •   Added “Density” to the Reverb block Basic Edit menu. Previously available only in Expert Edit, this setting
+      can be lowered to reduce CPU load. TIP: For Plate types, reducing “Diffusion” further improves CPU
+      performance. For Spring types, use the “Drip” control instead as “Density” is not available.
+  •   Added modifier capability to the “Sensitivity” parameter for Touch Wah and Envelope Wah.
+  •   Fixed: The “Output L” meter now correctly reflects the output of the “Pre-“ Out in 4CM setups.
+  •   Fixed: Using VP4-Edit > Manage Presets now works correctly while "Ignore Redundant PC" is enabled.
+  •   Setup > Audio > Output Mode > MUTE now silences processed audio while allowing USB audio to be heard.
+      This enables the VP4 to function as an audio interface e.g. for plugins, with a guitar connected to its unput
+      and speakers connected to its output(s).
+  •   “Auto-Z” input impedance is only intended to work on the L/MONO input, and is therefore disabled (fixed at
+      1M) when Input Mode is set to “STEREO”
+  •   Moving an empty effect to an occupied block location now works correctly.
+  •   Plus additional small updates and fixes.
+VERSION 2.00 | APRIL 8, 2025
+NEW FEATURES & UPDATES
+  •   NEW BLOCK MOVE FEATURE
+      On the home page in FX Mode, select the desired block, hold the ENTER button, and turn SELECT to move.
+  •   NEW DRIVE BLOCK MODELS & IMPROVEMENTS
+          o NEW “PI Fuzz” model with classic, “Triangle”, “Ram’s Head”, and “Russian” versions.
+                   § “Tone” switch which allows completely bypassing the tone circuitry.
+                   § “Wicker” switch which removes the feedback caps.
+          o NEW “Colortone Booster” based on a Colorsound Power Booster (with added Master control).
+          o NEW “Colortone OD” based on a Colorsound Overdriver (with added Master control).
+          o NEW “MOSFET Distortion” based on an Ibanez MT10 Mostortion.
+          o NEW “Super Fuzz” based on a Univox Superfuzz. The model features a Tone control.
+              Tip: Use the expert “Bias” setting to simulate the “Octave” control found on some clones.
+          o NEW “Tube Drive 5-Knob” model based on Butler Tube Driver.
+          o Improved “Tube Drive 4-Knob” model. If you are using this effect, change the drive “Type” from
+              Tube Drive 4-knob to any other type and then back to “soft reset” the block.
+          o Improved Blackglass 7K model.
+          o Updated “DS1 Distortion” model to Second Edition specs.
+          o Added 1N5819 Schottky and Yellow LED to drive Expert for types that support diode selection.
+          o General drive block improvements.
+  •   REVERB BLOCK UPDATES:
+          o Reverbs based on real spaces have more natural sounding reflections and are more immersive.
+          o Improved all Spring Reverbs. A soft reset is recommended for these types to load new default
+              values. You can perform this reset simply by changing the Type do a different reverb and then back.
+              Note, the spring Drive control has been renamed “Dwell” as this is typically used on spring units.
+          o New type, Spring: Vibrato-King Custom type.
+          o For Expert Edit across all Reverb types, the “Q” is now adjustable for High and Low cuts when their
+              slope is set to 12 dB.
+  •   NEW COMPRESSOR BLOCK MODELS & IMPROVEMENTS
+          o NEW Dynami-Comp algorithms: There are four “flavors”: Classic, Modern, Soft, and “Econo” which
+              uses less CPU. Don’t miss the “Tone” control which is great if you want the sound to be more or
+              less bright while the compressor is engaged.
+          o NEW “VCA” Compressor types. These replace previous “Studio” types and include a new VCA Bus
+              Compressor based on a classic feedback design (e.g., SSL Bus Compressor).
+          o NEW Optical Compressor based on classic optical rackmount compressors. The smooth attack and
+              release make it ideal for acoustic instruments. Attack and release times are “doubly” dynamic due
+              to design of the compressor and the response of the virtual photocell.
+                   § The minimum ratio is 4:1, but while hardware optical compressors typically have a fixed
+                       ratio and a separate limiter option, our version allows adjusting the ratio.
+                   § The Emphasis control replicates an internal “Limiter Response” control of some models.
+                   § The Drive control allows overdriving the output for added distortion.
+          o NEW JFET Studio Compressor type based on a classic rackmount compressor e.g. 1176. Perfect
+              for fattening up your sound and adding grit.
+                   § The Attack and Release times are the “native” times of the detector, and the actual Attack
+                       and Release times will be much shorter (about 5x). Due to the very fast attack times these
+                       types of compressors can distort but this is part of their sound — and often used for effect.
+                       (Low frequencies are distorted more.)
+                   §  The Drive control allows overdriving the output stage for added distortion.
+                   §  As with the new Optical compressor (see above) the minimum ratio is 4:1, but unlike an
+                      actual JFET hardware model, ours has a convenient variable threshold
+                      (and Automatic Makeup Gain).
+          o NEW JFET Pedal Compressor type (Replaces “JFET Sustainer”) based on a circuit design that is
+             used in many compressor pedals.
+          o NEW Rockguy Compressor based on a Rockman; similar to the JFET Pedal but with dynamic
+             release time and several other enhancements.
+          o NEW Vari-Mu Tube Compressor (replaces “Tube Compressor”). This type has big, swoopy curves
+             and a warm tone making it useful for adding “glue” to sound.
+                 § The compression ratio is somewhat nebulous but ranges from about 2:1 to about 20:1.
+                 § Expert Edit includes a graph to assist adjusting interactive Threshold and Compression.
+                 § The “Drive” control allows overdriving the output stage for added distortion.
+   •   PHASER BLOCK UPDATES
+          o NEW Modern Vibe based on a classic UniVibe but with modern tone and modulation.
+          o Updated “Vibe” algorithms. All types based on Univibe models have been improved.
+             Existing presets are updated automatically. You may still wish to audition your presets.
+                 § New Phaser Expert Edit parameters:
+                          • LFO Mode; when set to UNIVIBE depth is roughly proportional to rate. When set to
+                              NORMAL the amplitude is constant, allowing deep phasing at slow rates.
+                          • Low Cut and High Cut for the wet path.
+                          • VCR Shape (not Sharp vs. Hitachi, this is the old “Exponent” control renamed ;-).
+   •   OTHER UPDATES & IMPROVEMENTS:
+          o NEW Tremolo block “Ducking” control reduces the intensity of the effect when you play louder. This
+             can occur naturally on an amp as the tremolo circuit is influenced by playing dynamics.
+          o NEW Plex Delay block Expert Edit “Filter” page.
+          o Improved Sweep Delay type in the Delay block, now with a selectable “Sweep Filter” type.
+          o Improved Diffusor types in the Multitap Delay block, now with stereo output, adjustable stereo
+             spread, and LFO controlled filters.
+          o Improved Plex and Multitap Delay blocks when changing channels or presets. Now, the delay is
+             cleared when a Type change would cause “Glitchy” noises.
+          o The tuner now shows a message when custom tuning offsets are active.
+          o Tuner Mute now works while VP4 Analog bypass is engaged.
+          o Fixed: Delay Master Time no longer attempts to set times longer than the maximum 8 seconds.
+          o Fixed: Delay Lines are now cleared correctly when changing presets with spillover is turned off, or
+             when changing to a preset with different time-based effects.
+          o Fixed: Default Scene setting should now work consistently.
+          o Fixed: Pitch Block octave divider pan and Dual Detune expert delay times not working correctly.
+          o Fixed: Changing between presets with certain effect combinations no longer caused “clicking”.
+          o Fixed: Input pad 18 dB setting no longer causing small gain drop.
+          o Fixed: The first preset now loads correctly upon power up regardless of Ignore Redundant PC.
+          o SPDIF clock sync improvements.
+
+
+Various other fixes and improvements.
+VERSION 1.02 NOV 27, 2024
+NEW FEATURES & UPDATES
+    •    NEW! VP4 Custom Scene MIDI - Each scene within every preset can be configured to send up to four MIDI
+         messages — either Program Change (PC) or Control Change (CC)—to external MIDI devices. This feature
+         enables seamless integration with other MIDI-compatible equipment, allowing for automated changes when
+         switching scenes. To set up Scene MIDI messages:
+             o Open the Scene MIDI page - From Home, press PAGE RIGHT 6x.
+             o The Scene MIDI page shows four scenes, each with four slots for MIDI messages.
+                     § Turn SELECT to the desired Scene and message slot.
+                     § Use Knob B to select the message type
+                          (PC for Program Change or CC#0-127 for Control Change).
+                     § Use Knob C to choose the MIDI channel (1–16) on which the message will be sent.
+                     § Use Knob D to set the specific value for the PC or CC message.
+             o Press ENTER on the selected row to test a single MIDI message.
+                 Switch to Scene Mode and use the footswitches to test all four messages for any scene.
+             o After configuring Scene MIDI, save the preset to retain your settings.
+             o When a new preset loads, the MIDI payload for the default scene is sent automatically.
+             o Note: Scene MIDI is sent only to the physical MIDI Out port. It is not echoed to USB MIDI.
+    •    NEW! Integral Pre drive block type based on the TC Electronics Integrated Preamp.
+    •    NEW! Multitap Delay models: Matterhorn, Centaurus X-3, Kilmanjaro, Strange Things, Camera Obscura.
+    •    Improved the following effects based on the latest Axe-Fx III enhancements:
+             o Delay: Sweep Delay is improved and offers new options.
+             o Multitap Delay: “Diffusor” types now include Stereo Spread and Mod Filter options
+             o Filter: Fine-tuned dynamic response for Envelope Filter and Touch Wah types.
+    •    Adjusted the mix curve for some time-based effects so the dry level decreases more gradually as mix is
+         adjusted above 50%.
+    •    Fixed minor GUI issues in the Pitch Intelligent Harmony types.
+    •    Fixed footswitch mapping not updating correctly after the preset is changed remotely.
+    •    Plus additional updates and fixes.
+    •    Beta 3 resolves an issue that could cause lockups, building on the improvements introduced in Beta 2.
+
+
+VERSION 1.01 | OCT 9, 2024
+    •    First public version. No notes.
+
+
+
+Manufacturer names and product names mentioned herein are trademarks or registered trademarks of their respective
+owners, which are in no way associated with or affiliated with Fractal Audio Systems, LLC. The names are used only to illustrate
+sonic and performance characteristics.
+
