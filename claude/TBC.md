@@ -2,13 +2,14 @@
 
 Answer below each item after **Answer:**. "Recommendation" is what I do if you just say "ok". Add your own wishes at the end.
 
----
+--- 
 
 ## 1. Architecture: please confirm
 Your question from #4 ("do I get changes made on the device?"): yes, within one update interval. Explanation: [FRACTAL_ANALYSIS.md 3](FRACTAL_ANALYSIS.md).
 Resulting design: no protocol class, plain `Client`, all effect switches share one status dump mapping, local feedback after set ([spec/python/architecture.md](spec/python/architecture.md) 2–3). OK?
 
 **Answer:**
+ok
 
 ## 2. Device model and other client settings
 Without a protocol class, the model byte (part of every SysEx message) needs another home. The same place would hold the bank size (#4) and the number display offset.
@@ -20,6 +21,7 @@ The mapping messages are built while `inputs.py` is imported, where the config i
 Recommendation: (b).
 
 **Answer:**
+(b) If not set in config.py, default to AM4
 
 ## 3. DIN MIDI on dev_midi (follow-up #6)
 Checked again:
@@ -30,6 +32,7 @@ Checked again:
 Shall I make this fix (logged in LIB_CHANGES.md), or do you?
 
 **Answer:**
+please fix it
 
 ## 4. Bank concept (follow-up #9)
 Proposal, mirroring Fractal's own FC concept (Bank Size 1–12, "Preset in Bank", "Bank Inc/Dec"; FRACTAL.md 2):
@@ -44,6 +47,7 @@ Proposal, mirroring Fractal's own FC concept (Bank Size 1–12, "Preset in Bank"
 OK?
 
 **Answer:**
+ok
 
 ## 5. Effect slots like Kemper (your wish)
 Switching blocks on/off is possible and planned (`EFFECT_STATE`, block + instance; [features/effects.md](spec/python/features/effects.md)).
@@ -55,14 +59,9 @@ Include `EFFECT_SLOT` in the alpha?
 Recommendation: yes (little code, as the status dump is there anyway).
 
 **Answer:**
+please dont "emulate" the old kemper stuff. All features should closely alogn to the fractal designs. Please propose something.
 
 ---
 
-## Answers to your questions
-- **Rig name display?** Yes. The Kemper rig name corresponds to the Fractal **preset name**, read with `0D` (which also returns the preset number) → `FractalPresetNameCallback` ([features/presets.md](spec/python/features/presets.md)). In addition, scene names can be shown (`0E`, [features/scenes.md](spec/python/features/scenes.md)). Overview of everything possible: [FRACTAL.md 2](FRACTAL.md).
-
-*(You can delete this section after reading.)*
-
----
 
 ## Your wishes
