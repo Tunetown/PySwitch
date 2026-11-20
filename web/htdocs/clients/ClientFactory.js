@@ -10,6 +10,7 @@ class ClientFactory {
         switch (clientId) {
             case "kemper": return new KemperClient(clientId);
             case "boomerang": return new BoomerangClient(clientId);
+            case "fractal": return new FractalClient(clientId);
             case "local": return new Client(clientId);
         }
         return null;
@@ -27,6 +28,10 @@ class ClientFactory {
 
         if (data.inputs_py.includes("pyswitch.clients.boomerang")) {
             return "boomerang";
+        }
+
+        if (data.inputs_py.includes("pyswitch.clients.fractal")) {
+            return "fractal";
         }
 
         console.warn("Unknown client type, defaulting to Kemper");

@@ -142,4 +142,4 @@ See [spec/emulator/](spec/emulator/).
 1. ~~Check out `dev_midi` into this folder~~ – done (section 3).
 2. ~~Analyse PySwitch and the Fractal MIDI specs~~ – done (FRACTAL.md, FRACTAL_ANALYSIS.md).
 3. ~~Iterate the spec with `TBC.md` until TBC.md is empty~~ – done.
-4. **Waiting for the Go**, then: virtual client → Python client → unit tests → examples, meta.json → user runs the Jasmine tests to regenerate the definitions.
+4. **Go given (2026-11-20)**: ~~virtual client~~ (done) → ~~Python client~~ (done) → ~~unit tests~~ (done) → ~~examples, meta.json~~ (done) → ~~emulator settings, version and changelog~~ (done) → ~~Jasmine example tests for Fractal~~ (written, not yet run: [emulator/integration.md](spec/emulator/integration.md)) → **user runs the Jasmine tests** (example tests, parser tests; regenerates `actions.json`, `mappings.json`, `callbacks.json`).

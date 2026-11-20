@@ -92,6 +92,11 @@ class PySwitchRunner {
         await this.pyodide.FS.mkdir("pyswitch/clients/kemper/mappings");
         await this.pyodide.FS.mkdir("pyswitch/clients/kemper/callbacks");
         
+        await this.pyodide.FS.mkdir("pyswitch/clients/fractal");
+        await this.pyodide.FS.mkdir("pyswitch/clients/fractal/actions");
+        await this.pyodide.FS.mkdir("pyswitch/clients/fractal/mappings");
+        await this.pyodide.FS.mkdir("pyswitch/clients/fractal/callbacks");
+
         await this.pyodide.FS.mkdir("pyswitch/clients/boomerang");
         await this.pyodide.FS.mkdir("pyswitch/clients/boomerang/actions");
         
@@ -210,6 +215,28 @@ class PySwitchRunner {
             this.#loadModule("pyswitch/clients/local/callbacks/splashes.py", circuitpyPath),
 
             this.#loadModule("pyswitch/clients/local/mappings/generic.py", circuitpyPath),
+
+            this.#loadModule("pyswitch/clients/fractal/__init__.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/actions/__init__.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/actions/bank.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/actions/preset.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/actions/scene.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/actions/effect_bypass.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/actions/effect_channel.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/actions/tuner.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/actions/tap_tempo.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/actions/looper.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/actions/preset_select_encoder.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/actions/tempo_bpm.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/mappings/__init__.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/mappings/preset.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/mappings/effects.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/mappings/tempo.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/mappings/looper.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/callbacks/__init__.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/callbacks/preset_name.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/callbacks/scene_name.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal/callbacks/tempo_bpm.py", circuitpyPath),
 
             this.#loadModule("pyswitch/clients/boomerang/__init__.py", circuitpyPath),
 

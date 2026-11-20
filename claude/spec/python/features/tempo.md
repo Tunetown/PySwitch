@@ -6,21 +6,21 @@ The beat display requires DIN MIDI and *Send Realtime Sysex* = ON.
 
 ## Mappings (`mappings/tempo.py`)
 
-| Mapping        | Request    | Response        | Set        | Value             |
-|----------------|------------|-----------------|------------|-------------------|
-| `TAP_TEMPO()`  | –          | –               | `10`       | –                 |
-| `TEMPO_BEAT()` | –          | `10` (push)     | –          | beat counter      |
-| `TEMPO_BPM()`  | `14 7F 7F` | `14 tL tH`      | `14 tL tH` | BPM               |
+| Mapping                | Request    | Response        | Set        | Value             |
+|------------------------|------------|-----------------|------------|-------------------|
+| `MAPPING_TAP_TEMPO()`  | –          | –               | `10`       | – (fixed message) |
+| `MAPPING_TEMPO_BEAT()` | –          | `10` (push)     | –          | beat counter (0–127) |
+| `MAPPING_TEMPO_BPM()`  | `14 7F 7F` | `14 tL tH`      | `14 tL tH` | BPM               |
 
-The tap message and the beat push both use function `10`; the push has no checksum (shorter) and is recognised by its length.
+The tap message and the beat push both use function `10`; the push has no checksum and is recognised by its length (7).
 
 
 ## Actions and callbacks
 
-| Action        | File            | FC function         | Function                                                    |
-|---------------|-----------------|---------------------|-------------------------------------------------------------|
-| `TAP_TEMPO`   | `tap_tempo.py`  | Utility: Tap Tempo  | tap the tempo; the LED flashes on every beat push (Utility color) |
-| `ENCODER_BPM` | `tempo_bpm.py`  | – (PySwitch only)   | change the BPM with a rotary encoder                        |
+| Action        | File               | FC function         | Function                                                    |
+|---------------|--------------------|---------------------|-------------------------------------------------------------|
+| `TAP_TEMPO`   | `tap_tempo.py`     | Utility: Tap Tempo  | taps the tempo; the LED flashes bright on every beat push (`flash_millis`, default 100 ms), else dim |
+| `ENCODER_BPM` | `tempo_bpm.py`     | – (PySwitch only)   | changes the BPM with a rotary encoder (24–250)              |
 
-- `TAP_TEMPO` labels (`FractalLabel`): `FUNCTION` ("Tap Tempo", default), `BPM` (current BPM; polls `TEMPO_BPM` only with this label).
+- `TAP_TEMPO` labels (`FractalLabel`): `FUNCTION` ("Tap Tempo", default), `BPM` ("120 bpm"; polls `TEMPO_BPM` only with this label).
 - `FractalTempoDisplayCallback` (`callbacks/tempo_bpm.py`): shows the BPM.

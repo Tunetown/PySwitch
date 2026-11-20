@@ -1,3 +1,20 @@
+# PySwitch v2.4.11
+- Features
+    - Added support for **Fractal Audio** devices (FM3, FM9, Axe-Fx III) via the 3rd-party MIDI protocol over DIN MIDI (alpha). The actions follow the footswitch functions of the Fractal FC controllers (Bank, Preset, Scene, Effect Bypass and Channel, Tuner, Tap Tempo, Looper) with the same parameters, LED states (off/dim/bright), category colors and label options. There are also encoder actions for presets and BPM, and display callbacks for the preset name, scene name, BPM and the tuner.
+    - New config.py options for the Fractal client: **fractalModel**, **fractalBankSize** and **fractalPresetDisplayOffset**.
+
+- Bug fixes:
+    - **PA_MIDICAPTAIN_DIN_MIDI()** failed with a TypeError since the new MIDI buffer (it still passed the removed MIDI channel and buffer size parameters). It now takes the optional receive_chunk_size parameter, like the USB variant.
+
+- Examples:
+    - Added Fractal Audio examples for the MIDICaptain 10, Mini 6 and Nano 4, modelled on the FM3 factory layouts.
+
+### Emulator 2.4.11.18
+- Added the **Virtual Fractal** client (FM3, FM9, Axe-Fx III): presets with scenes and blocks, tuner, tempo and looper simulation. Its model follows the Fractal model in the emulator settings.
+- Fractal devices connected via MIDI are detected automatically.
+- The Fractal config.py options can be set in the emulator settings (and are included in the downloadable config.py).
+
+
 # PySwitch v2.4.10
 - Performance Optimizations:
     - Use of a minimalized MIDI buffer implementation instead of Adafruit MIDI, which has huge OO overhead. This saves some RAM and is a bit faster, too. This means that the MIDI handlers in communication.py do not take any MIDI channel arguments anymore.

@@ -1,7 +1,7 @@
 from time import monotonic
 
 # PySwitch version
-PYSWITCH_VERSION = "2.4.10"
+PYSWITCH_VERSION = "2.4.11"
 
 # Read a value from an option dictionary with an optional default value
 def get_option(config, name, default = False):

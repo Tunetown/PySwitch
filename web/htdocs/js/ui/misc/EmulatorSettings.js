@@ -195,6 +195,45 @@ class EmulatorSettings extends Tab {
                 await that.#setConfigFromInput($(this), "ledBrightnessOff");
             }),
 
+            // Fractal Audio client
+            $('<div class="label" />')
+            .text("Fractal: Device model"),
+
+            this.#createSelect(
+                [
+                    [17, "FM3"],
+                    [18, "FM9"],
+                    [16, "Axe-Fx III"]
+                ],
+                this.#controller.configFile.getAttribute("fractalModel")
+            )
+            .on('change', async function() {
+                await that.#setConfigFromInput($(this), "fractalModel");
+            }),
+
+            $('<div class="label" />')
+            .text("Fractal: Bank size"),
+
+            $('<input type="number" min=1 max=1024 />')
+            .val(this.#controller.configFile.getAttribute("fractalBankSize"))
+            .on('change', async function() {
+                await that.#setConfigFromInput($(this), "fractalBankSize");
+            }),
+
+            $('<div class="label" />')
+            .text("Fractal: Preset numbers"),
+
+            this.#createSelect(
+                [
+                    [0, "Start at 000"],
+                    [1, "Start at 001"]
+                ],
+                this.#controller.configFile.getAttribute("fractalPresetDisplayOffset")
+            )
+            .on('change', async function() {
+                await that.#setConfigFromInput($(this), "fractalPresetDisplayOffset");
+            }),
+
             // Explore mode
             $('<div class="label" />')
             .text("Explore Mode"),
@@ -293,6 +332,28 @@ class EmulatorSettings extends Tab {
     }
 
     /**
+     * Creates a select element. options: [ [value, text], ... ]
+     */
+    #createSelect(options, value) {
+        const select = $('<select />')
+            .css({
+                "grid-column": "2",
+                "width": "fit-content"
+            });
+
+        for (const option of options) {
+            select.append(
+                $('<option />')
+                .attr("value", option[0])
+                .text(option[1])
+            );
+        }
+
+        select.val(value);
+        return select;
+    }
+
+    /**
      * Restart the emulator
      */
     async #restart() {            
@@ -342,6 +403,10 @@ class EmulatorSettings extends Tab {
             switch (input.prop("type")) {
                 case "checkbox":
                     value = !!input.prop('checked');
+                    break;
+                case "select-one":
+                    // Selects are only used for numeric options
+                    value = parseInt(input.val());
                     break;
                 case "number":
                     if (input.prop("step").includes(".")) {

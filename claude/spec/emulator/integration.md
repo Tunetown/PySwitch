@@ -10,7 +10,9 @@ Changes outside the Fractal folders, approved by the user (each one is logged in
 | `web/htdocs/definitions/meta.json`          | Fractal parameter metadata (maintained manually, see `definitions/README.md`) |
 | `web/htdocs/templates/config-template.py`   | tokens for the Fractal client settings (`fractalModel`, `fractalBankSize`, `fractalPresetDisplayOffset`, [architecture.md 6](../python/architecture.md)) |
 | `web/htdocs/js/model/ConfigFile.js`         | defaults for these keys                                                      |
-| `web/htdocs/js/ui/misc/EmulatorSettings.js` | input fields for these keys                                                  |
+| `content/config.py`                         | commented documentation of these keys (the default config.py of the device)  |
+| `web/htdocs/js/PySwitchRunner.js`           | folders and module list of `pyswitch/clients/fractal` (the emulator loads every Python module explicitly) |
+| `web/htdocs/js/ui/misc/EmulatorSettings.js` | input fields for these keys (model and display offset as selects, stored as integers) |
 
 Version numbers and changelog: [SPEC.md 2](../../SPEC.md).
 
@@ -22,4 +24,16 @@ Version numbers and changelog: [SPEC.md 2](../../SPEC.md).
 
 ## Jasmine tests
 
-`test/spec/examples/fractal/*`, running the Fractal examples against the virtual Fractal client. At least the scope of the Kemper example tests, more where useful: every FC function of the client (bank, preset, scene, effect, tuner, tap tempo, looper; FRACTAL.md 7.2) incl. LED states off/dim/bright, labels, 2nd press, toggles, inc/dec with wrap and limits, preset load modes, display of absent blocks, target preset and scene names, client settings (model, bank size, display offset), request timeout behaviour, checksum errors (NAK).
+The example test scripts (`.test.js` in each Fractal example folder, run by `ExampleTestRunner` after the example has started) use test classes in `test/spec/examples/fractal/`:
+
+| File                     | Content                                                                                   |
+|--------------------------|-------------------------------------------------------------------------------------------|
+| `FractalTestBase.js`     | access to the virtual client, ticks (releasing the event loop in between, as the virtual client receives via `setTimeout`), switch press/hold, LED colors (color × default brightness), label texts and display texts read from the Python runner in Pyodide (`runner.controller`), page selection |
+| `FractalPresetTests.js`  | Select in Bank, Bank Inc/Dec (preset load NONE incl. wrap to the partial last bank, and FIRST), Preset Inc/Dec (incl. destination names), preset/scene name displays, device offline (model change of the virtual device: values expire, LEDs off) |
+| `FractalSceneTests.js`   | Scene Select (names, LEDs, changes on the device, other preset), Scene Inc/Dec with wrap  |
+| `FractalEffectTests.js`  | Bypass (engaged/bypassed/not in preset), Channel Select (incl. bypassed = off, Smart Bypass), Channel Toggle, Channel Inc/Dec with wrap |
+| `FractalLooperTests.js`  | Record/Overdub, Play/Stop, Undo/Erase, labels and colors, no Looper block                 |
+| `FractalTunerTests.js`   | tuner on/off from the device (push data and timeout) and from a switch                    |
+| `FractalTempoTests.js`   | Tap Tempo with BPM label                                                                  |
+
+Each example script walks through all pages of its example. Not covered by the example tests (no example uses them, or not reachable from an example): client settings other than the defaults and checksum errors (both covered by the Python unit tests and the virtual client checks). The tests could not be run during development (no browser/Pyodide available); the user runs them.

@@ -10,16 +10,17 @@ Features (mappings, actions, callbacks per topic): [features/](features/).
 
 ```
 fractal/
-  __init__.py      constants (manufacturer ID, function codes, block types, block names and
-                   abbreviations, FractalLabel, category colors), checksum helper,
-                   FractalParameterMapping, FractalMappings (shared mappings), client settings (6),
-                   shared action base (7), TunerDisplayCallback
-  actions/         one file per FC category or function group (bank.py, preset.py, scene.py,
-                   effect_bypass.py, effect_channel.py, tuner.py, tap_tempo.py, looper.py,
-                   preset_select_encoder.py, tempo_bpm.py)
-  mappings/        mapping factories grouped by topic (preset.py, scene.py, effects.py, tuner.py,
-                   tempo.py, looper.py)
-  callbacks/       display callbacks (preset name, scene name, tempo BPM)
+  __init__.py      models, colors, FractalLabel, FractalPresetLoad, FractalSecondPress, FractalChannel,
+                   FractalBlock (types, names, abbreviations, effect_id()), FractalState (instance
+                   FRACTAL: client settings (6) and shared state), FractalParameterMapping,
+                   FractalMappings (mappings used by several modules: preset, scene, status dump,
+                   tuner), FractalCallback (base of all action callbacks, 7), TunerDisplayCallback
+  actions/         bank.py, preset.py, scene.py, effect_bypass.py (incl. FractalEffectCallback),
+                   effect_channel.py, tuner.py, tap_tempo.py, looper.py, preset_select_encoder.py,
+                   tempo_bpm.py
+  mappings/        topic specific mappings as MAPPING_XXX() functions: effects.py, tempo.py, looper.py;
+                   preset.py (FractalPresetTargetNameMapping)
+  callbacks/       preset_name.py, scene_name.py, tempo_bpm.py
 ```
 
 No protocol class. `communication.py` of Fractal configurations sets no `"protocol"`, so the core uses the plain `Client`.
@@ -29,11 +30,12 @@ No protocol class. `communication.py` of Fractal configurations sets no `"protoc
 
 The core `ClientParameterMapping.parse_against()` only understands Kemper SysEx (compares bytes 6..10, value = last two bytes MSB first). Fractal uses a subclass inside the fractal package (no core change):
 
-- Own static `get()` singleton factory (same pattern as `ClientTwoPartParameterMapping.get()`), names include all parameters.
+- Own `get()` singleton factory (classmethod, so subclasses use it too), names include all parameters. Parameters: `value_type`, `value_index` (default: end of the response template), `length` (exact message length, for push data), `set_bytes` (0–2 value bytes at the end of a SysEx set message), `invert` (bypass).
 - **Response template** = the fixed message start up to the value, e.g. `F0 00 01 74 <model> 0D`. `parse()` compares from the function byte (index 5) to the end of the template; the manufacturer ID and the model byte are not compared (performance, like the Kemper parser ignores the manufacturer ID).
 - **Value decoding** by mapping type: 7-bit number, 14-bit number (LS first), string (32 chars, cut at the first NUL, trimmed), raw payload (`bytes`, for the status dump). Callbacks decode bit fields themselves.
 - **Messages without checksum** (push data) are recognised by their length.
-- `set_value()` writes the value bytes and recomputes the checksum. CC/PC set messages behave like in the core.
+- `set_value()` writes the value bytes and recomputes the checksum. A list of CC0 + PC messages gets bank and program from the preset number; other CC/PC messages behave like in the core.
+- `feedback(value)`: sets the value locally after a set message and skips the next answer, which can answer a request sent before the set (no flicker). The status dump uses it with its current value, so effect callbacks keep their local state until the next accepted dump.
 - Request and set messages are built once at construction (helper `_sysex(function, data)` adds header, checksum and `F7`).
 - Device model byte: from the client settings (section 6).
 
@@ -45,7 +47,9 @@ The core `ClientParameterMapping.parse_against()` only understands Kemper SysEx 
 - **Response-only mappings** (no request) are registered permanently by the `Client` and receive passively:
   - push data (tempo beat, tuner),
   - secondary values of a polled answer (e.g. the preset name from the `0D` answer that the preset number mapping requests). A callback that needs such a value also registers the polling mapping.
-- **Local feedback**: after sending a set message, callbacks show the new state immediately; the next poll confirms or corrects it.
+- **Local feedback**: after sending a set message, callbacks show the new state immediately (`feedback()`, section 2); the next poll confirms or corrects it.
+- **Requested on demand** (not registered in the callback, so not polled every interval): target preset names and scene names. They are requested while their value is `None`; preset changes reset the scene names (`FRACTAL.track_preset()`).
+- **Tuner state**: set to 1 by the tuner push data (only on change, the data comes continuously), to 0 when no data arrived for 1.5 s (`check()`, called in the `update()` of the callbacks using it) or when the tuner is switched off (late push data is then ignored for 0.5 s). Switching on shows the state locally. Listeners are notified through the client's permanent request of the mapping (`Client.get_matching_request()`).
 - **Offline**: requests expire after `maxRequestLifetimeMillis`; the value becomes `None` and the callbacks show their "no value" state.
 
 
@@ -60,6 +64,7 @@ The core `ClientParameterMapping.parse_against()` only understands Kemper SysEx 
 - Block types are addressed as type + instance; the effect ID is computed (`46 + 4 × type_index + instance − 1`), no table of ~160 IDs.
 - Block long names and 3-letter abbreviations are tuples indexed by the type index (convention 7). Colors are per FC category (section 7), not per block, and all exist in the core `Colors`.
 - The status dump payload is kept once (in the shared mapping); callbacks scan it without copying.
+- MicroPython does not mangle `__private` names: subclasses must not reuse private member names of their base classes. Where a private member of a core class must be set (maximum of `EncoderAction`), both spellings are set.
 
 
 ## 6. Client settings (`config.py`)
@@ -71,6 +76,7 @@ The core `ClientParameterMapping.parse_against()` only understands Kemper SysEx 
 | `fractalPresetDisplayOffset` | 0 or 1                         | 0            | displayed preset numbers ("000" or "001")         |
 
 - Mapping messages are built while `inputs.py` is imported, before the config is available. They are built with the default model byte. The first Fractal callback `init()` reads the settings from `appl.config` (once), and if the model differs, patches model byte + checksum of all registered Fractal mappings (singleton registry, one-time, no RAM cost). Mappings created later use the stored model directly.
+- Number of presets: 1024 for the Axe-Fx III, else 512.
 - Emulator: the keys are part of the emulator's global settings and `config.py` template ([emulator/integration.md](../emulator/integration.md)).
 
 

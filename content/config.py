@@ -43,6 +43,18 @@ Config = {
     #"ledBrightnessOn": 0.3,
     #"ledBrightnessOff": 0.02,
 
+    ## Fractal Audio Client ##################################################################################################################
+
+    # Model of the Fractal Audio device (model byte of all SysEx messages): 16 (0x10) = Axe-Fx III, 17 (0x11) = FM3, 18 (0x12) = FM9. 
+    # Default is 17 (FM3).
+    #"fractalModel": 17,
+
+    # Number of presets per bank for the Fractal bank functions (like the Bank Size of the Fractal FC controllers). Default is 5.
+    #"fractalBankSize": 5,
+
+    # Fractal preset numbers are shown starting at 000 (0, default) or 001 (1), like the Display Offset setting of the device.
+    #"fractalPresetDisplayOffset": 0,
+
     ## Development Options ###################################################################################################################
 
     # Debug output is printed to serial console via USB. 
