@@ -36,7 +36,7 @@ When it runs well in the emulator, it is published as an **alpha** for forum mem
 
 ## 3. Working environment
 
-- Project folder: WebDAV mount `.../git/PySwitch Fractal`. It contains the working tree of `dev_midi` at commit `955fdd0` without `.git` (771 files, checksums verified). **No git is used for now**; the user manages version control.
+- Project folder: WebDAV mount `.../git/PySwitch Fractal`. It contains the working tree of `dev_midi` at commit `955fdd0` (771 files, checksums verified). The user manages version control.
 - Python tests: the existing suite (427 tests) passes on `dev_midi` (run in a local copy because the host Python has a stdlib `test` package; in the project's Docker setup `test/run` works as-is).
 
 
@@ -74,6 +74,12 @@ There is no own poll interval: polling happens with the general `updateInterval`
 
 ### 5.3 Transport
 The controller connects to the Fractal device via DIN MIDI ([spec/python/architecture.md 4](spec/python/architecture.md)).
+
+### 5.4 Fractal design
+All features follow Fractal's own controller design, the FC footswitch functions ([FRACTAL.md 7](FRACTAL.md)): same functions, parameters, LED and label behaviour. Concepts of other clients (e.g. Kemper effect slots) are not emulated.
+
+### 5.5 Client settings
+Device model, bank size and number display offset are options in `config.py` ([spec/python/architecture.md 6](spec/python/architecture.md)).
 
 
 ## 6. Feature scope (alpha)
@@ -135,5 +141,5 @@ See [spec/emulator/](spec/emulator/).
 
 1. ~~Check out `dev_midi` into this folder~~ – done (section 3).
 2. ~~Analyse PySwitch and the Fractal MIDI specs~~ – done (FRACTAL.md, FRACTAL_ANALYSIS.md).
-3. Iterate the spec with `TBC.md` until TBC.md is empty – **in progress**.
-4. Wait for the Go, then: virtual client → Python client → unit tests → examples, meta.json → user runs the Jasmine tests to regenerate the definitions.
+3. ~~Iterate the spec with `TBC.md` until TBC.md is empty~~ – done.
+4. **Waiting for the Go**, then: virtual client → Python client → unit tests → examples, meta.json → user runs the Jasmine tests to regenerate the definitions.

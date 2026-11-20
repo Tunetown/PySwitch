@@ -55,7 +55,7 @@ Overview of all external control options of Axe-Fx III / FM9 / FM3. "CC" functio
 
 Device settings that affect a controller (*Setup > MIDI/Remote > General*): MIDI channel (SysEx ignores it), Program Change on/off, Ignore Redundant PC, PC Mapping and PC Offset (change what a PC loads), Effect Bypass Mode (CC only), Display Offset (presets shown from 000 or 001; display only), **Send Realtime Sysex** (enables push data).
 
-The FC controllers group presets into dynamic banks: *FC Controllers > Config > Bank Size* (1–12), "Preset in Bank" and "Bank Inc/Dec" switch functions.
+The FC controllers group presets into dynamic banks (*FC Controllers > Config > Bank Size*, 1–12). All FC footswitch functions: section 7.
 
 Sources: FM3 Owner's Manual p.105–108 ("The MIDI/Remote Menu"), FM9 Owner's Manual "FC: Config Page", 3rd-party spec.
 
@@ -131,6 +131,58 @@ Not in the enum (unknown IDs, not supported in the alpha): Dynamic Distortion, N
 
 
 ## 6. Reference documents (`claude/fractal_spec/`)
-- Official: `Axe-Fx III MIDI for 3rd Party Devices.pdf` (rev 1.4, still current; no other device-specific spec is published), owner's manuals (Axe-Fx III, FM3, FM9, AM4, VP4), `Fractal-Audio-Blocks-Guide.pdf`, current release notes of all five devices. Every PDF has a `.txt` extract next to it.
+- Official: `Axe-Fx III MIDI for 3rd Party Devices.pdf` (rev 1.4, still current; no other device-specific spec is published), `Footswitch-Functions-Guide.pdf` (v1.3, April 2022, from https://www.fractalaudio.com/fas-ffg), owner's manuals (Axe-Fx III, FM3, FM9, AM4, VP4), `Fractal-Audio-Blocks-Guide.pdf`, current release notes of all five devices. Every PDF has a `.txt` extract next to it.
 - Community: Fractal wiki pages "MIDI SysEx" and "MIDI" (Wayback copies), forum threads (3rd-party spec thread incl. answers from Fractal, DIY controller thread, VP4/AM4 threads, FM9 FAQ).
 - `community_github/`: reverse-engineered notes (ToneCommand, forgefx-midi, BigSaurus, fractal-midi) and **nilkis/midicaptain_for_fm3** (MIT) – standalone CircuitPython FM3 firmware for the MIDI Captain. Used as a behaviour reference only; no code is taken over.
+
+
+## 7. FC footswitch functions (Fractal's own controller design)
+
+Source: `Footswitch-Functions-Guide.pdf` v1.3 (Axe-Fx III with FC-6/FC-12, FM9, FM3). PySwitch follows this design (SPEC 5.4).
+
+### 7.1 Concepts
+- **Layouts**: 12 switch definitions each, every definition has a **Tap** and a **Hold** function. **Views** show a window of a layout on devices with fewer switches (FM3: 3, FC-6: 6).
+- **LED ring**: off / dim / bright (intensities set globally). Every category has a default ring color; each switch can override it ("Switch Ring Color").
+- **Mini-display label**: options per category (7.3) or custom text. Names are shown with their first 10 characters.
+- **Bank Size**: global, 1–12 (FM3 default 3). Banks are a dynamic subdivision of the preset list. Optional global "Bank Switch Limits".
+
+### 7.2 Categories and functions
+
+| Category (color)        | Function: parameters                                                                                       | LED ring                                                                                     | 3rd-party MIDI |
+|-------------------------|------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|----------------|
+| Bank (Orange)           | Select: Bank, Preset Load (None / First / Current), 2nd Press = Previous                                    | bright when the bank is loaded, else dim                                                     | yes (1)        |
+|                         | Toggle: Primary, Secondary, Preset Load                                                                    | bright primary, dim secondary, off neither                                                   | yes (1)        |
+|                         | Inc / Dec: step ±, Wrap, Lower/Upper Limit, Preset Load                                                    | bright while active, else dim                                                                | yes (1)        |
+| Preset (Green)          | Select by Number: Preset, 2nd Press = Previous                                                             | bright when loaded, else dim                                                                 | yes            |
+|                         | Select in Bank: Preset (position ≤ Bank Size), 2nd Press = Previous                                        | bright when loaded, else dim                                                                 | yes            |
+|                         | Toggle by Number / Toggle in Bank: Primary, Secondary                                                      | bright primary, dim secondary, off neither                                                   | yes            |
+|                         | Inc / Dec: step ±, Wrap, Lower/Upper Limit                                                                 | bright while active, else dim                                                                | yes            |
+| Scene (Red)             | Select: Scene, 2nd Press = Previous Scene                                                                  | bright when loaded, else dim                                                                 | yes            |
+|                         | Toggle: Primary, Secondary                                                                                 | bright primary, dim secondary, off neither                                                   | yes            |
+|                         | Inc / Dec: step ±, Wrap, Lower/Upper Limit                                                                 | bright while active, else dim                                                                | yes            |
+| Effect (Cyan)           | Bypass: Effect                                                                                             | bright engaged, dim bypassed, **off if the block is not in the preset**                      | yes            |
+|                         | Channel Select: Effect, Channel A–D (E, F Multiplexer), 2nd Press (Off / Smart Bypass / Previous Channel)  | bright channel active, dim not active, off bypassed or not in preset (Smart Bypass: dim when bypassed) | yes  |
+|                         | Channel Toggle: Effect, Primary, Secondary                                                                 | bright primary, dim secondary, off other channel or not in preset                            | yes            |
+|                         | Channel Inc / Dec: Effect, step ±, Wrap, Lower/Upper Limit                                                 | bright while active, else dim                                                                | yes            |
+| Utility (Blue)          | Tuner                                                                                                      | bright engaged, dim off                                                                      | yes            |
+|                         | Tap Tempo (label "Tap Tempo", BPM or custom)                                                               | flashes the tempo                                                                            | yes (2)        |
+|                         | Amp Level & Save, Scene Level & Save (save the whole preset), Reveal Hold                                  |                                                                                              | no             |
+| Looper (per function)   | Record (Red, Yellow in Overdub), Play/Stop (Green), Once (Blue), Reverse (Orange), Undo/Erase (Purple), Half Speed (Pink); no parameters, automatic labels | off if no Looper block in the preset (FM3 fw 13) | yes |
+| Layout (Yellow)         | Select (Layout, View), Master Layout, Inc / Dec                                                            |                                                                                              | no             |
+| View (Teal)             | Select, Inc / Dec                                                                                          |                                                                                              | no             |
+| Control Switch (Purple) | Momentary, Latching (6 modifier sources, optional MIDI payload, per-scene states)                          |                                                                                              | no             |
+| Per-Preset (special)    | Overrides, Placeholder (24 switch definitions stored in each preset)                                       |                                                                                              | no             |
+| Setlist / Song / Section| Select, Toggle, Inc / Dec                                                                                  |                                                                                              | no             |
+
+(1) Computed from the preset number and the bank size. (2) Tap via `10`, beat flashing via push data (3.3).
+Layout Links (any function also changes the layout of another unit) are not a function and not accessible via MIDI.
+
+### 7.3 Mini-display label options
+- **Bank**: Both (`[B000] B001`), Number / Destination, Current, Action (`Bank +1`), Custom.
+- **Preset**: Name, Number, P# (`P1`), Both # (`[P000] P001`), Both P# (`[P1] P2`), Destination Name, Destination #, Current Name, Current #, Action (`Preset +1`), Custom.
+- **Scene**: Name, Number, Both # (`Scene[1]2`), Destination Name, Destination Number, Current Name, Current #, Action (`Scene +1`), Custom.
+- **Effect**: Long Name (10 chars + instance), Short Name (3-letter abbreviation + instance, `DRV1`), Short Name + Channel, Long Name + Channel, Both Channels (`DRV1 [A]B`), Destination Channel, Current Channel, Action (`DRV1 +1`), Custom.
+- 3-letter abbreviations are the grid labels of the devices (e.g. AMP, CAB, CMP, DRV, DLY, REV, CHO, FLG, PHR, ROT, TRM, WAH, VOL, FIL, ENH, GTE, GEQ, PEQ; AM4/Axe-Fx III manuals).
+
+### 7.4 FM3 factory layouts
+1 Presets (P1 P2 P3; Hold: Bank −1, Master Layout, Bank +1) · 2 Scenes (views 1–3, 4–6, 7–8 + Tuner) · 3 Effects (Drive 1, Delay 1, Reverb 1; further views Chorus 1 / Flanger 1 / Rotary 1, Pitch 1 / MultiDly 1 / Plex 1, Comp 1 / Phaser 1 / TremPan 1) · 4 Channels (Amp 1 A/B/C; further views Drive 1, Drive 2, Delay 1) · 5 Looper (Record, Play/Stop, Undo; view 2: Once, Reverse, Half Speed) · 6 Per-Preset · 7 Perform · 8 Utilities (Tap Tempo, –, Tuner). Outer switches: Hold = View −1 / +1, middle switch: Hold = Master Layout Menu.

@@ -12,15 +12,13 @@ def PA_MIDICAPTAIN_USB_MIDI(receive_chunk_size = 50):
     )
 
 # DIN Midi in/out for PA MIDICaptain devices. Uses UART mode so the ports must be board GPIO pins.
-def PA_MIDICAPTAIN_DIN_MIDI(in_channel = None, out_channel = 0, in_buf_size = 100):
+def PA_MIDICAPTAIN_DIN_MIDI(receive_chunk_size = 50):
     from ..adafruit.AdafruitDinMidiDevice import AdafruitDinMidiDevice
     return AdafruitDinMidiDevice(
         gpio_in = _board.GP16,
         gpio_out = _board.GP17,
-        in_channel = in_channel,
-        out_channel = out_channel,
         baudrate = 31250,
         timeout = 0.001,
-        in_buf_size = in_buf_size
+        receive_chunk_size = receive_chunk_size
     )
 

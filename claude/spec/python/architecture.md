@@ -10,11 +10,13 @@ Features (mappings, actions, callbacks per topic): [features/](features/).
 
 ```
 fractal/
-  __init__.py      constants (manufacturer ID, function codes, block types, names, colors),
-                   checksum helper, FractalParameterMapping, FractalMappings (shared mappings),
-                   FractalColors (only if Colors lacks needed colors), TunerDisplayCallback
-  actions/         one file per feature group (preset_select.py, bank_up_down.py, scene_select.py,
-                   effect_state.py, effect_channel.py, tuner.py, tempo.py, tempo_bpm.py, looper.py, ...)
+  __init__.py      constants (manufacturer ID, function codes, block types, block names and
+                   abbreviations, FractalLabel, category colors), checksum helper,
+                   FractalParameterMapping, FractalMappings (shared mappings), client settings (6),
+                   shared action base (7), TunerDisplayCallback
+  actions/         one file per FC category or function group (bank.py, preset.py, scene.py,
+                   effect_bypass.py, effect_channel.py, tuner.py, tap_tempo.py, looper.py,
+                   preset_select_encoder.py, tempo_bpm.py)
   mappings/        mapping factories grouped by topic (preset.py, scene.py, effects.py, tuner.py,
                    tempo.py, looper.py)
   callbacks/       display callbacks (preset name, scene name, tempo BPM)
@@ -33,7 +35,7 @@ The core `ClientParameterMapping.parse_against()` only understands Kemper SysEx 
 - **Messages without checksum** (push data) are recognised by their length.
 - `set_value()` writes the value bytes and recomputes the checksum. CC/PC set messages behave like in the core.
 - Request and set messages are built once at construction (helper `_sysex(function, data)` adds header, checksum and `F7`).
-- Device model byte: see TBC (selection mechanism open).
+- Device model byte: from the client settings (section 6).
 
 
 ## 3. Polling and state
@@ -50,11 +52,38 @@ The core `ClientParameterMapping.parse_against()` only understands Kemper SysEx 
 ## 4. Transport
 
 - The MIDI Captain USB port and all Fractal USB ports are USB **devices**, so the controller connects via **DIN MIDI** (In + Out). The FM3 has no USB MIDI at all.
-- Example `communication.py` files route `PA_MIDICAPTAIN_DIN_MIDI` to and from the application. This currently fails on `dev_midi` (TBC).
+- Example `communication.py` files route `PA_MIDICAPTAIN_DIN_MIDI` to and from the application (factory fixed, see [LIB_CHANGES.md](../../LIB_CHANGES.md)).
 
 
 ## 5. Memory
 
 - Block types are addressed as type + instance; the effect ID is computed (`46 + 4 × type_index + instance − 1`), no table of ~160 IDs.
-- Block names and colors are tuples indexed by the type index (convention 7).
+- Block long names and 3-letter abbreviations are tuples indexed by the type index (convention 7). Colors are per FC category (section 7), not per block, and all exist in the core `Colors`.
 - The status dump payload is kept once (in the shared mapping); callbacks scan it without copying.
+
+
+## 6. Client settings (`config.py`)
+
+| Key                          | Values                         | Default      | Used for                                         |
+|------------------------------|--------------------------------|--------------|--------------------------------------------------|
+| `fractalModel`               | model byte (FRACTAL.md 1)      | `0x11` (FM3) | model byte of all SysEx messages                 |
+| `fractalBankSize`            | ≥ 1                            | 5            | all bank functions ([presets.md](features/presets.md)) |
+| `fractalPresetDisplayOffset` | 0 or 1                         | 0            | displayed preset numbers ("000" or "001")         |
+
+- Mapping messages are built while `inputs.py` is imported, before the config is available. They are built with the default model byte. The first Fractal callback `init()` reads the settings from `appl.config` (once), and if the model differs, patches model byte + checksum of all registered Fractal mappings (singleton registry, one-time, no RAM cost). Mappings created later use the stored model directly.
+- Emulator: the keys are part of the emulator's global settings and `config.py` template ([emulator/integration.md](../emulator/integration.md)).
+
+
+## 7. Common action behaviour
+
+All actions mirror an FC footswitch function ([SPEC 5.4](../../SPEC.md), [FRACTAL.md 7](../../FRACTAL.md)). Feature specs only list what differs per function.
+
+- **LED states**: off / dim / bright as defined per FC function in FRACTAL.md 7.2. Bright = `ledBrightnessOn`, dim = `ledBrightnessOff`, off = LED dark. The display label uses `displayDimFactorOn` for bright and `displayDimFactorOff` for dim and off; its text is never replaced by "off" states (e.g. a block missing in the preset keeps its label).
+- **Colors**: FC category colors from the core `Colors`: Bank `ORANGE`, Preset `GREEN`, Scene `RED`, Effect `CYAN`, Utility `BLUE`; Looper per function (looper.md). Parameter `color` overrides it (FC "Switch Ring Color").
+- **Labels**: parameter `label` = one of the `FractalLabel` constants offered for the category (FRACTAL.md 7.3); parameter `text` = custom text (FC "Custom"), which overrides `label`. Names are shown in full; the display label shortens them as usual.
+- **Parameter names**: FC parameters in snake case: `second_press_previous`, `primary` / `secondary`, `step` (± step size, default +1), `wrap` (default True), `lower_limit` / `upper_limit` (default None = no limit), `preset_load`. They come before the standard parameters (SPEC convention 8).
+- **2nd Press = Previous**: the action stores the value that was active before its own switch was pressed and restores it on the next press while its target is active.
+- **Toggle functions**: a press while the primary is active selects the secondary, any other press selects the primary.
+- **Inc / Dec**: LED is bright while the switch is pressed, else dim (FC "while active").
+- **Hold functions** are configured with PySwitch's existing hold actions; FC Layouts/Views correspond to PySwitch pages.
+- **Local feedback** after a set (section 3).

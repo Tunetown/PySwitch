@@ -1,6 +1,6 @@
 # Feature: Tempo
 
-Protocol: [FRACTAL.md 3.2 (`10`, `14`), 3.3 (beat push)](../../../FRACTAL.md). Architecture: [architecture.md](../architecture.md).
+Protocol: [FRACTAL.md 3.2 (`10`, `14`), 3.3 (beat push)](../../../FRACTAL.md). FC functions: [FRACTAL.md 7](../../../FRACTAL.md). Common action behaviour: [architecture.md 7](../architecture.md).
 The beat display requires DIN MIDI and *Send Realtime Sysex* = ON.
 
 
@@ -17,10 +17,10 @@ The tap message and the beat push both use function `10`; the push has no checks
 
 ## Actions and callbacks
 
-| Action        | File               | Function                                          |
-|---------------|--------------------|---------------------------------------------------|
-| `TAP_TEMPO`   | `tempo.py`         | tap the tempo                                     |
-| `SHOW_TEMPO`  | `tempo.py`         | LED blinks on every beat push                     |
-| `ENCODER_BPM` | `tempo_bpm.py`     | change the BPM with a rotary encoder              |
+| Action        | File            | FC function         | Function                                                    |
+|---------------|-----------------|---------------------|-------------------------------------------------------------|
+| `TAP_TEMPO`   | `tap_tempo.py`  | Utility: Tap Tempo  | tap the tempo; the LED flashes on every beat push (Utility color) |
+| `ENCODER_BPM` | `tempo_bpm.py`  | – (PySwitch only)   | change the BPM with a rotary encoder                        |
 
+- `TAP_TEMPO` labels (`FractalLabel`): `FUNCTION` ("Tap Tempo", default), `BPM` (current BPM; polls `TEMPO_BPM` only with this label).
 - `FractalTempoDisplayCallback` (`callbacks/tempo_bpm.py`): shows the BPM.

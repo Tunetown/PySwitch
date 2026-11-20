@@ -1,0 +1,1051 @@
+FOOTSWITCH
+FUNCTIONS
+GUIDE
+Complete Reference for
+Footswitch Functions
+on the FM9, FM3, FC-12, & FC-6
+
+VERSION 1.3 - April 2022
+For FC Original or Mark II
+﻿
+
+
+TABLE OF CONTENTS
+INTRODUCTION . . . . . . . . . . . . . . . . . . . . . . . . 2                                              LAYOUT FUNCTIONS. . . . . . . . . . . . . . . . . . . . 11
+LED RING COLORS . . . . . . . . . . . . . . . . . . . . . . 2                                                 Layout: Select.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 11
+    Change a Category Color:. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 2                                Layout: Master Layout .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 11
+    Change a Switch Color: .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 2                             Layout: Increment / Decrement (“Inc / Dec”).  .  .  . 11
+THE “UNASSIGNED” FUNCTION. . . . . . . . . . . . 2                                                          CONTROL SWITCH FUNCTIONS. . . . . . . . . . . . 12
+BANK FUNCTIONS . . . . . . . . . . . . . . . . . . . . . . 3                                                  Control Switch: Momentary .  .  .  .  .  .  .  .  .  .  .  .  .  . 12
+    Bank Size .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 3         Control Switch: Latching .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 12
+    Bank: Select.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 3             Additional Control Switch Features .  .  .  .  .  .  .  . 13
+    Bank: Toggle. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 4              Control Switch MIDI .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 14
+    Bank: Increment / Decrement (“Inc / Dec”) .  .  . 4                                                     LOOPER FUNCTIONS. . . . . . . . . . . . . . . . . . . . 15
+PRESET FUNCTIONS. . . . . . . . . . . . . . . . . . . . . 5                                                 PER-PRESET FUNCTIONS. . . . . . . . . . . . . . . . 16
+    Preset: Select by Number.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5                               Per-Preset: Placeholder .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 17
+    Preset: Select in Bank. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5                       VIEW FUNCTIONS. . . . . . . . . . . . . . . . . . . . . . 18
+    Preset: Toggle by Number .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5                                 View: Select .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 18
+    Preset: Toggle in Bank .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5                          View: Increment / Decrement (“Inc / Dec”). .  . 18
+    Preset: Increment / Decrement (“Inc / Dec”) . . 5                                                       SETLIST FUNCTIONS . . . . . . . . . . . . . . . . . . . 20
+    Custom Mapping Presets & Scenes.  .  .  .  .  .  .  .  . 6                                                Setlist: Select.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 20
+SCENE FUNCTIONS. . . . . . . . . . . . . . . . . . . . . . 7                                                  Setlist: Toggle. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 20
+    Scene: Select .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 7              Setlist: Increment / Decrement (“Inc / Dec”). 20
+    Scene: Toggle.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 7             SONG FUNCTIONS . . . . . . . . . . . . . . . . . . . . . 21
+    Scene: Increment / Decrement (“Inc / Dec”). .  . 7                                                        Song: Select in Set .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 21
+EFFECT FUNCTIONS. . . . . . . . . . . . . . . . . . . . . 8                                                   Song: Increment / Decrement (“Inc / Dec”) . . 21
+    Effect: Bypass. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8             SONG SECTION FUNCTIONS. . . . . . . . . . . . . . 22
+    Effect: Channel Select .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8                          Song Section: Select. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 22
+    Effect: Channel Toggle.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8                           Song Section: Toggle .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 22
+    Effect: Channel Increment/Decrement.  .  .  .  .  .  . 8                                                  Song Section: Increment / Decrement (“Inc / Dec”). .  . 22
+
+UTILITY FUNCTIONS. . . . . . . . . . . . . . . . . . . . 10                                                 LAYOUT LINKS . . . . . . . . . . . . . . . . . . . . . . . . 23
+    Utility: Tuner.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 10           GETTING HELP. . . . . . . . . . . . . . . . . . . . . . . . 24
+    Utility: Tap Tempo. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 10
+    Utility: Amp/Scene Level & Save. .  .  .  .  .  .  .  .  .  . 10
+    Utility: Reveal Hold.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 10
+
+                                                                                                        1
+                                                                                       1 Footswitch Functions
+
+
+
+
+1 FOOTSWITCH FUNCTIONS
+INTRODUCTION
+This guide covers footswitch functions for the Axe-Fx III used with an FC-6 or FC-12 Controller
+(original or Mk II) as well as the FM9 and FM3 processors, which have onboard footswitches and
+can also be used with the FC-6/FC-12. All of these products are said to use “FC” functions.
+These products share the use of Layouts containing Footswitch Definitions.
+Each definition consists of one Tap function and one Hold function.
+Functions are arranged in CATEGORIES and have their own parameters detailed here.
+To assign functions, use the EZ page or the Edit Layout/Switch pages as directed in your product Owner’s
+Manual. Select a Category and a Function, then set the values of any parameters for that function.
+
+
+LED RING COLORS
+Each footswitch Category has its own default color which appears automatically when assigned to the
+tap function of any switch. You can change the category colors using a list found in the Config menu:
+
+CHANGE A CATEGORY COLOR:
+ Open Setup | FC Controllers and page to the “Ring Colors” tab.
+ NAV to the desired category and turn the VALUE knob to specify the desired color from the list.
+
+You can also set the color for an individual switch:
+
+CHANGE A SWITCH COLOR:
+ Find the switch using the EZ page or the Edit Layout/Switch pages.
+ Set “Switch Ring Color” to the desired value.
+
+       The LED Ring color for per-preset switches is ALWAYS determined by the settings in the preset.
+       You cannot change Per-Preset colors through the Setup menu.
+
+
+
+THE “UNASSIGNED” FUNCTION
+To set either the Tap or the Hold function of any switch to do nothing, change the Category to “Unassigned”.
+
+
+
+
+                                                        2
+1 Footswitch Functions
+
+
+
+BANK FUNCTIONS                                                                                  Default Color: Orange
+
+There are several FC functions for switching Banks. You may be familiar with preset banks
+A, B, and C from Fractal-Bot or our software editors, but as used with FC switching, a Bank is
+something very different. In this case, it is simply a subdivision of the total number of presets
+that is created on the fly to allow dynamic “Preset within Bank” switches. These can access
+every preset in your unit without the need to program hundreds of individual switches.
+
+BANK SIZE
+Bank Size is a global setting to determine how many presets are in each bank. This number should usually match
+the number of “Preset Within Bank” switches in your layouts. You can’t use different bank sizes on different
+layouts unless you manually change the Bank Size setting found on the Setup | FC Controllers | Config page.
+EXAMPLE: The tables below illustrate how a sample list of 15 factory presets would be divided with bank size set
+to 3 or 5. Both columns show the same list of presets, but as bank size changes they group differently (shown
+here with gray and white bands). You can set bank size to anything from 1 to 12. Remember that whenever you
+change Bank Size the number of banks will change, and the presets contained in each numbered bank will shift.
+            BANK SIZE 3                                           BANK SIZE 5
+            Bank 1     Preset 1   =   001: 59 Bassguy             Bank 1    Preset 1   =   001: 59 Bassguy
+                       Preset 2   =   002: 65 Bassguy                       Preset 2   =   002: 65 Bassguy
+                       Preset 3   =   003: Brownface                        Preset 3   =   003: Brownface
+            Bank 2     Preset 1   =   004: Deluxe Verb                      Preset 4   =   004: Deluxe Verb
+                       Preset 2   =   005: Double Verb                      Preset 5   =   005: Double Verb
+                       Preset 3   =   006: A-Class 15             Bank 2    Preset 1   =   006: A-Class 15
+            Bank 3     Preset 1   =   007: Top Boost                        Preset 2   =   007: Top Boost
+                       Preset 2   =   008: Prince Tone                      Preset 3   =   008: Prince Tone
+                       Preset 3   =   009: Plexi 50W                        Preset 4   =   009: Plexi 50W
+            Bank 4     Preset 1   =   010: Plexi 100W                       Preset 5   =   010: Plexi 100W
+                       Preset 2   =   011: Brit 800               Bank 3    Preset 1   =   011: Brit 800
+                       Preset 3   =   012: Hipower                          Preset 2   =   012: Hipower
+            Bank 5     Preset 1   =   013: USA Mk IV                        Preset 3   =   013: USA Mk IV
+                       Preset 2   =   014: USA IIC+                         Preset 4   =   014: USA IIC+
+                       Preset 3   =   015: Recto 1                          Preset 5   =   015: Recto 1
+
+
+BANK: SELECT
+The Bank Select function creates a footswitch that is “hard-wired” to a specific numbered bank.
+For example, a switch that selects Bank 1, or Bank 24.
+Bank – Designates the desired Bank by its number
+Preset Load – Specifies which preset (if any) should be loaded when the specified bank is selected:
+ None: No preset from the new bank will be loaded until you select one yourself.
+ First: The first preset in the new bank will be loaded automatically.
+ Current: Whichever “Preset Within Bank” switch is active will remain active. For
+  example, if you have “P2” selected within the old bank, then “P2” from the new
+  bank will be loaded automatically when you select the new bank.
+2nd Press = Previous – When turned on, allows you to switch back to the “Previous” bank.
+
+€ The LED ring is bright when the selected bank is loaded, otherwise dim.
+                                                          3
+                                                                                              1 Footswitch Functions
+
+
+BANK: TOGGLE
+“Toggle” functions allow you to switch back and forth between two entities.
+Primary Bank and Secondary Bank – These set the desired Banks by their numbers.
+Preset Load – Specifies which preset (if any) should be loaded when this switch is ued to select a bank:
+ None: No preset from the new bank will be loaded until you select one yourself.
+ First: The first preset in the new bank will be loaded automatically.
+ Current: Whichever “Preset Within Bank” switch is active will remain active and the
+  corresponding new preset will load. For example, if you have “P2” selected within the old bank,
+  P2 from the new bank will be loaded automatically when you select the new bank.
+
+€ The LED ring is bright when you toggle to the “Primary” bank, dim for the “Secondary”, and off for “neither”.
+BANK: INCREMENT / DECREMENT (“INC / DEC”)
+“Inc / Dec” functions allow you to scroll through a series, stepping up or down.
+Increment/Decrement – Designates the step size, up or down. For example, to create a switch
+that goes to the next bank, select +1. For a switch that goes to the previous bank, select -1.
+Wrap – Determines whether the banks wrap around when you get to the either end of the list.
+Lower Limit, Upper Limit – These set the lowest and highest bank that can be accessed
+using this switch, allowing you to restrict access to only certain banks/presets. If you’re
+using UP and DOWN switches, you’ll probably want to set the same limits for both.
+        Bank Switch Limits are now globally disabled by default. To use this feature, you
+        must enable limits under SETUP: FC Controllers: Config: Bank Switch Limits
+Preset Load – Specifies which preset (if any) should be loaded when the specified bank is selected:
+ None: No preset from the new bank will be loaded until you select one yourself.
+ First: The first preset in the new bank will be loaded automatically.
+ Current: Whichever “Preset Within Bank” switch is active will remain active.
+  For example, if you have “P2” selected within the old bank, P2 from the new
+  bank will be loaded automatically when you select the new bank.
+
+€ The LED ring is bright when the switch is active, otherwise dim.
+̍ MINI-DISPLAY OPTIONS FOR BANK FUNCTIONS
+The following Mini-Display Label options are selectively offered for the various Bank Functions.
+Both – For the toggle function, shows both numbers, with brackets around the one that is currently selected
+Ex: [B000] B001 or B000[B001] or without brackets if neither is loaded: B000/B001
+Number or Destination – Shows the bank number that will load when the switch is activated.
+Current – Shows the number of the current Bank.
+Custom – Shows any text you enter in the Custom Label field.
+Action – Shows the action of the switch and the step size. Ex: Bank +1
+
+                                                          4
+1 Footswitch Functions
+
+
+
+PRESET FUNCTIONS                                                                                 Default Color: Green
+
+
+PRESET: SELECT BY NUMBER
+Creates a footswitch that is “hard-wired” to load a particular preset by its number.
+For example, you could create a footswitch that always selects Preset #442.
+Preset – Designates the desired Preset by its number.
+2nd Press = Previous – When turned on, allows you to switch back to the previous
+preset — whichever one was loaded prior to activating this footswitch.
+
+€ The LED ring is bright when the designated preset is loaded, otherwise dim.
+PRESET: SELECT IN BANK
+Creates a footswitch that dynamically maps to a preset within a Bank (see p. 3). Using
+Select in Bank switches together with Bank Up and Bank Down mimics the way other Fractal
+Audio products provide access to hundreds of presets with minimal programming.
+Preset – Designates the desired Preset by its position within the bank.
+This setting cannot be higher than the global Bank Size setting (see p. 3).
+2nd Press = Previous – When turned on, allows you to switch back to the previous
+preset — whichever one was loaded prior to activating this footswitch.
+
+€ The LED ring is bright when the designated preset is loaded, otherwise dim.
+PRESET: TOGGLE BY NUMBER
+“Toggle” functions allow you to switch back and forth between two designated entries.
+Primary Preset and Secondary Preset – These set the desired presets by their numbers.
+€ The LED ring is bright when you toggle to the “Primary” preset, dim for the “Secondary” and off for “neither”.
+PRESET: TOGGLE IN BANK
+“Toggle” functions allow you to switch back and forth between two designated entries.
+Primary Preset and Secondary Preset – These set the desired Presets
+by their postions in the bank (See Select in Bank, above).
+
+€ The LED ring is bright when you toggle to the “Primary” preset, dim for the “Secondary” and off for “neither”.
+PRESET: INCREMENT / DECREMENT (“INC / DEC”)
+“Inc / Dec” functions allow you to scroll through a list, stepping up or down.
+Increment/Decrement – Designates the step size, up or down. For example, to create a switch
+that goes to the next preset, select +1. For a switch that goes to the previous preset, select -1.
+Wrap – Determines whether the list of presets wraps around when you get to the end.
+Lower Limit, Upper Limit – These set the lowest and highest preset that can be accessed
+using the switch, allowing you to restrict access to only certain presets. If you’re using
+UP and DOWN switches, you’ll probably want to set the same limits for both.
+
+€ The LED ring is bright when the switch is active, otherwise dim.
+                                                          5
+                                                                                          1 Footswitch Functions
+
+
+̍ MINI-DISPLAY OPTIONS FOR PRESET FUNCTIONS
+The following Mini-Display Label options are selectively offered for the various Preset Functions.
+Name – Shows the name (first 10 characters) of the target preset.
+Number – Shows the number of the target preset.
+P# – Shows the position of the target preset within a bank (Ex: P1 or P2)
+Custom – Shows any text you enter in the Custom Label field.
+Both # – For the toggle function, shows both preset numbers, with brackets around the one that is currently
+selected. Ex: [P000] P001 or P000 [P001]or without brackets if neither is loaded: P000/P001
+Both P# – For the toggle function, shows the positions of both presets within the bank, with brackets
+around the one that is currently selected (ex: [P1] P2, or without brackets if neither is loaded: P1/P2
+Destination Name – For Toggle and Inc/Dec functions, shows the name (first ten
+characters) of the preset that will load when the switch is activated.
+Current Name – For Toggle and Inc/Dec functions, shows the name (first ten characters) of the current preset.
+Current # – For Toggle and Inc/Dec functions, shows the number of the current preset.
+Destination # – For Toggle and Inc/Dec functions, shows the number
+of the preset that will load when the switch is activated.
+Action – For the Increment/Decrement function, shows the action of the switch and the step size. Ex: Preset +1
+
+
+CUSTOM MAPPING PRESETS & SCENES
+All preset functions on the FC will follow the settings made under “PC Mapping” in the SETUP:
+MIDI: Mapping area of the Axe‑Fx III/FM3. When PC Mapping is turned ON (see below) the first
+127 preset numbers on the FC Controller will correspond to the entries of your custom map.
+This is true for ALL FC Preset functions, whether by number or by position within a bank.
+Presets above #127 are handled as usual whether PC Mapping is on or off.
+
+
+
+
+                       What is PC Mapping?
+                       The Axe‑Fx III, FM9, and FM3 include a feature called “PC Mapping” which allows any
+                       incoming MIDI PC message to be re-mapped to a custom Preset, and optionally, any
+  scene in that Preset. Normally, the mapping is “1:1”. For example, MIDI Program Change 1 (“PC 1”) normally
+  loads Axe‑Fx III or FM3 Preset 1, with its Default Scene (“as saved”). With PC Mapping on, however, PC 1
+  might load Preset 2, Scene 3 instead (or whatever else you set up in the map).
+  The “PC Mapping” parameter is the “master switch” for the map. It is off by default, meaning the map is
+  ignored. When you turn it on, incoming MIDI messages are re-mapped. Find PC Mapping on the “General”
+  tab of Setup | MIDI/Remote on the Axe‑Fx III or FM3. Find the map itself on the next tab to the right,
+  “Mapping”.
+  Combined with the “Preset in Bank” switches of the FC, this option serves as a good way to organize a set.
+  Think of each bank as a Song and arrange the presets in the order you need them.
+
+
+                                                             6
+1 Footswitch Functions
+
+
+
+SCENE FUNCTIONS                                                                                    Default Color: Red
+
+
+SCENE: SELECT
+Creates a footswitch that loads a specific Scene from whatever preset is currently loaded.
+For example, a switch that selects Scene 1, or Scene 7.
+Scene – Designates the desired Scene by its number.
+2nd Press = Previous Scene – When turned on, allows you to tap again to toggle back to the previous scene.
+€ The LED ring is bright when the designated Scene is loaded, otherwise dim.
+SCENE: TOGGLE
+“Toggle” functions allow you to switch back and forth between two designated entries.
+Primary Scene and Secondary Scene — These set the desired Scenes by their numbers.
+€ The LED ring is bright when you toggle to the “Primary” Scene, dim for the “Secondary” and off for “neither”.
+SCENE: INCREMENT / DECREMENT (“INC / DEC”)
+“Inc / Dec” functions allow you to scroll through a list, stepping up or down.
+Increment/Decrement – Designates the step size, up or down. For example, to create a switch
+that goes to the next Scene, select +1. For a switch that goes to the previous Scene, select -1.
+Wrap – For the Inc/Dec function, this determines whether the list wraps from Scene 8 to Scene 1, and vice versa.
+Lower Limit, Upper Limit – These set the lowest and highest Scene that can be accessed
+using an Inc/Dec Scene switch, allowing you to restrict access to only certain Scenes. If you’re
+using both UP and DOWN switches, you’ll probably want to set the same limits for both.
+
+€ The LED ring is bright when the switch is active, otherwise dim.
+̍ MINI-DISPLAY OPTIONS FOR SCENE FUNCTIONS
+The following Mini-Display Label options are selectively offered for the various Scene Functions.
+Name – Shows the Name (first 10 characters) of the target Scene.
+Number – Shows the Number of the target Scene.
+Custom – Shows any text you enter in the Custom Label field.
+Both # – For the toggle function, shows both Scene numbers, with brackets around the one that is
+currently selected. Ex: Scene[1]2 or Scene 1[2] or without brackets if neither is loaded: Scene 1/2
+Destination Name – For Toggle and Inc/Dec functions, shows the name (first ten
+characters) of the Scene that will load when the switch is activated.
+Current Name – For Toggle and Inc/Dec functions, shows the name of the current Scene.
+Current # – For Toggle and Inc/Dec functions, shows the number of the current Scene.
+Destination Number – For Toggle and Inc/Dec functions, shows the number
+of the Scene that will load when the switch is activated.
+Action – For the Increment/Decrement function, shows the action of the switch and the step size. Ex: Scene +1
+
+
+
+                                                            7
+                                                                                                 1 Footswitch Functions
+
+
+
+EFFECT FUNCTIONS                                                                                      Default Color: Cyan
+
+
+EFFECT: BYPASS
+This is the classic “Instant Access Switch.”
+Effect – Selects which effect you want to control.
+€ The LED ring is bright when the effect is engaged, dim when it is bypassed, and OFF
+if the effect assigned to the switch is not contained in the current preset.
+
+
+EFFECT: CHANNEL SELECT
+This creates a footswitch that changes a specific effect block to a specific channel.
+Effect – Selects which effect you want the switch to control.
+Channel Select – Designates the desired Channel: A, B, C, or D (and E, F for the Multiplexer).
+2nd Press – This parameter is off by default but offers two options. The “Smart Bypass” option
+allows Channel switches to serve double duty by engaging or bypassing an effect. To use this
+option, stomp again on the footswitch for a currently selected channel. This allows you to set up
+separate switches for different channels without the need for a separate “Bypass” Switch.
+The other option for 2nd Press is “Previous Channel”. This allows toggling back to
+whichever channel was selected prior to using this footswitch to change it.
+
+€ If 2nd Press is set to “OFF” or “Previous Channel” The LED ring is bright when the designated Channel
+is active, dim when it is not active, and off if the effect is bypassed or not found in the current preset.
+
+€ If 2nd Press is set to “Smart Bypass” The LED ring is bright when the designated Channel is active, dim
+when it is not active -- OR if the effect bypassed, and OFF if the effect is not found in the current preset.
+
+
+EFFECT: CHANNEL TOGGLE
+“Toggle” functions allow you to switch a specific effect block between two Channels. The Effect parameter selects
+which effect you want the switch to control. Primary Channel and Secondary Channel set the desired Channels.
+
+€ The LED ring is bright for the Primary channel, dim for the Secondary channel, and OFF if a different
+channel is selected, or if the effect assigned to the switch is not contained in the current preset.
+
+
+EFFECT: CHANNEL INCREMENT/DECREMENT
+“Inc / Dec” functions allow you to scroll through channels, stepping up or down.
+Increment/Decrement – Designates the step size, whether up or down. For a switch that goes
+to the next channel, select +1. For a switch that goes to the previous channel, select -1.
+Wrap – Determines whether the Channel wraps when you reach either end of the list.
+Lower Limit, Upper Limit – These set the lowest and highest Channels that can be
+accessed using the switch, allowing you to restrict the range. If you’re using UP and
+DOWN channel switches, you’ll probably want to set the same limits for both.
+
+€ The LED ring is bright when the switch is active, otherwise dim.
+
+                                                                 8
+1 Footswitch Functions
+
+
+̍ MINI-DISPLAY OPTIONS FOR EFFECT FUNCTIONS
+The following Mini-Display Label options are selectively offered for the various Effect Functions.
+Long Name – Shows a 10-character version of the specified effect name and instance number.
+Short Name – Shows the 3-character abbreviation of the specified effect name plus its instance number.
+Short Name +Channel – Shows the 3-character abbreviation, the instance number, and the channel.
+Long Name +Channel – Shows a 10-character version of the name, the instance number, and the channel.
+       NOTE: This option is provided despite that fact that the long names of certain
+       effects are too long for the instance number and/or channel to appear. For those
+       effects (e.g. “MultiDly”) “Short Name + Channel” may be a better choice.
+Both Channels – For the toggle function, shows the 3-letter effect abbreviation, the instance
+number, and both Channels, with brackets around the one that is currently selected.
+Ex: DRV1©[A]B when Channel A is active.
+or DRV1©A[B] when Channel B is active.
+or DRV1©A/B when neither A nor B is active.
+Destination Channel – For Toggle and Inc/Dec functions, shows the 3-letter effect abbreviation,
+the instance number, and the channel that the effect will change to when you press the switch.
+Current Channel – For Toggle and Inc/Dec functions, shows the 3-letter effect abbreviation,
+the instance number, and the channel that the effect is currently set to.
+Action – For the Increment/Decrement function, shows the action of the switch and the step size. Ex: DRV1©+1
+Custom – Shows any text you enter in the Custom Label field.
+
+
+
+
+                                                          9
+                                                                                         1 Footswitch Functions
+
+
+
+UTILITY FUNCTIONS                                                                               Default Color: Blue
+
+
+UTILITY: TUNER
+Engages the tuner. The tuner display is shown both on the Axe‑Fx III/FM3 and the FC Controller.
+To disengage the tuner, activate the switch again. Changing the layout will also disengage the tuner.
+
+€ The LED ring is bright while the Tuner is engaged and dim when it is off.
+The Mini-Display can show the function (“Tuner”) or your choice of custom label.
+
+UTILITY: TAP TEMPO
+This footswitch serves the same function as the Tempo button on the Axe‑Fx III/FM9/FM3. NOTE: By
+default, the tempo averages across ten taps, but you can set it to use only two taps with an option
+found under SETUP: Global: Config: Tap Tempo. The Tap tempo switch is unique in that it registers
+timing based on the switch down, even when a Hold function is assigned to the same footswitch.
+
+€ The LED ring flashes the current tempo.
+The Mini-Display can show the function (“Tap Tempo”), the current BPM, or your choice of custom label.
+
+UTILITY: AMP LEVEL & SAVE; UTILITY: SCENE LEVEL & SAVE
+        IMPORTANT! These functions save the ENTIRE PRESET. All unsaved changes such as altered
+        parameters or effect bypass states will be stored when one of these functions is triggered!
+Each of these two functions provides a convenient way to permanently increase or decrease the level of
+your preset. The advantage of doing so with your feet is that you can make the required adjustment while
+playing — at a rehearsal, for example, rather than needing to experiment later. Amp Level & Save adjusts the
+level of the current preset’s Amp Block(s). Scene Level & Save adjusts the level of the Current Scene.
+Target Amp Block(s) – Designates whether the Amp Level function adjusts the Amp 1 block, Amp 2, or both.
+Target Output Block(s) – Specifies which Output blocks will be adjusted by the Scene Level
+function. (Every Output Block has eight independent “Scene Level” parameters.)
+Increment/Decrement – Sets the amount of the change in dB from -2 to +2.
+€ The LED is bright while the switch is active and dim when it is not.
+The Mini-Display can show the function “Amp # +dB” (or “ScnLvl +dB”) or your choice of custom label.
+
+UTILITY: REVEAL HOLD
+This function causes the Mini LCDs for all footswitches to show their Hold functions instead
+of their Tap functions. Remember that you can also see the Hold function for any switch
+by pressing it, but this shows Hold functions for the entire FC controller at once.
+Mode – Reveal Hold can be either momentary or latching. The Latching mode stays active
+when you engage it, allowing you to execute any one of the displayed hold functions with a
+single tap. When you do this, the Reveal Hold function automatically turns itself off.
+Sticky Function - When enabled, this causes Latching Mode (above) to stay active
+until you manually turn it off by stepping on the Reveal Hold switch again.
+
+€ The LED ring is bright while the switch is active and dim when it is not.
+The Mini-Display can show the function (“Hold Funcs”) or your choice of custom label.
+
+                                                        10
+1 Footswitch Functions
+
+
+
+LAYOUT FUNCTIONS                                                                                Default Color: Yellow
+
+
+LAYOUT: SELECT
+Creates a footswitch that is “hard-wired” to a specific Layout.
+For example, a switch that selects Layout 2, or Layout 7.
+Layout — This designates the desired Layout by its number.
+View — This sets the View that the layout will open to. See p. 18 or your Owner’s Manual for more on Views.
+€ The LED ring is bright if the designated Layout is currently loaded, otherwise dim.
+The Mini-Display can show the Layout Name (Ex: PRESET), its Number (Ex: Layout 1), or your custom text.
+
+LAYOUT: MASTER LAYOUT
+Displays the Master Layout menu.
+The Mini-Display can show the function (“MLM”) or your choice of custom text.
+
+           On the FC-6 or FM3: If the Master Layout Menu is currently displayed, executing this function again
+           will change it to the next VIEW. This allows one switch to show the MLM and step through views.
+
+
+                       Why not just use the "Master Layout Switch Combo"?
+                     FC Controllers offer a special footswitch combination to show the Master Layout Menu.
+                     (See the FC Owner’s Manual). Why, then, would you ever want a single footswitch to
+  perform this same function? The answer lies in an advanced option which allows you to DISABLE the “MLM
+  Switch Combination”. There are several possible reasons:
+  1) To avoid accidentally entering the Master Layout Menu with imprecise stomping.
+  2) To guarantee that the lower right footswitch fires its Tap function on the down- instead of the up-stroke.
+  3) You may have designed a system which never uses the Master Layout Menu.
+  If you’re in any of the above groups, but still want access to the Master Layout Menu, a dedicated switch
+  may be the answer you need. Simply assign the “Layout: Master Layout” function described above.
+  Or, if you disable the Master Layout Menu, this also leaves it free as “Layout 9” free to put to other uses.
+  Find the option to disable the on the Config page of the FC Controllers menu.
+
+
+LAYOUT: INCREMENT / DECREMENT (“INC / DEC”)
+“Inc / Dec” functions allow you to step to the next or previous layout.
+Increment/Decrement – Designates the step size, up or down. For example, to create a switch that
+goes to the next Layout, select +1. For a switch that goes to the previous Layout, select -1.
+Wrap – For the Inc/Dec function, determines whether the list wraps from Scene 8 to Scene 1, and vice versa.
+Lower Limit, Upper Limit – These set the lowest and highest Layout that can be accessed
+using an Inc/Dec Scene switch, allowing you to restrict access to only certain Layouts. If you’re
+using both UP and DOWN switches, you’ll probably want to set the same limits for both.
+
+€ The LED ring is bright when the switch is active, otherwise dim.
+                                                         11
+                                                                                       1 Footswitch Functions
+
+
+
+CONTROL SWITCH FUNCTIONS
+Default Color: Purple
+
+Control Switches allow the footswitches of the FC controller to interact directly with the Modifier system
+of the Axe‑Fx III/FM3, operating in much the same way as external expression pedals, switches, or MIDI.
+They work as modifier sources to control effect parameters. For example, a Control Switch could operate
+the “Hold” switch on a Delay or Reverb, or change the speed of an LFO. Any parameter that allows a modifier
+can have its source set to a Control Switch. For more on using Modifiers, see your Owner’s Manual.
+There are six Control Switches in total.
+A Control Switch can be either “Latching” or “Momentary”, depending on which of two functions you use.
+Latching switches can be toggled with your foot, or have their state “forced” to on or off by a Scene.
+Control Switches can also optionally transmit a MIDI “Payload” when they are turned on and/or off.
+
+CONTROL SWITCH: MOMENTARY
+Momentary switches are active only while you hold the switch down.
+Control Switch – This parameter determines which one of the six available
+Control Switch modifier sources a switch will connect to.
+
+        IMPORTANT: Control Switch Momentary is an “odd-ball” in that it inherently
+        requires you to press and hold the switch. It must be assigned as a Tap
+        function, however, with NO Hold function on the same switch.
+        SPECIAL NOTE: On an FC-6 or FC-12, the “MLM Switch Combination” relies on an invisible Hold
+        function on the lower right switch. A Momentary Control Switch assigned to the to the Tap
+        function of the lower right switch will therefore not work unless the MLM is disabled in SETUP.
+
+€ The LED ring is bright while the switch is active and dim when it is not.
+The Mini-Display can show the function (“CS1, CS2, etc”) or your choice of custom label.
+
+CONTROL SWITCH: LATCHING
+Latching switches toggle from on to off (or off to on) whenever you activate them.
+Control Switch – This parameter determines which one of the six available
+Control Switch modifier sources a switch will connect to.
+
+€ The LED ring is bright while the switch is active and dim when it is not.
+The Mini-Display can show the function (“CS1, CS2, etc”) or your choice of custom label.
+
+
+
+
+                                                        12
+1 Footswitch Functions
+
+
+ADDITIONAL CONTROL SWITCH FEATURES
+In addition to their primary function as modifier sources, Control Switches also offer the following features.
+
+          USING SCENES TO TURN CONTROL SWITCHES ON OR OFF
+          A physical switch is either open or closed, period. In comparison, a programmable switch as
+          used in a traditional MIDI controller has a “virtual state”, meaning its ON or OFF state can be
+          stored in memory so it can toggle as desired when you navigate from one preset to another.
+Control Switches provide the best of both worlds. In their default state, they behave as physical
+switches, retaining their current or “Last” state as you switch presets or scenes. They are also
+programmable, however, and any Scene can set any Control switch ON or OFF. Here’s how:
+1. Load the desired Preset and Scene.
+2. Press HOME, then use Push-knob D to open the FC Per-Preset menu.
+3. Page to the CS Per Scene tab if it isn’t already selected.
+4. Use the NAV keys to select the row and column for to the Scene and Control Switch you want to change.
+5. Turn the VALUE knob to select “ON” or “OFF”.
+   The default value of “LAST” causes any Control Switch to retain its state as you change scenes.
+6. Make any desired changes, then STORE the preset in the usual way.
+
+CONTROL SWITCH MIDI
+Control Switches have an integrated MIDI feature which allows each Control Switch to send its
+own global MIDI message payload when the switch is turned ON or OFF. See p. 14.
+
+LINK CONTROL SWITCHES IN A MUTUALLY EXCLUSIVE GROUP
+The FC allows you to set up a global group of mutually exclusive Control Switches. Only one switch
+in this group can be ON at a given time. All instances of a switch across any number of layouts
+abide by this setting. Any of the six Control Switches can be linked in the group as follows:
+ On the Axe‑Fx III/FM3, open Setup | FC Controllers and page to the “Config” tab.
+ NAV to the CONTROL SWITCH LINK section and set Exclusive to “YES” for the desired switches.
+Remember, like the Control Switch MIDI feature, the exclusive group setting
+is Global, for all instances of a given switch on any layout.
+
+
+
+
+                                                         13
+                                                                                        1 Footswitch Functions
+
+
+CONTROL SWITCH MIDI
+An Axe-Fx III with an FC Controller, or an FM9 or FM3 with or without an FC Controller can transmit MIDI messages
+in a number of ways. See the FC Owner’s Manual or FM9/FM3 Owner’s Manuals for more on this subject.
+For convenience, the following section on Control Switch MIDI is repeated here.
+As covered on the previous pages, the Control Switch function allows a footswitch to operate as a Modifier
+source to control sound parameters. In addition, however, each of the six Control Switches has the capability
+to transmit a custom “payload” of MIDI data every time the switch is turned on ON or OFF. This transmission is
+not tied to another event such as a Preset or Scene change, so Control Switch MIDI more flexible and dynamic.
+When you recall that Control Switches can be momentary or latching (and even mutually exclusive),
+the depth of the CS MIDI system is multiplied. You might change channels on a connected MIDI-
+controlled amp, or even manually operate a remote processor, sequencer, or lighting system.
+Here is a summary of the MIDI Capabilities of a Control Switch:
+ Control Switches are placed into an FC Layouts as functions.
+ Control Switches 1–6 appear in the list of Modifier sources on the Axe-Fx III/FM9/FM3.
+ The role of a switch as a modifier source is not compromised if you also use it to
+  transmit MIDI. The same switch can simultaneously control the Axe-Fx III/FM9/FM3 and
+  a connected device. (See your Owner’s Manual for more on using Modifiers.)
+ Each Control Switch has its own global MIDI Payload containing up to four Program
+  Change (“PC”) or Control Change (“CC) messages on any MIDI Channels, with custom
+  values from 0–127, or disabled (“--”) for both the ON and OFF states of the switch.
+ Each MIDI Payload also has a “master switch” allowing it to be enabled or disabled.
+
+SETTING UP THE MIDI PAYLOAD FOR A CONTROL SWITCH:
+1. On the Axe-Fx III/FM9/FM3, open the SETUP | FC Controllers menu and page to the “CS MIDI” tab.
+2. Select the desired Control Switch at the top of the menu. (CS1, CS2, etc.)
+3. Use NAV buttons and the VALUE wheel to get around the page.
+4. Set Enabled to “YES”for the switch to send MIDI.
+5. NAV through the table and create your desired Payload of up to four commands, with values for ON and OFF
+6. Press EXIT when finished. There is no need to SAVE while working in the Setup Menu.
+Axe-Edit/FM3-Edit also provide tools for editing Control Switch MIDI.
+
+
+
+
+                                                        14
+1 Footswitch Functions
+
+
+
+LOOPER FUNCTIONS                                                                                                        Default Color: Per Switch
+
+
+Looper functions are used to operate the Looper block, which must be present in your
+preset for these switches to do anything. Looper footswitches work exactly like the
+front panel controls for the Looper, with all of the same interactive features.
+See the Fractal Audio Blocks Guide for more on the Looper Block.
+https://www.fractalaudiosystem.com/fas-bg
+Looper functions have no configurable parameters in the FC. Their Mini-Display and Ring Colors are automatic,
+though as with other switches, you can use a Custom Mini-Display Label and change the default Color.
+Record (Red) Activates the Record Function. Remember that you can configure what happens
+when you press the active Record switch a second time. Find “Record 2nd Press” on the
+Config page of the edit menu of the Looper block. When available, Overdub will also appear
+on the Record footswitch. When in overdub, the switch LED ring changes to Yellow1.
+Play/Stop (Green)
+Once (Blue)
+Reverse (Orange)
+Undo/Erase (Purple)
+Half Speed (Pink)
+Remember that you can also use the Effect: Bypass function (see p. 8)
+to add a switch to Bypass or Engage the Looper block itself.
+
+1   Unless you’ve changed the default color for the switch, in which case Record and Overdub both use the same color.
+
+
+
+              For the tightest timing, use Looper controls as the Tap function of a switch with no Hold function.
+
+
+
+
+                                                                                   15
+                                                                                             1 Footswitch Functions
+
+
+
+PER-PRESET FUNCTIONS                                                                             Default Color: Special
+
+
+FC layouts are global. That is, their functions remain the same as you change presets. The
+Per-Preset Switch system adds two ways to make layouts more flexible. In fact, every preset
+contains 24 numbered “FC Switch Definitions”. There are two ways to put these to use.
+In Method 1 (below) the preset overrides any switch on any layout, substituting the
+Per‑Preset switch definition of your choice in the location of your choice.
+        “I want this switch on this layout to do something different when this preset loads.”
+In Method 2 (next page), the layout contains a permanent “placeholder” which always
+loads a specific FC Switch Definition (by its number) in a fixed position.
+        “I want this switch on this layout to always use “Per-Preset X” from the currently loaded preset.”
+
+PER-PRESET METHOD 1: OVERRIDES
+This method creates a classic “exception” — very useful for “that one song” which needs to do something unusual,
+like providing access to the Looper instead of a particular effect, or switching to a Scene you don’t normally use.
+To set up an override, edit the Preset to force the substitution. Here’s how:
+1. Load the desired preset.
+2. Press HOME, then use Push-knob D to open the FC PER-PRESET menu.
+3. Change to Per-Preset FC page.
+
+4. Turn the VALUE knob to select your choice of per-preset switch definitions (numbered “PP# 1-24”).
+5. Define the switch. The interface is basically identical to the “EZ” page. You can set Tap Function, Hold
+   Function, LED ring color, Mini-Display settings, and Layout Links. Repeat this process for any other switches
+   you wish to define.
+Once you have defined one or more Per Preset Switch Definitions, you must set up the override(s):
+6. Change from the Per-Preset FC page to the Overrides page by pressing the PAGE > button.
+   You will see a long list showing every switch in every FC layout.
+7. On the Overrides page, use knob A or the NAV buttons to scroll to the layout and switch you want to override,
+   then turn knob C or the VALUE knob to select the desired Per-Preset switch by its number (“PP#”).
+8. Repeat this process for any other overrides you wish to create
+IMPORTANT: You must STORE the preset after setting up FC Switch definitions and overrides!
+Note: Most Factory presets are not programmed with any overrides.
+
+           When any footswitch in any layout is being overridden by a Per-Preset switch, a
+           message is displayed at the bottom of the EZ page to indicate this. When this occurs,
+           push-knob E becomes a shortcut button to jump to the Per-Preset FC page.
+
+
+DISABLING OVERRIDES
+You can globally disable per-preset switch overrides. This can be useful when you want
+to prevent downloaded presets from “clobbering” your layouts, or when you’ve changed
+your mind and suddenly want all layouts to be global and consistent. Find this option on
+the Setup | FC Controllers | Config page. See your Owner’s Manual for more.
+                                                           16
+1 Footswitch Functions
+
+
+PER-PRESET METHOD 2: THE PLACEHOLDER FUNCTION
+The second way of working with Per-Preset switches does not rely on overrides (see previous page).
+Instead, this method uses the “Per-Preset: Placeholder” function. You may assign
+this function Tap and/or Hold for any switch just like any other function.
+It is important to remember that both Overrides and Placeholders use the same list of 24 Per-
+Preset FC switch definitions. To create a switch definition, simply follow Steps 1 through
+5 on the previous page, being sure to STORE the preset when you finish. Any placeholder
+function with a matching Per-Preset Switch # will do whatever your preset tells it to.
+
+PER-PRESET: PLACEHOLDER
+This function creates a placeholder for one of the Per-Preset FC switch definitions contained in
+all presets. When any preset is loaded, the corresponding values from that preset will be used to
+determine the functions, appearance, and behavior of the Tap and/or Hold functions of this switch.
+This function has only a single parameter, Per-Preset Switch, which selects the number
+of the Per-Preset FC Switch definition you want to place on your layout.
+If you want both Tap and Hold functions to appear, you must assign the placeholder
+function to BOTH Tap and Hold. (This is actually a feature and not a limitation!)
+
+          As you place the Per-Preset: Placeholder function in your layouts, the Switch
+          Ring Color parameter for the Per-Preset function itself will not work to change the
+          color. Instead, you must set the color footswitch definition stored in the preset
+          itself found under Controllers: Per-Preset FC Settings : Per-Preset FC.
+
+          On the FC-6 and FC-12, Factory Default Layout 6 uses the per-
+          preset placeholder functions for both Tap and hold.
+          On the FM3, only the Tap functions have been assigned.
+          Use these layout as a way to check the per-preset functions in presets you download,
+          or try creating Per-Preset FC switch definitions yourself in a few presets.
+
+
+
+
+                                                       17
+                                                                                          1 Footswitch Functions
+
+
+
+VIEW FUNCTIONS                                                                                     Default Color: Teal
+
+
+Views allow the FC-6 or FM3 to take advantage of all twelve switch definitions
+in any layout. See your Owner’s Manual for more information.
+
+
+VIEW: SELECT
+Creates a footswitch that is “hard-wired” to a specific View.
+For example, a switch that selects View 1, or View 2 on the current controller.
+View — This designates the desired View by its number.
+€ The LED ring is bright if the designated View is currently loaded, otherwise dim.
+The Mini-Display can show the View Number (Ex: View 1) or your choice of custom text.
+
+VIEW: INCREMENT / DECREMENT (“INC / DEC”)
+“Inc / Dec” functions allow you to scroll through a list, stepping up or down.
+Increment/Decrement – Designates the step size, up or down. For example, to create a switch
+that goes to the next Scene, select +1. For a switch that goes to the previous Scene, select -1.
+Wrap – For the Inc/Dec function, determines whether the list wraps from Scene 8 to Scene 1, and vice versa.
+Lower Limit, Upper Limit – These set the lowest and highest Scene that can be accessed
+using an Inc/Dec Scene switch, allowing you to restrict access to only certain Scenes. If you’re
+using both UP and DOWN switches, you’ll probably want to set the same limits for both.
+
+€ The LED ring is bright when the switch is active, otherwise dim.
+The Mini-Display can show the Action (Ex: View +1), the Destination (Ex: “View 3”) or your own custom text.
+
+
+
+
+                                                         18
+1 Footswitch Functions
+
+
+VIEWS: FM3 VS. FC-6
+On an FC-12 controller, all 12 switch definitions of any layout are shown one-to-one across the 12 footswitches.
+On an FC-6 controller, only the first six can normally be shown. On the FM3, only the first three.
+The FM3 can show three switches at once. The FC-6 can show six.
+If you imagine the twelve switch definitions of any layout in two rows of six as they
+would appear on the FC-12, all that’s left is to understand which view is which.
+The FC-6 can work in two different ways, depending on whether FC-6/FC-12 Compatibility Mode is
+turned ON. Find this parameter on the Config page of the FC Controllers Menu under SETUP.
+
+
+
+                      FM3 View Mapping                                                                  FC-6 Mapping
+
+    FM3                                                                        FC-6
+                                                                                Switch 7     Switch 8   Switch 9           Switch 10 Switch 11 Switch 12
+      Switch 7    Switch 8   Switch 9   Switch 10 Switch 11 Switch 12
+                                                                                Switch 1    Switch 2    Switch 3           Switch 4       Switch 5   Switch 6
+     Switch 1     Switch 2   Switch 3   Switch 4    Switch 5   Switch 6
+                                                                                                              FC-6 VIEW 1
+                FM3 View 1
+                                                                                                        4              5              6
+
+      Switch 7    Switch 8   Switch 9   Switch 10 Switch 11 Switch 12                                   1              2              3
+
+
+
+     Switch 1     Switch 2   Switch 3   Switch 4    Switch 5   Switch 6
+
+                                                FM3 VIEW 2
+
+                                                                                                            FC-6 VIEW 2
+            FM3 VIEW 3                                                          Switch 7    Switch 8    Switch 9           Switch 10 Switch 11 Switch 12
+
+     Switch 7    Switch 8    Switch 9   Switch 10 Switch 11 Switch 12
+                                                                                Switch 1    Switch 2    Switch 3           Switch 4       Switch 5   Switch 6
+
+     Switch 1     Switch 2   Switch 3   Switch 4    Switch 5   Switch 6
+
+
+
+                                                   FM3 VIEW 4                  FC-6, Compatibility Mode
+      Switch 7    Switch 8   Switch 9   Switch 10 Switch 11 Switch 12
+                                                                                Switch 7     Switch 8   Switch 9           Switch 10 Switch 11 Switch 12
+     Switch 1     Switch 2   Switch 3   Switch 4    Switch 5   Switch 6
+                                                                                Switch 1     Switch 2       Switch 3        Switch 4      Switch 5   Switch 6
+
+                                                                                           FC-6 VIEW 1
+
+
+
+
+                                                                                 Switch 7    Switch 8       Switch 9       Switch 10 Switch 11 Switch 12
+
+
+                                                                                Switch 1     Switch 2       Switch 3        Switch 4      Switch 5   Switch 6
+
+                                                                                                                                      FC-6 VIEW 2
+
+
+
+
+                                                                          19
+                                                                                              1 Footswitch Functions
+
+
+
+SETLIST FUNCTIONS                                                                                  Default Color: Orange
+
+
+SETLIST: SELECT
+Creates a footswitch that changes the “Active” Setlist. For example, a switch that selects Setlist 1, or Setlist 4.
+The Active Setlist is used to determine which Songs are loaded by Song footswitches (p. xx).
+Setlist – Designates the desired Setlist by its number.
+€ The LED ring is bright when the designated Setlist is Active, otherwise dim.
+SETLIST: TOGGLE
+“Toggle” functions allow you to switch the “Active” status between two designated Setlists.
+Primary Setlist and Secondary Setlist — These designate the desired Setlists by their numbers.
+€ The LED ring is bright when you toggle to the “Primary” Setlist, dim for the “Secondary” and off for “neither”.
+SETLIST: INCREMENT / DECREMENT (“INC / DEC”)
+“Inc / Dec” functions allow you to scroll through a list, stepping up or down. A single “Setlist +1”
+footswitch can be used to access all four setlists in order. (Set the Mini-Display to “Current Name”.)
+Increment/Decrement – Designates the step size, up or down. For example, to create a switch that
+activates to the next Setlist, select +1. For a switch that activates to the previous Setlist, select -1.
+Wrap – This determines whether the list wraps from the end to the beginning of the list, or vice versa.
+Lower Limit, Upper Limit – These set the lowest and highest Setlist that can be activated
+using the Inc/Dec Scene switch, allowing you to restrict access to only certain Setlists. If you’re
+using both UP and DOWN switches, you’ll probably want to set the same limits for both.
+
+€ The LED ring is bright when the switch is active, otherwise dim.
+̍ MINI-DISPLAY OPTIONS FOR SETLIST FUNCTIONS
+The following Mini-Display Label options are selectively offered for the various Scene Functions.
+Name – Shows the Name of the Setlist.
+Number – Shows the Number of the Setlist.
+Custom – Shows any text you enter in the Custom Label field.
+Both # – For the toggle function, shows both Setlist numbers, with brackets around the one that is
+currently selected. Ex: Set[1]2 or Set 1[2] or without brackets if neither is loaded: Set 1/2
+Destination Name – For Toggle and Inc/Dec functions, shows the name
+of the Setlist that will load when the switch is activated.
+Current Name – For Toggle and Inc/Dec functions, shows the name of the current Setlist.
+Current # – For Toggle and Inc/Dec functions, shows the number of the current Setlist.
+Destination Number – For Toggle and Inc/Dec functions, shows the number
+of the Setlist that will load when the switch is activated.
+Action – For the Increment/Decrement function, shows the action of the switch and the step size. Ex: Set +1
+
+
+
+                                                           20
+1 Footswitch Functions
+
+
+
+SONG FUNCTIONS                                                                                        Default Color: Green
+
+
+SONG: SELECT IN SET
+Creates a footswitch that loads a Song by its numbered position within the
+current Active Setlist. For example, Song #1 or Song #12.
+Song – Designates the desired Song by its position within the Setlist.
+€ The LED ring is bright when the designated Song is loaded, dim if if can be loaded, and off if the target Song
+is empty. (Empty songs cannot be loaded.)
+
+SONG: TOGGLE IN SET
+“Toggle” functions allow you to switch back and forth between two designated entries.
+Primary Song and Secondary Song – These designate the desired Songs by
+their numbered postions in the Setlist (See Select In Set, above).
+
+€ The LED ring is bright when you toggle to the “Primary” Song, dim for the “Secondary” and off for “neither”.
+SONG: INCREMENT / DECREMENT (“INC / DEC”)
+“Inc / Dec” functions allow you to scroll through a list, stepping up or down.
+Increment/Decrement – Designates the step size, up or down. For example, to create a switch
+that goes to the next Song, select +1. For a switch that goes to the previous Song, select -1.
+Wrap – Determines whether the list of Songs wraps around when you get to the end. Note that
+empty songs are skipped in this list, whether they fall at the start, in the middle, or at the end.
+Lower Limit, Upper Limit – These set the lowest and highest Song that can be accessed
+using the switch, allowing you to restrict access to only certain Songs. If you’re using
+UP and DOWN switches, you’ll probably want to set the same limits for both.
+
+€ The LED ring is bright when the switch is active, otherwise dim.
+̍ MINI-DISPLAY OPTIONS FOR SONG FUNCTIONS
+The following Mini-Display Label options are selectively offered for the various Song Functions.
+Name – Shows the name of the target Song.
+Number – Shows the number of the target Song.
+P# – Shows the position of the target Song within a bank (Ex: P1 or P2)
+Custom – Shows any text you enter in the Custom Label field.
+Both # – For the toggle function, shows the positions of both Songs within the Set, with brackets around
+the one that is currently selected (ex: [S01] S02, or without brackets if neither is loaded: S01/S02
+Destination Name – For Toggle and Inc/Dec functions, shows the name of the Song that will load.
+Destination # – For Toggle and Inc/Dec functions, shows the number of the Song that will load.
+Current Name – For Toggle and Inc/Dec functions, shows the name of the current Song.
+Current # – For Toggle and Inc/Dec functions, shows the number of the current Song.
+Action – For the Inc/Dec function, shows the action of the switch and the step size. Ex: Song +1
+
+                                                           21
+                                                                                           1 Footswitch Functions
+
+
+
+SONG SECTION FUNCTIONS                                                                            Default Color: Red
+
+
+SONG SECTION: SELECT
+Creates a footswitch that loads a specific Section from the currently loaded Song.
+For example, a switch that selects Section 1, or Section 6.
+Section – Designates the desired Section by its number.
+€ The LED ring is bright when the designated Section is loaded, dim if it can be
+loaded, and off if the section is empty. (Empty Sections cannot be loaded.)
+
+SONG SECTION: TOGGLE
+“Toggle” functions allow you to switch back and forth between two designated entries.
+Primary Section and Secondary Section — These set the desired Sections by their numbers.
+€ The LED ring is bright when you toggle to the “Primary” Section, dim for the “Secondary” and off for “neither”.
+SONG SECTION: INCREMENT / DECREMENT (“INC / DEC”)
+“Inc / Dec” functions allow you to step up or down through the Sections of the current song.
+Increment/Decrement – Designates the step size, up or down. For example, to create a switch that
+goes to the next Section, select +1. For a switch that goes to the previous Section, select -1.
+Wrap – For the Inc/Dec function, this determines whether the list
+wraps from Section 6 to Section 1, and vice versa.
+Lower Limit, Upper Limit – These set the lowest and highest Section that can be accessed
+using an Inc/Dec Section switch, allowing you to restrict access to only certain Sections. If you’re
+using both UP and DOWN switches, you’ll probably want to set the same limits for both.
+
+€ The LED ring is bright while the switch is active, otherwise dim.
+̍ MINI-DISPLAY OPTIONS FOR SECTION FUNCTIONS
+The following Mini-Display Label options are selectively offered for the various Section Functions.
+Name – Shows the Name (first 10 characters) of the target Section.
+Number – Shows the Number of the target Section.
+Custom – Shows any text you enter in the Custom Label field.
+Destination Name – For Toggle and Inc/Dec functions, shows the name (first ten
+characters) of the Scene that will load when the switch is activated.
+Both # – For the toggle function, shows both Section numbers, with brackets around the one that is
+currently selected. Ex: Sect [1]2 or Sect 1[2] or without brackets if neither is loaded: Sect 1/2
+Current Name – For Toggle and Inc/Dec functions, shows the name of the current Section.
+Current # – For Toggle and Inc/Dec functions, shows the number of the current Section.
+Destination # – For Toggle and Inc/Dec functions, shows the number of
+the Section that will load when the switch is activated.
+Action – For the Increment/Decrement function, shows the action of the switch and the step size. Ex: Sect +1
+
+
+                                                           22
+1 Footswitch Functions
+
+
+
+LAYOUT LINKS
+“Layout Link” is not a category or function like “Preset: Select” or “Looper: Record”. Instead, this feature is
+built in to every other function, adding several parameters to every other footswitch function on the FC.
+With Layout Links, any Tap or Hold function can serve double-duty, also changing the layout
+on one or more of the other FC Controllers in your rig. Use one FC=6 to switch another. Use
+an FM3 to switch an FC-12. It’s all up to you how you use this powerful feature.
+Setting up a Layout Link is simple, but it does not appear on the EZ page. To use this feature, you must
+navigate to the desired footswitch under Setup: FC Controllers: Layouts (or use the Editor software).
+To create a Layout Link, simply designate the layout(s) you want to load on the desired FC unit(s).
+Layout Links fire after the primary function they are assigned to, but their timing isn’t based on a delay.
+Instead, the Layout Link always activates when the switch for its associated function is released.
+Don’t confuse Layout Link with the LAYOUT: SELECT function, which in comparison is a simple way
+for a footswitch to change the layout on the current unit. Layout Link is more far-reaching; it can
+automatically trigger layout sequences, or control multiple units at once without tap dancing.
+Layout Links can also change the View on the target controller.
+On the Axe-Fx III, every Tap or Hold function offers four Layout Link parameters. Why four? Because
+this is the maximum number of FC units in a daisy chain configuration. On the FM9 or FM3, the total
+is reduced to three -- one for the onboard switches and one for each of up to two connected FCs.
+
+LAYOUT LINKS EXAMPLE 1
+In this example, we’ll envision a set of two custom layouts. Let’s call them Layout 1:Presets and Layout 2: Scenes.
+Imagine that Layout 1 contains Bank: Up, Bank: Down, and several Preset switches (just like factory default
+Layout 1). If we add Layout Links on these preset switches, then activating one will do two things: select a preset
+and then change the Layout. Now, whenever we select a preset, the Scenes Layout can come up automatically!
+How would you get back to layout 1? There are many ways, but one that comes to mind would be to add a
+“Layout 1” switch right in Layout 2. This could even be a press and hold function if “real estate” is scarce.
+
+LAYOUT LINKS EXAMPLE 2
+In this example, we’ll envision one controller used exclusively for changing the layout on another controller.
+Imagine an FM3 or FC-6 that powers up with a custom layout that does nothing but change the
+layout on a different FC-6 or FC-12. Let’s begin with a look at this hypothetical “Layout 1: Command
+Center.” Each of the switches does nothing except execute layout links. To make it work, we set the
+tap functions of these switches so they actually load the very layout they are contained in. In other
+words, the tap function of every switch in Layout 1 is set to select Layout 1. Huh? Yes, this “trick” is
+required because the “Unassigned” function does not allow us to change the color or mini-LCD label,
+which we WANT to do. We set switch 1 as “PRESETS” (Green), switch 2 as “SCENES” (Red), etc.
+The layout links on these switches change the OTHER controller. If we used an FM3 and FC-12,
+that would be 36 different switch offerings. With an FC-6 and FC-12 we’d have Seventy-two. Can
+you imagine the possibilities of combining this example with the previous one? Here we have just
+one small glimpse at the flexibility and ease-of-use that the FC Layout System can provide.
+
+
+
+
+                                                          23
+                                                                                                                       1 Footswitch Functions
+
+
+
+GETTING HELP
+Our forum is a source of great help ranging from product Q&A to tutorials and more. Fractal Audio
+staff participate in the conversations, and response times can be very fast.
+Find it at https://forum.fractalaudio.com
+A wiki maintained by members of the Fractal Audio community, is also an excellent resource:
+https://wiki.fractalaudio.com
+You can get support directly from Fractal Audio Systems at: https://support.fractalaudio.com
+or internationally via our dealers listed at https://www.fractalaudio.com/international-ordering
+
+
+
+
+Legal Notices
+Fractal Audio Systems Blocks Guide. Contents Copyright © 2020. All Rights Reserved.
+No part of this publication may be reproduced in any form without the express written permission of Fractal Audio Systems.
+Fractal Audio, the Fractal Audio Systems logo, Axe‑Fx, FM9, FM3, Humbuster, UltraRes, FASLINK are trademarks of Fractal Audio Systems. Manufacturer
+names and product names mentioned herein are trademarks or registered trademarks of their respective owners, which are in no way associated with or
+affiliated with Fractal Audio Systems, LLC. The names are used only to illustrate sonic and performance characteristics.
+                                                                           24
+

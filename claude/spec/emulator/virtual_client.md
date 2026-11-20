@@ -23,7 +23,7 @@ Protocol it simulates: [FRACTAL.md](../../FRACTAL.md). Integration into the emul
 ## Behaviour
 
 - Behaves like a real device: answers queries and never pushes state changes. Only tempo beat and tuner data are pushed (simulates DIN with *Send Realtime Sysex* = ON).
-- Model selector: FM3 (default), FM9, Axe-Fx III. The model sets the model byte it answers to, the number of presets and the block counts.
+- Model selector: FM3 (default, like `fractalModel`), FM9, Axe-Fx III. The model sets the model byte it answers to, the number of presets and the block counts.
 - Dummy content is generated per preset (names, block set matching the model's block counts).
 - Changes made in the UI (preset, scene, bypass, channel, looper) behave like changes on the device: PySwitch only sees them through its polling.
 

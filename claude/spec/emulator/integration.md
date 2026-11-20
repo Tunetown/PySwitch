@@ -8,6 +8,9 @@ Changes outside the Fractal folders, approved by the user (each one is logged in
 | `web/htdocs/index.html`                     | script tags for the new JS files                                             |
 | `web/htdocs/test/index.html`                | script tags for the new JS files and tests                                   |
 | `web/htdocs/definitions/meta.json`          | Fractal parameter metadata (maintained manually, see `definitions/README.md`) |
+| `web/htdocs/templates/config-template.py`   | tokens for the Fractal client settings (`fractalModel`, `fractalBankSize`, `fractalPresetDisplayOffset`, [architecture.md 6](../python/architecture.md)) |
+| `web/htdocs/js/model/ConfigFile.js`         | defaults for these keys                                                      |
+| `web/htdocs/js/ui/misc/EmulatorSettings.js` | input fields for these keys                                                  |
 
 Version numbers and changelog: [SPEC.md 2](../../SPEC.md).
 
@@ -19,4 +22,4 @@ Version numbers and changelog: [SPEC.md 2](../../SPEC.md).
 
 ## Jasmine tests
 
-`test/spec/examples/fractal/*`, running the Fractal examples against the virtual Fractal client. At least the scope of the Kemper example tests, more where useful: preset select / up / down / banks, scene select / up / down, effect state and channel, display of absent blocks, preset and scene names, tuner, tempo, looper, request timeout behaviour, checksum errors (NAK).
+`test/spec/examples/fractal/*`, running the Fractal examples against the virtual Fractal client. At least the scope of the Kemper example tests, more where useful: every FC function of the client (bank, preset, scene, effect, tuner, tap tempo, looper; FRACTAL.md 7.2) incl. LED states off/dim/bright, labels, 2nd press, toggles, inc/dec with wrap and limits, preset load modes, display of absent blocks, target preset and scene names, client settings (model, bank size, display offset), request timeout behaviour, checksum errors (NAK).

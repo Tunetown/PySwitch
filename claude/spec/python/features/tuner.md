@@ -1,6 +1,7 @@
 # Feature: Tuner
 
 Protocol: [FRACTAL.md 3.2 (`11`), 3.3 (push), 5 (behaviour)](../../../FRACTAL.md). Architecture: [architecture.md](../architecture.md).
+FC function: Utility: Tuner ([FRACTAL.md 7](../../../FRACTAL.md)). Common action behaviour: [architecture.md 7](../architecture.md).
 Requires DIN MIDI and *Send Realtime Sysex* = ON on the device.
 
 
@@ -23,5 +24,5 @@ There is no tuner state query. The tuner counts as on while push data arrives, a
 
 ## Actions and callbacks
 
-- `TUNER_MODE` (`actions/tuner.py`): switch the tuner on/off; LED/display from `TUNER_STATE`.
+- `TUNER` (`actions/tuner.py`): switch the tuner on/off; LED bright while the tuner is on (from `TUNER_STATE`), else dim; Utility color; label "Tuner".
 - `TunerDisplayCallback` (`fractal/__init__.py`): same parameters as the Kemper one (splash switching, strobe, note names, calibration), using the Fractal mappings.
