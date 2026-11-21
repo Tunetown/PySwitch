@@ -6,7 +6,7 @@ from pyswitch.ui.ui import DisplayElement
 from pyswitch.ui.ui import DisplayBounds
 from pyswitch.ui.elements import DisplayLabel
 from pyswitch.controller.callbacks.parameter_display import ParameterDisplayCallback
-from pyswitch.clients.local.mappings.general import MAPPING_SEND_PROGRAM_CHANGE
+from pyswitch.clients.local.mappings.generic import MAPPING_SEND_PROGRAM_CHANGE
 # from pyswitch.controller.client import ClientParameterMapping
 
 

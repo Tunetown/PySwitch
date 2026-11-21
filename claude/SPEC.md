@@ -1,6 +1,6 @@
 # PySwitch Fractal Audio Client – Specification
 
-Status: **Spec phase.** No code is generated until the Go is given (section 11). Open points: [TBC.md](TBC.md).
+Status: **Implementation** (Go given 2026-11-20, progress in section 11). Open points: [TBC.md](TBC.md).
 
 
 ## 1. Goal
@@ -55,6 +55,7 @@ All Claude-related files are in `claude/`:
 | `spec/python/architecture.md`                            | Python client architecture                           |
 | `spec/python/features/*.md`                              | presets, scenes, effects, tuner, tempo, looper       |
 | `spec/emulator/virtual_client.md`, `integration.md`      | virtual client, emulator integration, Jasmine tests  |
+| `spec/emulator/parser.md`, `multi_client.md`             | client aware parser (import aliases), multiple clients in one configuration |
 | `spec/examples.md`, `spec/tests.md`                      | examples, Python tests                               |
 | `fractal_spec/`                                          | downloaded reference documents (FRACTAL.md 6)        |
 
@@ -110,7 +111,7 @@ See [spec/emulator/](spec/emulator/).
 3. No docstrings. A `#` comment line above every function/class; parameter documentation as aligned trailing comments in the signature.
 4. Section separators: long `####...####` lines between classes/sections.
 5. Action factories are UPPER_SNAKE_CASE functions returning `Action`/`PushButtonAction` (e.g. `EFFECT_STATE(...)`). Mapping factories are `MAPPING_XXX()` functions or static UPPER_SNAKE methods of a `<Client>Mappings` class. Mappings are created via `get(name = ...)` (singletons, unique names including all parameters).
-6. Callback classes: `<Client>XxxCallback`; module-private ones prefixed `_`. Private members `self.__x`, protected `self._x`.
+6. Callback classes: `<Client>XxxCallback`; module-private ones prefixed `_`. Private members `self.__x`, protected `self._x`. **Class names must be unique globally, across all clients**: no class may have the same name as a class of another client. Action and mapping names (factory functions) may be the same in different clients; the emulator has to handle that ([TBC.md](TBC.md) 1).
 7. Constants via `micropython.const()`; numeric enums as `const` class attributes; parallel tuples for names/colors indexed by the enum (order must match).
 8. Standard action parameters, in this order after the specific ones: `display`, `midi_channel = 1` (range 1..16, converted internally to `channel = midi_channel - 1`), `mode`, `id`, `use_leds`, `enable_callback`, then `color`/`text` and their callbacks.
 9. Relative imports inside `lib/pyswitch` (`from ....controller.actions import Action`). Optional heavy modules are imported lazily inside the branch that needs them (e.g. strobe controller).
@@ -132,7 +133,7 @@ See [spec/emulator/](spec/emulator/).
 
 - SPEC.md and the files it references are the only valid spec. On every change request they are updated and outdated content is removed.
 - **Single source of truth**: every piece of information exists in one place only; other places link to it.
-- All open points are in `TBC.md`; the user answers there and adds wishes there. On "reprocess", answered items are moved into the spec and removed from TBC.md.
+- All open points are in `TBC.md`; the user answers there and adds wishes there. Answered items are moved into the spec (or logged where they belong, e.g. LIB_CHANGES.md) and removed from TBC.md as soon as they are processed.
 - Long-term TODOs go to `TODO.md`.
 - Chat answers only give a short overview of what changed where; all real information is in the files.
 
@@ -142,4 +143,4 @@ See [spec/emulator/](spec/emulator/).
 1. ~~Check out `dev_midi` into this folder~~ – done (section 3).
 2. ~~Analyse PySwitch and the Fractal MIDI specs~~ – done (FRACTAL.md, FRACTAL_ANALYSIS.md).
 3. ~~Iterate the spec with `TBC.md` until TBC.md is empty~~ – done.
-4. **Go given (2026-11-20)**: ~~virtual client~~ (done) → ~~Python client~~ (done) → ~~unit tests~~ (done) → ~~examples, meta.json~~ (done) → ~~emulator settings, version and changelog~~ (done) → ~~Jasmine example tests for Fractal~~ (written, not yet run: [emulator/integration.md](spec/emulator/integration.md)) → **user runs the Jasmine tests** (example tests, parser tests; regenerates `actions.json`, `mappings.json`, `callbacks.json`).
+4. **Go given (2026-11-20)**: ~~virtual client~~ (done) → ~~Python client~~ (done) → ~~unit tests~~ (done) → ~~examples, meta.json~~ (done) → ~~emulator settings, version and changelog~~ (done) → ~~Jasmine example tests for Fractal~~ ([emulator/integration.md](spec/emulator/integration.md)) → ~~first Jasmine run, fixes~~ (2026-11-21: all Fractal example tests pass; fixes logged in LIB_CHANGES.md) → ~~client aware parser~~ ([emulator/parser.md](spec/emulator/parser.md), 2026-11-21; all Jasmine tests pass) → **open: multiple clients, step 2 (emulator): [emulator/multi_client.md](spec/emulator/multi_client.md), [TBC.md](TBC.md) 1**; the user regenerates `callbacks.json` (`FractalTunerDisplayCallback`).

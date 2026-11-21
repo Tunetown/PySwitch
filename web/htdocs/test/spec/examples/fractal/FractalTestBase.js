@@ -48,10 +48,22 @@ class FractalTestBase {
     }
 
     /**
-     * Presses and releases a switch, then waits for the communication
+     * Presses and releases a switch, then waits for the communication. The push is detected by PySwitch
+     * in the tick after pushing, so the hold time is simulated after that tick (ExampleTestRunner.simulateSwitchPress()
+     * advances the time in the same tick which detects the push, so holding would not be detected).
      */
     async press(name, holdTimeMillis = 100) {
-        await this.runner.simulateSwitchPress(this.input(name), holdTimeMillis);
+        const input = this.input(name);
+
+        await this.runner.runner.tick();
+
+        this.runner.setSwitch(input, true);
+        await this.runner.runner.tick();
+        await this.runner.runner.tick(holdTimeMillis);
+
+        this.runner.setSwitch(input, false);
+        await this.runner.runner.tick();
+
         await this.ticks();
     }
 

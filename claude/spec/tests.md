@@ -13,7 +13,7 @@
   | `test_fractal_actions_scene.py`       | scene actions                                                           |
   | `test_fractal_actions_effects.py`     | effect bypass and channel actions                                       |
   | `test_fractal_actions_utility.py`     | tuner, tap tempo, looper, encoders                                      |
-  | `test_fractal_callbacks.py`           | name/tempo display callbacks, `FractalCallback`, `TunerDisplayCallback` |
+  | `test_fractal_callbacks.py`           | name/tempo display callbacks, `FractalCallback`, `FractalTunerDisplayCallback` |
 
 - Every executable line of the Fractal package is run by these tests (line coverage; checked with the stdlib `trace` module, as `coverage` was not available locally).
 - The existing 427 tests must keep passing (560 in total).

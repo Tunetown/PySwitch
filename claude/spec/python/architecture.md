@@ -14,7 +14,7 @@ fractal/
                    FractalBlock (types, names, abbreviations, effect_id()), FractalState (instance
                    FRACTAL: client settings (6) and shared state), FractalParameterMapping,
                    FractalMappings (mappings used by several modules: preset, scene, status dump,
-                   tuner), FractalCallback (base of all action callbacks, 7), TunerDisplayCallback
+                   tuner), FractalCallback (base of all action callbacks, 7), FractalTunerDisplayCallback
   actions/         bank.py, preset.py, scene.py, effect_bypass.py (incl. FractalEffectCallback),
                    effect_channel.py, tuner.py, tap_tempo.py, looper.py, preset_select_encoder.py,
                    tempo_bpm.py

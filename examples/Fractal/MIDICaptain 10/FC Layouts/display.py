@@ -2,7 +2,7 @@ from micropython import const
 from pyswitch.colors import DEFAULT_LABEL_COLOR
 from pyswitch.ui.ui import DisplayElement, DisplayBounds
 from pyswitch.ui.elements import DisplayLabel
-from pyswitch.clients.fractal import TunerDisplayCallback
+from pyswitch.clients.fractal import FractalTunerDisplayCallback
 from pyswitch.clients.fractal.callbacks.preset_name import FractalPresetNameCallback
 from pyswitch.clients.fractal.callbacks.scene_name import FractalSceneNameCallback
 
@@ -73,7 +73,7 @@ DISPLAY_PAGE = DisplayLabel(
 )
 
 
-Splashes = TunerDisplayCallback(
+Splashes = FractalTunerDisplayCallback(
     splash_default = DisplayElement(
         bounds = DisplayBounds(0, 0, _DISPLAY_WIDTH, _DISPLAY_HEIGHT),
         children = [

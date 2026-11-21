@@ -157,8 +157,10 @@ class FractalPresetTests extends FractalTestBase {
         this.expectLed(presetSwitchName, FractalTestBase.COLOR_PRESET, "off");
         expect(await this.displayText("FractalPresetNameCallback")).toBe("");
 
+        // Back online: the requests sent while offline expire first (maxRequestLifetimeMillis = 2000, checked every 1000ms),
+        // so the values come back after up to ~3.5 seconds.
         this.client.setModel("FM3");
-        await this.ticks();
+        await this.ticks(40);
 
         expect(await this.displayText("FractalPresetNameCallback")).toBe("000 " + this.client.presets.getPresetName(0));
     }

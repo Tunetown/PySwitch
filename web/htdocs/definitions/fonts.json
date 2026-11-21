@@ -1,18 +1,1 @@
-[
-    "/fonts/PT60.pcf",
-    "/fonts/PT75.pcf",
-    "/fonts/H15.pcf",
-    "/fonts/RB80.pcf",
-    "/fonts/L100.pcf",
-    "/fonts/OS9.pcf",
-    "/fonts/OS8.pcf",
-    "/fonts/A15.pcf",
-    "/fonts/A12.pcf",
-    "/fonts/R25.pcf",
-    "/fonts/PT40.pcf",
-    "/fonts/OS10.pcf",
-    "/fonts/PTSans-NarrowBold-40.pcf",
-    "/fonts/H20.pcf",
-    "/fonts/IL9.pcf",
-    "/fonts/VM9.pcf"
-]
+["/fonts/A12.pcf","/fonts/A15.pcf","/fonts/H15.pcf","/fonts/H20.pcf","/fonts/IL9.pcf","/fonts/L100.pcf","/fonts/OS10.pcf","/fonts/OS8.pcf","/fonts/OS9.pcf","/fonts/PT40.pcf","/fonts/PT60.pcf","/fonts/PT75.pcf","/fonts/PTSans-NarrowBold-40.pcf","/fonts/R25.pcf","/fonts/RB80.pcf","/fonts/VM9.pcf"]

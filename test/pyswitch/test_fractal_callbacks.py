@@ -275,7 +275,7 @@ class TestFractalTunerDisplayCallback(unittest.TestCase):
         mapping = FractalMappings.TUNER_STATE()
         mapping.value = None
 
-        cb = TunerDisplayCallback(
+        cb = FractalTunerDisplayCallback(
             splash_default = element,
             process_overridden_actions = process_overridden_actions
         )
@@ -288,7 +288,7 @@ class TestFractalTunerDisplayCallback(unittest.TestCase):
         cb.init(appl)
 
         self.assertEqual([c["mapping"] for c in appl.client.register_calls], [mapping])
-        self.assertIsInstance(cb._TunerDisplayCallback__splash_tuner, TunerDisplay)
+        self.assertIsInstance(cb._FractalTunerDisplayCallback__splash_tuner, TunerDisplay)
 
         self.assertEqual(cb.get_root(), element)
 
@@ -328,7 +328,7 @@ class TestFractalTunerDisplayCallback(unittest.TestCase):
         self.assertEqual(cb.get_root(), element)
 
     def test_timeout(self):
-        cb = TunerDisplayCallback(splash_default = DisplayElement())
+        cb = FractalTunerDisplayCallback(splash_default = DisplayElement())
         appl = MockController(client = MockFractalClient())
         cb.init(appl)
         mapping = FractalMappings.TUNER_STATE()
@@ -342,7 +342,7 @@ class TestFractalTunerDisplayCallback(unittest.TestCase):
 
     def test_custom_splash(self):
         tuner = DisplayElement()
-        cb = TunerDisplayCallback(splash_default = DisplayElement(), splash_tuner = tuner)
+        cb = FractalTunerDisplayCallback(splash_default = DisplayElement(), splash_tuner = tuner)
 
         FractalMappings.TUNER_STATE().value = 1
         self.assertEqual(cb.get_root(), tuner)
@@ -351,13 +351,13 @@ class TestFractalTunerDisplayCallback(unittest.TestCase):
         with patch.dict(sys.modules, {
             "lib.pyswitch.controller.strobe": _MockStrobe
         }):
-            cb = TunerDisplayCallback(
+            cb = FractalTunerDisplayCallback(
                 splash_default = DisplayElement(),
                 strobe = True,
                 strobe_reverse = False
             )
 
-            strobe = cb._TunerDisplayCallback__strobe_controller
+            strobe = cb._FractalTunerDisplayCallback__strobe_controller
             self.assertIsInstance(strobe, _MockStrobe.StrobeController)
             self.assertEqual(strobe.mapping_state, FractalMappings.TUNER_STATE())
             self.assertEqual(strobe.mapping_deviance, FractalMappings.TUNER_DEVIANCE())

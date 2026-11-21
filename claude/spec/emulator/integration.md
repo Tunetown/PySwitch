@@ -13,6 +13,9 @@ Changes outside the Fractal folders, approved by the user (each one is logged in
 | `content/config.py`                         | commented documentation of these keys (the default config.py of the device)  |
 | `web/htdocs/js/PySwitchRunner.js`           | folders and module list of `pyswitch/clients/fractal` (the emulator loads every Python module explicitly) |
 | `web/htdocs/js/ui/misc/EmulatorSettings.js` | input fields for these keys (model and display offset as selects, stored as integers) |
+| `web/htdocs/python/parser/PySwitchParser.py` | additional imports for the Fractal parameter value classes used in `meta.json` (found by the Jasmine tests) |
+| `web/htdocs/python/parser/*`, `web/htdocs/js/model/parser/ParserInput.js` | client aware imports with aliases: [parser.md](parser.md) |
+| `web/htdocs/python/PySwitchRunner.py`       | no module level import of `pyswitch.misc` (else the time override of the tests does not work; found by the Jasmine tests) |
 
 Version numbers and changelog: [SPEC.md 2](../../SPEC.md).
 
@@ -36,4 +39,8 @@ The example test scripts (`.test.js` in each Fractal example folder, run by `Exa
 | `FractalTunerTests.js`   | tuner on/off from the device (push data and timeout) and from a switch                    |
 | `FractalTempoTests.js`   | Tap Tempo with BPM label                                                                  |
 
-Each example script walks through all pages of its example. Not covered by the example tests (no example uses them, or not reachable from an example): client settings other than the defaults and checksum errors (both covered by the Python unit tests and the virtual client checks). The tests could not be run during development (no browser/Pyodide available); the user runs them.
+Each example script walks through all pages of its example. Not covered by the example tests (no example uses them, or not reachable from an example): client settings other than the defaults and checksum errors (both covered by the Python unit tests and the virtual client checks).
+
+Timing in the tests: the simulated time advances 100 ms per tick, PySwitch polls every 200 ms (`updateInterval`). `FractalTestBase.press()` pushes the switch, lets PySwitch detect the push in one tick and only then advances the hold time (`ExampleTestRunner.simulateSwitchPress()` advances the time in the tick that detects the push, so holds would be detected as taps). After the device comes back online, the requests sent while offline have to expire first (up to ~3.5 s).
+
+The tests can also be run headless (Chromium via the DevTools protocol against the Docker container); the user runs them in the browser.

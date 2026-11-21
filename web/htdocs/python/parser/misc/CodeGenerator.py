@@ -2,8 +2,11 @@ import libcst
 
 class CodeGenerator:
 
-    def __init__(self, parser = None, file_id = None, insert_before_assign = None, format = False):
+    # names: Optional callback names(name, client) returning the name to be used in the code for a call
+    #        (for example an import alias of a client function)
+    def __init__(self, parser = None, file_id = None, insert_before_assign = None, format = False, names = None):
         self.parser = parser
+        self.names = names
         self.file_id = file_id
         self.insert_before_assign = insert_before_assign
         self.format = format
@@ -94,7 +97,7 @@ class CodeGenerator:
         level = self._resolve_assign_level(data, level)
 
         call = libcst.Call(
-            func = libcst.parse_expression(data["name"]),
+            func = libcst.parse_expression(self._call_name(data)),
             args = [
                 libcst.Arg(
                     keyword = libcst.parse_expression(arg["name"]) if ("name" in arg and arg["name"]) else None,
@@ -108,6 +111,13 @@ class CodeGenerator:
 
         return self._resolve_assign(call, data)
         
+    # Returns the name to be used in the code for a call
+    def _call_name(self, data):
+        if self.names and "client" in data and data["client"]:
+            return self.names(data["name"], data["client"])
+        
+        return data["name"]
+
     # Resolve assigns. Not recursive: Assigns to assigns are realized with separate nodes.
     def _resolve_assign(self, node, data):
         if "assign" in data and data["assign"]:

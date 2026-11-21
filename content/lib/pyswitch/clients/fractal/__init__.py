@@ -715,7 +715,7 @@ class FractalCallback(Callback):
 
 # Splash callback for the tuner display. Pass your default display root element as default splash, and a
 # tuner display will be shown while the tuner is on (requires DIN MIDI and Send Realtime Sysex = ON).
-class TunerDisplayCallback(Callback):
+class FractalTunerDisplayCallback(Callback):
     def __init__(self,
                  splash_default,                           # Default DisplayElement (root of default display to be shown when not in tuner mode)
                  splash_tuner = None,                      # DisplayElement to be shown when tuner is engaged

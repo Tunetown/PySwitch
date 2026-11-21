@@ -1928,7 +1928,7 @@
                 "parameters": []
             },
             {
-                "entityName": "TunerDisplayCallback",
+                "entityName": "FractalTunerDisplayCallback",
                 "splashRootParameter": "splash_default",
                 "parameters": [
                     {

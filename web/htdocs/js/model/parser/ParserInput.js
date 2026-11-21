@@ -113,6 +113,7 @@ class ParserInput extends ParserTreeElement {
         const prepped = actions.map((item) => { 
             return {
                 name: item.name,
+                client: item.client,      // Needed for the imports (actions of different clients can have the same name)
                 assign: item.assign,
                 arguments: item.arguments.map((arg) => {
                     if (item.name == "PagerAction" && arg.name == "pages") {

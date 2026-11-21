@@ -46,6 +46,9 @@ class FontListTests extends FunctionParserTestBase {
 
         crawl(fonts, "/fonts");
 
+        // Sort (on different file systems the result looks different)
+        ret.sort();
+
         return ret;
     }
 }

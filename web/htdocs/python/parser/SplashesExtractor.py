@@ -14,4 +14,5 @@ class SplashesExtractor(CodeExtractor):
         
     # Can be redefined to add/manipulate data for Call output nodes
     def postprocess_call(self, call_data):
-        call_data["client"] = self.parser.determine_client(call_data["name"], cst = self.cst)
+        # Import aliases (client functions with the same name of several clients) are resolved to the real name
+        (call_data["name"], call_data["client"]) = self.parser.resolve_name(call_data["name"], cst = self.cst)

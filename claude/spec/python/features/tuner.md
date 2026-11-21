@@ -24,4 +24,4 @@ There is no tuner state query. The state mechanism (push data, 1.5 s timeout, 0.
 ## Actions and callbacks
 
 - `TUNER` (`actions/tuner.py`): switches the tuner on/off; LED bright while the tuner is on, else dim; Utility color; label "Tuner".
-- `TunerDisplayCallback` (`fractal/__init__.py`): same parameters as the Kemper one (splash switching, strobe, note names, calibration) except `midi_channel` (SysEx only), using the Fractal mappings. Releasing any switch while the tuner is shown switches it off.
+- `FractalTunerDisplayCallback` (`fractal/__init__.py`): same parameters as the Kemper one (splash switching, strobe, note names, calibration) except `midi_channel` (SysEx only), using the Fractal mappings. Releasing any switch while the tuner is shown switches it off.

@@ -14,7 +14,9 @@ from wrappers.wrap_adafruit_midi import *
 from wrappers.wrap_time import *
 from wrappers.wrap_hid import *
 
-from pyswitch.misc import get_option
+# NOTE: Do not import pyswitch modules here! They must be imported inside the patched sys.modules context
+# (see _init_default), else they would use the unpatched modules (for example, pyswitch.misc would use the
+# real time module, so the time override used by the tests would not work).
 
 class PySwitchRunner:
     def __init__(self, container_id, dom_namespace, coverage, tickInterval = 10):
@@ -46,7 +48,7 @@ class PySwitchRunner:
             cov = coverage.Coverage()
             cov.start()
 
-        if get_option(config_py, "exploreMode", False):
+        if config_py and config_py.get("exploreMode", False):
             self._init_explore_mode(display_width, display_height)
         else:
             self._init_default(display_width, display_height, client, config_py, comm_settings)

@@ -13,6 +13,7 @@ from .misc.ImportExtractor import ImportExtractor
 from .misc.ReplaceAssignmentTransformer import ReplaceAssignmentTransformer
 from .misc.AddAssignmentTransformer import AddAssignmentTransformer
 from .misc.ClassNameExtractor import ClassNameExtractor
+from .misc.ClientImports import ClientImports
 
 class PySwitchParser:
 
@@ -26,6 +27,10 @@ class PySwitchParser:
         self.__available_actions = None
         self.__available_mappings = None
         self.__available_display_imports = None
+        self.__client_imports = None
+
+        # Client import plans for each file (see ClientImports), set when the trees are set
+        self.__plans = {}
         
     # Set the parser data from source code
     def from_source(self, inputs_py, display_py):
@@ -39,8 +44,11 @@ class PySwitchParser:
         if not self.__csts:
             raise Exception("No data loaded")
         
+        self._apply_client_imports()
         self._add_all_possible_imports()
         self._remove_unused_imports()
+
+        self.__plans = {}
 
         return {
             "inputs_py": self.__csts["inputs_py"].code,
@@ -73,11 +81,14 @@ class PySwitchParser:
         if "assign" in inputs_py: 
             inputs_py["assign"] = None
 
+        plan = self._plan_client_imports(inputs_py, "inputs_py")
+
         inputs_node = CodeGenerator(
             parser = self, 
             file_id = "inputs_py", 
             insert_before_assign = "Inputs",
-            format = True
+            format = True,
+            names = lambda name, client: plan.get((name, client), name)
         ).generate(inputs_py)
         
         self.set_assignment("Inputs", inputs_node, "inputs_py")
@@ -119,11 +130,14 @@ class PySwitchParser:
         if "assign" in splashes_py: 
             splashes_py["assign"] = None
 
+        plan = self._plan_client_imports(splashes_py, "display_py")
+
         splashes_node = CodeGenerator(
             parser = self, 
             file_id = "display_py", 
             insert_before_assign = "Splashes",
-            format = True
+            format = True,
+            names = lambda name, client: plan.get((name, client), name)
         ).generate(splashes_py)
         
         self.set_assignment("Splashes", splashes_node, "display_py")
@@ -145,6 +159,71 @@ class PySwitchParser:
         )
 
         self.__csts[file_id] = self.__csts[file_id].visit(adder)
+
+    ########################################################################################
+
+    # Client aware imports of the client functions (actions and mappings) ###############################
+
+    # Returns the ClientImports instance (created on first use)
+    def _client_imports(self):
+        if not self.__client_imports:
+            definitions = []
+
+            for file, key in [("definitions/actions.json", "actions"), ("definitions/mappings.json", "mappings")]:
+                with open(file) as f: clients = json.loads(f.read())
+
+                for client in clients:
+                    for d in client[key]:
+                        definitions.append({
+                            "name": d["name"],
+                            "importPath": d["importPath"],
+                            "client": client["client"]
+                        })
+
+            self.__client_imports = ClientImports(definitions, self.clients)
+
+        return self.__client_imports
+
+    # Creates and stores the import plan for a file from tree data (all calls with their clients)
+    def _plan_client_imports(self, data, file_id):
+        calls = []
+        self._collect_calls(data, calls)
+
+        plan = self._client_imports().plan(calls, self.__csts[file_id])
+        self.__plans[file_id] = plan
+        return plan
+
+    # Collects (name, client) of all calls in tree data (recursive)
+    def _collect_calls(self, data, calls):
+        if isinstance(data, list):
+            for item in data:
+                self._collect_calls(item, calls)
+
+        elif isinstance(data, dict):
+            if "name" in data and "client" in data and data["client"]:
+                calls.append((data["name"], data["client"]))
+
+            if "arguments" in data and data["arguments"]:
+                self._collect_calls(data["arguments"], calls)
+
+            if "value" in data:
+                self._collect_calls(data["value"], calls)
+
+    # Applies the client imports on all files. If the trees have not been set, the plan is created 
+    # from the current code.
+    def _apply_client_imports(self):
+        for file_id, extractor, assign_name in [
+            ("inputs_py", InputsExtractor, "Inputs"), 
+            ("display_py", SplashesExtractor, "Splashes")
+        ]:
+            plan = self.__plans.get(file_id, None)
+
+            if plan == None:
+                calls = []
+                self._collect_calls(extractor(self, self.__csts[file_id]).get(assign_name), calls)
+                plan = self._client_imports().plan(calls, self.__csts[file_id])
+
+            self.__csts[file_id] = self._client_imports().apply(self.__csts[file_id], plan)
 
     ########################################################################################
 
@@ -180,8 +259,14 @@ class PySwitchParser:
             for assign in AssignmentNameExtractor().get(self.__csts["display_py"])
         ]
 
-        # Add all imports
-        visitor = AddImportsTransformer(self.__available_actions + self.__available_mappings + display_assignments)
+        # Add all imports (client functions are handled by _apply_client_imports())
+        visitor = AddImportsTransformer(
+            [
+                d for d in self.__available_actions + self.__available_mappings
+                if not (ClientImports.handles(d) and self._client_imports().is_client_function(d["name"]))
+            ] +
+            display_assignments
+        )
         self.__csts["inputs_py"] = self.__csts["inputs_py"].visit(visitor)
 
     def _add_all_possible_imports_display(self):
@@ -321,6 +406,28 @@ class PySwitchParser:
                 "importPath": "pyswitch.clients.kemper"
             },
 
+            # Fractal parameter value classes (used as values in meta.json)
+            {
+                "name": "FractalLabel",
+                "importPath": "pyswitch.clients.fractal"
+            },
+            {
+                "name": "FractalBlock",
+                "importPath": "pyswitch.clients.fractal"
+            },
+            {
+                "name": "FractalChannel",
+                "importPath": "pyswitch.clients.fractal"
+            },
+            {
+                "name": "FractalPresetLoad",
+                "importPath": "pyswitch.clients.fractal"
+            },
+            {
+                "name": "FractalSecondPress",
+                "importPath": "pyswitch.clients.fractal"
+            },
+
             # Callbacks
             {
                 "name": "BinaryParameterCallback",
@@ -367,14 +474,26 @@ class PySwitchParser:
 
     # Determine the client for a type name. You must pass either cst or file_id.
     def determine_client(self, name, file_id = None, cst = None):
-        import_statement = self._determine_import_statement(name, self.__csts[file_id] if file_id else cst)
-        
-        if not import_statement:
+        return self.resolve_name(name, file_id = file_id, cst = cst)[1]
+    
+    # Returns (name, client) for a name used in the code: If the name is an import alias, the real name is
+    # returned. You must pass either cst or file_id.
+    def resolve_name(self, name, file_id = None, cst = None):
+        visitor = ImportExtractor(name)
+        (self.__csts[file_id] if file_id else cst).visit(visitor)
+
+        if not visitor.result:
             # No import statement: Perhaps this is defined in inputs.py directly, so we have no client
-            return "local"
+            return (name, "local")
+        
+        real_name = visitor.result_name if visitor.result_module else name
+
+        client = self._client_imports().client_of_module(visitor.result_module)
+        if client:
+            return (real_name, client)
 
         for client in self.clients:
-            if client in import_statement:
-                 return client
+            if client in visitor.result:
+                 return (real_name, client)
 
-        return "local"
+        return (real_name, "local")
