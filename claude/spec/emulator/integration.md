@@ -4,7 +4,7 @@ Changes outside the Fractal folders, approved by the user (each one is logged in
 
 | File                                        | Change                                                                       |
 |---------------------------------------------|------------------------------------------------------------------------------|
-| `web/htdocs/clients/ClientFactory.js`       | `case "fractal"` in `getInstance()`, detection in `estimateClient()`          |
+| `web/htdocs/clients/ClientFactory.js`       | `case "fractal"` in `getInstance()`, detection in `estimateClients()`         |
 | `web/htdocs/index.html`                     | script tags for the new JS files                                             |
 | `web/htdocs/test/index.html`                | script tags for the new JS files and tests                                   |
 | `web/htdocs/definitions/meta.json`          | Fractal parameter metadata (maintained manually, see `definitions/README.md`) |
@@ -15,6 +15,7 @@ Changes outside the Fractal folders, approved by the user (each one is logged in
 | `web/htdocs/js/ui/misc/EmulatorSettings.js` | input fields for these keys (model and display offset as selects, stored as integers) |
 | `web/htdocs/python/parser/PySwitchParser.py` | additional imports for the Fractal parameter value classes used in `meta.json` (found by the Jasmine tests) |
 | `web/htdocs/python/parser/*`, `web/htdocs/js/model/parser/ParserInput.js` | client aware imports with aliases: [parser.md](parser.md) |
+| several emulator files (client controller, UI, test runner) | multiple clients in one configuration: [multi_client.md](multi_client.md) |
 | `web/htdocs/python/PySwitchRunner.py`       | no module level import of `pyswitch.misc` (else the time override of the tests does not work; found by the Jasmine tests) |
 
 Version numbers and changelog: [SPEC.md 2](../../SPEC.md).

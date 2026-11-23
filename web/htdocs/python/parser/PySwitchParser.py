@@ -60,7 +60,8 @@ class PySwitchParser:
         if isinstance(data, str):
             return data
         
-        node = CodeGenerator(format = format).generate(data.to_py())
+        # Client functions existing in several clients are written with the qualified name, so the client is not lost (see ClientImports)
+        node = CodeGenerator(format = format, names = self._client_imports().code_string_name).generate(data.to_py())
         return libcst.parse_module("").code_for_node(node)
     
     # Returns a JSON encoded tree of the Inputs assign in inputs.py
@@ -193,7 +194,7 @@ class PySwitchParser:
         self.__plans[file_id] = plan
         return plan
 
-    # Collects (name, client) of all calls in tree data (recursive)
+    # Collects (name, client) of all calls in tree data (recursive), including the qualified names in code strings
     def _collect_calls(self, data, calls):
         if isinstance(data, list):
             for item in data:
@@ -208,6 +209,11 @@ class PySwitchParser:
 
             if "value" in data:
                 self._collect_calls(data["value"], calls)
+
+        elif isinstance(data, str):
+            # Code strings: qualified names of client functions (see ClientImports)
+            for call in self._client_imports().qualified_calls(data):
+                calls.append(call)
 
     # Applies the client imports on all files. If the trees have not been set, the plan is created 
     # from the current code.

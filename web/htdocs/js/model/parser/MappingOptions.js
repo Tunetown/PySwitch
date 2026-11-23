@@ -1,15 +1,31 @@
 class MappingOptions {
 
     /**
-     * Generates the mapping list for input
+     * Generates the mapping list for input. Mappings with the same name in several clients are distinguished by
+     * the client: the value uses the qualified name <CLIENT>_<NAME> (see claude/spec/emulator/parser.md), the 
+     * name shows the client.
      */
     async generate(parser, addNone = false) {
-        async function getMappingVariants(mapping) {
+        const clients = await parser.getAvailableMappings();
+
+        // Number of clients per mapping name
+        const numClients = new Map();
+        for (const client of clients) {
+            for (const mapping of client.mappings) {
+                numClients.set(mapping.name, (numClients.get(mapping.name) || 0) + 1);
+            }
+        }
+
+        async function getMappingVariants(mapping, clientId) {
+            const ambiguous = (numClients.get(mapping.name) > 1) && !mapping.name.includes(".");
+            const codeName = ambiguous ? (clientId.toUpperCase() + "_" + mapping.name) : mapping.name;
+            const displaySuffix = ambiguous ? (" (" + ClientFactory.getInstance(clientId).getDisplayName() + ")") : "";
+
             if (mapping.parameters.length == 0) {
                 return [
                     {
-                        name: mapping.name + "()",
-                        value: mapping.name + "()"
+                        name: mapping.name + "()" + displaySuffix,
+                        value: codeName + "()"
                     }
                 ]
             }
@@ -22,8 +38,8 @@ class MappingOptions {
                     const argStr = param.name + " = " + value.value
 
                     ret.push({
-                        name: mapping.name + "(" + argStr + ")",
-                        value: mapping.name + "(" + argStr + ")"
+                        name: mapping.name + "(" + argStr + ")" + displaySuffix,
+                        value: codeName + "(" + argStr + ")"
                     });
                 }
             }
@@ -43,8 +59,6 @@ class MappingOptions {
             return ret;
         }
 
-        const clients = await parser.getAvailableMappings();
-        
         let ret = addNone ? [
              {
                 name: "None",
@@ -54,7 +68,7 @@ class MappingOptions {
 
         for (const client of clients) {
             for(const mapping of client.mappings) {
-                const vars = await getMappingVariants(mapping);
+                const vars = await getMappingVariants(mapping, client.client);
                 
                 ret = ret.concat(vars)
             }

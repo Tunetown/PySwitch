@@ -34,6 +34,18 @@ describe('Client Imports', function() {
         await tests.codeStrings();
     });
 
+    it('Qualified names of same-named client functions in code strings', async function() {
+        await tests.qualifiedCodeStrings();
+    });
+
+    it('Unchanged code strings keep the clients', async function() {
+        await tests.unchangedCodeStrings();
+    });
+
+    it('Mapping options distinguish same-named mappings', async function() {
+        await tests.mappingOptions();
+    });
+
     it('Run PySwitch with two clients', async function() {
         await tests.runTwoClients();
     });

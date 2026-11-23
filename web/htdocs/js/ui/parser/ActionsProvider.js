@@ -13,6 +13,7 @@ class ActionsProvider extends BrowserProvider {
      * {
      *      onSelect,
      *      preselectActionName,     // Name of the action to preselect
+     *      preselectClient,         // Client ID of the action to preselect (actions of different clients can have the same name)
      *      target                   // The target hardware model name, e.g. AdafruitSwitch
      * }
      */
@@ -53,6 +54,7 @@ class ActionsProvider extends BrowserProvider {
         );
 
         const clients = await this.#parser.getAvailableActions();
+        let preselectClientMatches = false;
         
         for (const client of clients) {
             for (const action of client.actions) {   
@@ -73,9 +75,15 @@ class ActionsProvider extends BrowserProvider {
                     }
                 )
 
-                // Pre-selection by option
+                // Pre-selection by option (name and client; by name only if there is no action of the client)
                 if (this.#options.preselectActionName && (action.name == this.#options.preselectActionName)) {
-                    this.preselectEntry = entry;
+                    if (client.client == this.#options.preselectClient) {
+                        this.preselectEntry = entry;
+                        preselectClientMatches = true;
+
+                    } else if (!preselectClientMatches) {
+                        this.preselectEntry = entry;
+                    }
                 }                 
 
                 this.#toc.children.push(

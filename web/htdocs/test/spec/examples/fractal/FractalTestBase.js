@@ -22,10 +22,10 @@ class FractalTestBase {
     }
 
     /**
-     * The virtual Fractal client
+     * The virtual Fractal client (the configuration may use further clients)
      */
     get client() {
-        return this.runner.runner.client;
+        return this.runner.runner.clients.fractal;
     }
 
     /**

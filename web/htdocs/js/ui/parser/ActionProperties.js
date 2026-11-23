@@ -270,6 +270,7 @@ class ActionProperties {
 
         return {
             name: getName(),
+            client: this.actionDefinition.meta.client.id,      // Actions of different clients can have the same name
             assign: this.inputs.get('assign').val(),
             arguments: this.actionDefinition.parameters
                 .filter((param) => {

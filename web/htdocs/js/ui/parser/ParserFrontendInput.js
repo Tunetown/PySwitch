@@ -373,6 +373,7 @@ class ParserFrontendInput {
             // Preselected action
             {
                 name: action.name,
+                client: action.client,
                 definitionName: action.definitionName,
                 assign: action.assign,
                 arguments: action.arguments(),
@@ -441,6 +442,7 @@ class ParserFrontendInput {
                     {
                         onSelect: onSelect,
                         preselectActionName: preselectAction ? (preselectAction.definitionName ? preselectAction.definitionName : preselectAction.name) : null,
+                        preselectClient: preselectAction ? preselectAction.client : null,
                         target: this.definition.data.model.type
                     }                    
                 )

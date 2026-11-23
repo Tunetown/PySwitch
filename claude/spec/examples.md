@@ -11,6 +11,8 @@ All examples work with the default settings (FM3, bank size 5); each `README.md`
 
 Each example has a `communication.py` that routes `PA_MIDICAPTAIN_DIN_MIDI` to and from the application and sets no protocol ([architecture.md 4](python/architecture.md)).
 
-The emulator needs the examples to pick the client (`estimateClient()` checks for `pyswitch.clients.fractal` in `inputs.py`).
+The emulator picks the clients from the imports (`estimateClients()`, [emulator/multi_client.md](emulator/multi_client.md)).
+
+Multiple clients: `examples/Kemper and Fractal/MIDICaptain Nano 4/Rigs and Scenes/` – switches 1/2: Kemper rigs 1/2 (hold 1: Kemper Tap Tempo), switches A/B: Fractal scenes 1/2 (hold A: Fractal Tap Tempo; both Tap Tempo actions are imported with aliases), display: Kemper rig name and Fractal scene name, Kemper tuner display. Kemper via USB with `KemperBidirectionalProtocol`, Fractal via DIN; the README explains the MIDI channels. Example test: Fractal scenes and scene name, Kemper rig selection.
 
 Verification (no hardware): each example has been run in CPython with a real `Controller`/`UiController`, mocked hardware modules and a fake device answering the 3rd-party commands (page switching, preset/bank/scene selection, labels, tuner hold).

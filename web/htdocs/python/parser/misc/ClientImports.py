@@ -8,6 +8,10 @@ from .AddImportsTransformer import AddImportsTransformer
 # If functions with the same name from several clients are used in one file, they are imported with an alias
 # <CLIENT>_<NAME> (for example "from pyswitch.clients.fractal.actions.tap_tempo import TAP_TEMPO as FRACTAL_TAP_TEMPO").
 # A client whose function is already imported without alias keeps the plain name.
+#
+# Code strings (values passed as code, for example mappings selected in the UI) write functions which exist in
+# several clients with the qualified name <CLIENT>_<NAME> (same as the alias), so the client is not lost. In the
+# code, qualified names are replaced by the planned name (plain or alias).
 class ClientImports:
 
     # Returns if a definition (entry of actions.json or mappings.json) is handled here. Definitions with
@@ -39,6 +43,45 @@ class ClientImports:
     @staticmethod
     def alias(name, client):
         return client.upper() + "_" + name
+
+    # Returns if functions with the name exist in several clients
+    def is_ambiguous(self, name):
+        return name in self.__by_name and len(self.__by_name[name]) > 1
+
+    # Returns the name of a client function in code strings: qualified (<CLIENT>_<NAME>) if functions 
+    # with the name exist in several clients, else the plain name.
+    def code_string_name(self, name, client):
+        if client and self.is_ambiguous(name) and client in self.__by_name[name]:
+            return self.alias(name, client)
+        
+        return name
+
+    # Resolves a qualified name (see code_string_name()) to (name, client), or returns None
+    def resolve_qualified(self, qualified):
+        for client in self.clients:
+            prefix = client.upper() + "_"
+            if not qualified.startswith(prefix):
+                continue
+
+            name = qualified[len(prefix):]
+            if self.is_ambiguous(name) and client in self.__by_name[name]:
+                return (name, client)
+            
+        return None
+
+    # Returns a list of (name, client) for all qualified names (see code_string_name()) in a code string
+    def qualified_calls(self, code):
+        if not any((client.upper() + "_") in code for client in self.clients):
+            return []
+        
+        try:
+            node = libcst.parse_expression(code)
+        except Exception:
+            return []
+        
+        visitor = _QualifiedNamesVisitor(self)
+        node.visit(visitor)
+        return visitor.result
 
     # Returns the client for a module path (pyswitch.clients.<client>[.xxx]), or None
     def client_of_module(self, module):
@@ -97,6 +140,15 @@ class ClientImports:
 
             if client not in clients:
                 clients.append(client)
+
+        # Qualified names (from code strings) are replaced by the planned names
+        renames = {}
+        for (name, client), binding in plan.items():
+            if self.is_ambiguous(name) and self.alias(name, client) != binding:
+                renames[self.alias(name, client)] = binding
+
+        if renames:
+            cst = cst.visit(_RenameNamesTransformer(renames))
 
         # Remove conflicting imports
         remover = _RemoveConflictingImportsTransformer(required)
@@ -242,3 +294,39 @@ class _NameUsageVisitor(libcst.CSTVisitor):
                 self.bound.add(alias.asname.name.value)
             else:
                 self.bound.add(libcst.parse_module("").code_for_node(alias.name))
+
+
+# Collects (name, client) of the qualified names (see ClientImports.code_string_name()) in a code string
+class _QualifiedNamesVisitor(libcst.CSTVisitor):
+    def __init__(self, client_imports):
+        self.client_imports = client_imports
+        self.result = []
+
+    def visit_Name(self, node):
+        resolved = self.client_imports.resolve_qualified(node.value)
+        if resolved and resolved not in self.result:
+            self.result.append(resolved)
+
+
+# Renames names in the code (outside of imports, attribute names and keywords): renames is a dict old => new name
+class _RenameNamesTransformer(libcst.CSTTransformer):
+    def __init__(self, renames):
+        self.renames = renames
+
+    def visit_Import(self, node):
+        return False
+
+    def visit_ImportFrom(self, node):
+        return False
+
+    def leave_Name(self, original_node, updated_node):
+        if updated_node.value in self.renames:
+            return updated_node.with_changes(value = self.renames[updated_node.value])
+        
+        return updated_node
+    
+    def leave_Attribute(self, original_node, updated_node):
+        return updated_node.with_changes(attr = original_node.attr)
+    
+    def leave_Arg(self, original_node, updated_node):
+        return updated_node.with_changes(keyword = original_node.keyword)

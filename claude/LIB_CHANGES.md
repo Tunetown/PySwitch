@@ -13,10 +13,36 @@ Format, one block per file:
 
 ### web/htdocs/clients/ClientFactory.js
 - `ClientFactory.getInstance()` – `case "fractal"` returns a `FractalClient`.
-- `ClientFactory.estimateClient()` – returns `"fractal"` when `inputs.py` uses `pyswitch.clients.fractal`.
+- `ClientFactory.estimateClient()` – replaced by `estimateClients()`: all clients imported in `inputs.py` or `display.py` (Kemper, Boomerang, Fractal), default Kemper ([spec/emulator/multi_client.md](spec/emulator/multi_client.md)).
+- `ClientFactory.getProtocolClient()` – new: the client with a protocol code, else the main client.
+
+### web/htdocs/js/ClientController.js
+- Multiple clients ([spec/emulator/multi_client.md](spec/emulator/multi_client.md)): `init()` stores the clients; new `update()`; `#scan()` scans per client (new `#scanClient()`), `#scanPort()` takes a client ID instead of the configuration; `#connect()` uses the new `#connectAll()` (real ports and virtual clients, combined with a `CombinedMidiWrapper`).
+
+### web/htdocs/js/Controller.js
+- `Controller.restart()` – calls `ClientController.update()` after the changes (clients added/removed by editing).
+
+### web/htdocs/js/ui/PySwitchUI.js
+- `PySwitchUI.showVirtualClient()` – replaced by `showVirtualClients()` (one tab per virtual client); members `#virtualClientTabs`, `#virtualClientUIs`.
+
+### web/htdocs/js/ui/parser/ActionProperties.js
+- `ActionProperties.createActionDefinition()` – returns the `client` of the action.
+
+### web/htdocs/js/ui/parser/ActionsProvider.js
+- `ActionsProvider.getToc()` – new option `preselectClient`: preselects the action of that client (same-named actions of several clients).
+
+### web/htdocs/js/ui/parser/ParserFrontendInput.js
+- `ParserFrontendInput.promptEditAction()`, `#promptAction()` – pass the client of the edited action for the preselection.
+
+### web/htdocs/js/model/parser/MappingOptions.js
+- `MappingOptions.generate()` – mappings with the same name in several clients: value with the qualified name `<CLIENT>_<NAME>`, name with the client's display name ([spec/emulator/parser.md](spec/emulator/parser.md)).
+
+### web/htdocs/test/spec/misc/ConfigRunner.js
+- `ConfigRunner.run()` – one virtual client per client (`clients` by client ID); `client` is the virtual client or a `CombinedMidiWrapper`.
 
 ### web/htdocs/js/PySwitchRunner.js
 - `PySwitchRunner` (module loading) – creates the folders `pyswitch/clients/fractal{,/actions,/mappings,/callbacks}` and loads all modules of the Fractal Python client; loads the new parser module `parser/misc/ClientImports.py`.
+- `PySwitchRunner.run()` – the client passed to the Python runner (protocol code) is `ClientFactory.getProtocolClient()`.
 
 ### CHANGELOG.md
 - New entry for PySwitch 2.4.11 / Emulator 2.4.11.18.
@@ -46,14 +72,17 @@ Format, one block per file:
 
 ### web/htdocs/index.html
 - Script tags for `clients/fractal/*.js` and `clients/fractal/virtual/*.js`.
+- Script tag for `js/midi/CombinedMidiWrapper.js`.
 
 ### web/htdocs/test/index.html
 - Script tags for `clients/fractal/*.js` and `clients/fractal/virtual/*.js` (without the UI), and for the test classes in `spec/examples/fractal/`.
 - Script tags for the client import tests (`spec/parser/ClientImportsTests.js`, `spec/test_client_imports.js`).
+- Script tags for `js/midi/CombinedMidiWrapper.js`, `js/model/parser/MappingOptions.js` and the multiple client tests (`spec/misc/MultiClientTests.js`, `spec/test_multi_client.js`).
 
 ### web/htdocs/python/parser/PySwitchParser.py
 - `PySwitchParser._generate_action_imports()` – additional imports for the Fractal parameter value classes used in `meta.json` (`FractalLabel`, `FractalBlock`, `FractalChannel`, `FractalPresetLoad`, `FractalSecondPress`), like `KemperEffectSlot` for Kemper. Without them, configurations using these values failed after editing in the emulator (`NameError: name 'FractalLabel' is not defined`).
 - Client aware imports ([spec/emulator/parser.md](spec/emulator/parser.md)): `__init__()` (plans, `ClientImports` instance), `set_inputs()`/`set_splashes()` (import plan from the tree data, passed to the `CodeGenerator`), `to_source()` (`_apply_client_imports()` before the name based imports), new `_client_imports()`, `_plan_client_imports()`, `_collect_calls()`, `_apply_client_imports()`, `resolve_name()`; `determine_client()` uses `resolve_name()` (client from the module path `pyswitch.clients.<client>`); `_add_all_possible_imports_inputs()` no longer adds the client functions (actions and mappings without a dot in the name).
+- `code_for_data_node()` writes functions existing in several clients with the qualified name `<CLIENT>_<NAME>`; `_collect_calls()` adds the qualified names in code strings to the import plan ([spec/emulator/parser.md](spec/emulator/parser.md)).
 
 ### web/htdocs/python/parser/misc/CodeGenerator.py
 - `CodeGenerator.__init__()` – optional `names(name, client)` callback; new `_call_name()`, used by `_generate_call_node()` (import aliases of client functions).

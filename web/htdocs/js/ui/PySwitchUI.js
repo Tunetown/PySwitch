@@ -14,8 +14,8 @@ class PySwitchUI {
     #deviceElement = null;
     #changeMarker = null;
     #popupContainer = null;
-    #virtualClientTab = null;
-    #virtualClientUI = null;
+    #virtualClientTabs = [];       // Tabs of the virtual clients (one per client)
+    #virtualClientUIs = [];
     #additionalInputsContainer = null;
     #additionalInputsButton = null;
     midiMonitor = null;
@@ -704,38 +704,35 @@ class PySwitchUI {
     }
 
     /**
-     * Shows the passed virtual client as a tab.
+     * Shows the passed virtual clients (array, can be empty) as tabs, one tab per virtual client.
      */
-    showVirtualClient(client) {
-        if (this.#virtualClientTab) {
-            this.tabs.remove(this.#virtualClientTab);
-            this.#virtualClientTab = null;
+    showVirtualClients(clients) {
+        for (const tab of this.#virtualClientTabs) {
+            this.tabs.remove(tab);
         }
+        this.#virtualClientTabs = [];
 
-        if (this.#virtualClientUI) {
-            this.#virtualClientUI.destroy();
-            this.#virtualClientUI = null;
+        for (const ui of this.#virtualClientUIs) {
+            ui.destroy();
         }
+        this.#virtualClientUIs = [];
         
-        if (client) {
+        for (const client of clients) {
             // Try to create an UI
-            let virtualClientElement = null;
-            this.#virtualClientTab = new Tab(
-                virtualClientElement = $('<div class="virtual-client"/>'),
+            const virtualClientElement = $('<div class="virtual-client"/>');
+            const tab = new Tab(
+                virtualClientElement,
                 client.name ? client.name : "Virtual Client"
             )
 
-            this.#virtualClientUI = client.getUserInterface(virtualClientElement);    
+            const ui = client.getUserInterface(virtualClientElement);    
+            if (!ui) continue;   // No UI
 
-            if (this.#virtualClientUI) {
-                // Add tab
-                this.tabs.add(
-                    this.#virtualClientTab
-                );
-            } else {
-                // No UI
-                this.#virtualClientTab = null;
-            }
+            this.#virtualClientUIs.push(ui);
+            this.#virtualClientTabs.push(tab);
+
+            // Add tab
+            this.tabs.add(tab);
         }
     }
 

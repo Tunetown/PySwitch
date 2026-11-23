@@ -4,6 +4,7 @@
 class ClientController {
 
     #controller = null;
+    #clientIds = null;  // Clients of the configuration at the last initialization
 
     state = null;
     current = null;     // Name of the currently connected client
@@ -20,6 +21,8 @@ class ClientController {
     async init(config) {
         if (!config) return;
 
+        this.#clientIds = await ClientFactory.estimateClients(config);
+
         const savedClient = this.state.get("selectedClient");
 
         if (savedClient == "auto" || !savedClient) {
@@ -30,40 +33,80 @@ class ClientController {
     }
             
     /**
-     * Scans for clients of the given Configuration instance.
+     * Has to be called after the configuration has been changed: if the clients used by the configuration
+     * have changed (for example the first action of another client has been added), the clients are initialized again.
      */
-    async #scan(config) {
-        const that = this;
+    async update(config) {
+        if (!config) return;
 
-        await this.#controller.midi.scan(
-            // connect
-            async function(portName, attempts) {
-                return await that.#scanPort(config, portName, attempts);
-            },
+        const clientIds = await ClientFactory.estimateClients(config);
+        if (this.#clientIds && (JSON.stringify(clientIds) == JSON.stringify(this.#clientIds))) return;
 
-            // finish
-            async function(connection, attempts) {
-                // Reject all older attempts
-                (new Map(attempts)).forEach(async function(attempt) {
-                    await attempt.reject();
-                });
-
-                //console.log("Found client: ", connection);
-                await that.#connect(connection.name, config);
-            },
-
-            // onFailure
-            async function() {
-                await that.#connect("virtual-" + (await ClientFactory.estimateClient(config)), config);
-            }
-        );
+        await this.init(config);
     }
 
     /**
-     * Checks if the passed port is connected to a valid client for the Configuration. If yes, returns
-     * a connection object.
+     * Scans for all clients of the given Configuration instance (a configuration can control several clients).
+     * Each client is searched on its own port. Clients which are not found are connected to their virtual client.
      */
-    async #scanPort(config, portName, attempts, timeoutMillis = 1000) {
+    async #scan(config) {
+        const clientIds = await ClientFactory.estimateClients(config);
+
+        const connections = await Promise.all(
+            clientIds.map((clientId) => this.#scanClient(clientId))
+        );
+
+        const portNames = [];
+        const virtualClientIds = [];
+
+        for (let i = 0; i < clientIds.length; ++i) {
+            if (!connections[i]) {
+                virtualClientIds.push(clientIds[i]);
+
+            } else if (!portNames.includes(connections[i].name)) {
+                portNames.push(connections[i].name);
+            }
+        }
+
+        await this.#connectAll(portNames, virtualClientIds);
+    }
+
+    /**
+     * Scans all ports for a client. Resolves to the connection object of the first port the client answers on,
+     * or null if not found.
+     */
+    async #scanClient(clientId) {
+        const that = this;
+
+        return new Promise(function(resolve) {
+            that.#controller.midi.scan(
+                // connect
+                async function(portName, attempts) {
+                    return await that.#scanPort(clientId, portName, attempts);
+                },
+
+                // finish
+                async function(connection, attempts) {
+                    // Reject all older attempts
+                    (new Map(attempts)).forEach(async function(attempt) {
+                        await attempt.reject();
+                    });
+
+                    resolve(connection);
+                },
+
+                // onFailure
+                async function() {
+                    resolve(null);
+                }
+            );
+        });
+    }
+
+    /**
+     * Checks if the passed port is connected to the passed client. If yes, returns a connection object.
+     */
+    async #scanPort(clientId, portName, attempts, timeoutMillis = 1000) {
         console.log("Scan for client on " + portName)
         const that = this;
 
@@ -83,8 +126,7 @@ class ClientController {
         const output = findPort(this.#controller.midi.midiAccess.outputs);
 
         return new Promise(async function(resolve, reject) {
-            // Get a detector for the config
-            const clientId = await ClientFactory.estimateClient(config);
+            // Get a detector for the client
             const client = ClientFactory.getInstance(clientId);
             const detector = await client.getClientDetector();
             
@@ -130,57 +172,81 @@ class ClientController {
     }
 
     /**
-     * Connect to a client directly by port name (can be virtual)
+     * Connect to a client directly by port name (can be virtual: "virtual-<clientId>")
      */
     async #connect(portName) {
+        if (portName.startsWith("virtual-")) {
+            await this.#connectAll([], [portName.substring(8)]);
+        } else {
+            await this.#connectAll([portName], []);
+        }
+    }
+
+    /**
+     * Connects PySwitch to the passed real ports and virtual clients (by client ID). Messages are sent to all 
+     * of them, and the messages of all of them are received (like the MIDI routing on the controller).
+     */
+    async #connectAll(portNames, virtualClientIds) {
         // First throw out the old MIDI wrapper, if any
         this.#controller.pyswitch.setMidiWrapper(null);
         this.current = null;
 
-        // In case its a virtual client, use that one        
-        if (portName.startsWith("virtual")) {
-            // Create virtual client
-            const clientId = portName.substring(8);
+        const wrappers = [];
+        const virtualClients = [];
+
+        // Virtual clients
+        for (const clientId of virtualClientIds) {
             const client = ClientFactory.getInstance(clientId);
-            const virtualClient = await client.getVirtualClient();
+            const virtualClient = client ? (await client.getVirtualClient()) : null;
             
             if (!virtualClient) {
-                //this.#controller.ui.message("Client " + clientId + " does not support a virtual client device", "W");
                 console.warn("Client " + clientId + " does not support a virtual client device");
-                this.#controller.ui.showVirtualClient(null);
-                return;
+                continue;
             }
 
-            // Set client as MIDI wrapper to connect it to PySwitch
-            this.#controller.pyswitch.setMidiWrapper(virtualClient);
-            
-            // Run the virtual client
+            wrappers.push(virtualClient);
+            virtualClients.push(virtualClient);
+        }
+
+        // Real devices
+        const connectedPorts = [];
+        for (const portName of portNames) {
+            const port = this.#controller.midi.getPortPair(portName);       
+            if (!port) continue;
+
+            wrappers.push(new PythonMidiWrapper(this.#controller.midi, port.input, port.output));
+            connectedPorts.push(port.name);
+        }
+
+        // Show user interfaces of the virtual clients, if any
+        this.#controller.ui.showVirtualClients(virtualClients);
+
+        if (wrappers.length == 0) {
+            if (virtualClientIds.length == 0) {
+                this.#controller.ui.message("No client device connected", "I");
+            }
+            return;
+        }
+
+        // Set a MIDI wrapper to connect the clients to PySwitch
+        const midiWrapper = (wrappers.length == 1) ? wrappers[0] : new CombinedMidiWrapper(wrappers);
+        this.#controller.pyswitch.setMidiWrapper(midiWrapper);
+        
+        // Run the virtual clients
+        for (const virtualClient of virtualClients) {
             virtualClient.run(5);
-
-            // Show user interface, if any
-            this.#controller.ui.showVirtualClient(virtualClient);
-
-            this.#controller.ui.message("Connecting to " + virtualClient.name, "I");
-            return;
-        } else {
-            this.#controller.ui.showVirtualClient(null);
         }
-
-        // Search for the ports
-        const port = this.#controller.midi.getPortPair(portName);       
-        if (!port) {
-            this.#controller.ui.message("No client device connected", "I");
-            return;
-        }
-
-        // Set a MIDI wrapper to connect the ports to PySwitch
-        this.#controller.pyswitch.setMidiWrapper(
-            new PythonMidiWrapper(this.#controller.midi, port.input, port.output)
-        );
 
         // Report states etc.
-        this.#controller.ui.message("Connecting to client at " + port.name, "I");
+        for (const virtualClient of virtualClients) {
+            this.#controller.ui.message("Connecting to " + virtualClient.name, "I");
+        }
+        for (const portName of connectedPorts) {
+            this.#controller.ui.message("Connecting to client at " + portName, "I");
+        }
 
-        this.current = portName;
+        if (connectedPorts.length > 0) {
+            this.current = connectedPorts.join(", ");
+        }
     }
 }

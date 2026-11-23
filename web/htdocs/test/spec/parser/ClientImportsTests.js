@@ -158,6 +158,95 @@ class ClientImportsTests extends TestBase {
     }
 
     /**
+     * Qualified names (<CLIENT>_<NAME>) in code strings: one client uses the name (plain import, the qualified
+     * name is replaced), two clients use it (aliases)
+     */
+    async qualifiedCodeStrings() {
+        // One client
+        for (const client of ["kemper", "fractal"]) {
+            const config = await this.#config([], []);
+            const src = await this.#setMappingSwitches(config, [client.toUpperCase() + "_MAPPING_TEMPO_BPM()"]);
+
+            expect(src).toContain(ClientImportsTests.#importTempoBpm(client) + "\n");
+            expect(src).toContain("mapping = MAPPING_TEMPO_BPM()");
+            expect(src).not.toContain(" as ");
+            expect(src).not.toContain("_MAPPING_TEMPO_BPM");
+            expect(src).not.toContain(client == "kemper" ? "pyswitch.clients.fractal" : "pyswitch.clients.kemper");
+
+            await this.#expectMappings(config, [client.toUpperCase() + "_MAPPING_TEMPO_BPM()"]);
+        }
+
+        // Two clients
+        const config = await this.#config([], []);
+        const src = await this.#setMappingSwitches(config, ["FRACTAL_MAPPING_TEMPO_BPM()", "KEMPER_MAPPING_TEMPO_BPM()"]);
+
+        expect(src).toContain(ClientImportsTests.#importTempoBpm("fractal") + " as FRACTAL_MAPPING_TEMPO_BPM\n");
+        expect(src).toContain(ClientImportsTests.#importTempoBpm("kemper") + " as KEMPER_MAPPING_TEMPO_BPM\n");
+        expect(src).toContain("mapping = FRACTAL_MAPPING_TEMPO_BPM()");
+        expect(src).toContain("mapping = KEMPER_MAPPING_TEMPO_BPM()");
+
+        await this.#expectMappings(config, ["FRACTAL_MAPPING_TEMPO_BPM()", "KEMPER_MAPPING_TEMPO_BPM()"]);
+    }
+
+    /**
+     * Setting the actions read from the configuration (as the UI does when editing any action) keeps the clients
+     * of same-named mappings in the arguments
+     */
+    async unchangedCodeStrings() {
+        const config = await this.#config(
+            [
+                ClientImportsTests.#importTempoBpm("kemper"),
+                ClientImportsTests.#importTempoBpm("fractal") + " as FRACTAL_MAPPING_TEMPO_BPM",
+                "from pyswitch.clients.local.actions.binary_switch import BINARY_SWITCH"
+            ],
+            [
+                "BINARY_SWITCH(mapping = MAPPING_TEMPO_BPM())",
+                "BINARY_SWITCH(mapping = FRACTAL_MAPPING_TEMPO_BPM())"
+            ]
+        );
+        await this.#expectMappings(config, ["KEMPER_MAPPING_TEMPO_BPM()", "FRACTAL_MAPPING_TEMPO_BPM()"]);
+
+        const input = await config.parser.input("1");
+        const actions = await input.actions();
+
+        input.setActions(actions.map((item) => {
+            return {
+                name: item.name,
+                client: item.client,
+                assign: item.assign,
+                arguments: item.arguments()
+            }
+        }));
+
+        const src = (await config.get()).inputs_py;
+        expect(src).toContain(ClientImportsTests.#importTempoBpm("kemper") + "\n");
+        expect(src).toContain(ClientImportsTests.#importTempoBpm("fractal") + " as FRACTAL_MAPPING_TEMPO_BPM\n");
+        expect(src).toContain("mapping = MAPPING_TEMPO_BPM()");
+        expect(src).toContain("mapping = FRACTAL_MAPPING_TEMPO_BPM()");
+        expect(src).not.toContain("KEMPER_MAPPING_TEMPO_BPM");
+
+        await this.#expectMappings(config, ["KEMPER_MAPPING_TEMPO_BPM()", "FRACTAL_MAPPING_TEMPO_BPM()"]);
+    }
+
+    /**
+     * Mapping options of the UI: same-named mappings of several clients are distinguishable and carry their client
+     */
+    async mappingOptions() {
+        const config = await this.#config([], []);
+        const options = await (new MappingOptions()).generate(config.parser);
+
+        const values = options.map((item) => item.value);
+        const names = options.map((item) => item.name);
+
+        expect(values).toContain("FRACTAL_MAPPING_TEMPO_BPM()");
+        expect(values).toContain("KEMPER_MAPPING_TEMPO_BPM()");
+        expect(values).not.toContain("MAPPING_TEMPO_BPM()");
+
+        expect(new Set(values).size).toBe(values.length, "Duplicate mapping option values");
+        expect(new Set(names).size).toBe(names.length, "Duplicate mapping option names");
+    }
+
+    /**
      * Same-named actions of two clients in one configuration also work in PySwitch
      */
     async runTwoClients() {
@@ -223,6 +312,49 @@ class ClientImportsTests extends TestBase {
         );
 
         return (await config.get()).inputs_py;
+    }
+
+    /**
+     * Sets BINARY_SWITCH actions with the passed mapping code strings on switch 1. Returns the new inputs.py
+     */
+    async #setMappingSwitches(config, mappings) {
+        const input = await config.parser.input("1");
+
+        input.setActions(
+            mappings.map((mapping) => {
+                return {
+                    name: "BINARY_SWITCH",
+                    client: "local",
+                    arguments: [
+                        {
+                            name: "mapping",
+                            value: mapping
+                        }
+                    ]
+                }
+            })
+        );
+
+        return (await config.get()).inputs_py;
+    }
+
+    /**
+     * Expects the mapping arguments (code strings, as used by the UI) of the actions of switch 1
+     */
+    async #expectMappings(config, expected) {
+        const input = await config.parser.input("1");
+        const actions = await input.actions();
+
+        expect(actions.map((item) => item.argument("mapping"))).toEqual(expected);
+    }
+
+    /**
+     * Import line of MAPPING_TEMPO_BPM of a client
+     */
+    static #importTempoBpm(client) {
+        return (client == "kemper")
+            ? "from pyswitch.clients.kemper.mappings.tempo_bpm import MAPPING_TEMPO_BPM"
+            : "from pyswitch.clients.fractal.mappings.tempo import MAPPING_TEMPO_BPM";
     }
 
     /**
