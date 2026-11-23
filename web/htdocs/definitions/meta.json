@@ -2876,5 +2876,1057 @@
                 "parameters": []
             }
         ]
+    },
+    {
+        "client": "fractal_II",
+        "entities": [
+            {
+                "entityName": "default",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "advanced": 1,
+                        "type": "any",
+                        "comment": "This ID can be used for Paging or custom callbacks, to enable/disable the action."
+                    },
+                    {
+                        "name": "use_leds",
+                        "type": "bool",
+                        "comment": "If disabled, the action will not use the LEDs of the switch"
+                    },
+                    {
+                        "name": "display",
+                        "type": "select",
+                        "comment": "Display label to visualize the action state (must be defined in display.py)"
+                    },
+                    {
+                        "name": "color",
+                        "type": "color",
+                        "advanced": 1,
+                        "comment": "Color override (default: the Fractal FC category color)"
+                    },
+                    {
+                        "name": "enable_callback",
+                        "advanced": 2,
+                        "type": "any",
+                        "comment": "Callback instance to control dynamically whether the action should be enabled."
+                    },
+                    {
+                        "name": "text",
+                        "type": "text",
+                        "advanced": 1,
+                        "unconvertedValues": [
+                            "None"
+                        ],
+                        "comment": "Custom label text (overrides the label option)"
+                    },
+                    {
+                        "name": "mode",
+                        "type": "select",
+                        "comment": "Mode of operation",
+                        "advanced": 1,
+                        "values": [
+                            {
+                                "name": "Latch",
+                                "value": "PushButtonAction.LATCH"
+                            },
+                            {
+                                "name": "Latch (momentary on long press)",
+                                "value": "PushButtonAction.HOLD_MOMENTARY"
+                            },
+                            {
+                                "name": "Momentary",
+                                "value": "PushButtonAction.MOMENTARY"
+                            },
+                            {
+                                "name": "Momentary (inverse)",
+                                "value": "PushButtonAction.MOMENTARY_INVERSE"
+                            },
+                            {
+                                "name": "Enable only",
+                                "value": "PushButtonAction.ENABLE"
+                            },
+                            {
+                                "name": "Disable only",
+                                "value": "PushButtonAction.DISABLE"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "preset",
+                        "type": "int",
+                        "range": {
+                            "min": 0,
+                            "max": "MAX_PRESET"
+                        },
+                        "comment": "Preset number (0-based: 0 is shown as 001 on the device)"
+                    },
+                    {
+                        "name": "position",
+                        "type": "int",
+                        "range": {
+                            "min": 1,
+                            "max": 12
+                        },
+                        "comment": "Position in the bank (must not exceed the bank size set in config.py)"
+                    },
+                    {
+                        "name": "bank",
+                        "type": "int",
+                        "range": {
+                            "min": 1,
+                            "max": "NUM_BANKS"
+                        }
+                    },
+                    {
+                        "name": "scene",
+                        "type": "int",
+                        "range": {
+                            "min": 1,
+                            "max": "NUM_SCENES"
+                        }
+                    },
+                    {
+                        "name": "step",
+                        "type": "int",
+                        "range": {
+                            "min": -10,
+                            "max": 10
+                        },
+                        "comment": "Step size: positive steps up, negative steps down"
+                    },
+                    {
+                        "name": "wrap",
+                        "type": "bool",
+                        "comment": "Wrap around at the ends"
+                    },
+                    {
+                        "name": "lower_limit",
+                        "type": "any",
+                        "advanced": 1,
+                        "comment": "Lowest value that can be selected (None: no limit)"
+                    },
+                    {
+                        "name": "upper_limit",
+                        "type": "any",
+                        "advanced": 1,
+                        "comment": "Highest value that can be selected (None: no limit)"
+                    },
+                    {
+                        "name": "second_press_previous",
+                        "type": "bool",
+                        "comment": "Pressing the switch again selects the previous one"
+                    },
+                    {
+                        "name": "preset_load",
+                        "type": "select",
+                        "comment": "Preset to load when the bank changes",
+                        "values": [
+                            {
+                                "name": "None (only select the bank)",
+                                "value": "FractalIIPresetLoad.NONE"
+                            },
+                            {
+                                "name": "First preset of the bank",
+                                "value": "FractalIIPresetLoad.FIRST"
+                            },
+                            {
+                                "name": "Same position in the bank",
+                                "value": "FractalIIPresetLoad.CURRENT"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "flash_millis",
+                        "type": "int",
+                        "advanced": 1,
+                        "range": {
+                            "min": 10,
+                            "max": 1000
+                        }
+                    },
+                    {
+                        "name": "block",
+                        "type": "select",
+                        "comment": "Block (effect ID)",
+                        "values": [
+                            {
+                                "name": "Compressor 1",
+                                "value": "FractalIIBlock.COMPRESSOR_1"
+                            },
+                            {
+                                "name": "Compressor 2",
+                                "value": "FractalIIBlock.COMPRESSOR_2"
+                            },
+                            {
+                                "name": "Graphic EQ 1",
+                                "value": "FractalIIBlock.GRAPHIC_EQ_1"
+                            },
+                            {
+                                "name": "Graphic EQ 2",
+                                "value": "FractalIIBlock.GRAPHIC_EQ_2"
+                            },
+                            {
+                                "name": "Graphic EQ 3",
+                                "value": "FractalIIBlock.GRAPHIC_EQ_3"
+                            },
+                            {
+                                "name": "Graphic EQ 4",
+                                "value": "FractalIIBlock.GRAPHIC_EQ_4"
+                            },
+                            {
+                                "name": "Param EQ 1",
+                                "value": "FractalIIBlock.PARAMETRIC_EQ_1"
+                            },
+                            {
+                                "name": "Param EQ 2",
+                                "value": "FractalIIBlock.PARAMETRIC_EQ_2"
+                            },
+                            {
+                                "name": "Param EQ 3",
+                                "value": "FractalIIBlock.PARAMETRIC_EQ_3"
+                            },
+                            {
+                                "name": "Param EQ 4",
+                                "value": "FractalIIBlock.PARAMETRIC_EQ_4"
+                            },
+                            {
+                                "name": "Amp 1",
+                                "value": "FractalIIBlock.AMP_1"
+                            },
+                            {
+                                "name": "Amp 2",
+                                "value": "FractalIIBlock.AMP_2"
+                            },
+                            {
+                                "name": "Cab 1",
+                                "value": "FractalIIBlock.CAB_1"
+                            },
+                            {
+                                "name": "Cab 2",
+                                "value": "FractalIIBlock.CAB_2"
+                            },
+                            {
+                                "name": "Reverb 1",
+                                "value": "FractalIIBlock.REVERB_1"
+                            },
+                            {
+                                "name": "Reverb 2",
+                                "value": "FractalIIBlock.REVERB_2"
+                            },
+                            {
+                                "name": "Delay 1",
+                                "value": "FractalIIBlock.DELAY_1"
+                            },
+                            {
+                                "name": "Delay 2",
+                                "value": "FractalIIBlock.DELAY_2"
+                            },
+                            {
+                                "name": "Multi Delay 1",
+                                "value": "FractalIIBlock.MULTI_DELAY_1"
+                            },
+                            {
+                                "name": "Multi Delay 2",
+                                "value": "FractalIIBlock.MULTI_DELAY_2"
+                            },
+                            {
+                                "name": "Chorus 1",
+                                "value": "FractalIIBlock.CHORUS_1"
+                            },
+                            {
+                                "name": "Chorus 2",
+                                "value": "FractalIIBlock.CHORUS_2"
+                            },
+                            {
+                                "name": "Flanger 1",
+                                "value": "FractalIIBlock.FLANGER_1"
+                            },
+                            {
+                                "name": "Flanger 2",
+                                "value": "FractalIIBlock.FLANGER_2"
+                            },
+                            {
+                                "name": "Rotary 1",
+                                "value": "FractalIIBlock.ROTARY_1"
+                            },
+                            {
+                                "name": "Rotary 2",
+                                "value": "FractalIIBlock.ROTARY_2"
+                            },
+                            {
+                                "name": "Phaser 1",
+                                "value": "FractalIIBlock.PHASER_1"
+                            },
+                            {
+                                "name": "Phaser 2",
+                                "value": "FractalIIBlock.PHASER_2"
+                            },
+                            {
+                                "name": "Wah 1",
+                                "value": "FractalIIBlock.WAH_1"
+                            },
+                            {
+                                "name": "Wah 2",
+                                "value": "FractalIIBlock.WAH_2"
+                            },
+                            {
+                                "name": "Formant 1",
+                                "value": "FractalIIBlock.FORMANT_1"
+                            },
+                            {
+                                "name": "Volume 1",
+                                "value": "FractalIIBlock.VOLUME_1"
+                            },
+                            {
+                                "name": "Volume 2",
+                                "value": "FractalIIBlock.VOLUME_2"
+                            },
+                            {
+                                "name": "Volume 3",
+                                "value": "FractalIIBlock.VOLUME_3"
+                            },
+                            {
+                                "name": "Volume 4",
+                                "value": "FractalIIBlock.VOLUME_4"
+                            },
+                            {
+                                "name": "TremPan 1",
+                                "value": "FractalIIBlock.TREMOLO_1"
+                            },
+                            {
+                                "name": "TremPan 2",
+                                "value": "FractalIIBlock.TREMOLO_2"
+                            },
+                            {
+                                "name": "Pitch 1",
+                                "value": "FractalIIBlock.PITCH_1"
+                            },
+                            {
+                                "name": "Pitch 2",
+                                "value": "FractalIIBlock.PITCH_2"
+                            },
+                            {
+                                "name": "Filter 1",
+                                "value": "FractalIIBlock.FILTER_1"
+                            },
+                            {
+                                "name": "Filter 2",
+                                "value": "FractalIIBlock.FILTER_2"
+                            },
+                            {
+                                "name": "Filter 3",
+                                "value": "FractalIIBlock.FILTER_3"
+                            },
+                            {
+                                "name": "Filter 4",
+                                "value": "FractalIIBlock.FILTER_4"
+                            },
+                            {
+                                "name": "Drive 1",
+                                "value": "FractalIIBlock.DRIVE_1"
+                            },
+                            {
+                                "name": "Drive 2",
+                                "value": "FractalIIBlock.DRIVE_2"
+                            },
+                            {
+                                "name": "Enhancer 1",
+                                "value": "FractalIIBlock.ENHANCER_1"
+                            },
+                            {
+                                "name": "FX Loop 1",
+                                "value": "FractalIIBlock.FX_LOOP_1"
+                            },
+                            {
+                                "name": "Mixer 1",
+                                "value": "FractalIIBlock.MIXER_1"
+                            },
+                            {
+                                "name": "Mixer 2",
+                                "value": "FractalIIBlock.MIXER_2"
+                            },
+                            {
+                                "name": "Synth 1",
+                                "value": "FractalIIBlock.SYNTH_1"
+                            },
+                            {
+                                "name": "Synth 2",
+                                "value": "FractalIIBlock.SYNTH_2"
+                            },
+                            {
+                                "name": "Vocoder 1",
+                                "value": "FractalIIBlock.VOCODER_1"
+                            },
+                            {
+                                "name": "Megatap 1",
+                                "value": "FractalIIBlock.MEGATAP_1"
+                            },
+                            {
+                                "name": "Crossover 1",
+                                "value": "FractalIIBlock.CROSSOVER_1"
+                            },
+                            {
+                                "name": "Crossover 2",
+                                "value": "FractalIIBlock.CROSSOVER_2"
+                            },
+                            {
+                                "name": "Gate 1",
+                                "value": "FractalIIBlock.GATE_1"
+                            },
+                            {
+                                "name": "Gate 2",
+                                "value": "FractalIIBlock.GATE_2"
+                            },
+                            {
+                                "name": "Ring Mod 1",
+                                "value": "FractalIIBlock.RING_MOD_1"
+                            },
+                            {
+                                "name": "MultiComp 1",
+                                "value": "FractalIIBlock.MULTIBAND_COMP_1"
+                            },
+                            {
+                                "name": "MultiComp 2",
+                                "value": "FractalIIBlock.MULTIBAND_COMP_2"
+                            },
+                            {
+                                "name": "Quad Chorus 1",
+                                "value": "FractalIIBlock.QUAD_CHORUS_1"
+                            },
+                            {
+                                "name": "Quad Chorus 2",
+                                "value": "FractalIIBlock.QUAD_CHORUS_2"
+                            },
+                            {
+                                "name": "Resonator 1",
+                                "value": "FractalIIBlock.RESONATOR_1"
+                            },
+                            {
+                                "name": "Resonator 2",
+                                "value": "FractalIIBlock.RESONATOR_2"
+                            },
+                            {
+                                "name": "Looper 1",
+                                "value": "FractalIIBlock.LOOPER_1"
+                            },
+                            {
+                                "name": "Tone Match 1",
+                                "value": "FractalIIBlock.TONE_MATCH_1"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "channel",
+                        "type": "select",
+                        "comment": "Channel",
+                        "values": [
+                            {
+                                "name": "X",
+                                "value": "FractalIIChannel.X"
+                            },
+                            {
+                                "name": "Y",
+                                "value": "FractalIIChannel.Y"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "cc",
+                        "type": "int",
+                        "advanced": 1,
+                        "range": {
+                            "min": 0,
+                            "max": 127
+                        },
+                        "comment": "CC number as set on the device (I/O > CTRL)"
+                    },
+                    {
+                        "name": "midi_channel",
+                        "type": "int",
+                        "advanced": 1,
+                        "range": {
+                            "min": 1,
+                            "max": 16
+                        },
+                        "comment": "MIDI channel of the device (I/O > MIDI > Channel)"
+                    }
+                ]
+            },
+            {
+                "entityName": "BANK_SELECT",
+                "category": "bank",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content, like the Mini-Display Label option of the Fractal FC controllers",
+                        "values": [
+                            {
+                                "name": "Number",
+                                "value": "FractalIILabel.NUMBER"
+                            },
+                            {
+                                "name": "Current number",
+                                "value": "FractalIILabel.CURRENT_NUM"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "BANK_TOGGLE",
+                "category": "bank",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "primary",
+                        "type": "int",
+                        "range": {
+                            "min": 1,
+                            "max": "NUM_BANKS"
+                        }
+                    },
+                    {
+                        "name": "secondary",
+                        "type": "int",
+                        "range": {
+                            "min": 1,
+                            "max": "NUM_BANKS"
+                        }
+                    },
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content, like the Mini-Display Label option of the Fractal FC controllers",
+                        "values": [
+                            {
+                                "name": "Both numbers",
+                                "value": "FractalIILabel.BOTH_NUM"
+                            },
+                            {
+                                "name": "Number",
+                                "value": "FractalIILabel.NUMBER"
+                            },
+                            {
+                                "name": "Current number",
+                                "value": "FractalIILabel.CURRENT_NUM"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "BANK_INC_DEC",
+                "category": "bank",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content, like the Mini-Display Label option of the Fractal FC controllers",
+                        "values": [
+                            {
+                                "name": "Action (+1)",
+                                "value": "FractalIILabel.ACTION"
+                            },
+                            {
+                                "name": "Number",
+                                "value": "FractalIILabel.NUMBER"
+                            },
+                            {
+                                "name": "Current number",
+                                "value": "FractalIILabel.CURRENT_NUM"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "PRESET_SELECT",
+                "category": "rig",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content, like the Mini-Display Label option of the Fractal FC controllers",
+                        "values": [
+                            {
+                                "name": "Name",
+                                "value": "FractalIILabel.NAME"
+                            },
+                            {
+                                "name": "Number",
+                                "value": "FractalIILabel.NUMBER"
+                            },
+                            {
+                                "name": "Position in bank (P1)",
+                                "value": "FractalIILabel.P_NUM"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "PRESET_SELECT_IN_BANK",
+                "category": "rig",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content, like the Mini-Display Label option of the Fractal FC controllers",
+                        "values": [
+                            {
+                                "name": "Name",
+                                "value": "FractalIILabel.NAME"
+                            },
+                            {
+                                "name": "Number",
+                                "value": "FractalIILabel.NUMBER"
+                            },
+                            {
+                                "name": "Position in bank (P1)",
+                                "value": "FractalIILabel.P_NUM"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "PRESET_TOGGLE",
+                "category": "rig",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "primary",
+                        "type": "int",
+                        "range": {
+                            "min": 0,
+                            "max": "MAX_PRESET"
+                        }
+                    },
+                    {
+                        "name": "secondary",
+                        "type": "int",
+                        "range": {
+                            "min": 0,
+                            "max": "MAX_PRESET"
+                        }
+                    },
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content, like the Mini-Display Label option of the Fractal FC controllers",
+                        "values": [
+                            {
+                                "name": "Both numbers",
+                                "value": "FractalIILabel.BOTH_NUM"
+                            },
+                            {
+                                "name": "Destination name",
+                                "value": "FractalIILabel.DESTINATION_NAME"
+                            },
+                            {
+                                "name": "Destination number",
+                                "value": "FractalIILabel.DESTINATION_NUM"
+                            },
+                            {
+                                "name": "Current name",
+                                "value": "FractalIILabel.CURRENT_NAME"
+                            },
+                            {
+                                "name": "Current number",
+                                "value": "FractalIILabel.CURRENT_NUM"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "PRESET_TOGGLE_IN_BANK",
+                "category": "rig",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "primary",
+                        "type": "int",
+                        "range": {
+                            "min": 1,
+                            "max": 12
+                        }
+                    },
+                    {
+                        "name": "secondary",
+                        "type": "int",
+                        "range": {
+                            "min": 1,
+                            "max": 12
+                        }
+                    },
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content, like the Mini-Display Label option of the Fractal FC controllers",
+                        "values": [
+                            {
+                                "name": "Both positions",
+                                "value": "FractalIILabel.BOTH_P_NUM"
+                            },
+                            {
+                                "name": "Both numbers",
+                                "value": "FractalIILabel.BOTH_NUM"
+                            },
+                            {
+                                "name": "Destination name",
+                                "value": "FractalIILabel.DESTINATION_NAME"
+                            },
+                            {
+                                "name": "Destination number",
+                                "value": "FractalIILabel.DESTINATION_NUM"
+                            },
+                            {
+                                "name": "Current name",
+                                "value": "FractalIILabel.CURRENT_NAME"
+                            },
+                            {
+                                "name": "Current number",
+                                "value": "FractalIILabel.CURRENT_NUM"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "PRESET_INC_DEC",
+                "category": "rig",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content, like the Mini-Display Label option of the Fractal FC controllers",
+                        "values": [
+                            {
+                                "name": "Action (+1)",
+                                "value": "FractalIILabel.ACTION"
+                            },
+                            {
+                                "name": "Destination name",
+                                "value": "FractalIILabel.DESTINATION_NAME"
+                            },
+                            {
+                                "name": "Destination number",
+                                "value": "FractalIILabel.DESTINATION_NUM"
+                            },
+                            {
+                                "name": "Current name",
+                                "value": "FractalIILabel.CURRENT_NAME"
+                            },
+                            {
+                                "name": "Current number",
+                                "value": "FractalIILabel.CURRENT_NUM"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "SCENE_SELECT",
+                "category": "morph",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content, like the Mini-Display Label option of the Fractal FC controllers",
+                        "values": [
+                            {
+                                "name": "Number",
+                                "value": "FractalIILabel.NUMBER"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "SCENE_TOGGLE",
+                "category": "morph",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "primary",
+                        "type": "int",
+                        "range": {
+                            "min": 1,
+                            "max": "NUM_SCENES"
+                        }
+                    },
+                    {
+                        "name": "secondary",
+                        "type": "int",
+                        "range": {
+                            "min": 1,
+                            "max": "NUM_SCENES"
+                        }
+                    },
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content, like the Mini-Display Label option of the Fractal FC controllers",
+                        "values": [
+                            {
+                                "name": "Both numbers",
+                                "value": "FractalIILabel.BOTH_NUM"
+                            },
+                            {
+                                "name": "Destination number",
+                                "value": "FractalIILabel.DESTINATION_NUM"
+                            },
+                            {
+                                "name": "Current number",
+                                "value": "FractalIILabel.CURRENT_NUM"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "SCENE_INC_DEC",
+                "category": "morph",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content, like the Mini-Display Label option of the Fractal FC controllers",
+                        "values": [
+                            {
+                                "name": "Action (+1)",
+                                "value": "FractalIILabel.ACTION"
+                            },
+                            {
+                                "name": "Destination number",
+                                "value": "FractalIILabel.DESTINATION_NUM"
+                            },
+                            {
+                                "name": "Current number",
+                                "value": "FractalIILabel.CURRENT_NUM"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "EFFECT_BYPASS",
+                "category": "effects",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content, like the Mini-Display Label option of the Fractal FC controllers",
+                        "values": [
+                            {
+                                "name": "Long name",
+                                "value": "FractalIILabel.LONG_NAME"
+                            },
+                            {
+                                "name": "Short name",
+                                "value": "FractalIILabel.SHORT_NAME"
+                            },
+                            {
+                                "name": "Short name + channel",
+                                "value": "FractalIILabel.SHORT_NAME_CHANNEL"
+                            },
+                            {
+                                "name": "Long name + channel",
+                                "value": "FractalIILabel.LONG_NAME_CHANNEL"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "EFFECT_CHANNEL_SELECT",
+                "category": "effects",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "second_press",
+                        "type": "select",
+                        "comment": "Pressing the switch while its channel is active",
+                        "values": [
+                            {
+                                "name": "None",
+                                "value": "None"
+                            },
+                            {
+                                "name": "Smart Bypass (engage/bypass)",
+                                "value": "FractalIISecondPress.SMART_BYPASS"
+                            },
+                            {
+                                "name": "Other Channel",
+                                "value": "FractalIISecondPress.PREVIOUS_CHANNEL"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content, like the Mini-Display Label option of the Fractal FC controllers",
+                        "values": [
+                            {
+                                "name": "Short name + channel",
+                                "value": "FractalIILabel.SHORT_NAME_CHANNEL"
+                            },
+                            {
+                                "name": "Long name + channel",
+                                "value": "FractalIILabel.LONG_NAME_CHANNEL"
+                            },
+                            {
+                                "name": "Short name",
+                                "value": "FractalIILabel.SHORT_NAME"
+                            },
+                            {
+                                "name": "Long name",
+                                "value": "FractalIILabel.LONG_NAME"
+                            },
+                            {
+                                "name": "Destination channel",
+                                "value": "FractalIILabel.DESTINATION_CHANNEL"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "EFFECT_CHANNEL_TOGGLE",
+                "category": "effects",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content, like the Mini-Display Label option of the Fractal FC controllers",
+                        "values": [
+                            {
+                                "name": "Both channels",
+                                "value": "FractalIILabel.BOTH_CHANNELS"
+                            },
+                            {
+                                "name": "Destination channel",
+                                "value": "FractalIILabel.DESTINATION_CHANNEL"
+                            },
+                            {
+                                "name": "Current channel",
+                                "value": "FractalIILabel.CURRENT_CHANNEL"
+                            },
+                            {
+                                "name": "Short name",
+                                "value": "FractalIILabel.SHORT_NAME"
+                            },
+                            {
+                                "name": "Long name",
+                                "value": "FractalIILabel.LONG_NAME"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "TUNER",
+                "category": "tuner",
+                "target": "AdafruitSwitch",
+                "parameters": []
+            },
+            {
+                "entityName": "TAP_TEMPO",
+                "category": "tempo",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content, like the Mini-Display Label option of the Fractal FC controllers",
+                        "values": [
+                            {
+                                "name": "Function name",
+                                "value": "FractalIILabel.FUNCTION"
+                            },
+                            {
+                                "name": "Tempo (BPM)",
+                                "value": "FractalIILabel.BPM"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "FractalIIPresetNameCallback",
+                "target": "DisplayLabel",
+                "parameters": [
+                    {
+                        "name": "show_name",
+                        "type": "bool"
+                    },
+                    {
+                        "name": "show_number",
+                        "type": "bool"
+                    },
+                    {
+                        "name": "default_text",
+                        "type": "text"
+                    }
+                ]
+            },
+            {
+                "entityName": "FractalIISceneNameCallback",
+                "target": "DisplayLabel",
+                "parameters": [
+                    {
+                        "name": "default_text",
+                        "type": "text"
+                    }
+                ]
+            },
+            {
+                "entityName": "FractalIITempoDisplayCallback",
+                "target": "DisplayLabel",
+                "parameters": []
+            },
+            {
+                "entityName": "FractalIITunerDisplayCallback",
+                "splashRootParameter": "splash_default",
+                "parameters": [
+                    {
+                        "name": "splash_default",
+                        "hidden": true
+                    },
+                    {
+                        "name": "splash_tuner",
+                        "hidden": true
+                    },
+                    {
+                        "name": "color_in_tune",
+                        "type": "color"
+                    },
+                    {
+                        "name": "color_out_of_tune",
+                        "type": "color"
+                    },
+                    {
+                        "name": "color_neutral",
+                        "type": "color"
+                    },
+                    {
+                        "name": "strobe_color",
+                        "type": "color"
+                    }
+                ]
+            }
+        ]
     }
 ]

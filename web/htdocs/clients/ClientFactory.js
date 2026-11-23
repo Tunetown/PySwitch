@@ -12,6 +12,7 @@ class ClientFactory {
             case "boomerang": return new BoomerangClient(clientId);
             case "fractal": return new FractalClient(clientId);
             case "fractal_am4": return new FractalAM4Client(clientId);
+            case "fractal_II": return new FractalIIClient(clientId);
             case "local": return new Client(clientId);
         }
         return null;
@@ -19,7 +20,7 @@ class ClientFactory {
 
     // Clients which can be detected in a configuration, in order of precedence (the first one is the
     // main client, for example for the protocol)
-    static #DETECTABLE_CLIENTS = ["kemper", "boomerang", "fractal", "fractal_am4"];
+    static #DETECTABLE_CLIENTS = ["kemper", "boomerang", "fractal", "fractal_am4", "fractal_II"];
 
     /**
      * Determines all clients used by a configuration (imports of pyswitch.clients.<client> in inputs.py or

@@ -234,6 +234,45 @@ class EmulatorSettings extends Tab {
                 await that.#setConfigFromInput($(this), "fractalPresetDisplayOffset");
             }),
 
+            // Fractal Axe-Fx II client
+            $('<div class="label" />')
+            .text("Axe-Fx II: Device model"),
+
+            this.#createSelect(
+                [
+                    [7, "Axe-Fx II XL+"],
+                    [6, "Axe-Fx II XL"],
+                    [3, "Axe-Fx II (Mark I/II)"]
+                ],
+                this.#controller.configFile.getAttribute("fractalIIModel")
+            )
+            .on('change', async function() {
+                await that.#setConfigFromInput($(this), "fractalIIModel");
+            }),
+
+            $('<div class="label" />')
+            .text("Axe-Fx II: Bank size"),
+
+            $('<input type="number" min=1 max=768 />')
+            .val(this.#controller.configFile.getAttribute("fractalIIBankSize"))
+            .on('change', async function() {
+                await that.#setConfigFromInput($(this), "fractalIIBankSize");
+            }),
+
+            $('<div class="label" />')
+            .text("Axe-Fx II: Preset numbers"),
+
+            this.#createSelect(
+                [
+                    [1, "Start at 001"],
+                    [0, "Start at 000"]
+                ],
+                this.#controller.configFile.getAttribute("fractalIIPresetDisplayOffset")
+            )
+            .on('change', async function() {
+                await that.#setConfigFromInput($(this), "fractalIIPresetDisplayOffset");
+            }),
+
             // Explore mode
             $('<div class="label" />')
             .text("Explore Mode"),

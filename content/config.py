@@ -55,6 +55,18 @@ Config = {
     # Fractal preset numbers are shown starting at 000 (0, default) or 001 (1), like the Display Offset setting of the device.
     #"fractalPresetDisplayOffset": 0,
 
+    ## Fractal Audio Axe-Fx II Client (experimental) #########################################################################################
+
+    # Model of the Axe-Fx II (model byte of all SysEx messages): 3 = Axe-Fx II (Mark I/II), 6 = Axe-Fx II XL, 7 = Axe-Fx II XL+.
+    # Default is 7 (XL+).
+    #"fractalIIModel": 7,
+
+    # Number of presets per bank for the Axe-Fx II bank functions. Default is 5.
+    #"fractalIIBankSize": 5,
+
+    # Axe-Fx II preset numbers are shown starting at 001 (1, default, like the front panel) or 000 (0).
+    #"fractalIIPresetDisplayOffset": 1,
+
     ## Development Options ###################################################################################################################
 
     # Debug output is printed to serial console via USB. 

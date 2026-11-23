@@ -452,6 +452,28 @@ class PySwitchParser:
                 "importPath": "pyswitch.clients.fractal_am4"
             },
 
+            # Fractal Axe-Fx II parameter value classes (used as values in meta.json)
+            {
+                "name": "FractalIILabel",
+                "importPath": "pyswitch.clients.fractal_II"
+            },
+            {
+                "name": "FractalIIBlock",
+                "importPath": "pyswitch.clients.fractal_II"
+            },
+            {
+                "name": "FractalIIChannel",
+                "importPath": "pyswitch.clients.fractal_II"
+            },
+            {
+                "name": "FractalIIPresetLoad",
+                "importPath": "pyswitch.clients.fractal_II"
+            },
+            {
+                "name": "FractalIISecondPress",
+                "importPath": "pyswitch.clients.fractal_II"
+            },
+
             # Callbacks
             {
                 "name": "BinaryParameterCallback",

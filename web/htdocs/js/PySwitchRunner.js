@@ -99,6 +99,9 @@ class PySwitchRunner {
         await this.pyodide.FS.mkdir("pyswitch/clients/fractal_am4");
         await this.pyodide.FS.mkdir("pyswitch/clients/fractal_am4/actions");
         await this.pyodide.FS.mkdir("pyswitch/clients/fractal_am4/callbacks");
+        await this.pyodide.FS.mkdir("pyswitch/clients/fractal_II");
+        await this.pyodide.FS.mkdir("pyswitch/clients/fractal_II/actions");
+        await this.pyodide.FS.mkdir("pyswitch/clients/fractal_II/callbacks");
 
         await this.pyodide.FS.mkdir("pyswitch/clients/boomerang");
         await this.pyodide.FS.mkdir("pyswitch/clients/boomerang/actions");
@@ -251,6 +254,21 @@ class PySwitchRunner {
             this.#loadModule("pyswitch/clients/fractal_am4/callbacks/__init__.py", circuitpyPath),
             this.#loadModule("pyswitch/clients/fractal_am4/callbacks/preset_name.py", circuitpyPath),
             this.#loadModule("pyswitch/clients/fractal_am4/callbacks/scene_name.py", circuitpyPath),
+
+            this.#loadModule("pyswitch/clients/fractal_II/__init__.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal_II/actions/__init__.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal_II/actions/preset.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal_II/actions/bank.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal_II/actions/scene.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal_II/actions/effect_bypass.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal_II/actions/effect_channel.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal_II/actions/tuner.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal_II/actions/tap_tempo.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal_II/callbacks/__init__.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal_II/callbacks/preset_name.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal_II/callbacks/scene_name.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal_II/callbacks/tempo_bpm.py", circuitpyPath),
+            this.#loadModule("pyswitch/clients/fractal_II/callbacks/tuner_display.py", circuitpyPath),
 
             this.#loadModule("pyswitch/clients/boomerang/__init__.py", circuitpyPath),
 
