@@ -66,6 +66,21 @@
     font-size: 0.8em;
 }
 
+/* Badge for experimental versions */
+.container .application .about .experimental {
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-top: 0.4em;
+    padding: 0.15em 0.5em;
+    border-radius: 0.3em;
+    background-color: #c00000;
+    color: #ffe000;
+    font-size: 0.75em;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
 /**********************************************/
 
 .container .application .appl-button {

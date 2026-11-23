@@ -97,7 +97,11 @@ class PySwitchUI {
 
                         // Donate
                         $('<a class="donate" href="https://www.paypal.com/webapps/mpp/page-not-found?cmd=_s-xclick&hosted_button_id=6WHW7WRXSGQXY" target="_blank" />')
-                        .text('Donate')
+                        .text('Donate'),
+
+                        // Experimental version badge
+                        $('<div class="experimental" data-toggle="tooltip" title="Experimental version for testing (Fractal Audio support, multiple clients)" />')
+                        .text('EXPERIMENTAL')
                     ),
                     
                     // Client connection button (class is set in the ClientConnectionButton)
