@@ -4,6 +4,7 @@
     - New config.py options for the Fractal client: **fractalModel**, **fractalBankSize** and **fractalPresetDisplayOffset**.
     - One configuration can control several devices at once (for example a Kemper and a Fractal device). At most one bidirectional protocol can be used, and the devices must use different MIDI channels for CC/PC messages.
     - The default **updateInterval** is now 400 ms (was 200 ms).
+    - Added **experimental** support for the **Fractal Audio AM4** (client fractal_am4) via TRS MIDI: preset, bank and scene selection with names, effect bypass of the 4 slots with block names, the AM4 footswitch modes, and display callbacks for the preset and scene name. The AM4 has no official MIDI spec for controllers; only messages confirmed by the community on real hardware are used. The tuner is switched via a CC assigned on the AM4.
 
 - Bug fixes:
     - **PA_MIDICAPTAIN_DIN_MIDI()** failed with a TypeError since the new MIDI buffer (it still passed the removed MIDI channel and buffer size parameters). It now takes the optional receive_chunk_size parameter, like the USB variant.
@@ -12,10 +13,12 @@
     - Added Fractal Audio examples for the MIDICaptain 10, Mini 6 and Nano 4, modelled on the FM3 factory layouts ("Full Featureset").
     - Added simple Fractal Audio examples for each controller and model (FM3, FM9, Axe-Fx III): "Scenes and Tuner" (Nano 4), "Presets and Scenes" (Mini 6), "Scenes and Effects" (MIDICaptain 10).
     - Added an example controlling a Kemper and a Fractal device at the same time ("Kemper and Fractal").
+    - Added Fractal AM4 examples for the MIDICaptain 10, Mini 6 and Nano 4: "Gig Mode", "Presets and Scenes", "Scenes and Effects" and a "Full Featureset" example each.
 
 ### Emulator 2.4.11.18
 - Added the **Virtual Fractal** client (FM3, FM9, Axe-Fx III): presets with scenes and blocks, tuner, tempo and looper simulation. Its model follows the Fractal model in the emulator settings.
 - Fractal devices connected via MIDI are detected automatically.
+- Added the **Virtual AM4** client: 104 presets with scenes and 4 effect slots. It only answers the messages known to be safe on the real AM4 and shows all other messages as rejected (the real AM4 might freeze on unknown messages). An AM4 connected via MIDI is detected automatically.
 - The Fractal config.py options can be set in the emulator settings (and are included in the downloadable config.py).
 - Configurations using several clients: one virtual client (tab) per client, real devices are detected per client, the action and mapping lists show the actions and mappings of all clients. Actions and mappings with the same name in several clients are imported with aliases (for example FRACTAL_TAP_TEMPO).
 - The default update interval is now 400 ms.

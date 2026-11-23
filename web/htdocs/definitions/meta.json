@@ -1960,6 +1960,433 @@
         ]
     },
     {
+        "client": "fractal_am4",
+        "entities": [
+            {
+                "entityName": "default",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "advanced": 1,
+                        "type": "any",
+                        "comment": "This ID can be used for Paging or custom callbacks, to enable/disable the action."
+                    },
+                    {
+                        "name": "use_leds",
+                        "type": "bool",
+                        "comment": "If disabled, the action will not use the LEDs of the switch"
+                    },
+                    {
+                        "name": "display",
+                        "type": "select",
+                        "comment": "Display label to visualize the action state (must be defined in display.py)"
+                    },
+                    {
+                        "name": "color",
+                        "type": "color",
+                        "advanced": 1,
+                        "comment": "Color override (default: the category color)"
+                    },
+                    {
+                        "name": "enable_callback",
+                        "advanced": 2,
+                        "type": "any",
+                        "comment": "Callback instance to control dynamically whether the action should be enabled."
+                    },
+                    {
+                        "name": "text",
+                        "type": "text",
+                        "advanced": 1,
+                        "unconvertedValues": [
+                            "None"
+                        ],
+                        "comment": "Custom label text (overrides the label option)"
+                    },
+                    {
+                        "name": "location",
+                        "type": "int",
+                        "range": {
+                            "min": 0,
+                            "max": 103
+                        },
+                        "comment": "Preset location: A01 = 0, A02 = 1, ..., Z04 = 103"
+                    },
+                    {
+                        "name": "position",
+                        "type": "int",
+                        "range": {
+                            "min": 1,
+                            "max": 4
+                        },
+                        "comment": "Position in the bank"
+                    },
+                    {
+                        "name": "scene",
+                        "type": "int",
+                        "range": {
+                            "min": 1,
+                            "max": 4
+                        }
+                    },
+                    {
+                        "name": "step",
+                        "type": "int",
+                        "range": {
+                            "min": -10,
+                            "max": 10
+                        },
+                        "comment": "Step size: positive steps up, negative steps down"
+                    },
+                    {
+                        "name": "wrap",
+                        "type": "bool",
+                        "comment": "Wrap around at the ends"
+                    },
+                    {
+                        "name": "preset_load",
+                        "type": "select",
+                        "comment": "Preset to load when the bank changes",
+                        "values": [
+                            {
+                                "name": "First preset of the bank",
+                                "value": "FractalAM4PresetLoad.FIRST"
+                            },
+                            {
+                                "name": "Same position in the bank",
+                                "value": "FractalAM4PresetLoad.SAME"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "slot",
+                        "type": "int",
+                        "range": {
+                            "min": 1,
+                            "max": 4,
+                            "additionalValues": [
+                                {
+                                    "name": "None",
+                                    "value": "None"
+                                }
+                            ]
+                        },
+                        "comment": "Slot 1..4 (the block in this slot is switched). Ignored if block is set."
+                    },
+                    {
+                        "name": "block",
+                        "type": "select",
+                        "comment": "Block type (switched if it is in the preset). If set, the slot is ignored.",
+                        "values": [
+                            {
+                                "name": "None",
+                                "value": "None"
+                            },
+                            {
+                                "name": "Compressor",
+                                "value": "FractalAM4Block.COMPRESSOR"
+                            },
+                            {
+                                "name": "Graphic EQ",
+                                "value": "FractalAM4Block.GRAPHIC_EQ"
+                            },
+                            {
+                                "name": "Parametric EQ",
+                                "value": "FractalAM4Block.PARAMETRIC_EQ"
+                            },
+                            {
+                                "name": "Amp",
+                                "value": "FractalAM4Block.AMP"
+                            },
+                            {
+                                "name": "Reverb",
+                                "value": "FractalAM4Block.REVERB"
+                            },
+                            {
+                                "name": "Delay",
+                                "value": "FractalAM4Block.DELAY"
+                            },
+                            {
+                                "name": "Chorus",
+                                "value": "FractalAM4Block.CHORUS"
+                            },
+                            {
+                                "name": "Flanger",
+                                "value": "FractalAM4Block.FLANGER"
+                            },
+                            {
+                                "name": "Rotary",
+                                "value": "FractalAM4Block.ROTARY"
+                            },
+                            {
+                                "name": "Phaser",
+                                "value": "FractalAM4Block.PHASER"
+                            },
+                            {
+                                "name": "Wah",
+                                "value": "FractalAM4Block.WAH"
+                            },
+                            {
+                                "name": "Volume/Pan",
+                                "value": "FractalAM4Block.VOLUME_PAN"
+                            },
+                            {
+                                "name": "Tremolo",
+                                "value": "FractalAM4Block.TREMOLO"
+                            },
+                            {
+                                "name": "Filter",
+                                "value": "FractalAM4Block.FILTER"
+                            },
+                            {
+                                "name": "Drive",
+                                "value": "FractalAM4Block.DRIVE"
+                            },
+                            {
+                                "name": "Enhancer",
+                                "value": "FractalAM4Block.ENHANCER"
+                            },
+                            {
+                                "name": "Gate",
+                                "value": "FractalAM4Block.GATE"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "mode",
+                        "type": "select",
+                        "comment": "Footswitch mode of the AM4",
+                        "values": [
+                            {
+                                "name": "Presets",
+                                "value": "FractalAM4Mode.PRESETS"
+                            },
+                            {
+                                "name": "Scenes",
+                                "value": "FractalAM4Mode.SCENES"
+                            },
+                            {
+                                "name": "Effects",
+                                "value": "FractalAM4Mode.EFFECTS"
+                            },
+                            {
+                                "name": "Amp",
+                                "value": "FractalAM4Mode.AMP"
+                            },
+                            {
+                                "name": "Tuner / Tap",
+                                "value": "FractalAM4Mode.TUNER"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "PRESET_SELECT",
+                "category": "rig",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content",
+                        "values": [
+                            {
+                                "name": "Name",
+                                "value": "FractalAM4Label.NAME"
+                            },
+                            {
+                                "name": "Location (A01)",
+                                "value": "FractalAM4Label.NUMBER"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "PRESET_SELECT_IN_BANK",
+                "category": "rig",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content",
+                        "values": [
+                            {
+                                "name": "Name",
+                                "value": "FractalAM4Label.NAME"
+                            },
+                            {
+                                "name": "Location (A01)",
+                                "value": "FractalAM4Label.NUMBER"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "PRESET_INC_DEC",
+                "category": "rig",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content",
+                        "values": [
+                            {
+                                "name": "Action (+1)",
+                                "value": "FractalAM4Label.ACTION"
+                            },
+                            {
+                                "name": "Destination name",
+                                "value": "FractalAM4Label.DESTINATION_NAME"
+                            },
+                            {
+                                "name": "Destination location",
+                                "value": "FractalAM4Label.NUMBER"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "BANK_INC_DEC",
+                "category": "bank",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content",
+                        "values": [
+                            {
+                                "name": "Action (+1)",
+                                "value": "FractalAM4Label.ACTION"
+                            },
+                            {
+                                "name": "Bank letter",
+                                "value": "FractalAM4Label.NUMBER"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "SCENE_SELECT",
+                "category": "morph",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content",
+                        "values": [
+                            {
+                                "name": "Name",
+                                "value": "FractalAM4Label.NAME"
+                            },
+                            {
+                                "name": "Number",
+                                "value": "FractalAM4Label.NUMBER"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "SCENE_INC_DEC",
+                "category": "morph",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content",
+                        "values": [
+                            {
+                                "name": "Action (+1)",
+                                "value": "FractalAM4Label.ACTION"
+                            },
+                            {
+                                "name": "Destination name",
+                                "value": "FractalAM4Label.DESTINATION_NAME"
+                            },
+                            {
+                                "name": "Destination number",
+                                "value": "FractalAM4Label.NUMBER"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "EFFECT_BYPASS",
+                "category": "effects",
+                "target": "AdafruitSwitch",
+                "parameters": [
+                    {
+                        "name": "label",
+                        "type": "select",
+                        "comment": "Label content",
+                        "values": [
+                            {
+                                "name": "Long name",
+                                "value": "FractalAM4Label.LONG_NAME"
+                            },
+                            {
+                                "name": "Short name",
+                                "value": "FractalAM4Label.SHORT_NAME"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "entityName": "MODE_SELECT",
+                "category": "tuner",
+                "target": "AdafruitSwitch",
+                "parameters": []
+            },
+            {
+                "entityName": "FractalAM4PresetNameCallback",
+                "target": "DisplayLabel",
+                "parameters": [
+                    {
+                        "name": "show_name",
+                        "type": "bool"
+                    },
+                    {
+                        "name": "show_number",
+                        "type": "bool"
+                    },
+                    {
+                        "name": "default_text",
+                        "type": "text"
+                    }
+                ]
+            },
+            {
+                "entityName": "FractalAM4SceneNameCallback",
+                "target": "DisplayLabel",
+                "parameters": [
+                    {
+                        "name": "show_name",
+                        "type": "bool"
+                    },
+                    {
+                        "name": "show_number",
+                        "type": "bool"
+                    },
+                    {
+                        "name": "default_text",
+                        "type": "text"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "client": "local",
         "entities": [
             {

@@ -434,6 +434,24 @@ class PySwitchParser:
                 "importPath": "pyswitch.clients.fractal"
             },
 
+            # Fractal AM4 parameter value classes (used as values in meta.json)
+            {
+                "name": "FractalAM4Label",
+                "importPath": "pyswitch.clients.fractal_am4"
+            },
+            {
+                "name": "FractalAM4Block",
+                "importPath": "pyswitch.clients.fractal_am4"
+            },
+            {
+                "name": "FractalAM4Mode",
+                "importPath": "pyswitch.clients.fractal_am4"
+            },
+            {
+                "name": "FractalAM4PresetLoad",
+                "importPath": "pyswitch.clients.fractal_am4"
+            },
+
             # Callbacks
             {
                 "name": "BinaryParameterCallback",
