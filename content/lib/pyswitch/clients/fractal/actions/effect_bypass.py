@@ -1,5 +1,3 @@
-from micropython import const
-
 from ....controller.actions import PushButtonAction
 from .. import FractalCallback, FractalMappings, FractalBlock, FractalChannel, FractalLabel, FractalSecondPress, COLOR_EFFECT, _inc_dec, _both
 from ..mappings.effects import MAPPING_BLOCK_BYPASS, MAPPING_BLOCK_CHANNEL
@@ -40,10 +38,10 @@ def EFFECT_BYPASS(block,                                  # Block type (see Frac
 class FractalEffectCallback(FractalCallback):
 
     # Functions
-    BYPASS = const(0)
-    CHANNEL_SELECT = const(1)
-    CHANNEL_TOGGLE = const(2)
-    CHANNEL_INC_DEC = const(3)
+    BYPASS = 0
+    CHANNEL_SELECT = 1
+    CHANNEL_TOGGLE = 2
+    CHANNEL_INC_DEC = 3
 
     def __init__(self,
                  function,

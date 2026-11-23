@@ -3,6 +3,9 @@
     - Added **experimental** support for the **Fractal Audio AM4** (client fractal_am4) via TRS MIDI: preset, bank and scene selection with names, effect bypass of the 4 slots with block names, the AM4 footswitch modes, and display callbacks for the preset and scene name. The AM4 has no official MIDI spec for controllers; only messages confirmed by the community on real hardware are used. The tuner is switched via a CC assigned on the AM4.
     - Added **experimental** support for the **Fractal Audio Axe-Fx II** (Mark I/II, XL, XL+, client fractal_II) via DIN MIDI, based on Fractal's MIDI spec for the Axe-Fx II: preset, bank and scene selection (SysEx, no program change setup needed), preset names, bypass and X/Y of all blocks, tuner (with tuner display) and tap tempo (with BPM), with the actions, LED states and label options of the Fractal client. New config.py options **fractalIIModel**, **fractalIIBankSize** and **fractalIIPresetDisplayOffset**.
 
+- Bug fixes:
+    - Fractal client: configurations using the tuner (TUNER action or FractalTunerDisplayCallback) crashed on the device at startup with "AttributeError: '_FractalTunerStateMapping' object has no attribute '_TIMEOUT_MILLIS'" (CircuitPython does not store const() names starting with an underscore).
+
 - Examples:
     - Added Fractal AM4 examples for the MIDICaptain 10, Mini 6 and Nano 4: "Gig Mode", "Presets and Scenes", "Scenes and Effects" and a "Full Featureset" example each.
     - Added Fractal Axe-Fx II examples for the MIDICaptain 10, Mini 6 and Nano 4: "Scenes and Tuner", "Presets and Scenes", "Scenes and Effects" and a "Full Featureset" example each.

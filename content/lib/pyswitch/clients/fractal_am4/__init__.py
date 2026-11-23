@@ -33,27 +33,27 @@ COLOR_UTILITY = Colors.BLUE
 
 # Label options for the actions
 class FractalAM4Label:
-    NAME = const(0)                 # Name (preset or scene)
-    NUMBER = const(1)               # Number ("A01", "Scene 2")
-    ACTION = const(2)               # Function ("Preset +1")
-    DESTINATION_NAME = const(3)     # Inc/Dec: name of the target
-    LONG_NAME = const(4)            # Effects: block name ("Drive")
-    SHORT_NAME = const(5)           # Effects: block abbreviation ("DRV")
+    NAME = 0                 # Name (preset or scene)
+    NUMBER = 1               # Number ("A01", "Scene 2")
+    ACTION = 2               # Function ("Preset +1")
+    DESTINATION_NAME = 3     # Inc/Dec: name of the target
+    LONG_NAME = 4            # Effects: block name ("Drive")
+    SHORT_NAME = 5           # Effects: block abbreviation ("DRV")
 
 
 # Preset load options for the bank functions
 class FractalAM4PresetLoad:
-    FIRST = const(0)                # Load the first preset of the target bank
-    SAME = const(1)                 # Load the preset at the same position in the target bank
+    FIRST = 0                # Load the first preset of the target bank
+    SAME = 1                 # Load the preset at the same position in the target bank
 
 
 # Footswitch modes of the AM4 (argument of the mode select message)
 class FractalAM4Mode:
-    PRESETS = const(0x48)
-    SCENES = const(0x49)
-    EFFECTS = const(0x4a)
-    AMP = const(0x58)
-    TUNER = const(0x18)             # Tuner / tap tempo
+    PRESETS = 0x48
+    SCENES = 0x49
+    EFFECTS = 0x4a
+    AMP = 0x58
+    TUNER = 0x18             # Tuner / tap tempo
 
     # Returns the display name of a mode
     @staticmethod
@@ -66,23 +66,23 @@ _MODE_NAMES = ("Presets", "Scenes", "Effects", "Amp", "Tuner")
 
 # Block types (IDs as used by the AM4, also the values of the slot registers)
 class FractalAM4Block:
-    COMPRESSOR = const(0x2e)
-    GRAPHIC_EQ = const(0x32)
-    PARAMETRIC_EQ = const(0x36)
-    AMP = const(0x3a)
-    REVERB = const(0x42)
-    DELAY = const(0x46)
-    CHORUS = const(0x4e)
-    FLANGER = const(0x52)
-    ROTARY = const(0x56)
-    PHASER = const(0x5a)
-    WAH = const(0x5e)
-    VOLUME_PAN = const(0x66)
-    TREMOLO = const(0x6a)
-    FILTER = const(0x72)
-    DRIVE = const(0x76)
-    ENHANCER = const(0x7a)
-    GATE = const(0x92)
+    COMPRESSOR = 0x2e
+    GRAPHIC_EQ = 0x32
+    PARAMETRIC_EQ = 0x36
+    AMP = 0x3a
+    REVERB = 0x42
+    DELAY = 0x46
+    CHORUS = 0x4e
+    FLANGER = 0x52
+    ROTARY = 0x56
+    PHASER = 0x5a
+    WAH = 0x5e
+    VOLUME_PAN = 0x66
+    TREMOLO = 0x6a
+    FILTER = 0x72
+    DRIVE = 0x76
+    ENHANCER = 0x7a
+    GATE = 0x92
 
     # Returns the name of a block ID (long or short), or None for unknown IDs
     @staticmethod
@@ -229,19 +229,19 @@ def _decode_name(raw, index):
 class FractalAM4Mapping(ClientParameterMapping):
 
     # Value types
-    VALUE_PRESET = const(0)         # 14-bit value after the template (current preset)
-    VALUE_NAME_TABLE = const(1)     # Name table (see _decode_name_table)
-    VALUE_BYPASS = const(2)         # Bypass flag of a long read answer (1 = bypassed)
-    VALUE_NAME = const(3)           # Preset name answer (32 characters)
+    VALUE_PRESET = 0         # 14-bit value after the template (current preset)
+    VALUE_NAME_TABLE = 1     # Name table (see _decode_name_table)
+    VALUE_BYPASS = 2         # Bypass flag of a long read answer (1 = bypassed)
+    VALUE_NAME = 3           # Preset name answer (32 characters)
 
     # Singleton factory
-    @classmethod
-    def get(cls, name, set = None, request = None, response = None, value_type = 0, length = 0, set_function = None):
+    @staticmethod
+    def get(name, set = None, request = None, response = None, value_type = 0, length = 0, set_function = None):
         for m in ClientParameterMapping._mappings:
             if m.name == name:
                 return m
 
-        m = cls(
+        m = FractalAM4Mapping(
             name = name,
             create_key = ClientParameterMapping,
             set = set,
@@ -471,9 +471,9 @@ def _action_text(prefix, step):
 class FractalAM4Callback(Callback):
 
     # LED states
-    OFF = const(0)
-    DIM = const(1)
-    BRIGHT = const(2)
+    OFF = 0
+    DIM = 1
+    BRIGHT = 2
 
     def __init__(self, color, text, mappings = []):
         super().__init__(mappings = mappings)

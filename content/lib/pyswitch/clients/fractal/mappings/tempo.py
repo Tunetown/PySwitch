@@ -1,4 +1,5 @@
 from .. import FractalParameterMapping, _sysex, _response
+from ....controller.client import ClientParameterMapping
 
 # Tap the tempo (the value is ignored)
 def MAPPING_TAP_TEMPO():
@@ -30,5 +31,23 @@ def MAPPING_TEMPO_BPM():
 
 # Counts the beats (value in range [0..127])
 class _FractalTempoBeatMapping(FractalParameterMapping):
+
+    # Singleton factory
+    @staticmethod
+    def get(name, response, length):
+        for m in ClientParameterMapping._mappings:
+            if m.name == name:
+                return m
+
+        m = _FractalTempoBeatMapping(
+            name = name,
+            create_key = ClientParameterMapping,
+            response = response,
+            length = length
+        )
+
+        ClientParameterMapping._mappings.append(m)
+        return m
+
     def _decode(self, midi_message):
         return ((self.value if self.value != None else 0) + 1) & 0x7f

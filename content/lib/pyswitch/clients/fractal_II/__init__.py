@@ -30,46 +30,46 @@ COLOR_UTILITY = Colors.BLUE
 
 # Label options. Which ones are available depends on the action (same values as for the Fractal client).
 class FractalIILabel:
-    NAME = const(0)                   # Name of the target preset
-    NUMBER = const(1)                 # Number of the target preset/scene/bank
-    P_NUM = const(2)                  # Position of the target preset in the bank ("P1")
-    BOTH_NUM = const(3)               # Toggle: both numbers, the current one in brackets
-    BOTH_P_NUM = const(4)             # Toggle in bank: both positions, the current one in brackets
-    DESTINATION_NAME = const(5)       # Name of the preset that will be loaded
-    DESTINATION_NUM = const(6)        # Number of the preset/scene/bank that will be loaded
-    CURRENT_NAME = const(7)           # Name of the current preset
-    CURRENT_NUM = const(8)            # Number of the current preset/scene/bank
-    ACTION = const(9)                 # Action and step size ("Preset +1")
+    NAME = 0                   # Name of the target preset
+    NUMBER = 1                 # Number of the target preset/scene/bank
+    P_NUM = 2                  # Position of the target preset in the bank ("P1")
+    BOTH_NUM = 3               # Toggle: both numbers, the current one in brackets
+    BOTH_P_NUM = 4             # Toggle in bank: both positions, the current one in brackets
+    DESTINATION_NAME = 5       # Name of the preset that will be loaded
+    DESTINATION_NUM = 6        # Number of the preset/scene/bank that will be loaded
+    CURRENT_NAME = 7           # Name of the current preset
+    CURRENT_NUM = 8            # Number of the current preset/scene/bank
+    ACTION = 9                 # Action and step size ("Preset +1")
 
-    LONG_NAME = const(20)             # Block name and instance ("Drive 1")
-    SHORT_NAME = const(21)            # Block abbreviation and instance ("DRV1")
-    SHORT_NAME_CHANNEL = const(22)    # Abbreviation, instance and channel ("DRV1 Y")
-    LONG_NAME_CHANNEL = const(23)     # Name, instance and channel ("Drive 1 Y")
-    BOTH_CHANNELS = const(24)         # Channel toggle: both channels, the current one in brackets ("DRV1 [X]Y")
-    DESTINATION_CHANNEL = const(25)   # Abbreviation, instance and the channel that will be selected
-    CURRENT_CHANNEL = const(26)       # Abbreviation, instance and the current channel
+    LONG_NAME = 20             # Block name and instance ("Drive 1")
+    SHORT_NAME = 21            # Block abbreviation and instance ("DRV1")
+    SHORT_NAME_CHANNEL = 22    # Abbreviation, instance and channel ("DRV1 Y")
+    LONG_NAME_CHANNEL = 23     # Name, instance and channel ("Drive 1 Y")
+    BOTH_CHANNELS = 24         # Channel toggle: both channels, the current one in brackets ("DRV1 [X]Y")
+    DESTINATION_CHANNEL = 25   # Abbreviation, instance and the channel that will be selected
+    CURRENT_CHANNEL = 26       # Abbreviation, instance and the current channel
 
-    FUNCTION = const(30)              # Function name ("Tap Tempo")
-    BPM = const(31)                   # Current tempo
+    FUNCTION = 30              # Function name ("Tap Tempo")
+    BPM = 31                   # Current tempo
 
 
 # Preset Load option of the bank functions
 class FractalIIPresetLoad:
-    NONE = const(0)                   # Only select the bank, no preset is loaded
-    FIRST = const(1)                  # Load the first preset of the new bank
-    CURRENT = const(2)                # Load the preset at the same position in the new bank
+    NONE = 0                   # Only select the bank, no preset is loaded
+    FIRST = 1                  # Load the first preset of the new bank
+    CURRENT = 2                # Load the preset at the same position in the new bank
 
 
 # 2nd Press option of EFFECT_CHANNEL_SELECT
 class FractalIISecondPress:
-    SMART_BYPASS = const(1)           # Pressing the active channel engages/bypasses the block
-    PREVIOUS_CHANNEL = const(2)       # Pressing the active channel selects the other channel
+    SMART_BYPASS = 1           # Pressing the active channel engages/bypasses the block
+    PREVIOUS_CHANNEL = 2       # Pressing the active channel selects the other channel
 
 
 # Block channels (X/Y)
 class FractalIIChannel:
-    X = const(0)
-    Y = const(1)
+    X = 0
+    Y = 1
 
     NAMES = ("X", "Y")
 
@@ -79,72 +79,72 @@ class FractalIIChannel:
 
 # Blocks (effect IDs of the Axe-Fx II)
 class FractalIIBlock:
-    COMPRESSOR_1 = const(100)
-    COMPRESSOR_2 = const(101)
-    GRAPHIC_EQ_1 = const(102)
-    GRAPHIC_EQ_2 = const(103)
-    PARAMETRIC_EQ_1 = const(104)
-    PARAMETRIC_EQ_2 = const(105)
-    AMP_1 = const(106)
-    AMP_2 = const(107)
-    CAB_1 = const(108)
-    CAB_2 = const(109)
-    REVERB_1 = const(110)
-    REVERB_2 = const(111)
-    DELAY_1 = const(112)
-    DELAY_2 = const(113)
-    MULTI_DELAY_1 = const(114)
-    MULTI_DELAY_2 = const(115)
-    CHORUS_1 = const(116)
-    CHORUS_2 = const(117)
-    FLANGER_1 = const(118)
-    FLANGER_2 = const(119)
-    ROTARY_1 = const(120)
-    ROTARY_2 = const(121)
-    PHASER_1 = const(122)
-    PHASER_2 = const(123)
-    WAH_1 = const(124)
-    WAH_2 = const(125)
-    FORMANT_1 = const(126)
-    VOLUME_1 = const(127)
-    TREMOLO_1 = const(128)
-    TREMOLO_2 = const(129)
-    PITCH_1 = const(130)
-    FILTER_1 = const(131)
-    FILTER_2 = const(132)
-    DRIVE_1 = const(133)
-    DRIVE_2 = const(134)
-    ENHANCER_1 = const(135)
-    FX_LOOP_1 = const(136)
-    MIXER_1 = const(137)
-    MIXER_2 = const(138)
-    SYNTH_1 = const(144)
-    SYNTH_2 = const(145)
-    VOCODER_1 = const(146)
-    MEGATAP_1 = const(147)
-    CROSSOVER_1 = const(148)
-    CROSSOVER_2 = const(149)
-    GATE_1 = const(150)
-    GATE_2 = const(151)
-    RING_MOD_1 = const(152)
-    PITCH_2 = const(153)
-    MULTIBAND_COMP_1 = const(154)
-    MULTIBAND_COMP_2 = const(155)
-    QUAD_CHORUS_1 = const(156)
-    QUAD_CHORUS_2 = const(157)
-    RESONATOR_1 = const(158)
-    RESONATOR_2 = const(159)
-    GRAPHIC_EQ_3 = const(160)
-    GRAPHIC_EQ_4 = const(161)
-    PARAMETRIC_EQ_3 = const(162)
-    PARAMETRIC_EQ_4 = const(163)
-    FILTER_3 = const(164)
-    FILTER_4 = const(165)
-    VOLUME_2 = const(166)
-    VOLUME_3 = const(167)
-    VOLUME_4 = const(168)
-    LOOPER_1 = const(169)
-    TONE_MATCH_1 = const(170)
+    COMPRESSOR_1 = 100
+    COMPRESSOR_2 = 101
+    GRAPHIC_EQ_1 = 102
+    GRAPHIC_EQ_2 = 103
+    PARAMETRIC_EQ_1 = 104
+    PARAMETRIC_EQ_2 = 105
+    AMP_1 = 106
+    AMP_2 = 107
+    CAB_1 = 108
+    CAB_2 = 109
+    REVERB_1 = 110
+    REVERB_2 = 111
+    DELAY_1 = 112
+    DELAY_2 = 113
+    MULTI_DELAY_1 = 114
+    MULTI_DELAY_2 = 115
+    CHORUS_1 = 116
+    CHORUS_2 = 117
+    FLANGER_1 = 118
+    FLANGER_2 = 119
+    ROTARY_1 = 120
+    ROTARY_2 = 121
+    PHASER_1 = 122
+    PHASER_2 = 123
+    WAH_1 = 124
+    WAH_2 = 125
+    FORMANT_1 = 126
+    VOLUME_1 = 127
+    TREMOLO_1 = 128
+    TREMOLO_2 = 129
+    PITCH_1 = 130
+    FILTER_1 = 131
+    FILTER_2 = 132
+    DRIVE_1 = 133
+    DRIVE_2 = 134
+    ENHANCER_1 = 135
+    FX_LOOP_1 = 136
+    MIXER_1 = 137
+    MIXER_2 = 138
+    SYNTH_1 = 144
+    SYNTH_2 = 145
+    VOCODER_1 = 146
+    MEGATAP_1 = 147
+    CROSSOVER_1 = 148
+    CROSSOVER_2 = 149
+    GATE_1 = 150
+    GATE_2 = 151
+    RING_MOD_1 = 152
+    PITCH_2 = 153
+    MULTIBAND_COMP_1 = 154
+    MULTIBAND_COMP_2 = 155
+    QUAD_CHORUS_1 = 156
+    QUAD_CHORUS_2 = 157
+    RESONATOR_1 = 158
+    RESONATOR_2 = 159
+    GRAPHIC_EQ_3 = 160
+    GRAPHIC_EQ_4 = 161
+    PARAMETRIC_EQ_3 = 162
+    PARAMETRIC_EQ_4 = 163
+    FILTER_3 = 164
+    FILTER_4 = 165
+    VOLUME_2 = 166
+    VOLUME_3 = 167
+    VOLUME_4 = 168
+    LOOPER_1 = 169
+    TONE_MATCH_1 = 170
 
     # Returns the name of a block ("Drive 1", short: "DRV1"), or None for IDs which are no blocks listed above
     @staticmethod
@@ -319,18 +319,17 @@ def _decode_blocks(midi_message):
 class FractalIIMapping(ClientParameterMapping):
 
     # Value types
-    VALUE_7BIT = const(0)           # One byte after the template
-    VALUE_PRESET = const(1)         # Preset number after the template (two bytes, MS first)
-    VALUE_14BIT = const(2)          # 14-bit value after the template (two bytes, LS first)
-    VALUE_STRING = const(3)         # Name at value_index
-    VALUE_BLOCKS = const(4)         # Block states (see _decode_blocks)
-    VALUE_NOTE = const(5)           # Tuner note (0 = C)
-    VALUE_DEVIANCE = const(6)       # Tuner deviance (PySwitch scale: 8192 = in tune, +-8192 = +-50 cents)
+    VALUE_7BIT = 0           # One byte after the template
+    VALUE_PRESET = 1         # Preset number after the template (two bytes, MS first)
+    VALUE_14BIT = 2          # 14-bit value after the template (two bytes, LS first)
+    VALUE_STRING = 3         # Name at value_index
+    VALUE_BLOCKS = 4         # Block states (see _decode_blocks)
+    VALUE_NOTE = 5           # Tuner note (0 = C)
+    VALUE_DEVIANCE = 6       # Tuner deviance (PySwitch scale: 8192 = in tune, +-8192 = +-50 cents)
 
     # Singleton factory
-    @classmethod
-    def get(cls,
-            name,
+    @staticmethod
+    def get(name,
             set = None,
             request = None,
             response = None,
@@ -345,7 +344,7 @@ class FractalIIMapping(ClientParameterMapping):
             if m.name == name:
                 return m
 
-        m = cls(
+        m = FractalIIMapping(
             name = name,
             create_key = ClientParameterMapping,
             set = set,
@@ -482,8 +481,33 @@ def _patch_model(msg, model):
 # in update() instead of registering it.
 class _FractalIIPresetNameMapping(FractalIIMapping):
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    # Singleton factory
+    @staticmethod
+    def get(name, request, response, value_type):
+        for m in ClientParameterMapping._mappings:
+            if m.name == name:
+                return m
+
+        m = _FractalIIPresetNameMapping(
+            name = name,
+            create_key = ClientParameterMapping,
+            request = request,
+            response = response,
+            value_type = value_type
+        )
+
+        ClientParameterMapping._mappings.append(m)
+        return m
+
+    def __init__(self, name, create_key, request, response, value_type):
+        super().__init__(
+            name = name,
+            create_key = create_key,
+            request = request,
+            response = response,
+            value_type = value_type
+        )
+
         self.__preset = None
 
     # Requests the name if the preset has changed or the name is unknown. An answer to a request sent before
@@ -551,11 +575,33 @@ class FractalIIPresetTargetNameMapping(FractalIIMapping):
 # in update().
 class _FractalIITunerStateMapping(FractalIIMapping):
 
-    _TIMEOUT_MILLIS = const(1500)       # Tuner is regarded as off when no data arrives for this time
-    _IGNORE_MILLIS = const(500)         # Data is ignored for this time after switching the tuner off
+    _TIMEOUT_MILLIS = 1500       # Tuner is regarded as off when no data arrives for this time
+    _IGNORE_MILLIS = 500         # Data is ignored for this time after switching the tuner off
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    # Singleton factory
+    @staticmethod
+    def get(name, response, length):
+        for m in ClientParameterMapping._mappings:
+            if m.name == name:
+                return m
+
+        m = _FractalIITunerStateMapping(
+            name = name,
+            create_key = ClientParameterMapping,
+            response = response,
+            length = length
+        )
+
+        ClientParameterMapping._mappings.append(m)
+        return m
+
+    def __init__(self, name, create_key, response, length):
+        super().__init__(
+            name = name,
+            create_key = create_key,
+            response = response,
+            length = length
+        )
 
         self.__period = PeriodCounter(self._TIMEOUT_MILLIS)
         self.__ignore = False
@@ -737,6 +783,24 @@ class FractalIIMappings:
 
 # Counts the beats (value in range [0..127])
 class _FractalIITempoBeatMapping(FractalIIMapping):
+
+    # Singleton factory
+    @staticmethod
+    def get(name, response, length):
+        for m in ClientParameterMapping._mappings:
+            if m.name == name:
+                return m
+
+        m = _FractalIITempoBeatMapping(
+            name = name,
+            create_key = ClientParameterMapping,
+            response = response,
+            length = length
+        )
+
+        ClientParameterMapping._mappings.append(m)
+        return m
+
     def _decode(self, midi_message):
         return ((self.value if self.value != None else 0) + 1) & 0x7f
 
@@ -776,9 +840,9 @@ def _action_text(prefix, step):
 class FractalIICallback(Callback):
 
     # LED states
-    OFF = const(0)
-    DIM = const(1)
-    BRIGHT = const(2)
+    OFF = 0
+    DIM = 1
+    BRIGHT = 2
 
     def __init__(self, color, text, mappings = []):
         super().__init__(mappings = mappings)
