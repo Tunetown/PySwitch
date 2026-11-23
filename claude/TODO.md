@@ -7,6 +7,7 @@ Things that are not part of the current alpha work. Current phase: [SPEC.md 11](
 - **AM4 / VP4**: not in the alpha. Research results: [FRACTAL.md 1](FRACTAL.md).
 - **Unknown block IDs** (Dynamic Distortion, NAM Player, ID 201): collect from tester reports (they show up in the status dump).
 - **Effect colors / abbreviations**: let alpha testers verify colors and the 3-letter block abbreviations (FRACTAL.md 7.3).
+- **Fractal `effect_id` in the mapping selects**: the selects offer `effect_id = 0..9`, which are no effect blocks (regular blocks start at ID 46). Possible fix: range 46..255 in `meta.json` ([spec/emulator/multi_client.md](spec/emulator/multi_client.md)).
 - **Expression pedals**: maybe add Fractal convenience mappings for External Controllers (generic CC mappings work already).
 - **Editor protocol**: excluded for now ([FRACTAL.md 3.5](FRACTAL.md)).
 

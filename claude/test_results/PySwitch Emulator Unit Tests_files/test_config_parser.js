@@ -72,7 +72,7 @@ describe('Inputs Parser', function() {
 
     it('Display name: Bank Select', async function() {
         await tests.displayNameBankSelect();
-    });
+    }, 60000);   // Parses the configuration 8 times
 
     // it('Remove actions', async function() {
     //     await tests.removeAction();

@@ -129,6 +129,7 @@ class PySwitchRunner {
             this.#loadModule("parser/misc/AssignmentExtractor.py", localPythonPath),
             this.#loadModule("parser/misc/AssignmentNameExtractor.py", localPythonPath),
             this.#loadModule("parser/misc/ImportExtractor.py", localPythonPath),
+            this.#loadModule("parser/misc/ClientImports.py", localPythonPath),
             this.#loadModule("parser/misc/ReplaceAssignmentTransformer.py", localPythonPath),
             this.#loadModule("parser/misc/AddAssignmentTransformer.py", localPythonPath),
             this.#loadModule("parser/misc/CodeExtractor.py", localPythonPath),
@@ -403,7 +404,8 @@ class PySwitchRunner {
             runner      # Returns the runner as a JS proxy
         `);
 
-        const client = ClientFactory.getInstance(await ClientFactory.estimateClient(config));
+        // Client providing the protocol, if any (only its getProtocolCode() is used)
+        const client = await ClientFactory.getProtocolClient(config);
         
         const config_py = this.#options.configProvider ? (await this.#options.configProvider.get()) : {};
         const comm_settings = this.#options.commSettingsProvider ? (await this.#options.commSettingsProvider.get()) : {};

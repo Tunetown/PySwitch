@@ -1,5 +1,8 @@
 class MappingOptions {
 
+    // Number of values offered for parameters with too many values (ranges without a value list)
+    static #NUM_VALUES_LARGE_RANGE = 10;
+
     /**
      * Generates the mapping list for input. Mappings with the same name in several clients are distinguished by
      * the client: the value uses the qualified name <CLIENT>_<NAME> (see claude/spec/emulator/parser.md), the 
@@ -46,8 +49,11 @@ class MappingOptions {
 
             const ret = [];
             if (param.meta && param.meta.range()) {
-                const values = await param.meta.range().getValues();
-                addValues(values);
+                const range = param.meta.range();
+                const values = await range.getValues();
+
+                // Too many values: only the first ones are offered (all others can be entered in the code)
+                addValues(values ? values : (await MappingOptions.#getFirstValues(range)));
 
             } else if (param.meta && param.meta.data.values) {
                 addValues(param.meta.data.values);
@@ -75,5 +81,22 @@ class MappingOptions {
         }
 
         return ret.sort((a, b) => (a.name > b.name) ? 1 : -1);
+    }
+
+    /**
+     * Returns the first values of a range (for ranges with too many values)
+     */
+    static async #getFirstValues(range) {
+        const min = parseInt(await range.min());
+        const max = parseInt(await range.max());
+
+        const ret = [];
+        for (let i = min; i <= max && ret.length < MappingOptions.#NUM_VALUES_LARGE_RANGE; ++i) {
+            ret.push({
+                name: "" + i,
+                value: i
+            });
+        }
+        return ret;
     }
 }

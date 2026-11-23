@@ -230,6 +230,9 @@ class Controller {
                     await options.changeCallback();
                 }
 
+                // If the clients used by the configuration have changed, connect them
+                await that.client.update(that.currentConfig);
+
                 // Recreate UI
                 await that.ui.applyConfig(that.currentConfig);
 

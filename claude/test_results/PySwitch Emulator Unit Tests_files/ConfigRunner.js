@@ -2,7 +2,8 @@ class ConfigRunner {
     
     pyswitch = null;
     timeMillis = 0;
-    client = null;
+    client = null;       // MIDI wrapper connected to PySwitch: the virtual client, or a CombinedMidiWrapper if the configuration uses several clients
+    clients = {};        // Virtual clients by client ID
     frontend = null;
 
     constructor(pyswitch) {
@@ -16,6 +17,7 @@ class ConfigRunner {
      */
     async run(config, performTestsCallback = null) {
         this.client = null;
+        this.clients = {};
 
         // Create a temporary container element for pyswitch
         const el = $('<div id="test-pyswitch-example" />').hide();
@@ -35,16 +37,26 @@ class ConfigRunner {
         // Reset virtual simulation time
         this.timeMillis = 0;
 
-        // Set up virtual client
+        // Set up virtual clients (one per client used by the configuration)
         const that = this;
-        const clientId = await ClientFactory.estimateClient(config);
-        const client = ClientFactory.getInstance(clientId);
-        
-        this.client = await client.getVirtualClient({
-            overrideTimeCallback: function() {
-                return that.timeMillis;
-            }
-        });
+        const clientIds = await ClientFactory.estimateClients(config);
+        const virtualClients = [];
+
+        for (const clientId of clientIds) {
+            const virtualClient = await ClientFactory.getInstance(clientId).getVirtualClient({
+                overrideTimeCallback: function() {
+                    return that.timeMillis;
+                }
+            });
+
+            if (!virtualClient) continue;
+
+            this.clients[clientId] = virtualClient;
+            virtualClients.push(virtualClient);
+        }
+
+        // Several clients: combine them like the MIDI routing on the controller
+        this.client = (virtualClients.length > 1) ? new CombinedMidiWrapper(virtualClients) : (virtualClients.length ? virtualClients[0] : null);
 
         // Set client as MIDI wrapper to connect it to PySwitch
         this.pyswitch.setMidiWrapper(this.client);

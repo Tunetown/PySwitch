@@ -16,25 +16,39 @@ class ClientFactory {
         return null;
     }
 
+    // Clients which can be detected in a configuration, in order of precedence (the first one is the
+    // main client, for example for the protocol)
+    static #DETECTABLE_CLIENTS = ["kemper", "boomerang", "fractal"];
+
     /**
-     * Tries to determine which client a configuration uses the most. Returns a client ID.
+     * Determines all clients used by a configuration (imports of pyswitch.clients.<client> in inputs.py or
+     * display.py). Returns an array of client IDs (at least one).
      */
-    static async estimateClient(config) {
+    static async estimateClients(config) {
         const data = await config.get();
+        const code = data.inputs_py + "\n" + (data.display_py ? data.display_py : "");
 
-        if (data.inputs_py.includes("pyswitch.clients.kemper")) {
-            return "kemper";
-        }
+        const ret = ClientFactory.#DETECTABLE_CLIENTS.filter(
+            (clientId) => (new RegExp("pyswitch\\.clients\\." + clientId + "\\b")).test(code)
+        );
 
-        if (data.inputs_py.includes("pyswitch.clients.boomerang")) {
-            return "boomerang";
-        }
-
-        if (data.inputs_py.includes("pyswitch.clients.fractal")) {
-            return "fractal";
-        }
+        if (ret.length > 0) return ret;
 
         console.warn("Unknown client type, defaulting to Kemper");
-        return "kemper";
+        return ["kemper"];
+    }
+
+    /**
+     * Returns the client handler of the client whose protocol is used by the configuration (at most one
+     * bidirectional protocol per configuration), or the main client if no client has a protocol.
+     */
+    static async getProtocolClient(config) {
+        const clients = (await ClientFactory.estimateClients(config)).map((clientId) => ClientFactory.getInstance(clientId));
+
+        for (const client of clients) {
+            if (client.getProtocolCode()) return client;
+        }
+
+        return clients[0];
     }
 }

@@ -23,7 +23,7 @@ No library change needed:
 - **Virtual clients**: one virtual client per client, each in its own tab. Like the MIDI routing on the device, every message of PySwitch is sent to all virtual clients, and the messages of all of them are received. Each virtual client also receives the messages of the other clients (like a real device); unknown messages are logged as "Unparsed" in the console and the client statistics.
 - **Real devices** ("Auto-detect client device"): each client is searched on its own port with its detector (in parallel). Clients found on a port are connected to that port, clients not found are connected to their virtual client (so a real Kemper can be combined with a virtual Fractal). Selecting a single port or virtual client manually connects only that one.
 - **Protocol**: the protocol of the one client which has a protocol code (`Client.getProtocolCode()`), else none.
-- **Mapping selects**: mappings with the same name in several clients are listed once per client (name with the client's display name, value with the qualified name `<CLIENT>_<NAME>`, [parser.md](parser.md)).
+- **Mapping selects**: mappings with the same name in several clients are listed once per client (name with the client's display name, value with the qualified name `<CLIENT>_<NAME>`, [parser.md](parser.md)). Parameters whose range has too many values (`ParameterRange.getValues()` returns `null`, e.g. Fractal `effect_id` 0..255) offer only the first 10 values of the range (TBC decision 2026-11-23); other values can be entered in the code. For Fractal `effect_id`, these are 0..9, which are no effect blocks (regular blocks start at 46); left as it is for now (TBC decision 2026-11-23, [TODO.md](../../TODO.md)).
 - **MIDI monitor**: names the messages of all clients (unchanged: it always asks the virtual clients of all available clients).
 
 ### Implementation (`web/htdocs/...`)
@@ -38,12 +38,13 @@ No library change needed:
 | `js/ui/PySwitchUI.js` | `showVirtualClient()` → `showVirtualClients()` (one tab per virtual client) |
 | `js/ui/parser/ActionProperties.js` | `createActionDefinition()` returns the client of the action |
 | `js/ui/parser/ActionsProvider.js`, `ParserFrontendInput.js` | editing an action preselects the action of its client (same-named actions of several clients) |
-| `js/model/parser/MappingOptions.js` | qualified values and client names for same-named mappings |
+| `js/model/parser/MappingOptions.js` | qualified values and client names for same-named mappings; first 10 values for parameters with too many values |
 | `test/spec/misc/ConfigRunner.js` | one virtual client per client: `clients` (by client ID), `client` is the MIDI wrapper (the virtual client, or a `CombinedMidiWrapper`) |
 | `test/spec/examples/fractal/FractalTestBase.js` | `client` is `runner.clients.fractal` |
 | `index.html`, `test/index.html` | `CombinedMidiWrapper.js`; test page: `MappingOptions.js` and the new tests |
 
 ### Tests (Jasmine)
 - `test/spec/misc/MultiClientTests.js` (spec "Multiple Clients"): client detection, protocol client, `CombinedMidiWrapper`, PySwitch run with two virtual clients.
-- `test/spec/parser/ClientImportsTests.js`: qualified names in code strings, unchanged code strings keep their clients, mapping options ([parser.md](parser.md)).
+- `test/spec/parser/ClientImportsTests.js`: qualified names in code strings, unchanged code strings keep their clients, mapping options incl. parameters with too many values ([parser.md](parser.md)).
+- `test/spec/test_config_parser.js`: timeout of "Display name: Bank Select" raised to 60 s (parses the configuration 8 times; TBC decision 2026-11-23).
 - Example `examples/Kemper and Fractal/MIDICaptain Nano 4/Rigs and Scenes/` ([examples.md](../examples.md)) with an example test: Fractal scenes and scene name display, Kemper rig selection, both virtual clients.

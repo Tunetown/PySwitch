@@ -242,6 +242,12 @@ class ClientImportsTests extends TestBase {
         expect(values).toContain("KEMPER_MAPPING_TEMPO_BPM()");
         expect(values).not.toContain("MAPPING_TEMPO_BPM()");
 
+        // Parameters with too many values (effect_id: 0..255): only the first 10 values
+        const blockBypass = values.filter((value) => value.startsWith("MAPPING_BLOCK_BYPASS("));
+        expect(blockBypass.length).toBe(10);
+        expect(blockBypass).toContain("MAPPING_BLOCK_BYPASS(effect_id = 0)");
+        expect(blockBypass).toContain("MAPPING_BLOCK_BYPASS(effect_id = 9)");
+
         expect(new Set(values).size).toBe(values.length, "Duplicate mapping option values");
         expect(new Set(names).size).toBe(names.length, "Duplicate mapping option names");
     }

@@ -35,7 +35,10 @@ Format, one block per file:
 - `ParserFrontendInput.promptEditAction()`, `#promptAction()` – pass the client of the edited action for the preselection.
 
 ### web/htdocs/js/model/parser/MappingOptions.js
-- `MappingOptions.generate()` – mappings with the same name in several clients: value with the qualified name `<CLIENT>_<NAME>`, name with the client's display name ([spec/emulator/parser.md](spec/emulator/parser.md)).
+- `MappingOptions.generate()` – mappings with the same name in several clients: value with the qualified name `<CLIENT>_<NAME>`, name with the client's display name ([spec/emulator/parser.md](spec/emulator/parser.md)). Parameters with too many values (`ParameterRange.getValues()` returns `null`): the first 10 values of the range (new `#getFirstValues()`); before, the whole list failed (`TypeError: values is not iterable`, Fractal `effect_id` 0..255).
+
+### web/htdocs/test/spec/test_config_parser.js
+- Test "Display name: Bank Select" – timeout 60 s (parses the configuration 8 times, exceeded the 20 s of the spec).
 
 ### web/htdocs/test/spec/misc/ConfigRunner.js
 - `ConfigRunner.run()` – one virtual client per client (`clients` by client ID); `client` is the virtual client or a `CombinedMidiWrapper`.
