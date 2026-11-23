@@ -16,7 +16,7 @@ class ConfigFile {
             clearBuffers: true,
             maxRequestLifetimeMillis: 2000,
             memoryWarnLimitBytes: 1024 * 15,
-            updateInterval: 200,
+            updateInterval: 400,
             displayDimFactorOn: 1,
             displayDimFactorOff: 0.2,
             ledBrightnessOn: 0.3,

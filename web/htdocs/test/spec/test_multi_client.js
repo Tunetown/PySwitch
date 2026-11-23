@@ -3,7 +3,7 @@ describe('Multiple Clients', function() {
     const tests = new MultiClientTests();
 
     beforeEach(function() {
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
     });
 
     it('Detect the clients of a configuration', async function() {

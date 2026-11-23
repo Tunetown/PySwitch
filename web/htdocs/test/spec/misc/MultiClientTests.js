@@ -1,6 +1,6 @@
 /**
  * Tests for configurations controlling several clients: detection of the clients, protocol client and the
- * combined MIDI wrapper. Spec: claude/spec/emulator/multi_client.md
+ * combined MIDI wrapper. Spec: claude/001 Fractal Support/spec/emulator/multi_client.md
  */
 class MultiClientTests extends TestBase {
 

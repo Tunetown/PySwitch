@@ -1,7 +1,7 @@
 /**
  * Block (effect) definitions of the gen-3 Fractal devices for the virtual Fractal client.
  *
- * IDs: 3rd-party spec rev 1.4, Appendix 1 (claude/FRACTAL.md 4).
+ * IDs: 3rd-party spec rev 1.4, Appendix 1 (claude/001 Fractal Support/FRACTAL.md 4).
  * Names, abbreviations and instances per model: Fractal Audio Blocks Guide, "Product Comparison".
  * Instance counts are [ Axe-Fx III, FM9, FM3 ] (see FractalClient.MODELS countIndex).
  * Channel counts of blocks without channels (1) are assumptions.

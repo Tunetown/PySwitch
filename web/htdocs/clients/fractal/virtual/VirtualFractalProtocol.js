@@ -1,6 +1,6 @@
 /**
  * Parses incoming messages of the virtual Fractal client and builds the answers (3rd-party protocol,
- * claude/FRACTAL.md 3). Like the real device, it only answers queries and never pushes state changes.
+ * claude/001 Fractal Support/FRACTAL.md 3). Like the real device, it only answers queries and never pushes state changes.
  *
  * Undocumented behaviour, chosen here:
  * - NAK error code for checksum errors: 0x01

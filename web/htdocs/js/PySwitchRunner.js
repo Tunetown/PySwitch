@@ -374,8 +374,9 @@ class PySwitchRunner {
 
     /**
      * Run PySwitch, terminating an existing runner before. Expects a Configuration instance.
+     * configPy: Optional config.py options (object) replacing the ones of the config provider (tests).
      */
-    async run(config, dontTick = false) {
+    async run(config, dontTick = false, configPy = null) {
         console.log("Run PySwitch");
         
         await this.stop();
@@ -407,7 +408,7 @@ class PySwitchRunner {
         // Client providing the protocol, if any (only its getProtocolCode() is used)
         const client = await ClientFactory.getProtocolClient(config);
         
-        const config_py = this.#options.configProvider ? (await this.#options.configProvider.get()) : {};
+        const config_py = configPy ? configPy : (this.#options.configProvider ? (await this.#options.configProvider.get()) : {});
         const comm_settings = this.#options.commSettingsProvider ? (await this.#options.commSettingsProvider.get()) : {};
 
         if (dontTick) {

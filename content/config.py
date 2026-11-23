@@ -22,8 +22,8 @@ Config = {
     #"maxRequestLifetimeMillis": 2000,
 
     # Update interval, for updating the rig date (which triggers all other data to update when changed) (milliseconds)
-    # and other displays if assigned. 200 is the default.
-    #"updateInterval": 200,
+    # and other displays if assigned. 400 is the default.
+    #"updateInterval": 400,
 
     # Amount of bytes that must at least be free at the time processing starts (normally the program requires anther about
     # 10kB for character loading etc., default threshold for the warning is 15kB).

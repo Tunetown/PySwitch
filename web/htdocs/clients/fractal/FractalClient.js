@@ -1,6 +1,6 @@
 /**
  * Client implementation for Fractal Audio devices (Axe-Fx III, FM9, FM3).
- * Protocol reference: claude/FRACTAL.md
+ * Protocol reference: claude/001 Fractal Support/FRACTAL.md
  */
 class FractalClient extends Client {
 
@@ -89,6 +89,13 @@ class FractalClient extends Client {
     }
 
     /**
+     * Sort string among all clients available: after Kemper (Boomerang uses "YYY_", local actions "ZZZ...")
+     */
+    getSortString() {
+        return "XXX_" + this.id;
+    }
+
+    /**
      * Returns a ClientDetector instance for the client
      */
     async getClientDetector() {
@@ -98,19 +105,28 @@ class FractalClient extends Client {
     /**
      * Returns a virtual client. Without options (emulator UI), the model is taken from the emulator settings
      * (fractalModel in config.py), so the virtual device answers the messages of the emulated controller.
-     * Callers passing options (tests) get the default model unless they pass one.
+     * Callers passing options (tests) get the model of options.config.fractalModel (config.py options), else the 
+     * default model, unless they pass a model.
      */
     async getVirtualClient(options) {
         return new VirtualFractalClient(
             {
                 ...{
-                    model: options ? FractalClient.DEFAULT_MODEL : FractalClient.#getConfiguredModel(),
+                    model: options ? FractalClient.#getModelFromConfig(options.config) : FractalClient.#getConfiguredModel(),
                     sendRealtimeSysex: true,             // Simulates Setup > MIDI/Remote > Send Realtime Sysex = ON
                     recordSecondPress: "overdub"         // Looper block config "Record 2nd Press": overdub, play or stop
                 },
                 ...options
             }
         );
+    }
+
+    /**
+     * Returns the model ID for config.py options (fractalModel), or the default model.
+     */
+    static #getModelFromConfig(config) {
+        const id = config ? FractalClient.getModelId(config.fractalModel) : null;
+        return id ? id : FractalClient.DEFAULT_MODEL;
     }
 
     /**

@@ -1,7 +1,7 @@
 /**
  * Virtual Fractal device (Axe-Fx III, FM9, FM3). Behaves like a real device connected via DIN MIDI with
  * Send Realtime Sysex = ON: answers queries, never pushes state changes, only tempo beat and tuner data
- * are pushed. Spec: claude/spec/emulator/virtual_client.md
+ * are pushed. Spec: claude/001 Fractal Support/spec/emulator/virtual_client.md
  */
 class VirtualFractalClient extends VirtualClient {
 

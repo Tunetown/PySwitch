@@ -14,10 +14,19 @@ class ConfigRunner {
      * Runs the config in PySwitch. 
      * 
      * async performTestsCallback() => void
+     * configPy: Optional config.py options (object), passed to PySwitch and the virtual clients
      */
-    async run(config, performTestsCallback = null) {
+    async run(config, performTestsCallback = null, configPy = null) {
         this.client = null;
         this.clients = {};
+
+        // Pyodide is shared by all test classes (TestBase): library modules imported outside of a run (for example
+        // pyswitch.misc for the version) must not be reused, so the library is always imported fresh.
+        this.pyswitch.pyodide.runPython(`
+            import sys
+            for _name in [_m for _m in sys.modules if _m == "pyswitch" or _m.startswith("pyswitch.")]:
+                del sys.modules[_name]
+        `);
 
         // Create a temporary container element for pyswitch
         const el = $('<div id="test-pyswitch-example" />').hide();
@@ -46,7 +55,8 @@ class ConfigRunner {
             const virtualClient = await ClientFactory.getInstance(clientId).getVirtualClient({
                 overrideTimeCallback: function() {
                     return that.timeMillis;
-                }
+                },
+                config: configPy ? configPy : {}
             });
 
             if (!virtualClient) continue;
@@ -67,7 +77,7 @@ class ConfigRunner {
         });
 
         // Run without ticking
-        await this.pyswitch.run(config, true);
+        await this.pyswitch.run(config, true, configPy);
 
         // Do the tests
         if (performTestsCallback) {

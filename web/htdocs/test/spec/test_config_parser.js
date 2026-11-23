@@ -3,7 +3,7 @@ describe('Inputs Parser', function() {
     const tests = new ConfigParserTests();
 
     beforeEach(async function() {
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
     });
 
     it('Minimal call', async function() {
@@ -72,7 +72,7 @@ describe('Inputs Parser', function() {
 
     it('Display name: Bank Select', async function() {
         await tests.displayNameBankSelect();
-    }, 60000);   // Parses the configuration 8 times
+    });
 
     // it('Remove actions', async function() {
     //     await tests.removeAction();

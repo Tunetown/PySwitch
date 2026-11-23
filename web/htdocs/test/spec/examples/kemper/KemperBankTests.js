@@ -1,96 +1,56 @@
+/**
+ * Tests for the Kemper bank actions (BANK_UP, BANK_DOWN)
+ */
 class KemperBankTests extends KemperTestBase {
 
-    async testBankUp(switchDef, options = {}) {
+    /**
+     * BANK_UP: rig ID +5 per press, LED and label in the color of the bank, overflow to bank 1.
+     * options: { labelTestCoordinates: [x, y] of a pixel of the label }
+     */
+    async testBankUp(name, options = {}) {
         await this.loadInfo();
 
-        await this.runner.setRigId(0);
-        
-        expect(this.runner.runner.client.getRigId()).toBe(0);
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(0, 0.02));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(0, 0.2));
+        await this.setRigId(0);
+        expect(this.client.getRigId()).toBe(0);
+        this.expectColors(name, this.bankColor(0, 0.02), options.labelTestCoordinates, this.bankColor(0, 0.2));
 
-        await this.runner.simulateSwitchPress(switchDef);
+        for (let bank = 1; bank <= 5; ++bank) {
+            await this.press(name);
 
-        expect(this.runner.runner.client.getRigId()).toBe(5);
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(1, 0.02));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(1, 0.2));
-        
-        await this.runner.simulateSwitchPress(switchDef);
-        
-        expect(this.runner.runner.client.getRigId()).toBe(10);
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(2, 0.02));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(2, 0.2));
-        
-        await this.runner.simulateSwitchPress(switchDef);
-
-        expect(this.runner.runner.client.getRigId()).toBe(15);
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(3, 0.02));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(3, 0.2));
-        
-        await this.runner.simulateSwitchPress(switchDef);
-
-        expect(this.runner.runner.client.getRigId()).toBe(20);
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(4, 0.02));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(4, 0.2));
-        
-        await this.runner.simulateSwitchPress(switchDef);
-
-        expect(this.runner.runner.client.getRigId()).toBe(25); 
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(5, 0.02));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(5, 0.2));
+            expect(this.client.getRigId()).toBe(bank * 5);
+            this.expectColors(name, this.bankColor(bank, 0.02), options.labelTestCoordinates, this.bankColor(bank, 0.2));
+        }
 
         // Overflow
-        await this.runner.setRigId(125 * 5 - 1);
-        
-        expect(this.runner.runner.client.getRigId()).toBe(125 * 5 - 1);  
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(124, 0.02));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(124, 0.2));
+        await this.setRigId(125 * 5 - 1);
+        await this.press(name);
 
-        await this.runner.simulateSwitchPress(switchDef);
-
-        expect(this.runner.runner.client.getRigId()).toBe(4);  
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(0, 0.02));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(0, 0.2));
+        expect(this.client.getRigId()).toBe(4);
+        this.expectColors(name, this.bankColor(0, 0.02), options.labelTestCoordinates, this.bankColor(0, 0.2));
     }
-    
 
-    async testBankDown(switchDef, options = {}) {
+    /**
+     * BANK_DOWN: rig ID -5 per press, LED and label in the color of the bank, overflow to the last bank.
+     * options: { labelTestCoordinates: [x, y] of a pixel of the label }
+     */
+    async testBankDown(name, options = {}) {
         await this.loadInfo();
 
-        await this.runner.setRigId(23);
+        await this.setRigId(23);
+        expect(this.client.getRigId()).toBe(23);
+        this.expectColors(name, this.bankColor(4, 0.02), options.labelTestCoordinates, this.bankColor(4, 0.2));
 
-        expect(this.runner.runner.client.getRigId()).toBe(23);
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(4, 0.02));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(4, 0.2));
+        for (let bank = 3; bank >= 0; --bank) {
+            await this.press(name);
 
-        await this.runner.simulateSwitchPress(switchDef);
+            expect(this.client.getRigId()).toBe(bank * 5 + 3);
+            this.expectColors(name, this.bankColor(bank, 0.02), options.labelTestCoordinates, this.bankColor(bank, 0.2));
+        }
 
-        expect(this.runner.runner.client.getRigId()).toBe(18);
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(3, 0.02));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(3, 0.2));
+        // Overflow
+        await this.press(name);
 
-        await this.runner.simulateSwitchPress(switchDef);
-
-        expect(this.runner.runner.client.getRigId()).toBe(13);
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(2, 0.02));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(2, 0.2));
-        
-        await this.runner.simulateSwitchPress(switchDef);
-
-        expect(this.runner.runner.client.getRigId()).toBe(8);
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(1, 0.02));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(1, 0.2));
-        
-        await this.runner.simulateSwitchPress(switchDef);
-
-        expect(this.runner.runner.client.getRigId()).toBe(3);
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(0, 0.02));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(0, 0.2));
-        
-        await this.runner.simulateSwitchPress(switchDef);
-        
-        expect(this.runner.runner.client.getRigId()).toBe(125 * 5 - 2);
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(124, 0.02));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(124, 0.2));
+        expect(this.client.getRigId()).toBe(125 * 5 - 2);
+        this.expectColors(name, this.bankColor(124, 0.02), options.labelTestCoordinates, this.bankColor(124, 0.2));
     }
 }

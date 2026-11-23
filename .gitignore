@@ -7,3 +7,5 @@ screenlog*
 **/memray*
 
 web/apache2-log
+
+claude/

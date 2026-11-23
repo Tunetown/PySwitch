@@ -2,17 +2,23 @@
 - Features
     - Added support for **Fractal Audio** devices (FM3, FM9, Axe-Fx III) via the 3rd-party MIDI protocol over DIN MIDI (alpha). The actions follow the footswitch functions of the Fractal FC controllers (Bank, Preset, Scene, Effect Bypass and Channel, Tuner, Tap Tempo, Looper) with the same parameters, LED states (off/dim/bright), category colors and label options. There are also encoder actions for presets and BPM, and display callbacks for the preset name, scene name, BPM and the tuner.
     - New config.py options for the Fractal client: **fractalModel**, **fractalBankSize** and **fractalPresetDisplayOffset**.
+    - One configuration can control several devices at once (for example a Kemper and a Fractal device). At most one bidirectional protocol can be used, and the devices must use different MIDI channels for CC/PC messages.
+    - The default **updateInterval** is now 400 ms (was 200 ms).
 
 - Bug fixes:
     - **PA_MIDICAPTAIN_DIN_MIDI()** failed with a TypeError since the new MIDI buffer (it still passed the removed MIDI channel and buffer size parameters). It now takes the optional receive_chunk_size parameter, like the USB variant.
 
 - Examples:
-    - Added Fractal Audio examples for the MIDICaptain 10, Mini 6 and Nano 4, modelled on the FM3 factory layouts.
+    - Added Fractal Audio examples for the MIDICaptain 10, Mini 6 and Nano 4, modelled on the FM3 factory layouts ("Full Featureset").
+    - Added simple Fractal Audio examples for each controller and model (FM3, FM9, Axe-Fx III): "Scenes and Tuner" (Nano 4), "Presets and Scenes" (Mini 6), "Scenes and Effects" (MIDICaptain 10).
+    - Added an example controlling a Kemper and a Fractal device at the same time ("Kemper and Fractal").
 
 ### Emulator 2.4.11.18
 - Added the **Virtual Fractal** client (FM3, FM9, Axe-Fx III): presets with scenes and blocks, tuner, tempo and looper simulation. Its model follows the Fractal model in the emulator settings.
 - Fractal devices connected via MIDI are detected automatically.
 - The Fractal config.py options can be set in the emulator settings (and are included in the downloadable config.py).
+- Configurations using several clients: one virtual client (tab) per client, real devices are detected per client, the action and mapping lists show the actions and mappings of all clients. Actions and mappings with the same name in several clients are imported with aliases (for example FRACTAL_TAP_TEMPO).
+- The default update interval is now 400 ms.
 
 
 # PySwitch v2.4.10

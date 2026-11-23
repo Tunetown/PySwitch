@@ -4,10 +4,14 @@ class ExampleTestRunner extends TestBase {
     hardware = null;
 
     #examplesPath = null;
+    #filter = null;           // Only examples whose path contains this text are tested (URL parameter "examples")
+    #coverage = false;        // Collect coverage (URL parameter "coverage=1")
     
     constructor(path) {
         super();
         this.#examplesPath = path;
+        this.#filter = TestBase.getUrlParameter("examples");
+        this.#coverage = (TestBase.getUrlParameter("coverage") == "1");
     }
 
     /**
@@ -16,14 +20,25 @@ class ExampleTestRunner extends TestBase {
      */
     async process() {
         await this.init({
-            coverage: true
+            coverage: this.#coverage
         });
 
         // Test all examples
+        const start = performance.now();
         await this.#testExamples();
+        console.log("Examples in " + this.#examplesPath + (this.#filter ? (" (filter: " + this.#filter + ")") : "") + " tested in " + ExampleTestRunner.#seconds(start));
 
         // Show a basic coverage report in the console
-        await this.coverage();        
+        if (this.#coverage) {
+            await this.coverage();
+        }
+    }
+
+    /**
+     * Returns the seconds since the passed performance.now() timestamp as text
+     */
+    static #seconds(start) {
+        return ((performance.now() - start) / 1000).toFixed(1) + " s";
     }
 
     /**
@@ -69,9 +84,25 @@ class ExampleTestRunner extends TestBase {
             return;
         };
 
+        if (this.#filter) {
+            // A filter ending with $ must match the end of the path
+            const matches = this.#filter.endsWith("$") ? entry.data.callPath.endsWith(this.#filter.slice(0, -1)) : entry.data.callPath.includes(this.#filter);
+            if (!matches) return;
+        }
+
+        const start = performance.now();
+
         // console.log("Testing example " + entry.data.callPath)
 
         const config = new WebConfiguration(new MockController(), this.#examplesPath + entry.data.callPath);
+
+        // Optional config.py options for the test (.test.config.json in the example folder)
+        let configPy = null;
+        for(const file of entry.data.toc ? entry.data.toc.children : []) {
+            if (file.name == ".test.config.json") {
+                configPy = JSON.parse(await Tools.fetch(this.#examplesPath + entry.data.callPath + "/" + file.name));
+            }
+        }
         
         const that = this;        
         await this.runner.run(config, async function() {
@@ -98,7 +129,9 @@ class ExampleTestRunner extends TestBase {
             if (testScriptUrl) {
                 await that.#runExampleTest(config, await Tools.fetch(testScriptUrl));
             }
-        });
+        }, configPy);
+
+        console.log("Example " + entry.data.callPath + ": " + ExampleTestRunner.#seconds(start));
 
         expect(1).toBe(1);
     }

@@ -1,7 +1,7 @@
 /**
  * Tests for the client aware imports of the parser: actions and mappings of different clients can have the same
  * name. They are imported by client, and with an alias (<CLIENT>_<NAME>) if several clients' functions with the same
- * name are used in one file. Spec: claude/spec/emulator/parser.md
+ * name are used in one file. Spec: claude/001 Fractal Support/spec/emulator/parser.md
  */
 class ClientImportsTests extends TestBase {
 

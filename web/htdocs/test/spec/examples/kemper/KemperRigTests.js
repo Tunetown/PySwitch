@@ -1,117 +1,70 @@
+/**
+ * Tests for the Kemper rig actions (RIG_UP, RIG_DOWN)
+ */
 class KemperRigTests extends KemperTestBase {
 
-    async testRigUp(switchDef, options = {}) {
-        await this.loadInfo();
+    static NUM_RIGS = 125 * 5;
 
-        await this.runner.setRigId(0);
-
-        expect(this.runner.runner.client.getRigId()).toBe(0);
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(0, 0.3));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(0, 1));
-
-        await this.runner.simulateSwitchPress(switchDef);
-
-        expect(this.runner.runner.client.getRigId()).toBe(1);
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(0, 0.3));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(0, 1));
-        
-        await this.runner.simulateSwitchPress(switchDef);
-
-        expect(this.runner.runner.client.getRigId()).toBe(2);
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(0, 0.3));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(0, 1));
-        
-        await this.runner.simulateSwitchPress(switchDef);
-
-        expect(this.runner.runner.client.getRigId()).toBe(3);
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(0, 0.3));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(0, 1));
-        
-        await this.runner.simulateSwitchPress(switchDef);
-
-        expect(this.runner.runner.client.getRigId()).toBe(4);
-        if (options.keepBank) {
-            expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(0, 0.3));
-            if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(0, 1));
-        
-            await this.runner.simulateSwitchPress(switchDef);
-
-            expect(this.runner.runner.client.getRigId()).toBe(4);        
-            expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(0, 0.3));
-            if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(0, 1));
-
-        } else {
-            expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(1, 0.3));
-            if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(1, 1));
-        
-            await this.runner.simulateSwitchPress(switchDef);
-
-            expect(this.runner.runner.client.getRigId()).toBe(5);    
-            expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(1, 0.3));
-            if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(1, 1));
-        
-            // Overflow
-            await this.runner.setRigId(125 * 5 - 1);
-            expect(this.runner.runner.client.getRigId()).toBe(624);
-            await this.runner.simulateSwitchPress(switchDef);
-
-            expect(this.runner.runner.client.getRigId()).toBe(0);
-            expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(0, 0.3));
-            if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(0, 1));
-        }
+    /**
+     * RIG_UP: rig ID +1 per press. LED and label show the color of the bank of the target rig.
+     * options: { 
+     *     keepBank: true if the action stays in the current bank (stops at the last rig of the bank), 
+     *     labelTestCoordinates: [x, y] of a pixel of the label 
+     * }
+     */
+    async testRigUp(name, options = {}) {
+        await this.#testRigUpDown(name, 1, 0, options);
     }
     
-    async testRigDown(switchDef, options = {}) {
+    /**
+     * RIG_DOWN: rig ID -1 per press. LED and label show the color of the bank of the target rig.
+     * options: see testRigUp()
+     */
+    async testRigDown(name, options = {}) {
+        await this.#testRigUpDown(name, -1, 23, options);
+    }
+
+    /**
+     * Presses the switch 5 times starting at the passed rig ID, then tests the overflow (if not keepBank)
+     */
+    async #testRigUpDown(name, step, startRigId, options) {
         await this.loadInfo();
 
-        await this.runner.setRigId(23);
+        const that = this;
+        async function check(rigId) {
+            expect(that.client.getRigId()).toBe(rigId);
 
-        expect(this.runner.runner.client.getRigId()).toBe(23);
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(4, 0.3));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(4, 1));
-
-        await this.runner.simulateSwitchPress(switchDef);
-
-        expect(this.runner.runner.client.getRigId()).toBe(22);
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(4, 0.3));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(4, 1));
-        
-        await this.runner.simulateSwitchPress(switchDef);
-
-        expect(this.runner.runner.client.getRigId()).toBe(21);
-        expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(4, 0.3));
-        if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(4, 1));
-        
-        await this.runner.simulateSwitchPress(switchDef);
-
-        expect(this.runner.runner.client.getRigId()).toBe(20);
-        if (options.keepBank) {
-            expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(4, 0.3));
-            if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(4, 1));
-        
-            await this.runner.simulateSwitchPress(switchDef);
-            
-            expect(this.runner.runner.client.getRigId()).toBe(20);    
-            expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(4, 0.3));
-            if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(4, 1));
-
-        } else {
-            expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(3, 0.3));
-            if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(3, 1));
-        
-            await this.runner.simulateSwitchPress(switchDef);
-
-            expect(this.runner.runner.client.getRigId()).toBe(19);
-            expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(3, 0.3));
-            if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(3, 1));
-
-            // Overflow
-            await this.runner.setRigId(0);
-            await this.runner.simulateSwitchPress(switchDef);
-            
-            expect(this.runner.runner.client.getRigId()).toBe(125 * 5 - 1);    
-            expect(this.runner.getSwitchColor(switchDef)).toEqual(this.bankColor(124, 0.3));
-            if (options.labelTestCoordinates) expect(this.runner.getDisplayColorAt(options.labelTestCoordinates)).toEqual(this.bankColor(124, 1));    
+            const bank = Math.floor(that.#target(rigId, step, options.keepBank) / 5);
+            that.expectColors(name, that.bankColor(bank, 0.3), options.labelTestCoordinates, that.bankColor(bank, 1));
         }
+
+        await this.setRigId(startRigId);
+        await check(startRigId);
+
+        let rigId = startRigId;
+        for (let i = 0; i < 5; ++i) {
+            await this.press(name);
+            rigId = this.#target(rigId, step, options.keepBank);
+            await check(rigId);
+        }
+
+        if (!options.keepBank) {
+            // Overflow
+            const lastRigId = (step > 0) ? KemperRigTests.NUM_RIGS - 1 : 0;
+            await this.setRigId(lastRigId);
+            await this.press(name);
+            await check(this.#target(lastRigId, step, false));
+        }
+    }
+
+    /**
+     * Returns the target rig ID of a rig up/down action
+     */
+    #target(rigId, step, keepBank) {
+        if (keepBank) {
+            const bankStart = Math.floor(rigId / 5) * 5;
+            return Math.min(Math.max(rigId + step, bankStart), bankStart + 4);
+        }
+        return (rigId + step + KemperRigTests.NUM_RIGS) % KemperRigTests.NUM_RIGS;
     }
 }

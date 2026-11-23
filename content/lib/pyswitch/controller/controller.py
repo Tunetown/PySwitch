@@ -45,7 +45,7 @@ class Controller(Updater): #ClientRequestListener
 
         # Global config
         self.config = config
-        update_interval = get_option(config, "updateInterval", 200)
+        update_interval = get_option(config, "updateInterval", 400)
 
         # Max. number of MIDI messages being parsed before the next switch state evaluation
         self.__max_consecutive_midi_msgs = get_option(config, "maxConsecutiveMidiMessages", 10)   

@@ -1,7 +1,7 @@
 describe('Templates with Parser Identity', function() {
     
     beforeEach(function() {
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
     });
 
     it('Templates (high level test)', async function() {

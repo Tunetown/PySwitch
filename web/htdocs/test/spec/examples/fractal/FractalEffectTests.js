@@ -1,5 +1,5 @@
 /**
- * Tests for the Fractal effect actions (block bypass and channels). Block IDs: claude/FRACTAL.md 4.
+ * Tests for the Fractal effect actions (block bypass and channels). Block IDs: claude/001 Fractal Support/FRACTAL.md 4.
  */
 class FractalEffectTests extends FractalTestBase {
 

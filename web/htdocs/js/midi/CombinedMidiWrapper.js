@@ -2,7 +2,7 @@
  * MIDI wrapper combining several MIDI wrappers (virtual clients and/or PythonMidiWrapper instances for real
  * devices), used when a configuration controls several clients. Like the MIDI routing on the controller, every
  * message sent by PySwitch is sent to all wrappers, and the messages of all wrappers are received.
- * Spec: claude/spec/emulator/multi_client.md
+ * Spec: claude/001 Fractal Support/spec/emulator/multi_client.md
  */
 class CombinedMidiWrapper {
 

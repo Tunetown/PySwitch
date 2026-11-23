@@ -6,7 +6,7 @@ from ...controller.callbacks import Callback
 from ...controller.client import ClientParameterMapping
 from ...ui.elements import TunerDisplay
 
-# Fractal Audio client (Axe-Fx III, FM9, FM3). Protocol: 3rd-party SysEx, see claude/FRACTAL.md in the
+# Fractal Audio client (Axe-Fx III, FM9, FM3). Protocol: 3rd-party SysEx, see claude/001 Fractal Support/FRACTAL.md in the
 # PySwitch repository. There is no bidirectional protocol: all values are polled.
 
 ####################################################################################################################

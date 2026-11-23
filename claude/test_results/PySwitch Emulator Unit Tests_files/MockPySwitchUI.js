@@ -1,9 +1,0 @@
-class MockPySwitchUI {
-    setDirty() {
-
-    }
-
-    resetDirtyState() {
-        
-    }
-}

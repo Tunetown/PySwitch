@@ -2,12 +2,12 @@
 
 Controls a Kemper Profiler and a Fractal Audio FM3, FM9 or Axe-Fx III at the same time.
 
-|          | Press                  | Long press           |
-|----------|------------------------|----------------------|
-| Switch 1 | Kemper: Rig 1          | Kemper: Tap Tempo    |
-| Switch 2 | Kemper: Rig 2          |                      |
-| Switch A | Fractal: Scene 1       | Fractal: Tap Tempo   |
-| Switch B | Fractal: Scene 2       |                      |
+|          | Press                                                  |
+|----------|--------------------------------------------------------|
+| Switch 1 | Kemper: Rig 1                                          |
+| Switch 2 | Kemper: Rig 2                                          |
+| Switch A | Fractal: Scene 1, again: Scene 2                       |
+| Switch B | Tap Tempo for **both** devices (shows the Fractal BPM) |
 
 The display shows the Kemper rig name and the Fractal scene name. The tuner display shows the Kemper tuner.
 

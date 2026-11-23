@@ -5,7 +5,7 @@ class MappingOptions {
 
     /**
      * Generates the mapping list for input. Mappings with the same name in several clients are distinguished by
-     * the client: the value uses the qualified name <CLIENT>_<NAME> (see claude/spec/emulator/parser.md), the 
+     * the client: the value uses the qualified name <CLIENT>_<NAME> (see claude/001 Fractal Support/spec/emulator/parser.md), the 
      * name shows the client.
      */
     async generate(parser, addNone = false) {
