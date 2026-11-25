@@ -1,0 +1,240 @@
+[
+ {
+  "package": "pyswitch",
+  "file": "",
+  "source": "content/lib/pyswitch",
+  "version": "",
+  "ref": ""
+ },
+ {
+  "package": "adafruit_bitmap_font",
+  "file": "adafruit_bitmap_font/__init__.py",
+  "source": "content/lib/adafruit_bitmap_font/__init__.py",
+  "version": "",
+  "ref": ""
+ },
+ {
+  "package": "adafruit_bitmap_font",
+  "file": "adafruit_bitmap_font/bdf.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_Bitmap_Font.git adafruit_bitmap_font/bdf.py",
+  "version": "1.5.11",
+  "ref": "1.5.11"
+ },
+ {
+  "package": "adafruit_bitmap_font",
+  "file": "adafruit_bitmap_font/bitmap_font.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_Bitmap_Font.git adafruit_bitmap_font/bitmap_font.py",
+  "version": "1.5.11",
+  "ref": "1.5.11"
+ },
+ {
+  "package": "adafruit_bitmap_font",
+  "file": "adafruit_bitmap_font/glyph_cache.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_Bitmap_Font.git adafruit_bitmap_font/glyph_cache.py",
+  "version": "1.5.11",
+  "ref": "1.5.11"
+ },
+ {
+  "package": "adafruit_bitmap_font",
+  "file": "adafruit_bitmap_font/pcf.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_Bitmap_Font.git adafruit_bitmap_font/pcf.py",
+  "version": "1.5.11",
+  "ref": "1.5.11"
+ },
+ {
+  "package": "adafruit_bitmap_font",
+  "file": "adafruit_bitmap_font/ttf.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_Bitmap_Font.git adafruit_bitmap_font/ttf.py",
+  "version": "1.5.11",
+  "ref": "1.5.11"
+ },
+ {
+  "package": "adafruit_display_shapes",
+  "file": "adafruit_display_shapes/__init__.py",
+  "source": "content/lib/adafruit_display_shapes/__init__.py",
+  "version": "",
+  "ref": ""
+ },
+ {
+  "package": "adafruit_display_shapes",
+  "file": "adafruit_display_shapes/circle.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_Display_Shapes.git adafruit_display_shapes/circle.py",
+  "version": "2.5.6",
+  "ref": "2.5.6"
+ },
+ {
+  "package": "adafruit_display_shapes",
+  "file": "adafruit_display_shapes/line.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_Display_Shapes.git adafruit_display_shapes/line.py",
+  "version": "2.5.6",
+  "ref": "2.5.6"
+ },
+ {
+  "package": "adafruit_display_shapes",
+  "file": "adafruit_display_shapes/polygon.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_Display_Shapes.git adafruit_display_shapes/polygon.py",
+  "version": "2.5.6",
+  "ref": "2.5.6"
+ },
+ {
+  "package": "adafruit_display_shapes",
+  "file": "adafruit_display_shapes/rect.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_Display_Shapes.git adafruit_display_shapes/rect.py",
+  "version": "2.5.6",
+  "ref": "2.5.6"
+ },
+ {
+  "package": "adafruit_display_shapes",
+  "file": "adafruit_display_shapes/roundrect.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_Display_Shapes.git adafruit_display_shapes/roundrect.py",
+  "version": "2.5.6",
+  "ref": "2.5.6"
+ },
+ {
+  "package": "adafruit_display_shapes",
+  "file": "adafruit_display_shapes/sparkline.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_Display_Shapes.git adafruit_display_shapes/sparkline.py",
+  "version": "2.5.6",
+  "ref": "2.5.6"
+ },
+ {
+  "package": "adafruit_display_shapes",
+  "file": "adafruit_display_shapes/triangle.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_Display_Shapes.git adafruit_display_shapes/triangle.py",
+  "version": "2.5.6",
+  "ref": "2.5.6"
+ },
+ {
+  "package": "adafruit_display_text",
+  "file": "adafruit_display_text/__init__.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_Display_Text.git adafruit_display_text/__init__.py",
+  "version": "2.22.12",
+  "ref": "2.22.12"
+ },
+ {
+  "package": "adafruit_display_text",
+  "file": "adafruit_display_text/bitmap_label.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_Display_Text.git adafruit_display_text/bitmap_label.py",
+  "version": "2.22.12",
+  "ref": "2.22.12"
+ },
+ {
+  "package": "adafruit_display_text",
+  "file": "adafruit_display_text/label.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_Display_Text.git adafruit_display_text/label.py",
+  "version": "2.22.12",
+  "ref": "2.22.12"
+ },
+ {
+  "package": "adafruit_display_text",
+  "file": "adafruit_display_text/scrolling_label.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_Display_Text.git adafruit_display_text/scrolling_label.py",
+  "version": "2.22.12",
+  "ref": "2.22.12"
+ },
+ {
+  "package": "adafruit_hid",
+  "file": "adafruit_hid/__init__.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_HID.git adafruit_hid/__init__.py",
+  "version": "5.3.3",
+  "ref": "5.3.3"
+ },
+ {
+  "package": "adafruit_hid",
+  "file": "adafruit_hid/consumer_control.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_HID.git adafruit_hid/consumer_control.py",
+  "version": "5.3.3",
+  "ref": "5.3.3"
+ },
+ {
+  "package": "adafruit_hid",
+  "file": "adafruit_hid/consumer_control_code.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_HID.git adafruit_hid/consumer_control_code.py",
+  "version": "5.3.3",
+  "ref": "5.3.3"
+ },
+ {
+  "package": "adafruit_hid",
+  "file": "adafruit_hid/keyboard.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_HID.git adafruit_hid/keyboard.py",
+  "version": "5.3.3",
+  "ref": "5.3.3"
+ },
+ {
+  "package": "adafruit_hid",
+  "file": "adafruit_hid/keyboard_layout_base.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_HID.git adafruit_hid/keyboard_layout_base.py",
+  "version": "5.3.3",
+  "ref": "5.3.3"
+ },
+ {
+  "package": "adafruit_hid",
+  "file": "adafruit_hid/keyboard_layout_us.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_HID.git adafruit_hid/keyboard_layout_us.py",
+  "version": "5.3.3",
+  "ref": "5.3.3"
+ },
+ {
+  "package": "adafruit_hid",
+  "file": "adafruit_hid/keycode.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_HID.git adafruit_hid/keycode.py",
+  "version": "5.3.3",
+  "ref": "5.3.3"
+ },
+ {
+  "package": "adafruit_hid",
+  "file": "adafruit_hid/mouse.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_HID.git adafruit_hid/mouse.py",
+  "version": "5.3.3",
+  "ref": "5.3.3"
+ },
+ {
+  "package": "adafruit_misc",
+  "file": "adafruit_misc/__init__.py",
+  "source": "content/lib/adafruit_misc/__init__.py",
+  "version": "",
+  "ref": ""
+ },
+ {
+  "package": "adafruit_misc",
+  "file": "adafruit_misc/adafruit_st7789.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_ST7789.git adafruit_st7789.py",
+  "version": "1.5.14",
+  "ref": "1.5.14"
+ },
+ {
+  "package": "adafruit_misc",
+  "file": "adafruit_misc/neopixel.py",
+  "source": "https://github.com/adafruit/Adafruit_CircuitPython_NeoPixel.git neopixel.py",
+  "version": "6.3.6",
+  "ref": "6.3.6"
+ },
+ {
+  "package": "pymidibridge",
+  "file": "pymidibridge/MidiBridgeStorageProvider.py",
+  "source": "https://github.com/Tunetown/PyMidiBridge.git python/lib/pymidibridge/MidiBridgeStorageProvider.py",
+  "version": "0.6.0",
+  "ref": "default branch (tag 0.6.0 not found)"
+ },
+ {
+  "package": "pymidibridge",
+  "file": "pymidibridge/MidiBridgeWrapper.py",
+  "source": "https://github.com/Tunetown/PyMidiBridge.git python/lib/pymidibridge/MidiBridgeWrapper.py",
+  "version": "0.6.0",
+  "ref": "default branch (tag 0.6.0 not found)"
+ },
+ {
+  "package": "pymidibridge",
+  "file": "pymidibridge/PyMidiBridge.py",
+  "source": "https://github.com/Tunetown/PyMidiBridge.git python/lib/pymidibridge/pymidibridge.py",
+  "version": "0.6.0",
+  "ref": "default branch (tag 0.6.0 not found)"
+ },
+ {
+  "package": "pymidibridge",
+  "file": "pymidibridge/__init__.py",
+  "source": "content/lib/pymidibridge/__init__.py",
+  "version": "",
+  "ref": ""
+ }
+]

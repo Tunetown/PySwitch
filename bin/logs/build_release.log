@@ -1,0 +1,149 @@
+make: Entering directory '/opt/circuitpython/ports/raspberrypi'
+Use make V=1, make V=2 or set BUILD_VERBOSE similarly in your environment to increase build verbosity.
+mkdir -p /tmp/tmpp5qy9wkn/genhdr
+FREEZE /work/output/.work/frozen_release
+MKMANIFEST /work/output/.work/frozen_release
+(cd /tmp/tmpp5qy9wkn/frozen_mpy && find * -name \*.py -exec printf 'freeze_as_mpy("frozen_mpy", "%s")\n' {} \; )> /tmp/tmpp5qy9wkn/manifest.py.tmp && mv -f /tmp/tmpp5qy9wkn/manifest.py.tmp /tmp/tmpp5qy9wkn/manifest.py
+   text	   data	    bss	    dec	    hex	filename
+    246	      0	      0	    246	     f6	/tmp/tmpp5qy9wkn/boot2.elf
+GEN /tmp/tmpp5qy9wkn/genhdr/moduledefs.h
+QSTR updated
+MPY adafruit_bitmap_font/bitmap_font.py
+MPY adafruit_bitmap_font/glyph_cache.py
+MPY adafruit_bitmap_font/pcf.py
+MPY adafruit_bitmap_font/ttf.py
+MPY adafruit_bitmap_font/__init__.py
+MPY adafruit_bitmap_font/bdf.py
+MPY adafruit_display_shapes/triangle.py
+MPY adafruit_display_shapes/line.py
+MPY adafruit_display_shapes/sparkline.py
+MPY adafruit_display_shapes/roundrect.py
+MPY adafruit_display_shapes/circle.py
+MPY adafruit_display_shapes/__init__.py
+MPY adafruit_display_shapes/rect.py
+MPY adafruit_display_shapes/polygon.py
+MPY adafruit_display_text/bitmap_label.py
+MPY adafruit_display_text/scrolling_label.py
+MPY adafruit_display_text/label.py
+MPY adafruit_display_text/__init__.py
+MPY adafruit_hid/consumer_control_code.py
+MPY adafruit_hid/mouse.py
+MPY adafruit_hid/keyboard_layout_base.py
+MPY adafruit_hid/keycode.py
+MPY adafruit_hid/consumer_control.py
+MPY adafruit_hid/keyboard.py
+MPY adafruit_hid/__init__.py
+MPY adafruit_hid/keyboard_layout_us.py
+MPY adafruit_misc/neopixel.py
+MPY adafruit_misc/adafruit_st7789.py
+MPY adafruit_misc/__init__.py
+MPY pymidibridge/MidiBridgeStorageProvider.py
+MPY pymidibridge/PyMidiBridge.py
+MPY pymidibridge/__init__.py
+MPY pymidibridge/MidiBridgeWrapper.py
+MPY pyswitch/colors.py
+MPY pyswitch/clients/local/actions/binary_switch.py
+MPY pyswitch/clients/local/actions/param_change.py
+MPY pyswitch/clients/local/actions/custom.py
+MPY pyswitch/clients/local/actions/pager.py
+MPY pyswitch/clients/local/actions/encoder_button.py
+MPY pyswitch/clients/local/actions/hid.py
+MPY pyswitch/clients/local/actions/rotate.py
+MPY pyswitch/clients/local/actions/pager_direct.py
+MPY pyswitch/clients/local/actions/__init__.py
+MPY pyswitch/clients/local/actions/fixed_text.py
+MPY pyswitch/clients/local/mappings/generic.py
+MPY pyswitch/clients/local/mappings/__init__.py
+MPY pyswitch/clients/local/__init__.py
+MPY pyswitch/clients/local/callbacks/splashes.py
+MPY pyswitch/clients/local/callbacks/__init__.py
+MPY pyswitch/clients/kemper/actions/amp.py
+MPY pyswitch/clients/kemper/actions/fixed_fx.py
+MPY pyswitch/clients/kemper/actions/rig_up_down.py
+MPY pyswitch/clients/kemper/actions/tempo.py
+MPY pyswitch/clients/kemper/actions/rig_volume_boost.py
+MPY pyswitch/clients/kemper/actions/bank_select_encoder.py
+MPY pyswitch/clients/kemper/actions/bank_select.py
+MPY pyswitch/clients/kemper/actions/rig_select_and_morph_state.py
+MPY pyswitch/clients/kemper/actions/tempo_bpm.py
+MPY pyswitch/clients/kemper/actions/bank_up_down.py
+MPY pyswitch/clients/kemper/actions/effect_button.py
+MPY pyswitch/clients/kemper/actions/effect_state_extended_names.py
+MPY pyswitch/clients/kemper/actions/morph.py
+MPY pyswitch/clients/kemper/actions/looper.py
+MPY pyswitch/clients/kemper/actions/rig_select.py
+MPY pyswitch/clients/kemper/actions/__init__.py
+MPY pyswitch/clients/kemper/actions/effect_state.py
+MPY pyswitch/clients/kemper/actions/rig_transpose.py
+MPY pyswitch/clients/kemper/actions/tuner.py
+MPY pyswitch/clients/kemper/mappings/amp.py
+MPY pyswitch/clients/kemper/mappings/fixed_fx.py
+MPY pyswitch/clients/kemper/mappings/pedals.py
+MPY pyswitch/clients/kemper/mappings/tempo.py
+MPY pyswitch/clients/kemper/mappings/system.py
+MPY pyswitch/clients/kemper/mappings/freeze.py
+MPY pyswitch/clients/kemper/mappings/tempo_bpm.py
+MPY pyswitch/clients/kemper/mappings/rig.py
+MPY pyswitch/clients/kemper/mappings/select.py
+MPY pyswitch/clients/kemper/mappings/bank.py
+MPY pyswitch/clients/kemper/mappings/morph.py
+MPY pyswitch/clients/kemper/mappings/rotary.py
+MPY pyswitch/clients/kemper/mappings/cabinet.py
+MPY pyswitch/clients/kemper/mappings/looper.py
+MPY pyswitch/clients/kemper/mappings/__init__.py
+MPY pyswitch/clients/kemper/mappings/effects.py
+MPY pyswitch/clients/kemper/__init__.py
+MPY pyswitch/clients/kemper/callbacks/tempo_bpm.py
+MPY pyswitch/clients/kemper/callbacks/convert_volume.py
+MPY pyswitch/clients/kemper/callbacks/__init__.py
+MPY pyswitch/clients/__init__.py
+MPY pyswitch/clients/boomerang/actions/boomerang.py
+MPY pyswitch/clients/boomerang/actions/__init__.py
+MPY pyswitch/clients/boomerang/__init__.py
+MPY pyswitch/process.py
+MPY pyswitch/midi/buffer.py
+MPY pyswitch/ui/elements.py
+MPY pyswitch/ui/ui.py
+MPY pyswitch/ui/layout.py
+MPY pyswitch/ui/DisplaySplitContainer.py
+MPY pyswitch/ui/UiController.py
+MPY pyswitch/ui/__init__.py
+MPY pyswitch/misc.py
+MPY pyswitch/stats.py
+MPY pyswitch/hardware/adafruit/AdafruitPotentiometer.py
+MPY pyswitch/hardware/adafruit/AdafruitDinMidiDevice.py
+MPY pyswitch/hardware/adafruit/AdafruitEncoder.py
+MPY pyswitch/hardware/adafruit/__init__.py
+MPY pyswitch/hardware/adafruit/AdafruitSwitch.py
+MPY pyswitch/hardware/__init__.py
+MPY pyswitch/hardware/devices/pa_midicaptain_mini_6.py
+MPY pyswitch/hardware/devices/pa_midicaptain.py
+MPY pyswitch/hardware/devices/pa_midicaptain_10.py
+MPY pyswitch/hardware/devices/__init__.py
+MPY pyswitch/hardware/devices/pa_midicaptain_nano_4.py
+MPY pyswitch/__init__.py
+MPY pyswitch/controller/actions/EncoderAction.py
+MPY pyswitch/controller/actions/__init__.py
+MPY pyswitch/controller/actions/AnalogAction.py
+MPY pyswitch/controller/measure.py
+MPY pyswitch/controller/midi.py
+MPY pyswitch/controller/inputs.py
+MPY pyswitch/controller/explore.py
+MPY pyswitch/controller/client.py
+MPY pyswitch/controller/preview.py
+MPY pyswitch/controller/controller.py
+MPY pyswitch/controller/__init__.py
+MPY pyswitch/controller/callbacks/__init__.py
+MPY pyswitch/controller/callbacks/effect_enable.py
+MPY pyswitch/controller/callbacks/parameter_display.py
+MPY pyswitch/controller/strobe.py
+GEN /tmp/tmpp5qy9wkn/frozen_content.c
+
+939372 bytes used, 105108 bytes free in flash firmware space out of 1044480 bytes (1020.0kB).
+16476 bytes used, 245668 bytes free in ram for stack and heap out of 262144 bytes (256.0kB).
+
+/opt/circuitpython/ports/raspberrypi/../../tools/uf2/utils/uf2conv.py:210: SyntaxWarning: invalid escape sequence '\s'
+  words = re.split('\s+', line)
+Converted to uf2, output size: 1874432, start address: 0x10000000
+Wrote 1874432 bytes to /tmp/tmpp5qy9wkn/firmware.uf2
+make: Leaving directory '/opt/circuitpython/ports/raspberrypi'
