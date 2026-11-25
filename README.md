@@ -36,6 +36,26 @@ Features are:
 
 **NOTE**: If you want to run PySwitch in parallel with the original PaintAudio firmware, see below chapter "Multi-Boot"
 
+## Optimized Firmware Image (EXPERIMENTAL)
+
+**This is experimental! Please test it carefully (make the backups below) and report your results.**
+
+The folder [bin](bin) contains a pre-built firmware image `PySwitch.uf2`: CircuitPython 7.3.1 (the same version as on the MIDI Captain) with PySwitch and its libraries already built in ("frozen"). Normally CircuitPython compiles PySwitch at every start and keeps the compiled code in RAM; in this image the code lives in the flash memory, so about **87 KiB more RAM** stay free for your configuration (measured with PySwitch 2.4.10). This allows larger configurations, while running full PySwitch.
+
+The image is built from the regular PySwitch code with [PySwitchFreezer](https://github.com/Tunetown/PySwitchFreezer), where you also find all details (how it works, building it yourself for another branch, troubleshooting).
+
+Please note:
+- The image contains the PySwitch version of the main branch at the time it was built (see [bin/REPORT.md](bin/REPORT.md)). A `lib/pyswitch` folder on the device drive is ignored: for a new PySwitch version you need a new image.
+- Your configuration files work unchanged.
+
+Installation on a PaintAudio MIDI Captain:
+1. Backup: hold switch 1 while powering up, copy everything from the MIDICAPTAIN drive to your computer, and download PaintAudio's original firmware [midicpPico.uf2](https://cdn.shopify.com/s/files/1/0656/8312/8548/files/midicpPico.uf2?v=1684781580) (needed to go back).
+2. Bootloader mode: open `MIDICAPTAINBOOT.HTML` from one of PaintAudio's firmware 5 packages ([downloads](https://paintaudio.com/pages/surports)) in Chrome or Edge, click BOOT and select the device. A drive named RPI-RP2 appears.
+3. Copy `bin/PySwitch.uf2` to the RPI-RP2 drive. The device restarts by itself.
+4. Hold switch 1 while powering up and copy the contents of `bin/drive` to the MIDICAPTAIN drive (instead of the content folder), then your own configuration files. Unmount the drive and restart the device.
+
+To go back to the normal firmware: enter bootloader mode again (step 2), copy `midicpPico.uf2` to the RPI-RP2 drive, then install PySwitch as described above.
+
 ## Configuration
 
 If you do not want to program your configuration yourself in Python (as described later) which offers any needed degree of freedom, you can also use the new [**PySwitch Emulator**](https://pyswitch.tunetown.de) to graphically create and test your patch easily:
